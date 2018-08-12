@@ -1,0 +1,8 @@
+#include <TChain.h>
+
+void make_class()
+{
+  TChain *ch1 = new TChain("Analyze_TCS");
+  ch1->Add("./out_TCS_*.root/hipo2root");
+  ch1->MakeClass("Analyze_TCS");
+}

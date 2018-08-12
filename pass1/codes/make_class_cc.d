@@ -1,0 +1,56 @@
+
+# DO NOT DELETE
+
+./make_class_cc.so: /usr/local/apps/root/6_12_06/include/TChain.h
+./make_class_cc.so: /usr/local/apps/root/6_12_06/include/TTree.h
+./make_class_cc.so: /usr/local/apps/root/6_12_06/include/ROOT/TIOFeatures.hxx
+./make_class_cc.so: /usr/local/apps/root/6_12_06/include/TBasket.h
+./make_class_cc.so: /usr/local/apps/root/6_12_06/include/TKey.h
+./make_class_cc.so: /usr/local/apps/root/6_12_06/include/TNamed.h
+./make_class_cc.so: /usr/local/apps/root/6_12_06/include/TObject.h
+./make_class_cc.so: /usr/local/apps/root/6_12_06/include/RConfigure.h
+./make_class_cc.so: /usr/local/apps/root/6_12_06/include/Rtypes.h
+./make_class_cc.so: /usr/local/apps/root/6_12_06/include/RtypesCore.h
+./make_class_cc.so: /usr/local/apps/root/6_12_06/include/RConfig.h
+./make_class_cc.so: /usr/local/apps/root/6_12_06/include/RVersion.h
+./make_class_cc.so: /usr/local/apps/root/6_12_06/include/DllImport.h
+./make_class_cc.so: /usr/local/apps/root/6_12_06/include/snprintf.h
+./make_class_cc.so: /usr/local/apps/root/6_12_06/include/strlcpy.h
+./make_class_cc.so: /usr/local/apps/root/6_12_06/include/TGenericClassInfo.h
+./make_class_cc.so: /usr/local/apps/root/6_12_06/include/TSchemaHelper.h
+./make_class_cc.so: /usr/local/apps/root/6_12_06/include/TIsAProxy.h
+./make_class_cc.so: /usr/local/apps/root/6_12_06/include/TVirtualIsAProxy.h
+./make_class_cc.so: /usr/local/apps/root/6_12_06/include/TStorage.h
+./make_class_cc.so: /usr/local/apps/root/6_12_06/include/TVersionCheck.h
+./make_class_cc.so: /usr/local/apps/root/6_12_06/include/TString.h
+./make_class_cc.so: /usr/local/apps/root/6_12_06/include/TMathBase.h
+./make_class_cc.so: /usr/local/apps/root/6_12_06/include/RStringView.h
+./make_class_cc.so: /usr/local/apps/root/6_12_06/include/RWrap_libcpp_string_view.h
+./make_class_cc.so: /usr/local/apps/root/6_12_06/include/libcpp_string_view.h
+./make_class_cc.so: /usr/local/apps/root/6_12_06/include/TDatime.h
+./make_class_cc.so: /usr/local/apps/root/6_12_06/include/TBuffer.h
+./make_class_cc.so: /usr/local/apps/root/6_12_06/include/TClass.h
+./make_class_cc.so: /usr/local/apps/root/6_12_06/include/TDictionary.h
+./make_class_cc.so: /usr/local/apps/root/6_12_06/include/ESTLType.h
+./make_class_cc.so: /usr/local/apps/root/6_12_06/include/TObjArray.h
+./make_class_cc.so: /usr/local/apps/root/6_12_06/include/TSeqCollection.h
+./make_class_cc.so: /usr/local/apps/root/6_12_06/include/TCollection.h
+./make_class_cc.so: /usr/local/apps/root/6_12_06/include/TIterator.h
+./make_class_cc.so: /usr/local/apps/root/6_12_06/include/TVirtualRWMutex.h
+./make_class_cc.so: /usr/local/apps/root/6_12_06/include/TVirtualMutex.h
+./make_class_cc.so: /usr/local/apps/root/6_12_06/include/TObjString.h
+./make_class_cc.so: /usr/local/apps/root/6_12_06/include/ThreadLocalStorage.h
+./make_class_cc.so: /usr/local/apps/root/6_12_06/include/TArrayD.h
+./make_class_cc.so: /usr/local/apps/root/6_12_06/include/TArray.h
+./make_class_cc.so: /usr/local/apps/root/6_12_06/include/TArrayI.h
+./make_class_cc.so: /usr/local/apps/root/6_12_06/include/TAttFill.h
+./make_class_cc.so: /usr/local/apps/root/6_12_06/include/TAttLine.h
+./make_class_cc.so: /usr/local/apps/root/6_12_06/include/TAttMarker.h
+./make_class_cc.so: /usr/local/apps/root/6_12_06/include/TBranch.h
+./make_class_cc.so: /usr/local/apps/root/6_12_06/include/TDataType.h
+./make_class_cc.so: /usr/local/apps/root/6_12_06/include/TDirectory.h
+./make_class_cc.so: /usr/local/apps/root/6_12_06/include/TList.h
+./make_class_cc.so: /usr/local/apps/root/6_12_06/include/TUUID.h
+./make_class_cc.so: /usr/local/apps/root/6_12_06/include/TVirtualTreePlayer.h
+./make_class_cc.so: /usr/local/apps/root/6_12_06/include/RVersion.h /usr/local/apps/root/6_12_06/include/RConfig.h /usr/local/apps/root/6_12_06/include/TClass.h /usr/local/apps/root/6_12_06/include/TDictAttributeMap.h /usr/local/apps/root/6_12_06/include/TInterpreter.h /usr/local/apps/root/6_12_06/include/TROOT.h /usr/local/apps/root/6_12_06/include/TBuffer.h /usr/local/apps/root/6_12_06/include/TMemberInspector.h /usr/local/apps/root/6_12_06/include/TError.h /usr/local/apps/root/6_12_06/include/RtypesImp.h /usr/local/apps/root/6_12_06/include/TIsAProxy.h /usr/local/apps/root/6_12_06/include/TFileMergeInfo.h /usr/local/apps/root/6_12_06/include/TCollectionProxyInfo.h /usr/local/apps/root/6_12_06/bin/rootcling
+make_class_cc__ROOTBUILDVERSION= 6.12/06
