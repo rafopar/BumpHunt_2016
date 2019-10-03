@@ -49,8 +49,8 @@ int main(int argc, char** argv) {
     TH1D *h_n_c1l = new TH1D("h_n_cl1", "", 15, -0.5, 14.5);
     TH1D *h_clE1 = new TH1D("h_clE1", "", 200, 0., 1.2 * Eb);
     TH2D *h_cl_E_t1 = new TH2D("h_cl_E_t1", "", 200, 0., 1.2 * Eb, 200, 0., 180.);
-    TH2D *h_cl_E_tTop1 = new TH2D("h_cl_E_tTop1", "", 200, 0., 1.2 * Eb, 200, 20., 80.);
-    TH2D *h_cl_E_tBot1 = new TH2D("h_cl_E_tBot1", "", 200, 0., 1.2 * Eb, 200, 20., 80.);
+    TH2D *h_cl_E_tTop1 = new TH2D("h_cl_E_tTop1", "", 200, 0., 1.2 * Eb, 200, 30., 75.);
+    TH2D *h_cl_E_tBot1 = new TH2D("h_cl_E_tBot1", "", 200, 0., 1.2 * Eb, 200, 30., 75.);
     TH2D *h_dt_Esum1 = new TH2D("h_dt_Esum1", "", 200, 0., 1.2 * Eb, 200, -15., 15.);
     TH2D *h_dt_Esum2 = new TH2D("h_dt_Esum2", "", 200, 0., 1.2 * Eb, 200, -15., 15.);
     TH2D *h_dtCorr_Esum1 = new TH2D("h_dtCorr_Esum1", "", 200, 0., 1.2 * Eb, 200, -15., 15.);
