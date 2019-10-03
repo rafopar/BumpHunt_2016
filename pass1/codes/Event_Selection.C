@@ -50,11 +50,13 @@ void Event_Selection::Loop()
   TH1D *h_tarM4 = new TH1D("h_tarM4", "", 200, 0., 0.19);
   TH1D *h_tarM5 = new TH1D("h_tarM5", "", 200, 0., 0.19);
   TH1D *h_tarM6 = new TH1D("h_tarM6", "", 200, 0., 0.19);
+  TH1D *h_tarM_largebins = new TH1D("h_tarM_largebins", "", 40, 0., 0.19);
 
-  TH1D *h_tarP1 = new TH1D("h_tarP1", "", 200, 0.5, 1.3*Eb);
+  TH1D *h_tarP1 = new TH1D("h_tarP1", "", 100, 0.5, 1.3*Eb);
+  TH1D *h_tarP_Sebouh1 = new TH1D("h_tarP_Sebouh1", "", 100, 0.5, 1.3*Eb);
 
-  TH1D *h_P_ele_final = new TH1D("h_P_ele_final", "", 200, 0., 1.2*Eb);
-  TH1D *h_P_pos_final = new TH1D("h_P_pos_final", "", 200, 0., 1.2*Eb);
+  TH1D *h_P_ele_final = new TH1D("h_P_ele_final", "", 100, 0., 1.2*Eb);
+  TH1D *h_P_pos_final = new TH1D("h_P_pos_final", "", 100, 0., 1.2*Eb);
   TH1D *h_phi0_ele_final = new TH1D("h_phi0_ele_final", "", 50, -6., 8.6);
   TH1D *h_phi0_pos_final = new TH1D("h_phi0_pos_final", "", 50, -6., 8.6);
   TH1D *h_tanLambda_ele_final = new TH1D("h_tanLambda_ele_final",  "", 50, -4.6, 4.6);
@@ -96,7 +98,11 @@ void Event_Selection::Loop()
   TH2D *h_trk_clust_dt_P_pos_bot1 = new TH2D("h_trk_clust_dt_P_pos_bot1", "", 200, 0., 1.2*Eb, 200, -9., 9.);
 
   TH1D *h_cl_dt1 = new TH1D("h_cl_dt1", "", 200, -7., 7.);
+  TH1D *h_cl_dt2 = new TH1D("h_cl_dt2", "", 200, -7., 7.);
+  TH1D *h_cl_dt3 = new TH1D("h_cl_dt3", "", 200, -7., 7.);
   TH2D *h_cl_dt_Esum1 = new TH2D("h_cl_dt_Esum1", "", 200, 0., 1.2*Eb, 200, -7., 7.);
+  TH2D *h_cl_dt_Esum2 = new TH2D("h_cl_dt_Esum2", "", 200, 0., 1.2*Eb, 200, -7., 7.);
+  TH2D *h_cl_dt_Esum3 = new TH2D("h_cl_dt_Esum3", "", 200, 0., 1.2*Eb, 200, -7., 7.);
 
 
   //   ======== Histograms after tight cuts on other variables =======
@@ -129,6 +135,11 @@ void Event_Selection::Loop()
   TH1D *h_cl_dt_Tight1 = new TH1D("h_cl_dt_Tight1", "", 200, -7., 7.);
   TH2D *h_cl_dt_Esum_Tight1 = new TH2D("h_cl_dt_Esum_Tight1", "", 200, 0., 1.2*Eb, 200, -7., 7.);
 
+  TH1D *h_hodo_trk_cl_dt1 = new TH1D("h_hodo_trk_cl_dt1", "", 200, -15., 15.);
+  TH1D *h_hodo_cl_dt1 = new TH1D("h_hodo_cl_dt1", "", 200, -15., 15.);
+  TH2D *h_hodo_trk_cl_dt_Esum1 = new TH2D("h_hodo_trk_cl_dt_Esum1", "", 200, 1., 2.6, 200, -15., 15.);
+  TH2D *h_hodo_trl_dt_Esum1 = new TH2D("h_hodo_trl_dt_Esum1", "", 200, 1., 2.6, 200, -15., 15.);
+  
   int cur_run = 0;
   int cur_ev = 0;
 
@@ -148,11 +159,11 @@ void Event_Selection::Loop()
       cur_ev = event;
     }
 
-    bool is_tri = true;       // Check is this is MC trident simulation
-    bool is_data = !is_tri;   // the data flag is opposite of MC flag
+    bool is_data = true;       // Check is this is MC trident simulation
+    bool is_tri = !is_data;   // the data flag is opposite of MC flag
 
-    std::string data_type = "Trid" ; // It can be Data, Trid, WAB
-    //std::string data_type = "Data" ; // It can be Data, Trid, WAB
+    //std::string data_type = "Trid" ; // It can be Data, Trid, WAB
+    std::string data_type = "Data" ; // It can be Data, Trid, WAB
     
     bool is_new_ev; // This variable tells whether the event number has changed, i.e. whether it is new a new evet
     
@@ -191,11 +202,25 @@ void Event_Selection::Loop()
     } else{
       CL_trk_time_Offset = CL_trk_time_Offset_Data;
     }
+
+
+    // ============================ Ele and Pos cluster time difference =====================
+    // ============================                                     =====================
+    // ============================                                     =====================
+
+    double ele_pos_clust_dt = (eleClT - posClT)*TMath::Power(-1, (eleClY > posClY));
+    //double ele_pos_clust_dt = (eleClT - posClT);
+    double Esum = eleClE + posClE;
+    double Esum_tmp = TMath::Max(clust_dt_Esum_min, Esum);
+    Esum_tmp = TMath::Min(Esum_tmp, clust_dt_Esum_max);
+    cl_dt_max = f_mean_ele_pos_clust_dt[data_type]->Eval(Esum_tmp) + 3*f_sigm_ele_pos_clust_dt[data_type]->Eval(Esum_tmp);
+    cl_dt_min = f_mean_ele_pos_clust_dt[data_type]->Eval(Esum_tmp) - 3*f_sigm_ele_pos_clust_dt[data_type]->Eval(Esum_tmp);
+
+    bool cl_dt_cut = ele_pos_clust_dt > cl_dt_min && ele_pos_clust_dt < cl_dt_max;
     
     double ele_trk_clus_dt = eleClT - eleTrkT - CL_trk_time_Offset;
     double pos_trk_clus_dt = posClT - posTrkT - CL_trk_time_Offset;
-    double ele_pos_clust_dt = eleClT - posClT;
-      
+    
     // ============ Determining tight cuts for track cluster time difference =================
     double ele_trk_cl_dt_tigh_min;
     double ele_trk_cl_dt_tigh_max;
@@ -248,20 +273,44 @@ void Event_Selection::Loop()
     }
 
       
-    bool nsigma_tighcuts = eleP > 0.4 && eleP < 1.76 && tarP < 2.9 && eleTrkChisq/(2.*eleTrkHits - 5.) < 2.5 && posTrkChisq/(2.*posTrkHits - 5.) < 2.5 && ele_trk_clus_dt > ele_trk_cl_dt_tigh_min && ele_trk_clus_dt < ele_trk_cl_dt_tigh_max && pos_trk_clus_dt > pos_trk_cl_dt_tigh_min && pos_trk_clus_dt < pos_trk_cl_dt_tigh_max && ele_pos_clust_dt > cl_dt_min && ele_pos_clust_dt < cl_dt_max;
+    bool nsigma_tighcuts = eleP > 0.4 && eleP < 1.76 && tarP < 2.9 && eleTrkChisq/(2.*eleTrkHits - 5.) < 2.5 && posTrkChisq/(2.*posTrkHits - 5.) < 2.5 && ele_trk_clus_dt > ele_trk_cl_dt_tigh_min && ele_trk_clus_dt < ele_trk_cl_dt_tigh_max && pos_trk_clus_dt > pos_trk_cl_dt_tigh_min && pos_trk_clus_dt < pos_trk_cl_dt_tigh_max && ele_pos_clust_dt > cl_dt_min_tight && ele_pos_clust_dt < cl_dt_max_tight;
       
 
-    bool trk_fit_tightcuts = eleP > 0.4 && eleP < 1.76 && tarP < 2.9 && ele_trk_clus_dt > ele_trk_cl_dt_tigh_min && ele_trk_clus_dt < ele_trk_cl_dt_tigh_max && pos_trk_clus_dt > pos_trk_cl_dt_tigh_min && pos_trk_clus_dt < pos_trk_cl_dt_tigh_max && ele_pos_clust_dt > cl_dt_min && ele_pos_clust_dt < cl_dt_max && eleMatchChisq < nsigma_tightcut && posMatchChisq < nsigma_tightcut;
+    bool trk_fit_tightcuts = eleP > 0.4 && eleP < 1.76 && tarP < 2.9 && ele_trk_clus_dt > ele_trk_cl_dt_tigh_min && ele_trk_clus_dt < ele_trk_cl_dt_tigh_max && pos_trk_clus_dt > pos_trk_cl_dt_tigh_min && pos_trk_clus_dt < pos_trk_cl_dt_tigh_max && ele_pos_clust_dt > cl_dt_min_tight && ele_pos_clust_dt < cl_dt_max_tight && eleMatchChisq < nsigma_tightcut && posMatchChisq < nsigma_tightcut;
     
 
-    bool trk_clust_dt_tight = eleP > 0.4 && eleP < 1.76 && tarP < 2.9 && eleTrkChisq/(2.*eleTrkHits - 5.) < 2.5 && posTrkChisq/(2.*posTrkHits - 5.) < 2.5 && ele_pos_clust_dt > cl_dt_min && ele_pos_clust_dt < cl_dt_max && eleMatchChisq < nsigma_tightcut && posMatchChisq < nsigma_tightcut;
+    bool trk_clust_dt_tight = eleP > 0.4 && eleP < 1.76 && tarP < 2.9 && eleTrkChisq/(2.*eleTrkHits - 5.) < 2.5 && posTrkChisq/(2.*posTrkHits - 5.) < 2.5 && ele_pos_clust_dt > cl_dt_min_tight && ele_pos_clust_dt < cl_dt_max_tight && eleMatchChisq < nsigma_tightcut && posMatchChisq < nsigma_tightcut;
 
 
     bool clust_dt_tightcut = eleP > 0.4 && eleP < 1.76 && tarP < 2.9 && eleTrkChisq/(2.*eleTrkHits - 5.) < 2.5 && posTrkChisq/(2.*posTrkHits - 5.) < 2.5 && eleMatchChisq < nsigma_tightcut && posMatchChisq < nsigma_tightcut && ele_trk_clus_dt > ele_trk_cl_dt_tigh_min && ele_trk_clus_dt < ele_trk_cl_dt_tigh_max && pos_trk_clus_dt > pos_trk_cl_dt_tigh_min && pos_trk_clus_dt < pos_trk_cl_dt_tigh_max;
 
 
-    bool ev_selection_cuts = eleTrkChisq/(2.*eleTrkHits - 5.) < 6. && posTrkChisq/(2.*posTrkHits - 5.) < 6. && eleMatchChisq < 5. && posMatchChisq < 5. && ele_pos_clust_dt > -1. && ele_pos_clust_dt < 1. && 	ele_trk_clus_dt > ele_trk_cl_dt_min && ele_trk_clus_dt < ele_trk_cl_dt_max && pos_trk_clus_dt > pos_trk_cl_dt_min && pos_trk_clus_dt < pos_trk_cl_dt_max;
-																									
+    bool ev_selection_cuts = eleTrkChisq/(2.*eleTrkHits - 5.) < 6. && posTrkChisq/(2.*posTrkHits - 5.) < 6. && eleMatchChisq < 5. && posMatchChisq < 5. && cl_dt_cut && ele_trk_clus_dt > ele_trk_cl_dt_min && ele_trk_clus_dt < ele_trk_cl_dt_max && pos_trk_clus_dt > pos_trk_cl_dt_min && pos_trk_clus_dt < pos_trk_cl_dt_max && eleP > 0.4 && eleP < 1.76 && tarP < 2.9 && (eleTrkChisq < eleSharedTrkChisq || eleNHitsShared<=3) && (posTrkChisq < posSharedTrkChisq || posNHitsShared<=3);
+
+
+    // bool ev_selection_Sebouh = eleTrkChisq < 70. && posTrkChisq < 70. && eleMatchChisq < 6.1 && posMatchChisq < 6.1 && TMath::Abs(ele_pos_clust_dt) < 2. && TMath::Abs(ele_trk_clus_dt) < 4.4 && TMath::Abs(pos_trk_clus_dt) < 4.4 && eleP > 0.4 && eleP < 1.76 && tarP < 2.9;
+
+
+    bool ev_selection_Sebouh = eleTrkChisq<70 && posTrkChisq<70 && abs(eleClT-posClT)<2 && eleMatchChisq<6.1 && posMatchChisq<6.1 && abs(eleClT-eleTrkT-55)<4.4 && abs(posClT-posTrkT-55)<4.4 && eleP<1.76 && posClY*eleClY<0 && (eleTrkChisq < eleSharedTrkChisq || eleNHitsShared<=3) && (posTrkChisq < posSharedTrkChisq || posNHitsShared<=3) && tarP<2.90 && isPair1;
+
+
+    bool ev_sel_cuts_but_cl_dt = eleTrkChisq/(2.*eleTrkHits - 5.) < 6. && posTrkChisq/(2.*posTrkHits - 5.) < 6. && eleMatchChisq < 5. && posMatchChisq < 5. && ele_trk_clus_dt > ele_trk_cl_dt_min && ele_trk_clus_dt < ele_trk_cl_dt_max && pos_trk_clus_dt > pos_trk_cl_dt_min && pos_trk_clus_dt < pos_trk_cl_dt_max && eleP > 0.4 && eleP < 1.76 && tarP < 2.9 && (eleTrkChisq < eleSharedTrkChisq || eleNHitsShared<=3) && (posTrkChisq < posSharedTrkChisq || posNHitsShared<=3);
+
+
+    bool ev_sel_cuts_but_cl_dt_and_trk_cldt = eleTrkChisq/(2.*eleTrkHits - 5.) < 6. && posTrkChisq/(2.*posTrkHits - 5.) < 6. && eleMatchChisq < 5. && posMatchChisq < 5. && eleP > 0.4 && eleP < 1.76 && tarP < 2.9 && (eleTrkChisq < eleSharedTrkChisq || eleNHitsShared<=3) && (posTrkChisq < posSharedTrkChisq || posNHitsShared<=3);
+
+
+    bool hodo_test_cuts =  eleTrkChisq/(2.*eleTrkHits - 5.) < 6. && posTrkChisq/(2.*posTrkHits - 5.) < 6. && posMatchChisq < 5. && eleP > 0.4 && eleP < 1.76 && tarP < 2.6 && eleTrkChisq < eleSharedTrkChisq && posTrkChisq < posSharedTrkChisq && abs(posClT-posTrkT-55) < 4.4 && posTrkLambda*eleTrkLambda < 0.;
+
+
+    if( hodo_test_cuts ){
+      h_hodo_cl_dt1->Fill(posClT - eleClT);
+      h_hodo_trk_cl_dt1->Fill(posClT - eleTrkT - 55.);
+      h_hodo_trk_cl_dt_Esum1->Fill(tarP, posClT - eleTrkT - 55.);
+
+      h_hodo_trl_dt_Esum1->Fill(tarP, posTrkT - eleTrkT);
+      
+    }
     
     
     if( eleClY > 0 ){
@@ -399,6 +448,21 @@ void Event_Selection::Loop()
     }
 
       
+    if( ev_selection_Sebouh && posHasL1 && posTrkD0 < 1.07){
+      h_tarP_Sebouh1->Fill(tarP);
+    }
+
+
+    if( ev_sel_cuts_but_cl_dt ){
+      h_cl_dt2->Fill(ele_pos_clust_dt);
+      h_cl_dt_Esum2->Fill(eleClE + posClE, ele_pos_clust_dt);
+    }
+
+
+    if( ev_sel_cuts_but_cl_dt_and_trk_cldt ){
+      h_cl_dt3->Fill(ele_pos_clust_dt);
+      h_cl_dt_Esum3->Fill(eleClE + posClE, ele_pos_clust_dt);
+    }
     
     if( ev_selection_cuts ){
 
@@ -406,20 +470,24 @@ void Event_Selection::Loop()
 
       if( !posHasL1 ){continue;}
 
-      h_d0_pos3->Fill(posTrkD0);      
+      h_d0_pos3->Fill(posTrkD0);
       if( !(posTrkD0 < pos_d0_cut) ) {continue;}
       
-      h_tarM6->Fill(tarM);
       h_tarP1->Fill(tarP);
 
-      h_P_pos_final->Fill(posP);
-      h_P_ele_final->Fill(eleP);
-
-      h_phi0_ele_final->Fill(eleTrkPhi*radian);
-      h_phi0_pos_final->Fill(posTrkPhi*radian);
-
-      h_tanLambda_ele_final->Fill(atan(eleTrkLambda)*radian);
-      h_tanLambda_pos_final->Fill(atan(posTrkLambda)*radian);
+      if( tarP > Psum_min ){
+	h_tarM6->Fill(tarM);
+	h_tarM_largebins->Fill(tarM);
+	
+	h_P_pos_final->Fill(posP);
+	h_P_ele_final->Fill(eleP);
+	
+	h_phi0_ele_final->Fill(eleTrkPhi*radian);
+	h_phi0_pos_final->Fill(posTrkPhi*radian);
+	
+	h_tanLambda_ele_final->Fill(atan(eleTrkLambda)*radian);
+	h_tanLambda_pos_final->Fill(atan(posTrkLambda)*radian);
+      }
       
       if( is_new_ev ){
 	h_n_ver_cands_in_ev1->Fill(n_ev_sel_cuts);
@@ -439,19 +507,22 @@ void Event_Selection::Loop()
 }
 
 void Init_Functions(){
-  f_mean_cl_trk_dt_ele_top["Data"] = new TF1("f_mean_cl_trk_dt_ele_top", "-0.463849 + x*(1.01109) + x*x*(0.0489378) + x*x*x*(-0.258737)", 0., 2.5);
-  f_sigm_cl_trk_dt_ele_top["Data"] = new TF1("f_mean_cl_trk_dt_ele_top", "1.83648 + x*(-3.26601) + x*x*(6.07709) + x*x*x*(-4.88008) + x*x*x*x*(1.38874)", 0., 2.5);
+  f_mean_cl_trk_dt_ele_top["Data"] = new TF1("f_mean_cl_trk_dt_ele_top", "-0.709911 + x*(2.01833) + x*x*(-1.17334) + x*x*x*(0.191493)", 0., 2.5);
+  f_sigm_cl_trk_dt_ele_top["Data"] = new TF1("f_mean_cl_trk_dt_ele_top", "1.74291 + x*(-3.08106) + x*x*(6.05764) + x*x*x*(-4.95806) + x*x*x*x*(1.41744)", 0., 2.5);
 
-  f_mean_cl_trk_dt_ele_bot["Data"] = new TF1("f_mean_cl_trk_dt_ele_bot", "-0.812765 + x*(0.878871) + x*x*(-0.319924) + x*x*x*(0.00307882)", 0., 2.5);
-  f_sigm_cl_trk_dt_ele_bot["Data"] = new TF1("f_mean_cl_trk_dt_ele_bot", "1.34173 + x*(-0.704732) + x*x*(1.5466) + x*x*x*(-1.48625) + x*x*x*x*(0.486362)", 0., 2.5);
+  f_mean_cl_trk_dt_ele_bot["Data"] = new TF1("f_mean_cl_trk_dt_ele_bot", "-0.735333 + x*(0.643124) + x*x*(-0.0284877) + x*x*x*(-0.119465)", 0., 2.5);
+  f_sigm_cl_trk_dt_ele_bot["Data"] = new TF1("f_mean_cl_trk_dt_ele_bot", "1.6222 + x*(-1.86916) + x*x*(3.01775) + x*x*x*(-2.05528) + x*x*x*x*(0.485195)", 0., 2.5);
 
-  f_mean_cl_trk_dt_pos_top["Data"] = new TF1("f_mean_cl_trk_dt_pos_top", "-0.860302 + x*(2.1808) + x*x*(-1.62851) + x*x*x*(0.388061)", 0., 2.5);
-  f_sigm_cl_trk_dt_pos_top["Data"] = new TF1("f_mean_cl_trk_dt_pos_top", "2.79063 + x*(-7.3126) + x*x*(12.1243) + x*x*x*(-8.67505) + x*x*x*x*(2.23873)", 0., 2.5);
+  f_mean_cl_trk_dt_pos_top["Data"] = new TF1("f_mean_cl_trk_dt_pos_top", "-0.595331 + x*(1.39463) + x*x*(-0.922594) + x*x*x*(0.1756)", 0., 2.5);
+  f_sigm_cl_trk_dt_pos_top["Data"] = new TF1("f_mean_cl_trk_dt_pos_top", "1.8063 + x*(-2.29551) + x*x*(3.05377) + x*x*x*(-1.79281) + x*x*x*x*(0.382615)", 0., 2.5);
 
-  f_mean_cl_trk_dt_pos_bot["Data"] = new TF1("f_mean_cl_trk_dt_pos_bot", "-1.00867 + x*(2.89172) + x*x*(-2.12403) + x*x*x*(0.529724)", 0., 2.5);
-  f_sigm_cl_trk_dt_pos_bot["Data"] = new TF1("f_mean_cl_trk_dt_pos_bot", "0.067446 + x*(4.39018) + x*x*(-6.26695) + x*x*x*(3.86652) + x*x*x*x*(-0.881143)", 0., 2.5);
+  f_mean_cl_trk_dt_pos_bot["Data"] = new TF1("f_mean_cl_trk_dt_pos_bot", "-0.839989 + x*(2.398) + x*x*(-1.65211) + x*x*x*(0.380702)", 0., 2.5);
+  f_sigm_cl_trk_dt_pos_bot["Data"] = new TF1("f_mean_cl_trk_dt_pos_bot", "0.174055 + x*(4.64009) + x*x*(-7.76868) + x*x*x*(5.55727) + x*x*x*x*(-1.43829)", 0., 2.5);
 
+  f_mean_ele_pos_clust_dt["Data"] = new TF1("f_mean_ele_pos_clust_dt", "0.654517 + x*(-0.954197) + x*x*(0.501588) + x*x*x*(-0.0925249)", 0., 2.5);
+  f_sigm_ele_pos_clust_dt["Data"] = new TF1("f_sigm_ele_pos_clust_dt", "1.53749 + x*(-1.30461) + x*x*(0.26082) + x*x*x*(0.153021) + x*x*x*x*(-0.0516124)", 0., 2.5);
 
+  
 
   f_mean_cl_trk_dt_ele_top["Trid"] = new TF1("f_mean_cl_trk_dt_ele_top", "0.0952942 + x*(-0.370083) + x*x*(0.587404) + x*x*x*(-0.258055)", 0., 2.5);
   f_sigm_cl_trk_dt_ele_top["Trid"] = new TF1("f_mean_cl_trk_dt_ele_top", "0.823454 + x*(-0.872126) + x*x*(0.839176) + x*x*x*(-0.360848) + x*x*x*x*(0.0506542)", 0., 2.5);
@@ -465,5 +536,7 @@ void Init_Functions(){
   f_mean_cl_trk_dt_pos_bot["Trid"] = new TF1("f_mean_cl_trk_dt_pos_bot", "0.0240929 + x*(-0.20681) + x*x*(0.453843) + x*x*x*(-0.210165)", 0., 2.5);
   f_sigm_cl_trk_dt_pos_bot["Trid"] = new TF1("f_mean_cl_trk_dt_pos_bot", "0.678652 + x*(-0.404917) + x*x*(0.279734) + x*x*x*(-0.0643174) + x*x*x*x*(0.00259185)", 0., 2.5);
 
-
+  f_mean_ele_pos_clust_dt["Trid"] = new TF1("f_mean_ele_pos_clust_dt", "0.0674557 + x*(-0.0470022) + x*x*(-0.0187141) + x*x*x*(0.0110979)", 0., 2.5);
+  f_sigm_ele_pos_clust_dt["Trid"] = new TF1("f_sigm_ele_pos_clust_dt", "1.09092 + x*(-1.30524) + x*x*(1.12799) + x*x*x*(-0.521889) + x*x*x*x*(0.0919239)", 0., 2.5);
+ 
 }

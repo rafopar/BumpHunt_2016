@@ -7,6 +7,8 @@
 #include <TLatex.h>
 #include <TGraph.h>
 #include <Slice_Fitter.h>
+#include "setting_2016_pass1.h"
+#include "/Work/Soft/root_funcs/funcs1.C"
 
 #include <fstream>
 
@@ -27,18 +29,22 @@ void Draw_selection_Optimizations(){
   TCanvas *c1 = new TCanvas("c1", "", 750, 750);
 
   ofstream out_file("cut_parameters.dat");
+
+  std::string data_type = "Data";
   
-  //TFile *file_in = new TFile("Event_Selection.root");
-  TFile *file_in = new TFile("Event_Selection_Tritrig.root");
+  //TFile *file_in = new TFile("Event_Selection_Data.root");
+  //TFile *file_in = new TFile("Event_Selection_Tritrig.root");
+
+  TFile *file_in = new TFile(Form("Event_Selection_%s.root", data_type.c_str()));
 
   TH1D *h_Nsigma_ele_top1 = (TH1D*)file_in->Get("h_Nsigma_ele_top1");
   TH1D *h_Nsigma_ele_top_Tight1 = (TH1D*)file_in->Get("h_Nsigma_ele_top_Tight1");
 
   h_Nsigma_ele_top1->SetTitle("Electrons: Top; N#sigma");
   Draw_2Hists_Ontop(h_Nsigma_ele_top1, h_Nsigma_ele_top_Tight1, c1);
-  c1->Print("Figs/Tritrig_Nsigma_ele_top_optimize.eps");
-  c1->Print("Figs/Tritrig_Nsigma_ele_top_optimize.pdf");
-  c1->Print("Figs/Tritrig_Nsigma_ele_top_optimize.png");
+  c1->Print(Form("Figs/%s_Nsigma_ele_top_optimize.eps", data_type.c_str()));
+  c1->Print(Form("Figs/%s_Nsigma_ele_top_optimize.pdf", data_type.c_str()));
+  c1->Print(Form("Figs/%s_Nsigma_ele_top_optimize.png", data_type.c_str()));
 
 
   TH1D *h_Nsigma_ele_bot1 = (TH1D*)file_in->Get("h_Nsigma_ele_bot1");
@@ -46,9 +52,9 @@ void Draw_selection_Optimizations(){
 
   h_Nsigma_ele_bot1->SetTitle("Electrons: Bot; N#sigma");
   Draw_2Hists_Ontop(h_Nsigma_ele_bot1, h_Nsigma_ele_bot_Tight1, c1);
-  c1->Print("Figs/Tritrig_Nsigma_ele_bot_optimize.eps");
-  c1->Print("Figs/Tritrig_Nsigma_ele_bot_optimize.pdf");
-  c1->Print("Figs/Tritrig_Nsigma_ele_bot_optimize.png");
+  c1->Print(Form("Figs/%s_Nsigma_ele_bot_optimize.eps", data_type.c_str()));
+  c1->Print(Form("Figs/%s_Nsigma_ele_bot_optimize.pdf", data_type.c_str()));
+  c1->Print(Form("Figs/%s_Nsigma_ele_bot_optimize.png", data_type.c_str()));
 
 
   TH1D *h_Nsigma_pos_top1 = (TH1D*)file_in->Get("h_Nsigma_pos_top1");
@@ -56,9 +62,9 @@ void Draw_selection_Optimizations(){
 
   h_Nsigma_pos_top1->SetTitle("Positrons: Top; N#sigma");
   Draw_2Hists_Ontop(h_Nsigma_pos_top1, h_Nsigma_pos_top_Tight1, c1);
-  c1->Print("Figs/Tritrig_Nsigma_pos_top_optimize.eps");
-  c1->Print("Figs/Tritrig_Nsigma_pos_top_optimize.pdf");
-  c1->Print("Figs/Tritrig_Nsigma_pos_top_optimize.png");
+  c1->Print(Form("Figs/%s_Nsigma_pos_top_optimize.eps", data_type.c_str()));
+  c1->Print(Form("Figs/%s_Nsigma_pos_top_optimize.pdf", data_type.c_str()));
+  c1->Print(Form("Figs/%s_Nsigma_pos_top_optimize.png", data_type.c_str()));
 
 
   TH1D *h_Nsigma_pos_bot1 = (TH1D*)file_in->Get("h_Nsigma_pos_bot1");
@@ -66,84 +72,84 @@ void Draw_selection_Optimizations(){
 
   h_Nsigma_pos_bot1->SetTitle("Positrons: Bot; N#sigma");
   Draw_2Hists_Ontop(h_Nsigma_pos_bot1, h_Nsigma_pos_bot_Tight1, c1);
-  c1->Print("Figs/Tritrig_Nsigma_pos_bot_optimize.eps");
-  c1->Print("Figs/Tritrig_Nsigma_pos_bot_optimize.pdf");
-  c1->Print("Figs/Tritrig_Nsigma_pos_bot_optimize.png");
+  c1->Print(Form("Figs/%s_Nsigma_pos_bot_optimize.eps", data_type.c_str()));
+  c1->Print(Form("Figs/%s_Nsigma_pos_bot_optimize.pdf", data_type.c_str()));
+  c1->Print(Form("Figs/%s_Nsigma_pos_bot_optimize.png", data_type.c_str()));
 
 
   TH1D *h_chi2NDF_ele_6hits_top1 = (TH1D*)file_in->Get("h_chi2NDF_ele_6hits_top1");
   TH1D *h_chi2NDF_ele_6hits_top_Tight1 = (TH1D*)file_in->Get("h_chi2NDF_ele_6hits_top_Tight1");
   h_chi2NDF_ele_6hits_top1->SetTitle("Electrons: 6 hits: Top; #chi^{2}/NDF");
   Draw_2Hists_Ontop(h_chi2NDF_ele_6hits_top1, h_chi2NDF_ele_6hits_top_Tight1, c1);
-  c1->Print("Figs/Tritrig_chi2NDF_ele_6hits_top_optimize.eps");
-  c1->Print("Figs/Tritrig_chi2NDF_ele_6hits_top_optimize.pdf");
-  c1->Print("Figs/Tritrig_chi2NDF_ele_6hits_top_optimize.png");
+  c1->Print(Form("Figs/%s_chi2NDF_ele_6hits_top_optimize.eps", data_type.c_str()));
+  c1->Print(Form("Figs/%s_chi2NDF_ele_6hits_top_optimize.pdf", data_type.c_str()));
+  c1->Print(Form("Figs/%s_chi2NDF_ele_6hits_top_optimize.png", data_type.c_str()));
   
   TH1D *h_chi2NDF_ele_6hits_bot1 = (TH1D*)file_in->Get("h_chi2NDF_ele_6hits_bot1");
   TH1D *h_chi2NDF_ele_6hits_bot_Tight1 = (TH1D*)file_in->Get("h_chi2NDF_ele_6hits_bot_Tight1");
   h_chi2NDF_ele_6hits_bot1->SetTitle("Electrons: 6 hits: Bot; #chi^{2}/NDF");
   Draw_2Hists_Ontop(h_chi2NDF_ele_6hits_bot1, h_chi2NDF_ele_6hits_bot_Tight1, c1);
-  c1->Print("Figs/Tritrig_chi2NDF_ele_6hits_bot_optimize.eps");
-  c1->Print("Figs/Tritrig_chi2NDF_ele_6hits_bot_optimize.pdf");
-  c1->Print("Figs/Tritrig_chi2NDF_ele_6hits_bot_optimize.png");
+  c1->Print(Form("Figs/%s_chi2NDF_ele_6hits_bot_optimize.eps", data_type.c_str()));
+  c1->Print(Form("Figs/%s_chi2NDF_ele_6hits_bot_optimize.pdf", data_type.c_str()));
+  c1->Print(Form("Figs/%s_chi2NDF_ele_6hits_bot_optimize.png", data_type.c_str()));
   
   TH1D *h_chi2NDF_ele_5hits_top1 = (TH1D*)file_in->Get("h_chi2NDF_ele_5hits_top1");
   TH1D *h_chi2NDF_ele_5hits_top_Tight1 = (TH1D*)file_in->Get("h_chi2NDF_ele_5hits_top_Tight1");
   h_chi2NDF_ele_5hits_top1->SetTitle("Electrons: 5 hits: Top; #chi^{2}/NDF");
   Draw_2Hists_Ontop(h_chi2NDF_ele_5hits_top1, h_chi2NDF_ele_5hits_top_Tight1, c1);
-  c1->Print("Figs/Tritrig_chi2NDF_ele_5hits_top_optimize.eps");
-  c1->Print("Figs/Tritrig_chi2NDF_ele_5hits_top_optimize.pdf");
-  c1->Print("Figs/Tritrig_chi2NDF_ele_5hits_top_optimize.png");
+  c1->Print(Form("Figs/%s_chi2NDF_ele_5hits_top_optimize.eps", data_type.c_str()));
+  c1->Print(Form("Figs/%s_chi2NDF_ele_5hits_top_optimize.pdf", data_type.c_str()));
+  c1->Print(Form("Figs/%s_chi2NDF_ele_5hits_top_optimize.png", data_type.c_str()));
   
   TH1D *h_chi2NDF_ele_5hits_bot1 = (TH1D*)file_in->Get("h_chi2NDF_ele_5hits_bot1");
   TH1D *h_chi2NDF_ele_5hits_bot_Tight1 = (TH1D*)file_in->Get("h_chi2NDF_ele_5hits_bot_Tight1");
   h_chi2NDF_ele_5hits_bot1->SetTitle("Electrons: 5 hits: Bot; #chi^{2}/NDF");
   Draw_2Hists_Ontop(h_chi2NDF_ele_5hits_bot1, h_chi2NDF_ele_5hits_bot_Tight1, c1);
-  c1->Print("Figs/Tritrig_chi2NDF_ele_5hits_bot_optimize.eps");
-  c1->Print("Figs/Tritrig_chi2NDF_ele_5hits_bot_optimize.pdf");
-  c1->Print("Figs/Tritrig_chi2NDF_ele_5hits_bot_optimize.png");
+  c1->Print(Form("Figs/%s_chi2NDF_ele_5hits_bot_optimize.eps", data_type.c_str()));
+  c1->Print(Form("Figs/%s_chi2NDF_ele_5hits_bot_optimize.pdf", data_type.c_str()));
+  c1->Print(Form("Figs/%s_chi2NDF_ele_5hits_bot_optimize.png", data_type.c_str()));
 
   
   TH1D *h_chi2NDF_pos_6hits_top1 = (TH1D*)file_in->Get("h_chi2NDF_pos_6hits_top1");
   TH1D *h_chi2NDF_pos_6hits_top_Tight1 = (TH1D*)file_in->Get("h_chi2NDF_pos_6hits_top_Tight1");
   h_chi2NDF_pos_6hits_top1->SetTitle("Positrons: 6 hits: Top; #chi^{2}/NDF");
   Draw_2Hists_Ontop(h_chi2NDF_pos_6hits_top1, h_chi2NDF_pos_6hits_top_Tight1, c1);
-  c1->Print("Figs/Tritrig_chi2NDF_pos_6hits_top_optimize.eps");
-  c1->Print("Figs/Tritrig_chi2NDF_pos_6hits_top_optimize.pdf");
-  c1->Print("Figs/Tritrig_chi2NDF_pos_6hits_top_optimize.png");
+  c1->Print(Form("Figs/%s_chi2NDF_pos_6hits_top_optimize.eps", data_type.c_str()));
+  c1->Print(Form("Figs/%s_chi2NDF_pos_6hits_top_optimize.pdf", data_type.c_str()));
+  c1->Print(Form("Figs/%s_chi2NDF_pos_6hits_top_optimize.png", data_type.c_str()));
   
   TH1D *h_chi2NDF_pos_6hits_bot1 = (TH1D*)file_in->Get("h_chi2NDF_pos_6hits_bot1");
   TH1D *h_chi2NDF_pos_6hits_bot_Tight1 = (TH1D*)file_in->Get("h_chi2NDF_pos_6hits_bot_Tight1");
   h_chi2NDF_pos_6hits_bot1->SetTitle("Positrons: 6 hits: Bot; #chi^{2}/NDF");
   Draw_2Hists_Ontop(h_chi2NDF_pos_6hits_bot1, h_chi2NDF_pos_6hits_bot_Tight1, c1);
-  c1->Print("Figs/Tritrig_chi2NDF_pos_6hits_bot_optimize.eps");
-  c1->Print("Figs/Tritrig_chi2NDF_pos_6hits_bot_optimize.pdf");
-  c1->Print("Figs/Tritrig_chi2NDF_pos_6hits_bot_optimize.png");
+  c1->Print(Form("Figs/%s_chi2NDF_pos_6hits_bot_optimize.eps", data_type.c_str()));
+  c1->Print(Form("Figs/%s_chi2NDF_pos_6hits_bot_optimize.pdf", data_type.c_str()));
+  c1->Print(Form("Figs/%s_chi2NDF_pos_6hits_bot_optimize.png", data_type.c_str()));
   
   TH1D *h_chi2NDF_pos_5hits_top1 = (TH1D*)file_in->Get("h_chi2NDF_pos_5hits_top1");
   TH1D *h_chi2NDF_pos_5hits_top_Tight1 = (TH1D*)file_in->Get("h_chi2NDF_pos_5hits_top_Tight1");
   h_chi2NDF_pos_5hits_top1->SetTitle("Positrons: 5 hits: Top; #chi^{2}/NDF");
   Draw_2Hists_Ontop(h_chi2NDF_pos_5hits_top1, h_chi2NDF_pos_5hits_top_Tight1, c1);
-  c1->Print("Figs/Tritrig_chi2NDF_pos_5hits_top_optimize.eps");
-  c1->Print("Figs/Tritrig_chi2NDF_pos_5hits_top_optimize.pdf");
-  c1->Print("Figs/Tritrig_chi2NDF_pos_5hits_top_optimize.png");
+  c1->Print(Form("Figs/%s_chi2NDF_pos_5hits_top_optimize.eps", data_type.c_str()));
+  c1->Print(Form("Figs/%s_chi2NDF_pos_5hits_top_optimize.pdf", data_type.c_str()));
+  c1->Print(Form("Figs/%s_chi2NDF_pos_5hits_top_optimize.png", data_type.c_str()));
   
   TH1D *h_chi2NDF_pos_5hits_bot1 = (TH1D*)file_in->Get("h_chi2NDF_pos_5hits_bot1");
   TH1D *h_chi2NDF_pos_5hits_bot_Tight1 = (TH1D*)file_in->Get("h_chi2NDF_pos_5hits_bot_Tight1");
   h_chi2NDF_pos_5hits_bot1->SetTitle("Positrons: 5 hits: Bot; #chi^{2}/NDF");
   Draw_2Hists_Ontop(h_chi2NDF_pos_5hits_bot1, h_chi2NDF_pos_5hits_bot_Tight1, c1);
-  c1->Print("Figs/Tritrig_chi2NDF_pos_5hits_bot_optimize.eps");
-  c1->Print("Figs/Tritrig_chi2NDF_pos_5hits_bot_optimize.pdf");
-  c1->Print("Figs/Tritrig_chi2NDF_pos_5hits_bot_optimize.png");
+  c1->Print(Form("Figs/%s_chi2NDF_pos_5hits_bot_optimize.eps", data_type.c_str()));
+  c1->Print(Form("Figs/%s_chi2NDF_pos_5hits_bot_optimize.pdf", data_type.c_str()));
+  c1->Print(Form("Figs/%s_chi2NDF_pos_5hits_bot_optimize.png", data_type.c_str()));
 
   //========================== Track Cluster Delta T: Electrons Top ======================
 
   TH2D *h_trk_clust_dt_P_ele_top1 = (TH2D*)file_in->Get("h_trk_clust_dt_P_ele_top1");
   h_trk_clust_dt_P_ele_top1->SetTitle("Electrons: Top; P[GeV];  #Delta t(trk - clust) [ns]");
   h_trk_clust_dt_P_ele_top1->Draw("colz");
-  c1->Print("Figs/Tritrig_trk_clust_dt_P_ele_top_loose.eps");
-  c1->Print("Figs/Tritrig_trk_clust_dt_P_ele_top_loose.pdf");
-  c1->Print("Figs/Tritrig_trk_clust_dt_P_ele_top_loose.png");
+  c1->Print(Form("Figs/%s_trk_clust_dt_P_ele_top_loose.eps", data_type.c_str()));
+  c1->Print(Form("Figs/%s_trk_clust_dt_P_ele_top_loose.pdf", data_type.c_str()));
+  c1->Print(Form("Figs/%s_trk_clust_dt_P_ele_top_loose.png", data_type.c_str()));
 
   
   TH1D *h_trk_clust_dt_ele_top1 = (TH1D*)file_in->Get("h_trk_clust_dt_ele_top1");
@@ -197,9 +203,9 @@ void Draw_selection_Optimizations(){
   f_up_lim->Draw("Same");
   f_mean->Draw("Same");
   f_low_lim->Draw("Same");
-  c1->Print("Figs/Tritrig_trk_cl_dt_P_ele_top.eps");
-  c1->Print("Figs/Tritrig_trk_cl_dt_P_ele_top.pdf");
-  c1->Print("Figs/Tritrig_trk_cl_dt_P_ele_top.png");
+  c1->Print(Form("Figs/%s_trk_cl_dt_P_ele_top.eps", data_type.c_str()));
+  c1->Print(Form("Figs/%s_trk_cl_dt_P_ele_top.pdf", data_type.c_str()));
+  c1->Print(Form("Figs/%s_trk_cl_dt_P_ele_top.png", data_type.c_str()));
 
 
   //========================== Track Cluster Delta T: Electrons Bottom ======================
@@ -239,9 +245,9 @@ void Draw_selection_Optimizations(){
   f_up_lim->Draw("Same");
   f_mean->Draw("Same");
   f_low_lim->Draw("Same");
-  c1->Print("Figs/Tritrig_trk_cl_dt_P_ele_bot.eps");
-  c1->Print("Figs/Tritrig_trk_cl_dt_P_ele_bot.pdf");
-  c1->Print("Figs/Tritrig_trk_cl_dt_P_ele_bot.png");
+  c1->Print(Form("Figs/%s_trk_cl_dt_P_ele_bot.eps", data_type.c_str()));
+  c1->Print(Form("Figs/%s_trk_cl_dt_P_ele_bot.pdf", data_type.c_str()));
+  c1->Print(Form("Figs/%s_trk_cl_dt_P_ele_bot.png", data_type.c_str()));
 
   //========================== Track Cluster Delta T: Positrons Top ======================
   
@@ -280,9 +286,9 @@ void Draw_selection_Optimizations(){
   f_up_lim->Draw("Same");
   f_mean->Draw("Same");
   f_low_lim->Draw("Same");
-  c1->Print("Figs/Tritrig_trk_cl_dt_P_pos_top.eps");
-  c1->Print("Figs/Tritrig_trk_cl_dt_P_pos_top.pdf");
-  c1->Print("Figs/Tritrig_trk_cl_dt_P_pos_top.png");
+  c1->Print(Form("Figs/%s_trk_cl_dt_P_pos_top.eps", data_type.c_str()));
+  c1->Print(Form("Figs/%s_trk_cl_dt_P_pos_top.pdf", data_type.c_str()));
+  c1->Print(Form("Figs/%s_trk_cl_dt_P_pos_top.png", data_type.c_str()));
 
   //========================== Track Cluster Delta T: Positrons Bot ======================
   
@@ -322,9 +328,9 @@ void Draw_selection_Optimizations(){
   f_up_lim->Draw("Same");
   f_mean->Draw("Same");
   f_low_lim->Draw("Same");
-  c1->Print("Figs/Tritrig_trk_cl_dt_P_pos_bot.eps");
-  c1->Print("Figs/Tritrig_trk_cl_dt_P_pos_bot.pdf");
-  c1->Print("Figs/Tritrig_trk_cl_dt_P_pos_bot.png");
+  c1->Print(Form("Figs/%s_trk_cl_dt_P_pos_bot.eps", data_type.c_str()));
+  c1->Print(Form("Figs/%s_trk_cl_dt_P_pos_bot.pdf", data_type.c_str()));
+  c1->Print(Form("Figs/%s_trk_cl_dt_P_pos_bot.png", data_type.c_str()));
 
 
   // ===================== ele_pos cluster Delta_t ========================
@@ -336,9 +342,9 @@ void Draw_selection_Optimizations(){
   Draw_2Hists_Ontop(h_cl_dt1, h_cl_dt_Tight1, c1);
   h_cl_dt_Tight1->Fit(f_Gaus, "MeV", "Same", -1.5, 1.5);
   
-  c1->Print("Figs/Tritrig_cl_Dt_optimize.eps");
-  c1->Print("Figs/Tritrig_cl_Dt_optimize.pdf");
-  c1->Print("Figs/Tritrig_cl_Dt_optimize.png");
+  c1->Print(Form("Figs/%s_cl_Dt_optimize.eps", data_type.c_str()));
+  c1->Print(Form("Figs/%s_cl_Dt_optimize.pdf", data_type.c_str()));
+  c1->Print(Form("Figs/%s_cl_Dt_optimize.png", data_type.c_str()));
   c1->SetLogy(0);
 
 
@@ -349,10 +355,11 @@ void Draw_selection_Optimizations(){
   h_cl_dt_Esum1->SetTitle("; E_{sum} [GeV]; t_{ele} - e_{pos} [ns]");
   h_cl_dt_Esum1->SetAxisRange(-4., 4., "Y");
   h_cl_dt_Esum1->Draw("colz");
-  c1->Print("Figs/Tritrig_cl_dt_ESum1.eps");
-  c1->Print("Figs/Tritrig_cl_dt_ESum1.pdf");
-  c1->Print("Figs/Tritrig_cl_dt_ESum1.png");
+  c1->Print(Form("Figs/%s_cl_dt_ESum1.eps", data_type.c_str()));
+  c1->Print(Form("Figs/%s_cl_dt_ESum1.pdf", data_type.c_str()));
+  c1->Print(Form("Figs/%s_cl_dt_ESum1.png", data_type.c_str()));
 
+  
   TH2D *h_cl_dt_Esum_Tight1 = (TH2D*)file_in->Get("h_cl_dt_Esum_Tight1");
   h_cl_dt_Esum_Tight1->SetTitle("; E_{sum} [GeV]; t_{ele} - e_{pos} [ns]");
   h_cl_dt_Esum_Tight1->SetAxisRange(-4., 4., "Y");
@@ -376,10 +383,120 @@ void Draw_selection_Optimizations(){
   f_low_lim->Draw("Same");
   f_mean->Draw("Same");
   
-  c1->Print("Figs/Tritrig_cl_dt_ESum_Tight1.eps");
-  c1->Print("Figs/Tritrig_cl_dt_ESum_Tight1.pdf");
-  c1->Print("Figs/Tritrig_cl_dt_ESum_Tight1.png");
+  out_file<<endl<<endl<<endl;
+  out_file<<" =============== Ele Pos clust dt ============= "<<endl;
+  out_file<<" ===== mean ===== "<<endl;
+  out_file<<f_Pol3->GetParameter(0)<<" + x*("<<f_Pol3->GetParameter(1)<<") + x*x*("<<f_Pol3->GetParameter(2)<<") + x*x*x*("<<f_Pol3->GetParameter(3)<<")"<<endl;
+  out_file<<" ===== sigm ===== "<<endl;
+  out_file<<f_Pol4->GetParameter(0)<<" + x*("<<f_Pol4->GetParameter(1)<<") + x*x*("<<f_Pol4->GetParameter(2)<<") + x*x*x*("<<
+    f_Pol4->GetParameter(3)<<") + x*x*x*x*("<<f_Pol4->GetParameter(4)<<")"<<endl;
 
+
+  c1->Print(Form("Figs/%s_cl_dt_ESum_Tight1.eps", data_type.c_str()));
+  c1->Print(Form("Figs/%s_cl_dt_ESum_Tight1.pdf", data_type.c_str()));
+  c1->Print(Form("Figs/%s_cl_dt_ESum_Tight1.png", data_type.c_str()));
+
+
+  TH2D *h_cl_dt_Esum2 = (TH2D*)file_in->Get("h_cl_dt_Esum2");
+  h_cl_dt_Esum2->SetTitle("; E_{sum} [GeV]; t_{ele} - e_{pos} [ns]");
+  h_cl_dt_Esum2->Draw("colz");
+  f_up_lim->Draw("Same");
+  f_low_lim->Draw("Same");
+  f_mean->Draw("Same");
+  c1->Print(Form("Figs/%s_cl_dt_Esum2_cuts_fromTight.eps", data_type.c_str()));
+  c1->Print(Form("Figs/%s_cl_dt_Esum2_cuts_fromTight.pdf", data_type.c_str()));
+  c1->Print(Form("Figs/%s_cl_dt_Esum2_cuts_fromTight.png", data_type.c_str()));
+
+
+  sl_fit.SetAll(h_cl_dt_Esum2, "cl_dt_Esum2", f_Gaus, 12, 0.9, 2.4);
+  sl_fit.Do_SliceFit(2.2);
+
+  gr_mean = sl_fit.GetGrMean();
+  gr_sigm = sl_fit.GetGrSigm();
+
+  gr_mean->Fit(f_Pol3, "MeV", "", 0.9, 2.4);
+  gr_sigm->Fit(f_Pol4, "MeV", "", 0.9, 2.4);
+
+  f_up_lim = SumTF1s(f_Pol3, f_Pol4, "f_cl_dt_UP_Esum2", 0.9, 2.4, 1., 3.);
+  f_low_lim = SumTF1s(f_Pol3, f_Pol4, "fcl_dt_LOW_Esum2", 0.9, 2.4, 1., -3.);
+  f_mean = (TF1*)f_Pol3->Clone("f_mean_cl_dt_Esum2");
+  f_mean->SetRange(0.9, 2.4);
+
+  h_cl_dt_Esum2->Draw("colz");
+  f_up_lim->Draw("Same");
+  f_low_lim->Draw("Same");
+  f_mean->Draw("Same");
+  c1->Print(Form("Figs/%s_cl_dt_Esum2_cuts_slFIt.eps", data_type.c_str()));
+  c1->Print(Form("Figs/%s_cl_dt_Esum2_cuts_slFIt.pdf", data_type.c_str()));
+  c1->Print(Form("Figs/%s_cl_dt_Esum2_cuts_slFIt.png", data_type.c_str()));
+
+  TH1D *h_Proj_cl_dt2 = (TH1D*)h_cl_dt_Esum2->ProjectionY("h_Proj_cl_dt2", h_cl_dt_Esum2->GetXaxis()->FindBin(Psum_min), h_cl_dt_Esum2->GetXaxis()->FindBin(2.4));
+  h_Proj_cl_dt2->Draw();
+
+  const int npar_14 = 44; // 44 = 3*14 + 2
+  TF1 *f_MultiGauss_14 = new TF1("f_MultiGauss_14", MultiGauss, -9., 9., npar_14);  
+
+  double pars14_Gaus[npar_14] = { 14, 0, h_Proj_cl_dt2->GetMaximum(), 0., 0.3,  0.1*h_Proj_cl_dt2->GetMaximum(), 0., 1., 40, -6., 0.3, 4, -6., 1., 65, -4., 0.3, 6.5, -4., 1., 180, -2., 0.3, 18., -2., 1.,
+				  120, 2., 0.3, 12., 2., 1.,  65, 4., 0.3, 6.5, 4., 1., 40, 6., 0.3, 4, 6., 1.}
+
+  f_MultiGauss_14->SetParameters(pars14_Gaus);
+  
+  f_MultiGauss_14->SetParameters(14, -1, h_Proj_cl_dt2->GetMaximum(), 0., 0.3, );
+  
+  TF1 *f_8Gaus = new TF1("f_8Gaus", "[0]*TMath::Gaus(x, [1], [2]) + [3]*TMath::Gaus(x, [4], [5]) + [6]*TMath::Gaus(x, [7], [8]) + [9]*TMath::Gaus(x, [10], [11]) + [12]*TMath::Gaus(x, [13], [14]) + [15]*TMath::Gaus(x, [16], [17]) + [18]*TMath::Gaus(x, [19], [20]) + [21]*TMath::Gaus(x, [22], [23])", -7., 7.);
+  double pars8_Gaus[24] = {h_Proj_cl_dt2->GetMaximum(), 0., 0.3, 40, -6., 0.3, 60., -4., 0.3, 120., -2., 0.3, 180, 0., 0.3, 120., 2., 0.3, 60, 4., 0.3, 40, 6., 0.3};
+  f_8Gaus->SetParameters(pars8_Gaus);
+
+  for( int ii = 0; ii < 8; ii++ ){
+    if( ii > 0 ){
+      // f_8Gaus->SetParLimits(3*ii, 0,  500);
+      // f_8Gaus->SetParLimits(3*ii + 1,  2*ii - 8 - 0.5,  2*ii - 8 + 0.5);
+      // f_8Gaus->SetParLimits(3*ii + 2,  0., 0.8);
+    }
+
+  }
+  
+  h_Proj_cl_dt2->Fit(f_8Gaus, "MeV", "", -7., 7.);
+  TF1 *f_7Gaus = new TF1("f_8Gaus", "[0]*TMath::Gaus(x, [1], [2]) + [3]*TMath::Gaus(x, [4], [5]) + [6]*TMath::Gaus(x, [7], [8]) + [9]*TMath::Gaus(x, [10], [11]) + [12]*TMath::Gaus(x, [13], [14]) + [15]*TMath::Gaus(x, [16], [17]) + [18]*TMath::Gaus(x, [19], [20])", -7., 7.);
+  
+  f_8Gaus->GetParameters(pars8_Gaus);
+  TF1 *f_Gaus_arr[8];
+  for( int ii = 0; ii < 8; ii++ ){
+    f_Gaus_arr[ii] = new TF1(Form("f_Gaus_arr%d", ii), "[0]*TMath::Gaus(x, [1], [2])", -7., 7.);
+    f_Gaus_arr[ii]->SetParameters(&pars8_Gaus[3*ii]);
+    f_Gaus_arr[ii]->SetLineColor(ii+1);
+    f_Gaus_arr[ii]->Draw("Same");
+  }
+  c1->Print(Form("Figs/%s_cl_dt_fit_withBr1.eps", data_type.c_str()));
+  c1->Print(Form("Figs/%s_cl_dt_fit_withBr1.pdf", data_type.c_str()));
+  c1->Print(Form("Figs/%s_cl_dt_fit_withBr1.png", data_type.c_str()));
+  c1->SetLogy();
+  c1->Update();
+  c1->Print(Form("Figs/%s_cl_dt_fit_withBr1_LogY.eps", data_type.c_str()));
+  c1->Print(Form("Figs/%s_cl_dt_fit_withBr1_LogY.pdf", data_type.c_str()));
+  c1->Print(Form("Figs/%s_cl_dt_fit_withBr1_LogY.png", data_type.c_str()));
+
+  c1->SetLogy(0);
+  f_7Gaus->SetParameters(&pars8_Gaus[3]);
+  f_7Gaus->SetLineColor(4); 
+  h_Proj_cl_dt2->Draw();
+  f_8Gaus->Draw("Same");
+  f_7Gaus->Draw("Same");
+  c1->Print(Form("Figs/%s_Bgr_Estimation_of_cl_dt2.eps", data_type.c_str()));
+  c1->Print(Form("Figs/%s_Bgr_Estimation_of_cl_dt2.pdf", data_type.c_str()));
+  c1->Print(Form("Figs/%s_Bgr_Estimation_of_cl_dt2.png", data_type.c_str()));
+
+  out_file<<endl;
+  out_file<<endl;
+  out_file<<" ======= How much bgr is reduced going from 2ns to 1.2 ns ========"<<endl;
+  out_file<<" Bgr in the -2 ns to 2 ns region is "<<f_7Gaus->Integral(-2., 2.)<<endl;
+  out_file<<" Bgr in the -1.16 ns to 1.16 ns region is "<<f_7Gaus->Integral(-1.16, 1.16)<<endl;
+  out_file<<" Reduction is region is "<<f_7Gaus->Integral(-2., 2.)/f_7Gaus->Integral(-1.16, 1.16)<<endl;
+  out_file<<" Tot Signal is "<<f_8Gaus->Integral(-1.16, .16)<<endl;
+  
+
+  //f_8Gaus->Draw("Same");
+  
 }
 
 void Draw_2Hists_Ontop(TH1D *h_orig, TH1D *h_tight, TCanvas *c){

@@ -662,10 +662,10 @@ Event_Selection::Event_Selection(TTree *tree) : fChain(0)
       // The following code should be used if you want this class to access a chain
       // of trees.
       TChain * chain = new TChain("Event_Selection","");
-      //chain->Add("../Data/hps_007796_nt_tri_3.11.1.root/ntuple");
+      chain->Add("../Data/hps_007796_nt_tri_3.11.1.root/ntuple");
       //chain->Add("../Data/wab-WBT.root/ntuple");
       //chain->Add("../Data/tritrig-WBT.root/ntuple");
-      chain->Add("../Data/RAD-WBT.root/ntuple");
+      //chain->Add("../Data/RAD-WBT.root/ntuple");
       tree = chain;
 #endif // SINGLE_TREE
 

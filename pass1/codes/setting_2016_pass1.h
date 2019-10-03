@@ -1,14 +1,17 @@
 #ifndef __SETTING_2016_PASS__
 #define __SETTING_2016_PASS__
 
+#include <map>
 #include <TF1.h>
+
+using namespace std;
 
 const double radian = 57.29578;
 const double Eb = 2.306;
 const double CL_trk_time_Offset_Data = 55.;
 const double CL_trk_time_Offset_tri = 51.64;
-const double cl_t_max = 70.;
-const double cl_t_min = 40.;
+const double cl_t_max = 63.;
+const double cl_t_min = 50.;
 const double pos_d0_cut = 1.1;
 const double Psum_min = 1.51; // GeV
 
@@ -46,8 +49,8 @@ double tri_data_lumi = charge*lumi_per_C;
 
 
 // ===== Tight cuts on ele-pos cluster time difference =====
-const double cl_dt_max = 0.45; // ns
-const double cl_dt_min = -0.45; // ns
+const double cl_dt_max_tight = 0.45; // ns
+const double cl_dt_min_tight = -0.45; // ns
 
 // ===== Tight cut on nsigma =====
 // ===== Distributions look quite slimilar for ele/pos/bot/top
@@ -76,10 +79,21 @@ map<std::string, TF1*> f_sigm_cl_trk_dt_pos_top;
 map<std::string, TF1*> f_mean_cl_trk_dt_pos_bot;
 map<std::string, TF1*> f_sigm_cl_trk_dt_pos_bot;
 
+map<std::string, TF1*> f_mean_ele_pos_clust_dt;
+map<std::string, TF1*> f_sigm_ele_pos_clust_dt;
 
 // P_max/P_min for trk-cluster matching functions, i.e. if the momentum is higher than this, then mean and sigma functions will be evaluated at these values
 const double P_max_trk_cl_dt = 1.6;
 const double P_min_trk_cl_dt = 0.4;
+
+
+const double clust_dt_Esum_max = 2.4;
+const double clust_dt_Esum_min = 0.9;
+double cl_dt_max;
+double cl_dt_min;
+
+
+map<std::string, int> cols;
 
 
 #endif
