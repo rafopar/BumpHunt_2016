@@ -131,7 +131,7 @@ void Fit_Calo_dt() {
         f_Gaus1->SetLineStyle(1);
         f_Gaus1->DrawCopy("Same");
         f_Gaus1->SetParameters(pars7_Peaks[2] * pars7_Peaks[5 * i + 3], pars7_Peaks[5 * i + 6], pars7_Peaks[5 * i + 7]);
-        f_Gaus1->SetLineColor(i + 1);
+        f_Gaus1->SetLineColor(i + 1); 
         f_Gaus1->SetLineStyle(4);
         f_Gaus1->DrawCopy("Same");
     }
