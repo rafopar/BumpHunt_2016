@@ -39,3 +39,9 @@ SebouhFiles/
 *.exe
 *~
 
+
+# Latex files
+pass4/Latex/Resonance_Search_2016.aux
+pass4/Latex/Resonance_Search_2016.log
+pass4/Latex/Resonance_Search_2016.synctex.gz
+pass4/Latex/Resonance_Search_2016.toc
