@@ -8,3 +8,6 @@
 ./pass1/Data/250.root
 ./pass1/Data/60.root
 ./pass1/Data/125.root
+*.pcm
+_cc.d
+_cc.so
