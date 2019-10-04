@@ -66,6 +66,17 @@ The readout window of ECal FADC data is 200 ns. Clusters coming from the physics
 %%%%%%%%%%%%%%%%%%%%%%%%%% F I G U R E %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 In Fig.\ref{fig:cl_E_T_plots} shown ``time vs Energy'' distributions of ECal clusters in the Top (Left) and Bottom (Right) halves. The bulge of events in the right plot are clusters that generated the trigger, and also trigger time is defined by these clusters. The noticeable energy dependence is due to the so called ``time walk Corrections'' \cite{ECalTimeCorr}. During initial event selection only clusters that are inside the outlined red curves are used, since the rest are accidentals that didn't come from the beam bunch generating the trigger. One can notice that for the clusters in the top half, in addition to the central bulge, there is an extra occupancy of events in region ($\mathrm{ 40\;ns < t_{cl} < 70\;ns }$). This is because the coincidence time between clusters in the ``Pair'' trigger was $\mathrm{12\;ns}$ \cite{TriggerNote}, and the trigger time is determined by the bottom cluster. Unlike to clusters in the bottom half, in the initial event selection, we have not cut on time of the top cluster, but rater we have applied cut on the cluster time difference between top and bottom clusters.
 
+%%%%%%%%%%%%%%%%%%%%%%%%%% F I G U R E %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{figure}[!htb] 
+ \centering
+ \subfloat{\label{fig:timeCorr_clyxc}\grinp[width=0.95\tw]{Figs/ECal_YX_timeCorr.pdf}}\\
+ \subfloat{\label{fig:timeCorrGrTop}\grinp[width=0.95\tw]{Figs/gr_TopCorrections.pdf}}\\
+ \subfloat{\label{fig:timeCorrGrBot}\grinp[width=0.95\tw]{Figs/gr_BotCorrections.pdf}}\\
+ \caption{Time Corrections for each crystal.}
+ \label{fig:CrystalTimeCorr}
+\end{figure}
+%%%%%%%%%%%%%%%%%%%%%%%%%% F I G U R E %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \subsection{Track $\chi^{2}$ cuts}
 \subsection{Track-Cluster Matching}
 \subsection{WAB Suppresion cuts}

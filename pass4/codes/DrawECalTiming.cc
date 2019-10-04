@@ -95,6 +95,7 @@ void DrawECalTiming() {
         leg_TopCorr->AddEntry(gr_TopTCorr[i], Form("Y=%d", i + 1), "lep");
 
         gr_BotTCorr[i] = (TGraphErrors*) file_ECalTimeCorr->Get(Form("gr_mean_dt_%d", i));
+        gr_BotTCorr[i]->SetMarkerSize(1.5);
         gr_BotTCorr[i]->SetMarkerColor(gr_Colors[i]);
         gr_BotTCorr[i]->SetMarkerStyle(gr_Styles[i]);
         mtgrBotCorr->Add(gr_BotTCorr[i]);
@@ -104,6 +105,7 @@ void DrawECalTiming() {
 
     mtgrTopCorr->Draw("AP");
     mtgrTopCorr->SetTitle("; X ; Time Corr [ns]");
+    mtgrTopCorr->GetXaxis()->SetLimits(-23.5, 23.5);
     mtgrTopCorr->GetXaxis()->SetTitleSize(0.06);
     mtgrTopCorr->GetXaxis()->SetLabelSize(0.06);
     mtgrTopCorr->GetXaxis()->SetTitleOffset(0.6);
@@ -118,6 +120,7 @@ void DrawECalTiming() {
     c_ECal->Clear();
     mtgrBotCorr->Draw("AP");
     mtgrBotCorr->SetTitle("; X ; Time Corr [ns]");
+    mtgrBotCorr->GetXaxis()->SetLimits(-23.5, 23.5);
     mtgrBotCorr->GetXaxis()->SetTitleSize(0.06);
     mtgrBotCorr->GetXaxis()->SetLabelSize(0.06);
     mtgrBotCorr->GetXaxis()->SetTitleOffset(0.6);
@@ -128,6 +131,56 @@ void DrawECalTiming() {
     c_ECal->Print("Figs/gr_BotCorrections.eps");
     c_ECal->Print("Figs/gr_BotCorrections.pdf");
     c_ECal->Print("Figs/gr_BotCorrections.png");
+    
+    
+    c1->cd()->SetLogz();
+    TH2D *h_dt_Esum1 = (TH2D*)file_in->Get("h_dt_Esum1");
+    h_dt_Esum1->SetStats(0);
+    h_dt_Esum1->SetTitle("; E_{bot} + E_{top} [GeV]; t_{top} - t_{bot} [ns]");
+    h_dt_Esum1->SetTitleOffset(1.2, "Y");
+    h_dt_Esum1->Draw("colz");
+    c1->Print("Figs/cl_dt_Esum1.eps");
+    c1->Print("Figs/cl_dt_Esum1.pdf");
+    c1->Print("Figs/cl_dt_Esum1.png");
+    
+    c1->SetRightMargin(0.02);
+    TH1D *h_cl_dt1 = (TH1D*)h_dt_Esum1->ProjectionY("h_cl_dt1", h_dt_Esum1->GetXaxis()->FindBin(1.9), h_dt_Esum1->GetXaxis()->FindBin(2.4));
+    h_cl_dt1->SetStats(0);
+    h_cl_dt1->SetLineColor(2);
+    h_cl_dt1->SetLineStyle(5);
+    h_cl_dt1->SetLineWidth(2);
+    h_cl_dt1->SetAxisRange(0., 0.07*h_cl_dt1->GetMaximum(), "Y");
+    h_cl_dt1->Draw();
+    c1->Print("Figs/cl_dt1.eps");
+    c1->Print("Figs/cl_dt1.pdf");
+    c1->Print("Figs/cl_dt1.png");
+    
+    c1->SetRightMargin(0.11);
+    TH2D *h_dtCorr_Esum1 = (TH2D*)file_in->Get("h_dtCorr_Esum1");
+    h_dtCorr_Esum1->SetStats(0);
+    h_dtCorr_Esum1->SetTitle("; E_{bot} + E_{top} [GeV]; t_{top} - t_{bot} [ns]");
+    h_dtCorr_Esum1->SetTitleOffset(1.2, "Y");
+    h_dtCorr_Esum1->Draw("colz");
+    c1->Print("Figs/cl_dtCorr_Esum1.eps");
+    c1->Print("Figs/cl_dtCorr_Esum1.pdf");
+    c1->Print("Figs/cl_dtCorr_Esum1.png");
+    
+    c1->SetRightMargin(0.02);
+    TH1D *h_cl_dtCorr1 = (TH1D*)h_dtCorr_Esum1->ProjectionY("h_cl_dtCorr1", h_dtCorr_Esum1->GetXaxis()->FindBin(1.9), h_dtCorr_Esum1->GetXaxis()->FindBin(2.4));
+    h_cl_dtCorr1->SetStats(0);
+    h_cl_dtCorr1->SetLineColor(4);
+    h_cl_dtCorr1->SetLineWidth(2);
+    h_cl_dtCorr1->SetMaximum( 0.05*h_cl_dtCorr1->GetMaximum());
+    h_cl_dtCorr1->Draw();
+    c1->Print("Figs/cl_dtCorr1.eps");
+    c1->Print("Figs/cl_dtCorr1.pdf");
+    c1->Print("Figs/cl_dtCorr1.png");
+    
+    h_cl_dt1->Draw("Same");
+    c1->Print("Figs/cl_dt_UncrAndCorr.eps");
+    c1->Print("Figs/cl_dt_UncrAndCorr.pdf");
+    c1->Print("Figs/cl_dt_UncrAndCorr.png");
+   
 
 }
 
