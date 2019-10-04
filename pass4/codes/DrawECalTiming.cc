@@ -176,7 +176,13 @@ void DrawECalTiming() {
     c1->Print("Figs/cl_dtCorr1.pdf");
     c1->Print("Figs/cl_dtCorr1.png");
     
+    TLegend *leg_cldt_UncorCorr = new TLegend(0.58, 0.75, 0.97, 0.92);
+    leg_cldt_UncorCorr->SetTextSize(0.035);
+    leg_cldt_UncorCorr->SetBorderSize(0.);
+    leg_cldt_UncorCorr->AddEntry(h_cl_dt1, "Uncorrected clusters", "l");
+    leg_cldt_UncorCorr->AddEntry(h_cl_dtCorr1, "Corrected clusters", "l");
     h_cl_dt1->Draw("Same");
+    leg_cldt_UncorCorr->Draw();
     c1->Print("Figs/cl_dt_UncrAndCorr.eps");
     c1->Print("Figs/cl_dt_UncrAndCorr.pdf");
     c1->Print("Figs/cl_dt_UncrAndCorr.png");

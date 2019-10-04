@@ -65,7 +65,17 @@ The readout window of ECal FADC data is 200 ns. Clusters coming from the physics
 \end{figure}
 %%%%%%%%%%%%%%%%%%%%%%%%%% F I G U R E %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 In Fig.\ref{fig:cl_E_T_plots} shown ``time vs Energy'' distributions of ECal clusters in the Top (Left) and Bottom (Right) halves. The bulge of events in the right plot are clusters that generated the trigger, and also trigger time is defined by these clusters. The noticeable energy dependence is due to the so called ``time walk Corrections'' \cite{ECalTimeCorr}. During initial event selection only clusters that are inside the outlined red curves are used, since the rest are accidentals that didn't come from the beam bunch generating the trigger. One can notice that for the clusters in the top half, in addition to the central bulge, there is an extra occupancy of events in region ($\mathrm{ 40\;ns < t_{cl} < 70\;ns }$). This is because the coincidence time between clusters in the ``Pair'' trigger was $\mathrm{12\;ns}$ \cite{TriggerNote}, and the trigger time is determined by the bottom cluster. Unlike to clusters in the bottom half, in the initial event selection, we have not cut on time of the top cluster, but rater we have applied cut on the cluster time difference between top and bottom clusters.
-
+\subsubsection{Ad hoc ECal time corrections}
+The next step is to cut pairs of top-bottom clusters that are far from each other in terms of time.
+%%%%%%%%%%%%%%%%%%%%%%%%%% F I G U R E %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{figure}[!htb]
+ \centering
+ \grinp[width=0.75\tw]{Figs/cl_dt_UncrAndCorr.pdf}
+ \caption{Time difference between top and bottom clusters at high $\mathrm{E_{sum}}$ region. Dashed red lines show uncorrected clusters, and the blue curve show corrected clusters.}
+ \label{fig:clTimeUncorCorr}
+\end{figure}
+%%%%%%%%%%%%%%%%%%%%%%%%%% F I G U R E %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+During the analysis is was found that ECal cluster times can be improved, in particular the dashed red histogram in Fig.\ref{fig:clTimeUncorCorr} shows the time difference between top and bottom clusters\footnote{For the sake of better visualization, the plot shows doesn't fully show the entire central peak. } at high $\mathrm{E_{sum}}$ region ($\mathrm{1.9\;GeV  < E_{Sum} < 2.4\; GeV}$). As one can see there is a bump at around $\mathrm{2\;ns}$, while the at $\mathrm{-2\;ns}$ there is no clear bump. This suggests that time offsets of some crystals might be wrong.
 %%%%%%%%%%%%%%%%%%%%%%%%%% F I G U R E %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{figure}[!htb] 
  \centering
@@ -76,9 +86,15 @@ In Fig.\ref{fig:cl_E_T_plots} shown ``time vs Energy'' distributions of ECal clu
  \label{fig:CrystalTimeCorr}
 \end{figure}
 %%%%%%%%%%%%%%%%%%%%%%%%%% F I G U R E %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+To check this, for each crystal the time difference between that crystal and it's pair (in opposite half) crystal is constructed. The Top 2D plot of
+Fig. \ref{fig:CrystalTimeCorr} shows mean values of each of crystals. 
+The middle and the bottom plots show same mean values as a function of crystal $\mathrm{X}$ index for Top and Bottom crystal respectively. Different markers show different rows. 
+As one can see crystals (-18, -1) and (-6, -3) are shifted from their immediate neighbors  by about 2 ns. There are some other crystals which are shifted significantly too (but less than 2ns). These include for example crystals (-16, -5), (10, -5), (10, 1) and (10, 2). In addition to this, we see that there is a general crystal X index (and slightly Y index) dependence too. In reality crystal X index is correlated to the charged particle energy too, and the original dependence might be not on X but on energy, studying it is out of the scope of this note, and here for each crystal we have corrected the time, by subtracting the these calculated mean values from the reconstructed cluster time.
+After the correction the cluster time difference is depicted by blue solid line in Fig.\ref{fig:clTimeUncorCorr}. One can see that the excess of events at 2ns disappeared, and also resolution become better too.
 
 \subsection{Track $\chi^{2}$ cuts}
 \subsection{Track-Cluster Matching}
+This section should include both spatial and time matching of clusters and tracks.
 \subsection{WAB Suppresion cuts}
 Describe L1 and $\mathrm{d_{0}}$ cuts.
 
