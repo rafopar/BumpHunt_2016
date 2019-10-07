@@ -3,18 +3,22 @@
 #include <TH2D.h>
 #include <TLine.h>
 #include <TFile.h>
-#include <TCanvas.h>
-#include <TSystem.h>
 #include <TLatex.h>
 #include <TGraph.h>
+#include <TStyle.h>
+#include <TCanvas.h>
+#include <TSystem.h>
 #include "setting_2016_pass1.h"
 
 #include "/Work/Soft/root_funcs/funcs1.C"
 
 void Fit_Calo_dt() {
-    //gStyle->SetOptFit(1);
+    gStyle->SetOptFit(0);
+    gStyle->SetOptStat(0);
 
     TCanvas *c1 = new TCanvas("c1", "", 750, 750);
+    c1->SetRightMargin(0.02);
+    c1->SetTopMargin(0.02);
     std::string data_type = "Data";
 
     TLatex *lat1 = new TLatex();
@@ -222,18 +226,22 @@ void Fit_Calo_dt() {
     }
 
 
+    line1->SetLineStyle(10);
+    line1->SetLineWidth(2);
     h_dt_cut1->Draw();
     double max_val = h_dt_cut1->GetMaximum();
     double dt_cut_val = h_dt_cut1->GetBinCenter(h_dt_cut1->GetMaximumBin());
     h_dt_cut1->SetMinimum(0);
-    line1->DrawLine(dt_cut_val, 0, dt_cut_val, 1.02 * max_val);
+    TLine *tmpLine = line1->DrawLine(dt_cut_val, 0, dt_cut_val, 1.02 * max_val);
     lat1->DrawLatex(0.5, 0.65, Form("|#Delta t| = %1.2f ns", dt_cut_val));
     c1->Print("Figs/dt_cur_optimize1.eps");
     c1->Print("Figs/dt_cur_optimize1.pdf");
     c1->Print("Figs/dt_cur_optimize1.png");
 
+    delete tmpLine;
     h_dt_cut1->SetMinimum(0.96 * max_val);
     lat1->DrawLatex(0.5, 0.65, Form("|#Delta t| = %1.2f ns", dt_cut_val));
+    line1->DrawLine(dt_cut_val, h_dt_cut1->GetMinimum(), dt_cut_val, 1.001 * max_val);
     c1->Print("Figs/dt_cur_optimize1_zoom.eps");
     c1->Print("Figs/dt_cur_optimize1_zoom.pdf");
     c1->Print("Figs/dt_cur_optimize1_zoom.png");
