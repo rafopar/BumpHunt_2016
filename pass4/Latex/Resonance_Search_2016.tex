@@ -89,8 +89,42 @@ During the analysis is was found that ECal cluster times can be improved, in par
 To check this, for each crystal the time difference between that crystal and it's pair (in opposite half) crystal is constructed. The Top 2D plot of
 Fig. \ref{fig:CrystalTimeCorr} shows mean values of each of crystals. 
 The middle and the bottom plots show same mean values as a function of crystal $\mathrm{X}$ index for Top and Bottom crystal respectively. Different markers show different rows. 
-As one can see crystals (-18, -1) and (-6, -3) are shifted from their immediate neighbors  by about 2 ns. There are some other crystals which are shifted significantly too (but less than 2ns). These include for example crystals (-16, -5), (10, -5), (10, 1) and (10, 2). In addition to this, we see that there is a general crystal X index (and slightly Y index) dependence too. In reality crystal X index is correlated to the charged particle energy too, and the original dependence might be not on X but on energy, studying it is out of the scope of this note, and here for each crystal we have corrected the time, by subtracting the these calculated mean values from the reconstructed cluster time.
-After the correction the cluster time difference is depicted by blue solid line in Fig.\ref{fig:clTimeUncorCorr}. One can see that the excess of events at 2ns disappeared, and also resolution become better too.
+As one can see crystals (-18, -1) and (-6, -3) are shifted from their immediate neighbors  by about 2 ns. There are some other crystals which are shifted significantly too (but less than 2ns). These include for example crystals (-16, -5), (10, -5), (10, 1) and (10, 2). In addition to this, we see that there is a general crystal X index (and slightly Y index) dependence too. In reality crystal X index is correlated to the charged particle energy too, and the original dependence might be not on X but on energy. Studying it is out of the scope of this note, and here for each crystal we have corrected the time, by subtracting these calculated mean values from the reconstructed cluster time.
+After the correction the cluster time difference is depicted by blue solid line in Fig.\ref{fig:clTimeUncorCorr}. One can see that the excess of events at 2 ns disappeared. Dips and peaks between bumps indicating difference beam bunches also got sharper, which is an indication of an improvement of the cluster time resolution.
+
+\subsubsection{Fitting Cluster time difference}
+After correction of individual cluster times, the Top-Bottom cluster time difference was fitted with a following function:
+\begin{equation}
+ \displaystyle \mathrm{F = \sum_{i = 0}^{N_{peak}} a_{i}\cdot\left(Gaus(x - \mu^{1}_{i}, \sigma^{1}_{i}) + b\cdot Gaus(x - \mu^{2}_{i}, \sigma^{2}_{i})  \right)}
+\end{equation}
+where $\mathrm{N_{peak}}$ is the number of peaks. Each peak is described by the sum of two Gaussian functions $\mathrm{Gaus(x - \mu^{1}_{i}, \sigma^{1}_{i})}$ and $\mathrm{Gaus(x - \mu^{2}_{i}, \sigma^{2}_{i})}$ with their amplitude ratio ``b'.
+The parameter ''b`` is the same for all peaks. 
+In the fit, free parameters are $\mathrm{a_{i},\; \mu^{1}_{i},\; \sigma^{1}_{i},\; \mu^{2}_{i},\; \sigma^{2}_{i},\; b }$. 
+
+The fit result is shown in Fig.\ref{fig:cldTFits}. Different peak components of the
+%%%%%%%%%%%%%%%%%%%%%%%%%% F I G U R E %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{figure}[!htb]
+ \centering
+ \subfloat[]{\label{fig:cldTFitLin1}\grinp[width=0.32\tw]{Figs/Calo_dt_Fit_lin1.pdf}}
+ \subfloat[]{\label{fig:cldTFitLog1}\grinp[width=0.32\tw]{Figs/Calo_dt_Fit_log1.pdf}}
+ \subfloat[]{\label{fig:cldTFitZoom1}\grinp[width=0.32\tw]{Figs/Calo_dt_Fit_zoom1.pdf}}
+ \caption{Fit of the Top and Bottom cluster time difference. Left: linear scale, Middle: Log scale and right: Linear scale but includes only low magnitude peaks. Main Gaussian functions are represented by solid lines, and the secondary Gaussian (with wider width and lower magnitude) are represented by dashed lines.}
+ \label{fig:cldTFits}
+\end{figure}
+%%%%%%%%%%%%%%%%%%%%%%%%%% F I G U R E %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+function are depicted by different color. The main Gaussian function of each peak is represented by a solid line, while the secondary Gaussian is represented with a dashed line. One can see that this function fits the distribution reasonably well.
+
+Then in order to determine the optimal cut on the cluster time difference, we will use the value, which maximizes the $\mathrm{\dfrac{S}{\displaystyle \sqrt{S + Bgr}}}$ ratio, where ''S`` is the signal (in our case the central peak), and ''S + Bgr`` is the signal plus Background (the total fit function).
+%%%%%%%%%%%%%%%%%%%%%%%%%% F I G U R E %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{figure}[!htb]
+ \centering
+ \grinp[width=0.75\tw]{Figs/dt_cur_optimize1_zoom.pdf}
+ \caption{The $\mathrm{\frac{\displaystyle S}{\displaystyle \sqrt{S + Bgr}}} $ ratio as a function of cluster time difference cut. The Dashed line indicates the maximum of the function.}
+ \label{fig:cl_dtOptimumCut}
+\end{figure}
+%%%%%%%%%%%%%%%%%%%%%%%%%% F I G U R E %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+The $\mathrm{\frac{\displaystyle S}{\displaystyle \sqrt{S + Bgr}}} $ ratio as a function of cluster time difference cut is shown in Fig.\ref{fig:cl_dtOptimumCut}, where the maximum value at $\mathrm{\Delta t < 1.43\;ns}$ is indicated by a vertical dashed line.
+
 
 \subsection{Track $\chi^{2}$ cuts}
 \subsection{Track-Cluster Matching}
