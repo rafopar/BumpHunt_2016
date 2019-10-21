@@ -3,13 +3,20 @@
 
 #include <map>
 #include <TF1.h>
+#include <hps_event/EcalCluster.h>
 
 using namespace std;
+
+
+// =========================================================================
+// =====   Const Variables 
+// =========================================================================
 
 const double radian = 57.29578;
 const double Eb = 2.306;
 const double CL_trk_time_Offset_Data = 55.;
 const double CL_trk_time_Offset_tri = 51.64;
+double CL_trk_time_Offset;
 //const double cl_t_max = 80.;
 //const double cl_t_min = 20.;
 double cl_t_max = 63.;
@@ -18,102 +25,271 @@ double cl_t_min = 50.;
 const double pos_d0_cut = 1.1;
 const double Psum_min = 1.51; // GeV
 
-// ===== Cluster time custs as a function of Energy
-TF1 *f_clTBotUpLim;// = new TF1("f_clTBotUpLim", "[0] + x*( [1] + x*[2] )", 0., 2.5);
-//f_clTBotUpLim->SetParameters(57.6406, 3.40282, -1.00306);
-TF1 *f_clTBotLowLim;// = new TF1("f_clTBotLowLim", "[0] + x*( [1] + x*[2] )", 0., 2.5);
-//f_clTBotLowLim->SetParameters(47.1781, 7.55268, -1.89745);
+const double chi2NDFTighCut_tData = 2;
 
-TF1 *f_clTTopUpLim;// = new TF1("f_clTTopUpLim", "[0] + x*( [1] + x*[2] )", 0., 2.5);
-//f_clTTopUpLim->SetParameters(58.4842, 6.33371, -3.54136);
+const double ep_d0TightCutMax_Data = 0.5;
+const double ep_d0TightCutMin_Data = -0.7;
 
-TF1 *f_clTTopLowLim;// = new TF1("f_clTTopLowLim", "[0] + x*( [1] + x*[2] )", 0., 2.5);
-//f_clTTopLowLim->SetParameters(49.9385, 1.38759, 0.0484333);
+const double em_d0TightCutMax_Data = 0.7;
+const double em_d0TightCutMin_Data = -0.7;
+
+const double cl_dTCut_Tight_Data = 0.7;
+
+const int nSVTLayers = 6;
+
+const double Pem_MaxTight_Data = 1.7;
+
+// =========================================================================
+// =====  Definition of Non-Const Variables
+// =========================================================================
+
+// ==== ============================
+// ==== Boolean variables
+// ==== ============================
+
+bool isData;
+
+// =========================================================================
+// ========== Flags for Tight cuts on different variables =========
+// =========================================================================
+
+bool IsTightcldT;
+bool IsTightemClTrkdT;
+bool IsTightepClTrkdT;
+bool IsTightemTrkClMatch;
+bool IsTightepTrkClMatch;
+bool IsTightemtrkChi2;
+bool IsTighteptrkChi2;
+bool IsTightPem;
+bool IsTightD0ep;
+bool IsTightD0em;
 
 
-// ======== Initialize Any constants or function that are needed ======
+double Pem_MaxTight;
+double cl_dTCut_Tight;
 
-void InitVariables();
+// ====== Track quality cuts ======
+double ep_d0TightCutMax;
+double ep_d0TightCutMin;
 
-//======= Tight cuts on trk-clust time diff =====
-// These are dependent on track charge and also, they depend
-// whether the track/cluster is in bot/top
+double em_d0TightCutMax;
+double em_d0TightCutMin;
 
-const double mean_trk_clust_dt_ele_top = 0.05777;
-const double sigm_trk_clust_dt_ele_top = 1.23;
-
-const double mean_trk_clust_dt_ele_bot = -0.4263;
-const double sigm_trk_clust_dt_ele_bot = 1.33;
-
-const double mean_trk_clust_dt_pos_top = -8.61485e-02;
-const double sigm_trk_clust_dt_pos_top = 1.2802;
-
-const double mean_trk_clust_dt_pos_bot = -0.578381;
-const double sigm_trk_clust_dt_pos_bot = 1.28636e+00;
-
+double SVTLayerBinnings[nSVTLayers + 1] = {50., 150., 250., 400., 600., 800., 950.};
 
 // ========= ================================ ============
-// ========= Normalizatin factors from Sebouh ============
 // ========= Normalizatin factors from Sebouh ============
 // ========= ================================ ============
 
 // (# of recon files)*(generated/readout)*(events per generated file)/(sigma in barns) = lumi in inverse barns
-double wab_mc_lumi =  (9898*1*10000)/220.6e-3;
-double tritrig_mc_lumi = (900*1*10000)/1.1416e-3;
-double rad_mc_lumi =  (100*1*10000)/.0667e-3;
+double wab_mc_lumi = (9898 * 1 * 10000) / 220.6e-3;
+double tritrig_mc_lumi = (900 * 1 * 10000) / 1.1416e-3;
+double rad_mc_lumi = (100 * 1 * 10000) / .0667e-3;
 
 // (mass per area of target (g/cm^2))/(molar mass/Avagadro's number)*(10^-24 cm^2/barn)/(electron charge)
-double lumi_per_C = 0.00782/(183.8/6.023E+23)*1e-24/1.602E-19;
-double charge = 827975.643e-9/10;  // divide by 10 for blinding
+double lumi_per_C = 0.00782 / (183.8 / 6.023E+23)*1e-24 / 1.602E-19;
+double charge = 827975.643e-9 / 10; // divide by 10 for blinding
 double tri_data_lumi = charge*lumi_per_C;
 
 
-// ===== Tight cuts on ele-pos cluster time difference =====
-const double cl_dt_max_tight = 0.45; // ns
-const double cl_dt_min_tight = -0.45; // ns
-
-// ===== Tight cut on nsigma =====
-// ===== Distributions look quite slimilar for ele/pos/bot/top
-const double nsigma_tightcut = 3.;
+// =========================================================================
+// ===== String variables
+// =========================================================================
+// ====== Data Set, it should be either "Data" or "MC"
+std::string dataSet;
 
 
-// ===== Minimum electron momentum 'tight cut' =====
-const double ele_min_mom = 0.4;  // GeV
-const double ele_max_mom = 1.76; // GeV
-const double tarP_Max = 2.9; // GeV
-const double ele_chi2_tightcut = 2.5; 
-const double pos_chi2_tightcut = 2.5; 
+
+// =========================================================================
+// ===== Root standard type variables, e.g. TH1, TF1, TFile etc...
+// =========================================================================
+
+TH1D *h_SVTLayerBinning;
+
+// ====== This histogram should have time corrections for each crystal ======
+TH2D *h_time_Corrections;
 
 
- 
-
-map<std::string, TF1*> f_mean_cl_trk_dt_ele_top;
-map<std::string, TF1*> f_sigm_cl_trk_dt_ele_top;
-
-map<std::string, TF1*> f_mean_cl_trk_dt_ele_bot;
-map<std::string, TF1*> f_sigm_cl_trk_dt_ele_bot;
-
-map<std::string, TF1*> f_mean_cl_trk_dt_pos_top;
-map<std::string, TF1*> f_sigm_cl_trk_dt_pos_top;
-
-map<std::string, TF1*> f_mean_cl_trk_dt_pos_bot;
-map<std::string, TF1*> f_sigm_cl_trk_dt_pos_bot;
-
-map<std::string, TF1*> f_mean_ele_pos_clust_dt;
-map<std::string, TF1*> f_sigm_ele_pos_clust_dt;
-
-// P_max/P_min for trk-cluster matching functions, i.e. if the momentum is higher than this, then mean and sigma functions will be evaluated at these values
-const double P_max_trk_cl_dt = 1.6;
-const double P_min_trk_cl_dt = 0.4;
+// =========================================================================
+// ====== The inpot file. It will be initianalized inside the InitVariables function
+// ====== Depending it is data or MC, it will read a different file
+// =========================================================================
+TFile *file_in;
 
 
-const double clust_dt_Esum_max = 2.4;
-const double clust_dt_Esum_min = 0.9;
-double cl_dt_max;
-double cl_dt_min;
+// =========================================================================
+// ===== Cluster time custs as a function of Energy
+// =========================================================================
+TF1 *f_clTBotUpLim;
+TF1 *f_clTBotLowLim;
+TF1 *f_clTTopUpLim;
+TF1 *f_clTTopLowLim;
+
+// ======= ================================ ========
+// ======= Track-Cluster Matching Functions
+// ======= ================================ ========
+
+// === ================ ===
+// === Spatial matching 
+// === ================ ===
+
+// ====== Positives =====
+TF1 *f_dXTopWithL6Pos_TightUpperLim;
+TF1 *f_dXTopWithL6Pos_TightLowerLim;
+
+TF1 *f_dXTopNoL6Pos_TightUpperLim;
+TF1 *f_dXTopNoL6Pos_TightLowerLim;
+
+TF1 *f_dXBotWithL6Pos_TightUpperLim;
+TF1 *f_dXBotWithL6Pos_TightLowerLim;
+
+TF1 *f_dXBotNoL6Pos_TightUpperLim;
+TF1 *f_dXBotNoL6Pos_TightLowerLim;
+
+// ====== Negatives =====
+TF1 *f_dXTopWithL6Neg_TightUpperLim;
+TF1 *f_dXTopWithL6Neg_TightLowerLim;
+
+TF1 *f_dXTopNoL6Neg_TightUpperLim;
+TF1 *f_dXTopNoL6Neg_TightLowerLim;
+
+TF1 *f_dXBotWithL6Neg_TightUpperLim;
+TF1 *f_dXBotWithL6Neg_TightLowerLim;
+
+TF1 *f_dXBotNoL6Neg_TightUpperLim;
+TF1 *f_dXBotNoL6Neg_TightLowerLim;
+
+// === ================ ===
+// === Time matching 
+// === ================ ===
+
+TF1 *f_trkCl_dt_Top_TightUpperLim;
+TF1 *f_trkCl_dt_Top_TightLowerLim;
+TF1 *f_trkCl_dt_Bot_TightUpperLim;
+TF1 *f_trkCl_dt_Bot_TightLowerLim;
+
+// ========= ========================================================================= ========
+// ========= DST HPS type variables
+// ========= ========================================================================= ========
+
+EcalCluster *cl_ep;
+EcalCluster *cl_em;
+
+// ========= ========================================================================= ========
+// ========= Definition of functions
+// ========= ========================================================================= ========
+
+// ======== Initialize Any constants or function that are needed ======
+
+void InitVariables(std::string);
+
+// ========= ========================================================================= ========
+// ========= This function resets variables/flags, usually this needs to be called
+// ========= at the beginning of every event
+// ========= ========================================================================= ========
+void ResetEventFlags();
 
 
-map<std::string, int> cols;
+// ========= ========================================================================= ========
+// ========= This function resets variables/flags, usually this needs to be called
+// ========= at the beginning of every V0 candidate
+// ========= ========================================================================= ========
+void ResetV0Flags();
+
+// ====== This function cuts clusters that have cluster time far from the the expected 
+// ====== signal time
+bool IsIntimeClusterCandidate(EcalCluster*);
+
+// ======= This function should implement cluster time corrections
+void CorrectClusterTime(EcalCluster*);
+
+// ======= This function returns number of rows the given crystal cover.
+std::set<int> GetVerticalCrystalls(EcalCluster*);
+
+
+// ========= ============================================================= ============
+// ========= The function below Checks if all tight cuts except the given, are passed
+// ========= ============================================================= ============
+bool CheckTightCuts(std::string);
+
+// ========= ============================================================= ============
+// ========= This function check whether two clusters are satisfy top-bot 
+// ========= tight cut
+// ========= ============================================================= ============
+
+bool IsCldtTightCutPass(EcalCluster*, EcalCluster*);
+
+
+// ========= ============================================================= ============
+// ========= This function checks if the track passed the "Tight" chi2/NDF cut
+// ========= ============================================================= ============
+bool IsTightChi2NdfCutPassed(GblTrack*);
+
+// ========= ============================================================= ============
+// ========= This function check whether the given track and cluster pass 
+// ========= time tight cuts
+// ========= ============================================================= ============
+
+bool IsTightTrkClust_dtCutPassed(GblTrack*, EcalCluster*);
+
+// ========= ============================================================= ============
+// ========= This function check whether the given track and cluster pass 
+// ========= position tight cuts
+// ========= ============================================================= ============
+bool IsTightTrkClust_dXCutPassed(GblTrack*, EcalCluster*);
+
+
+// ========= ============================================================= ============
+// ========= This function check whether the given track and cluster pass 
+// ========= position and time tight cuts
+// ========= ============================================================= ============
+bool IsTightTrkClustCutPassed(GblTrack*, EcalCluster*);
+
+
+
+// ========= ============================================================= ============
+// ========= This function checks if electron track momentum is below the
+// ========= tight cut value;
+// ========= ============================================================= ============
+
+bool IsTightemMaxMomCut(double);
+
+
+// ========= ============================================================= ============
+// ========= This function checks if the track passed the "Tight" d0 cut
+// ========= ============================================================= ============
+bool IsTightD0CutPassed(GblTrack*);
+
+
+
+// ========= ============================================================= ============
+// ========= This function checks whether the track has a hit in L1
+// ========= ============================================================= ============
+bool HasL1Hit(GblTrack*);
+
+// ========= ============================================================= ============
+// ========= This function checks whether the track has a hit in L6
+// ========= ============================================================= ============
+bool HasL6Hit(GblTrack*);
+
+// ========= ============================================================= ============
+// ========= This function returns the position of the hit associated to the track
+// ========= in the given layer
+// ========= ============================================================= ============
+vector<double> GetHitCoordAtLayer(GblTrack*, int);
+
+
+// ===== ============================================== ======
+// ===== This is a generic function that will return the magnitude of the vector
+// ===== In this case the magnitude is defined as the square root of the sums of element squares
+// ===== ============================================== ======
+
+double GetMagnitude(vector<double>);
+
+
+
+
+
 
 
 #endif
