@@ -68,10 +68,12 @@ int main(int argc, char** argv) {
     }
 
     std::map< std::pair<int, int>, TH1D* > m_h_cl_dt_crystal;
+    std::map< std::pair<int, int>, TH2D* > m_h_Esum_dt_crystal;
 
     for (int ix = -23; ix <= 23; ix++) {
         for (int iy = -5; iy <= 5; iy++) {
             m_h_cl_dt_crystal[std::pair<int, int>(ix, iy)] = new TH1D(Form("m_h_cl_dt_crystal_%d_%d", ix, iy), "", 200, -5., 5.);
+            m_h_Esum_dt_crystal[std::pair<int, int>(ix, iy)] = new TH2D(Form("m_h_Esum_dt_crystal_%d_%d", ix, iy), "", 200, 0., 1.2*Eb, 200, -15., 15.);
         }
     }
 
@@ -208,7 +210,11 @@ int main(int argc, char** argv) {
                 if (Esum > 0.75 * Eb) {
                     m_h_cl_dt_crystal[std::pair<int, int>(ix_top, iy_top)]->Fill(dt);
                     m_h_cl_dt_crystal[std::pair<int, int>(ix_bot, iy_bot)]->Fill(-dt);
+                    
                 }
+
+                m_h_Esum_dt_crystal[std::pair<int, int>(ix_top, iy_top)]->Fill(Esum, dt);
+                m_h_Esum_dt_crystal[std::pair<int, int>(ix_bot, iy_bot)]->Fill(Esum, -dt);
 
                 for (int ii = 0; ii < n_ECalXregions; ii++) {
 
