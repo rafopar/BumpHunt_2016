@@ -28,23 +28,51 @@ using namespace std;
  */
 
 int main(int argc, char** argv) {
-    
-    InitVariables();
-    
-    TFile *file_in = new TFile("../Data/hps_008099.All_dst_4.2.root");
+
+    if (argc >= 2) {
+
+        dataSet = argv[1];
+
+        if (!(dataSet.compare("Data") == 0 || dataSet.compare("MC") == 0)) {
+            cout << "The 1st argument should be data set, and it should be either \"Data\" or \"MC\" " << endl;
+            cout << "Exiting" << endl;
+            exit(1);
+        }
+
+        if (dataSet.compare("Data") == 0) {
+            isData = true;
+        } else {
+            isData = false;
+        }
+
+    } else {
+        cout << "No argument is provided " << endl;
+        cout << "Rus as follows: Eg  ./EventSelection.exe Data" << endl;
+        cout << "Exiting" << endl;
+
+        exit(1);
+    }
+
+    InitVariables(dataSet);
+
+    if (isData) {
+        file_in = new TFile("../Data/hps_008099.All_dst_4.2.root");
+    } else {
+        file_in = new TFile("../Data/WabBeamPass4.root");
+    }
     //TFile *file_in = new TFile("../Data/hps_008099.11_dst_4.2.root");
     //TFile *file_in = new TFile("../../pass1/Data/hps_007800.190_dst_3.11.1.root");
 
-    TFile *file_ECalTimeCorrections = new TFile("ECalTimeCorrections.root", "Read");
-
-    TH2D *h_time_Corrections = (TH2D*) file_ECalTimeCorrections->Get("h_cl_dtMeans1");
+    //    TFile *file_ECalTimeCorrections = new TFile("ECalTimeCorrections.root", "Read");
+    //
+    //    TH2D *h_time_Corrections = (TH2D*) file_ECalTimeCorrections->Get("h_cl_dtMeans1");
 
 
     TTree *tr1 = (TTree*) file_in->Get("HPS_Event");
     //TChain *tr1 =  new TChain("HPS_Event");
     //tr1->Add("../Data/hps_008099.*_dst_4.2.root");
 
-    TFile *file_out = new TFile("EventSelection.root", "Recreate");
+    TFile *file_out = new TFile(Form("EventSelection_%s.root", dataSet.c_str()), "Recreate");
 
     TH1D *h_n_c1l = new TH1D("h_n_cl1", "", 15, -0.5, 14.5);
     TH1D *h_clE1 = new TH1D("h_clE1", "", 200, 0., 1.2 * Eb);
@@ -66,6 +94,72 @@ int main(int argc, char** argv) {
     TH2D *h_n_trk_crash1 = new TH2D("h_n_trk_crash1", "", 21, -0.5, 20.5, 15, -7.5, 7.5);
 
     TH2D *h_cl_dtMeans1 = new TH2D("h_cl_dtMeans1", "", 47, -23.5, 23.5, 11, -5.5, 5.5);
+
+    TH2D *h_em_cl_EvsT_top1 = new TH2D("h_em_cl_EvsT_top1", "", 200, 0., 1.2 * Eb, 200, 30., 75.);
+    TH2D *h_em_cl_EvsT_top2 = new TH2D("h_em_cl_EvsT_top2", "", 200, 0., 1.2 * Eb, 200, 30., 75.);
+    TH2D *h_em_cl_EvsT_bot1 = new TH2D("h_em_cl_EvsT_bot1", "", 200, 0., 1.2 * Eb, 200, 30., 75.);
+    TH2D *h_em_cl_EvsT_bot2 = new TH2D("h_em_cl_EvsT_bot2", "", 200, 0., 1.2 * Eb, 200, 30., 75.);
+
+    TH2D *h_ep_cl_EvsT_top1 = new TH2D("h_ep_cl_EvsT_top1", "", 200, 0., 1.2 * Eb, 200, 30., 75.);
+    TH2D *h_ep_cl_EvsT_top2 = new TH2D("h_ep_cl_EvsT_top2", "", 200, 0., 1.2 * Eb, 200, 30., 75.);
+    TH2D *h_ep_cl_EvsT_bot1 = new TH2D("h_ep_cl_EvsT_bot1", "", 200, 0., 1.2 * Eb, 200, 30., 75.);
+    TH2D *h_ep_cl_EvsT_bot2 = new TH2D("h_ep_cl_EvsT_bot2", "", 200, 0., 1.2 * Eb, 200, 30., 75.);
+
+    TH2D *h_cl_dt_Esum_posneg1 = new TH2D("h_cl_dt_Esum_posneg1", "", 200, 0., 1.2 * Eb, 200, -15., 15.);
+    TH2D *h_cl_dt_Esum_posnegTight1 = new TH2D("h_cl_dt_Esum_posnegTight1", "", 200, 0., 1.2 * Eb, 200, -15., 15.);
+
+    TH1D *h_chi2NDF_em_top_5hits_1 = new TH1D("h_chi2NDF_em_top_5hits_1", "", 200, 0., 13.);
+    TH1D *h_chi2NDF_em_top_6hits_1 = new TH1D("h_chi2NDF_em_top_6hits_1", "", 200, 0., 13.);
+    TH1D *h_chi2NDF_em_bot_5hits_1 = new TH1D("h_chi2NDF_em_bot_5hits_1", "", 200, 0., 13.);
+    TH1D *h_chi2NDF_em_bot_6hits_1 = new TH1D("h_chi2NDF_em_bot_6hits_1", "", 200, 0., 13.);
+
+    TH1D *h_chi2NDF_ep_top_5hits_1 = new TH1D("h_chi2NDF_ep_top_5hits_1", "", 200, 0., 13.);
+    TH1D *h_chi2NDF_ep_top_6hits_1 = new TH1D("h_chi2NDF_ep_top_6hits_1", "", 200, 0., 13.);
+    TH1D *h_chi2NDF_ep_bot_5hits_1 = new TH1D("h_chi2NDF_ep_bot_5hits_1", "", 200, 0., 13.);
+    TH1D *h_chi2NDF_ep_bot_6hits_1 = new TH1D("h_chi2NDF_ep_bot_6hits_1", "", 200, 0., 13.);
+
+    TH1D *h_d0_em_top_5hits_1 = new TH1D("h_d0_em_top_5hits_1", "", 200, -3.5, 3.5);
+    TH1D *h_d0_em_top_6hits_1 = new TH1D("h_d0_em_top_6hits_1", "", 200, -3.5, 3.5);
+    TH1D *h_d0_em_bot_5hits_1 = new TH1D("h_d0_em_bot_5hits_1", "", 200, -3.5, 3.5);
+    TH1D *h_d0_em_bot_6hits_1 = new TH1D("h_d0_em_bot_6hits_1", "", 200, -3.5, 3.5);
+
+    TH1D *h_d0_em_topWithL1 = new TH1D("h_d0_em_topWithL1", "", 200, -3.5, 3.5);
+    TH1D *h_d0_em_topNoL1 = new TH1D("h_d0_em_topNoL1", "", 200, -3.5, 3.5);
+    TH1D *h_d0_em_botWithL1 = new TH1D("h_d0_em_botWithL1", "", 200, -3.5, 3.5);
+    TH1D *h_d0_em_botNoL1 = new TH1D("h_d0_em_botNoL1", "", 200, -3.5, 3.5);
+
+    TH1D *h_d0_ep_top_5hits_1 = new TH1D("h_d0_ep_top_5hits_1", "", 200, -3.5, 3.5);
+    TH1D *h_d0_ep_top_6hits_1 = new TH1D("h_d0_ep_top_6hits_1", "", 200, -3.5, 3.5);
+    TH1D *h_d0_ep_bot_5hits_1 = new TH1D("h_d0_ep_bot_5hits_1", "", 200, -3.5, 3.5);
+    TH1D *h_d0_ep_bot_6hits_1 = new TH1D("h_d0_ep_bot_6hits_1", "", 200, -3.5, 3.5);
+
+    TH1D *h_d0_ep_topWithL1 = new TH1D("h_d0_ep_topWithL1", "", 200, -3.5, 3.5);
+    TH1D *h_d0_ep_topNoL1 = new TH1D("h_d0_ep_topNoL1", "", 200, -3.5, 3.5);
+    TH1D *h_d0_ep_botWithL1 = new TH1D("h_d0_ep_botWithL1", "", 200, -3.5, 3.5);
+    TH1D *h_d0_ep_botNoL1 = new TH1D("h_d0_ep_botNoL1", "", 200, -3.5, 3.5);
+
+
+    TH1D *h_Pem_TightCut1 = new TH1D("h_Pem_TightCut1", "", 200, 0., Eb);
+
+    TH1D *h_em_Chi2Ndf1 = new TH1D("h_em_Chi2Ndf1", "", 200, 0., 13.);
+    TH1D *h_ep_Chi2Ndf1 = new TH1D("h_ep_Chi2Ndf1", "", 200, 0., 13.);
+
+    TH2D *h_dX_Top_PosWithL6 = new TH2D("h_dX_Top_PosWithL6", "", 200, 0., Eb, 200, -50., 50.);
+    TH2D *h_dX_Top_PosNoL6 = new TH2D("h_dX_Top_PosNoL6", "", 200, 0., Eb, 200, -50., 50.);
+    TH2D *h_dX_Bot_PosWithL6 = new TH2D("h_dX_Bot_PosWithL6", "", 200, 0., Eb, 200, -50., 50.);
+    TH2D *h_dX_Bot_PosNoL6 = new TH2D("h_dX_Bot_PosNoL6", "", 200, 0., Eb, 200, -50., 50.);
+
+    TH2D *h_dX_Top_NegWithL6 = new TH2D("h_dX_Top_NegWithL6", "", 200, 0., Eb, 200, -50., 50.);
+    TH2D *h_dX_Top_NegNoL6 = new TH2D("h_dX_Top_NegNoL6", "", 200, 0., Eb, 200, -50., 50.);
+    TH2D *h_dX_Bot_NegWithL6 = new TH2D("h_dX_Bot_NegWithL6", "", 200, 0., Eb, 200, -50., 50.);
+    TH2D *h_dX_Bot_NegNoL6 = new TH2D("h_dX_Bot_NegNoL6", "", 200, 0., Eb, 200, -50., 50.);
+
+    TH2D *h_dX_Top_TEST_WithL6 = new TH2D("h_dX_Top_TEST_WithL6", "", 200, 0., Eb, 200, -50., 50.);
+    TH2D *h_dX_Top_TEST_NoL6 = new TH2D("h_dX_Top_TEST_NoL6", "", 200, 0., Eb, 200, -50., 50.);
+    TH2D *h_dX_Bot_TEST_WithL6 = new TH2D("h_dX_Bot_TEST_WithL6", "", 200, 0., Eb, 200, -50., 50.);
+    TH2D *h_dX_Bot_TEST_NoL6 = new TH2D("h_dX_Bot_TEST_NoL6", "", 200, 0., Eb, 200, -50., 50.);
+
+
 
     HpsEvent *ev = new HpsEvent();
     //tr1->SetBranchAddress("HPS_Event", ev);
@@ -115,10 +209,12 @@ int main(int argc, char** argv) {
             cout.flush() << "Processed " << ientry << "\r";
         }
 
+        // This needs to be called at the beginning of every event
+        ResetEventFlags();
+
         int n_cl = ev->getNumberOfEcalClusters();
 
-
-        if (!ev->isPair1Trigger()) {
+        if (!ev->isPair1Trigger() && isData) {
             continue;
         }
         h_n_c1l->Fill(n_cl);
@@ -127,6 +223,9 @@ int main(int argc, char** argv) {
         int n_bot_cl = 0;
         for (int i_cl = 0; i_cl < n_cl; i_cl++) {
             cl = ev->getEcalCluster(i_cl);
+
+            // ===== Correct the cluster time at the earliest stage
+            CorrectClusterTime(cl);
 
             double cl_E = cl->getEnergy();
             double cl_t = cl->getClusterTime();
@@ -138,20 +237,20 @@ int main(int argc, char** argv) {
                 h_cl_E_tTop1->Fill(cl_E, cl_t);
                 cl_t_max = 70.;
                 cl_t_min = 30.;
-//                cl_t_max = f_clTTopUpLim->Eval(cl_E);
-//                cl_t_min = f_clTTopLowLim->Eval(cl_E);
+                //                cl_t_max = f_clTTopUpLim->Eval(cl_E);
+                //                cl_t_min = f_clTTopLowLim->Eval(cl_E);
             } else {
                 h_cl_E_tBot1->Fill(cl_E, cl_t);
                 cl_t_max = f_clTBotUpLim->Eval(cl_E);
                 cl_t_min = f_clTBotLowLim->Eval(cl_E);
             }
-            
+
 
             if (!(cl_t > cl_t_min && cl_t < cl_t_max)) {
                 continue;
             }
-            
-            
+
+
 
             h_cl_yxc1->Fill(cl_pos.at(0), cl_pos.at(1));
 
@@ -169,12 +268,6 @@ int main(int argc, char** argv) {
 
         int n_tr = ev->getNumberOfGblTracks();
         h_n_tr1->Fill(n_tr);
-        //cout<<" =============== n_tr = "<<n_tr<<" ================"<<endl;
-        if (n_tr > 6) {
-            //cout << "n_tr = " << n_tr << "   continuing ...." << endl;
-            //continue;
-            //cout << "Event number is " << ev->getEventNumber() << endl;
-        }
 
         int n_pos = 0;
         int n_neg = 0;
@@ -220,20 +313,351 @@ int main(int argc, char** argv) {
                 double topTimeCorrection = h_time_Corrections->GetBinContent(h_time_Corrections->FindBin(ix_top, iy_top));
                 double botTimeCorrection = h_time_Corrections->GetBinContent(h_time_Corrections->FindBin(ix_bot, iy_bot));
 
-                double t_top_corrected = clTop->getClusterTime() - topTimeCorrection;
-                double t_bot_corrected = clBot->getClusterTime() - botTimeCorrection;
+                //                double t_top_corrected = clTop->getClusterTime() - topTimeCorrection;
+                //                double t_bot_corrected = clBot->getClusterTime() - botTimeCorrection;
 
-                double dtCorr = t_top_corrected - t_bot_corrected;
+                //                double dtCorr = t_top_corrected - t_bot_corrected;
 
                 h_dt_Esum1->Fill(Esum, dt);
-                h_dtCorr_Esum1->Fill(Esum, dtCorr);
+                //                h_dtCorr_Esum1->Fill(Esum, dtCorr);
 
                 if (n_pos == 1 && n_neg == 1) {
                     h_dt_Esum2->Fill(Esum, dt);
-                    h_dtCorr_Esum2->Fill(Esum, dtCorr);
+                    //                    h_dtCorr_Esum2->Fill(Esum, dtCorr);
                 }
 
             }
+
+        }
+
+
+        int nTC_V0 = ev->getNumberOfParticles(HpsParticle::TC_V0_CANDIDATE);
+
+        for (int iv0 = 0; iv0 < nTC_V0; iv0++) {
+
+            ResetV0Flags();
+
+            HpsParticle *cur_v0 = ev->getParticle(HpsParticle::TC_V0_CANDIDATE, iv0);
+
+            if (cur_v0->getParticles()->GetSize() != 2) {
+                cout << "# of v0 is " << cur_v0->getParticles()->GetSize() << endl;
+                cout << "# of v0 daughters is not 2.    Exiting!" << endl;
+                exit(1);
+            }
+
+            if (((HpsParticle*) cur_v0->getParticles()->At(0))->getCharge()*((HpsParticle*) cur_v0->getParticles()->At(1))->getCharge() >= 0) {
+
+                cout << "Charges are    " << ((HpsParticle*) cur_v0->getParticles()->At(0)) << "   and   " << ((HpsParticle*) cur_v0->getParticles()->At(1)) << endl;
+                cout << "v0 pairs should have opposite sign charges.    Exiting" << endl;
+                exit(1);
+            }
+
+            HpsParticle *em;
+            HpsParticle *ep;
+            //HpsParticle *part0 = ((HpsParticle*)cur_v0->getParticles()->At(0)) ;
+
+            if (((HpsParticle*) cur_v0->getParticles()->At(0))->getCharge() < 0) {
+                em = (HpsParticle*) cur_v0->getParticles()->At(0);
+                ep = (HpsParticle*) cur_v0->getParticles()->At(1);
+            } else if (((HpsParticle*) cur_v0->getParticles()->At(0))->getCharge() > 0) {
+                em = (HpsParticle*) cur_v0->getParticles()->At(1);
+                ep = (HpsParticle*) cur_v0->getParticles()->At(0);
+            }
+            //cout<<part0->getCharge()<<endl;
+
+
+            //            cout << "# of em clusters     " << em->getClusters()->GetSize() << endl;
+            //            cout << "# of ep clusters " << ep->getClusters()->GetSize() << endl;
+
+            // ======== Getting Electron related variables ========
+            bool emHasCl = false;
+            vector<double> pos_cl_em{-9999, -9999, -9999};
+            double t_cl_em = -9999;
+            bool is_neg_ClustIntime = false;
+            double E_cl_em = -9999;
+
+            if (em->getClusters()->GetSize() > 0) {
+                cl_em = (EcalCluster*) em->getClusters()->At(0);
+                pos_cl_em = cl_em->getPosition();
+                t_cl_em = cl_em->getClusterTime();
+
+                t_cl_em = cl_em->getClusterTime();
+
+
+
+                E_cl_em = cl_em->getEnergy();
+
+                is_neg_ClustIntime = IsIntimeClusterCandidate(cl_em);
+
+                if (pos_cl_em.at(1) > 0) {
+                    h_em_cl_EvsT_top1->Fill(cl_em->getEnergy(), t_cl_em);
+                    if (is_neg_ClustIntime) {
+                        h_em_cl_EvsT_top2->Fill(cl_em->getEnergy(), t_cl_em);
+                    }
+                } else {
+                    h_em_cl_EvsT_bot1->Fill(cl_em->getEnergy(), t_cl_em);
+                    if (is_neg_ClustIntime) {
+                        h_em_cl_EvsT_bot2->Fill(cl_em->getEnergy(), t_cl_em);
+                    }
+                }
+
+                emHasCl = true;
+            } else {
+                cout << "Rare event didn't give a cluster" << endl;
+                continue;
+            }
+
+            GblTrack *trk_em = (GblTrack*) em->getTracks()->At(0);
+            vector<double> pos_trk_em = trk_em->getPositionAtEcal();
+            vector<double> P_trk_em = trk_em->getMomentum();
+            double P_em = sqrt(P_trk_em.at(0) * P_trk_em.at(0) + P_trk_em.at(1) * P_trk_em.at(1) + P_trk_em.at(2) * P_trk_em.at(2));
+            bool hasemL1 = HasL1Hit(trk_em);
+            bool hasemL6 = HasL6Hit(trk_em);
+
+            double chi2_em = trk_em->getChi2();
+            int n_emHits = trk_em->getSvtHits()->GetSize();
+            int NDF_em = 2 * n_emHits - 5;
+            double d0_em = trk_em->getD0();
+            double dX_em = pos_cl_em.at(0) - pos_trk_em.at(0);
+
+            if (!(pos_trk_em.at(1) * cl_em->getPosition().at(1) > 0)) {
+                cout << "               =============================================== " << endl;
+                cout << " A rare event, when cluster and track positions are not in the same half" << endl;
+                cout << "Electron Cluster Y positions is " << cl_em->getPosition().at(1) << endl;
+                cout << "Electron Track Y positions at ECal is " << pos_trk_em.at(1) << endl;
+                cout << "               =============================================== " << endl;
+                continue;
+            }
+
+            if (pos_trk_em.at(1) > 0) {
+
+                if (HasL1Hit(trk_em)) {
+                    h_d0_em_topWithL1->Fill(d0_em);
+                } else {
+                    h_d0_em_topNoL1->Fill(d0_em);
+                }
+            } else {
+                if (HasL1Hit(trk_em)) {
+                    h_d0_em_botWithL1->Fill(d0_em);
+                } else {
+                    h_d0_em_botNoL1->Fill(d0_em);
+                }
+            }
+
+
+            if (n_emHits == 5) {
+                if (pos_trk_em.at(1) > 0) {
+                    h_chi2NDF_em_top_5hits_1->Fill(chi2_em / double(NDF_em));
+                    h_d0_em_top_5hits_1->Fill(d0_em);
+                } else {
+                    h_chi2NDF_em_bot_5hits_1->Fill(chi2_em / double(NDF_em));
+                    h_d0_em_bot_5hits_1->Fill(d0_em);
+                }
+            } else if (n_emHits == 6) {
+                if (pos_trk_em.at(1) > 0) {
+                    h_chi2NDF_em_top_6hits_1->Fill(chi2_em / double(NDF_em));
+                    h_d0_em_top_6hits_1->Fill(d0_em);
+                } else {
+                    h_chi2NDF_em_bot_6hits_1->Fill(chi2_em / double(NDF_em));
+                    h_d0_em_bot_6hits_1->Fill(d0_em);
+                }
+            } else {
+                cout << "Number of hits is " << n_emHits << endl;
+                cout << "This is strange: Number of hits should be either 5 or 6" << endl;
+                cout << "Exiting" << endl;
+                exit(1);
+            }
+
+            // ======== Getting Positron related variables ========
+            vector<double> pos_cl_ep{-9999, -9999, -9999, -9999};
+            bool epHasCl = false;
+            double t_cl_ep = -9999;
+            bool is_pos_ClustIntime = false;
+            double E_cl_ep = -9999;
+
+            if (ep->getClusters()->GetSize() > 0) {
+                cl_ep = (EcalCluster*) ep->getClusters()->At(0);
+                pos_cl_ep = cl_ep->getPosition();
+                t_cl_ep = cl_ep->getClusterTime();
+                E_cl_ep = cl_ep->getEnergy();
+                is_pos_ClustIntime = IsIntimeClusterCandidate(cl_ep);
+
+                if (pos_cl_ep.at(1) > 0) {
+                    h_ep_cl_EvsT_top1->Fill(cl_ep->getEnergy(), t_cl_ep);
+                    if (is_pos_ClustIntime) {
+                        h_ep_cl_EvsT_top2->Fill(cl_ep->getEnergy(), t_cl_ep);
+                    }
+                } else {
+                    h_ep_cl_EvsT_bot1->Fill(cl_ep->getEnergy(), t_cl_ep);
+                    if (is_pos_ClustIntime) {
+                        h_ep_cl_EvsT_bot2->Fill(cl_ep->getEnergy(), t_cl_ep);
+                    }
+                }
+
+
+                epHasCl = true;
+            } else {
+                cout << "Rare event didn't give a cluster" << endl;
+                continue;
+            }
+
+
+            if (!(is_neg_ClustIntime && is_pos_ClustIntime)) {
+                continue;
+            }
+
+            if (cl_em->getPosition().at(1) * cl_ep->getPosition().at(1) > 0) {
+                cout << "A rare event when e- and e+ in V0 are in the same detector half " << endl;
+                continue;
+            }
+
+
+            h_cl_dt_Esum_posneg1->Fill(E_cl_ep + E_cl_em, t_cl_ep - t_cl_em);
+
+            GblTrack *trk_ep = (GblTrack*) ep->getTracks()->At(0);
+            vector<double> pos_trk_ep = trk_ep->getPositionAtEcal();
+            vector<double> P_trk_ep = trk_ep->getMomentum();
+            double P_ep = sqrt(P_trk_ep.at(0) * P_trk_ep.at(0) + P_trk_ep.at(1) * P_trk_ep.at(1) + P_trk_ep.at(2) * P_trk_ep.at(2));
+            bool hasepL1 = HasL1Hit(trk_ep);
+            bool hasepL6 = HasL6Hit(trk_ep);
+
+
+            if (!(pos_trk_ep.at(1) * cl_ep->getPosition().at(1) > 0)) {
+                cout << "               =============================================== " << endl;
+                cout << " A rare event, when cluster and track positions are not in the same half" << endl;
+                cout << "PositCluster Y positions is " << cl_ep->getPosition().at(1) << endl;
+                cout << "PositCluster Track Y positions at ECal is " << pos_trk_ep.at(1) << endl;
+                cout << "               =============================================== " << endl;
+                continue;
+            }
+
+
+            double chi2_ep = trk_ep->getChi2();
+            int n_epHits = trk_ep->getSvtHits()->GetSize();
+            int NDF_ep = 2 * n_epHits - 5;
+            double d0_ep = trk_ep->getD0();
+            double dX_ep = pos_cl_ep.at(0) - pos_trk_ep.at(0);
+
+
+            if (pos_trk_ep.at(1) > 0) {
+
+                if (HasL1Hit(trk_ep)) {
+                    h_d0_ep_topWithL1->Fill(d0_ep);
+                } else {
+                    h_d0_ep_topNoL1->Fill(d0_ep);
+                }
+            } else {
+                if (HasL1Hit(trk_ep)) {
+                    h_d0_ep_botWithL1->Fill(d0_ep);
+                } else {
+                    h_d0_ep_botNoL1->Fill(d0_ep);
+                }
+            }
+
+
+
+            if (n_epHits == 5) {
+                if (pos_trk_ep.at(1) > 0) {
+                    h_chi2NDF_ep_top_5hits_1->Fill(chi2_ep / double(NDF_ep));
+                    h_d0_ep_top_5hits_1->Fill(d0_ep);
+                } else {
+                    h_chi2NDF_ep_bot_5hits_1->Fill(chi2_ep / double(NDF_ep));
+                    h_d0_ep_bot_5hits_1->Fill(d0_ep);
+                }
+            } else if (n_epHits == 6) {
+                if (pos_trk_ep.at(1) > 0) {
+                    h_chi2NDF_ep_top_6hits_1->Fill(chi2_ep / double(NDF_ep));
+                    h_d0_ep_top_6hits_1->Fill(d0_ep);
+                } else {
+                    h_chi2NDF_ep_bot_6hits_1->Fill(chi2_ep / double(NDF_ep));
+                    h_d0_ep_bot_6hits_1->Fill(d0_ep);
+                }
+            } else {
+                cout << "Number of hits is " << n_epHits << endl;
+                cout << "This is strange: Number of hits should be either 5 or 6" << endl;
+                cout << "Exiting" << endl;
+                exit(1);
+            }
+
+
+
+            IsTightcldT = IsCldtTightCutPass(cl_em, cl_ep);
+            IsTightepClTrkdT = IsTightTrkClust_dtCutPassed(trk_ep, cl_ep);
+            IsTightemClTrkdT = IsTightTrkClust_dtCutPassed(trk_em, cl_em);
+            IsTightemTrkClMatch = IsTightTrkClust_dXCutPassed(trk_em, cl_em);
+            IsTightepTrkClMatch = IsTightTrkClust_dXCutPassed(trk_ep, cl_ep);
+            IsTighteptrkChi2 = IsTightChi2NdfCutPassed(trk_ep);
+            IsTightemtrkChi2 = IsTightChi2NdfCutPassed(trk_em);
+            IsTightPem = IsTightemMaxMomCut(P_em);
+
+            // =========================================================
+            // We don't need tracks that don't have hit lin L1
+            // =========================================================
+
+            if (!(hasemL1 && hasepL1)) {
+                continue;
+            }
+
+
+            if (CheckTightCuts("cldT")) {
+                h_cl_dt_Esum_posnegTight1->Fill(E_cl_ep + E_cl_em, t_cl_ep - t_cl_em);
+            }
+
+            if (CheckTightCuts("Pem")) {
+                h_Pem_TightCut1->Fill(P_em);
+            }
+
+            if (CheckTightCuts("emTrkChi2")) {
+                h_em_Chi2Ndf1->Fill(chi2_em / double(NDF_em));
+            }
+
+            if (CheckTightCuts("epTrkChi2")) {
+                h_ep_Chi2Ndf1->Fill(chi2_ep / double(NDF_ep));
+            }
+
+
+
+
+            if (CheckTightCuts("emClTrkMatch")) {
+
+                if (pos_trk_em.at(1) > 0.) {
+                    if (hasemL6) {
+                        h_dX_Top_NegWithL6->Fill(P_em, dX_em);
+                    } else {
+                        h_dX_Top_NegNoL6->Fill(P_em, dX_em);
+                    }
+
+                } else {
+                    if (hasemL6) {
+                        h_dX_Bot_NegWithL6->Fill(P_em, dX_em);
+                    } else {
+                        h_dX_Bot_NegNoL6->Fill(P_em, dX_em);
+                    }
+
+                }
+
+            }
+
+
+            if (CheckTightCuts("epClTrkMatch")) {
+                if (pos_trk_ep.at(1) > 0.) {
+                    if (hasepL6) {
+                        h_dX_Top_PosWithL6->Fill(P_ep, dX_ep);
+                    } else {
+                        h_dX_Top_PosNoL6->Fill(P_ep, dX_ep);
+                    }                                      
+                } else {
+                    if (hasepL6) {
+                        h_dX_Bot_PosWithL6->Fill(P_ep, dX_ep);
+                    } else {
+                        h_dX_Bot_PosNoL6->Fill(P_ep, dX_ep);
+                    }
+                }
+
+            }
+
+
+
 
         }
 
