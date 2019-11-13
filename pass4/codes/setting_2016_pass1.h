@@ -1,6 +1,7 @@
 #ifndef __SETTING_2016_PASS__
 #define __SETTING_2016_PASS__
 
+#include <set>
 #include <map>
 #include <TF1.h>
 #include <hps_event/EcalCluster.h>
@@ -15,7 +16,8 @@ using namespace std;
 const double radian = 57.29578;
 const double Eb = 2.306;
 const double CL_trk_time_Offset_Data = 55.;
-const double CL_trk_time_Offset_tri = 51.64;
+const double CL_trk_time_Offset_tri = 43.5;
+//const double CL_trk_time_Offset_tri = 51.64;
 double CL_trk_time_Offset;
 //const double cl_t_max = 80.;
 //const double cl_t_min = 20.;
@@ -25,7 +27,9 @@ double cl_t_min = 50.;
 const double pos_d0_cut = 1.1;
 const double Psum_min = 1.51; // GeV
 
-const double chi2NDFTighCut_tData = 2;
+const double chi2NDFTighCut_Data = 2;
+const double chi2NDFTighCut_MC = 2;
+double chi2NDFTighCut;
 
 const double ep_d0TightCutMax_Data = 0.5;
 const double ep_d0TightCutMin_Data = -0.7;
@@ -48,6 +52,11 @@ const double Pem_MaxTight_Data = 1.7;
 // ==== ============================
 
 bool isData;
+bool isMC;
+bool isTri;
+bool isRad;
+bool isWab;
+bool isAp;
 
 // =========================================================================
 // ========== Flags for Tight cuts on different variables =========
@@ -64,6 +73,13 @@ bool IsTightPem;
 bool IsTightD0ep;
 bool IsTightD0em;
 
+// ==== ============================
+// ==== Int variables
+// ==== ============================
+
+int ApMass = 0;
+
+std::set<int> ApMassSet;
 
 double Pem_MaxTight;
 double cl_dTCut_Tight;
@@ -98,6 +114,9 @@ double tri_data_lumi = charge*lumi_per_C;
 // ====== Data Set, it should be either "Data" or "MC"
 std::string dataSet;
 
+std::string inpFileName;
+std::string outFileName;
+
 
 
 // =========================================================================
@@ -111,10 +130,11 @@ TH2D *h_time_Corrections;
 
 
 // =========================================================================
-// ====== The inpot file. It will be initianalized inside the InitVariables function
+// ====== The input and output files. They will be initianalized inside the InitVariables function
 // ====== Depending it is data or MC, it will read a different file
 // =========================================================================
 TFile *file_in;
+TFile *file_out;
 
 
 // =========================================================================

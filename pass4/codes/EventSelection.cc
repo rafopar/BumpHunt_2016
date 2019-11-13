@@ -8,7 +8,6 @@
 #include <TH1D.h>
 #include <TH2D.h>
 #include <TTree.h>
-#include <TChain.h>
 #include <TFile.h>
 
 #include <hps_event/HpsEvent.h>
@@ -33,16 +32,8 @@ int main(int argc, char** argv) {
 
         dataSet = argv[1];
 
-        if (!(dataSet.compare("Data") == 0 || dataSet.compare("MC") == 0)) {
-            cout << "The 1st argument should be data set, and it should be either \"Data\" or \"MC\" " << endl;
-            cout << "Exiting" << endl;
-            exit(1);
-        }
-
-        if (dataSet.compare("Data") == 0) {
-            isData = true;
-        } else {
-            isData = false;
+        if (argc == 3) {
+            ApMass = atoi(argv[2]);
         }
 
     } else {
@@ -55,24 +46,9 @@ int main(int argc, char** argv) {
 
     InitVariables(dataSet);
 
-    if (isData) {
-        file_in = new TFile("../Data/hps_008099.All_dst_4.2.root");
-    } else {
-        file_in = new TFile("../Data/WabBeamPass4.root");
-    }
-    //TFile *file_in = new TFile("../Data/hps_008099.11_dst_4.2.root");
-    //TFile *file_in = new TFile("../../pass1/Data/hps_007800.190_dst_3.11.1.root");
-
-    //    TFile *file_ECalTimeCorrections = new TFile("ECalTimeCorrections.root", "Read");
-    //
-    //    TH2D *h_time_Corrections = (TH2D*) file_ECalTimeCorrections->Get("h_cl_dtMeans1");
 
 
     TTree *tr1 = (TTree*) file_in->Get("HPS_Event");
-    //TChain *tr1 =  new TChain("HPS_Event");
-    //tr1->Add("../Data/hps_008099.*_dst_4.2.root");
-
-    TFile *file_out = new TFile(Form("EventSelection_%s.root", dataSet.c_str()), "Recreate");
 
     TH1D *h_n_c1l = new TH1D("h_n_cl1", "", 15, -0.5, 14.5);
     TH1D *h_clE1 = new TH1D("h_clE1", "", 200, 0., 1.2 * Eb);
@@ -127,6 +103,8 @@ int main(int argc, char** argv) {
     TH1D *h_d0_em_topNoL1 = new TH1D("h_d0_em_topNoL1", "", 200, -3.5, 3.5);
     TH1D *h_d0_em_botWithL1 = new TH1D("h_d0_em_botWithL1", "", 200, -3.5, 3.5);
     TH1D *h_d0_em_botNoL1 = new TH1D("h_d0_em_botNoL1", "", 200, -3.5, 3.5);
+    TH1D *h_Mv0_WithL1 = new TH1D("h_Mv0_emWithL1", "", 200, 0.02, 0.2);
+    TH1D *h_Mv0_NoL1 = new TH1D("h_Mv0_emNoL1", "", 200, 0.02, 0.2);
 
     TH1D *h_d0_ep_top_5hits_1 = new TH1D("h_d0_ep_top_5hits_1", "", 200, -3.5, 3.5);
     TH1D *h_d0_ep_top_6hits_1 = new TH1D("h_d0_ep_top_6hits_1", "", 200, -3.5, 3.5);
@@ -153,6 +131,16 @@ int main(int argc, char** argv) {
     TH2D *h_dX_Top_NegNoL6 = new TH2D("h_dX_Top_NegNoL6", "", 200, 0., Eb, 200, -50., 50.);
     TH2D *h_dX_Bot_NegWithL6 = new TH2D("h_dX_Bot_NegWithL6", "", 200, 0., Eb, 200, -50., 50.);
     TH2D *h_dX_Bot_NegNoL6 = new TH2D("h_dX_Bot_NegNoL6", "", 200, 0., Eb, 200, -50., 50.);
+
+    TH2D *h_dY_Top_PosWithL6 = new TH2D("h_dY_Top_PosWithL6", "", 200, 0., Eb, 200, -50., 50.);
+    TH2D *h_dY_Top_PosNoL6 = new TH2D("h_dY_Top_PosNoL6", "", 200, 0., Eb, 200, -50., 50.);
+    TH2D *h_dY_Bot_PosWithL6 = new TH2D("h_dY_Bot_PosWithL6", "", 200, 0., Eb, 200, -50., 50.);
+    TH2D *h_dY_Bot_PosNoL6 = new TH2D("h_dY_Bot_PosNoL6", "", 200, 0., Eb, 200, -50., 50.);
+
+    TH2D *h_dY_Top_NegWithL6 = new TH2D("h_dY_Top_NegWithL6", "", 200, 0., Eb, 200, -50., 50.);
+    TH2D *h_dY_Top_NegNoL6 = new TH2D("h_dY_Top_NegNoL6", "", 200, 0., Eb, 200, -50., 50.);
+    TH2D *h_dY_Bot_NegWithL6 = new TH2D("h_dY_Bot_NegWithL6", "", 200, 0., Eb, 200, -50., 50.);
+    TH2D *h_dY_Bot_NegNoL6 = new TH2D("h_dY_Bot_NegNoL6", "", 200, 0., Eb, 200, -50., 50.);
 
     TH2D *h_dX_Top_TEST_WithL6 = new TH2D("h_dX_Top_TEST_WithL6", "", 200, 0., Eb, 200, -50., 50.);
     TH2D *h_dX_Top_TEST_NoL6 = new TH2D("h_dX_Top_TEST_NoL6", "", 200, 0., Eb, 200, -50., 50.);
@@ -366,6 +354,8 @@ int main(int argc, char** argv) {
             //cout<<part0->getCharge()<<endl;
 
 
+            double mV0 = cur_v0->getMass();
+
             //            cout << "# of em clusters     " << em->getClusters()->GetSize() << endl;
             //            cout << "# of ep clusters " << ep->getClusters()->GetSize() << endl;
 
@@ -382,8 +372,6 @@ int main(int argc, char** argv) {
                 t_cl_em = cl_em->getClusterTime();
 
                 t_cl_em = cl_em->getClusterTime();
-
-
 
                 E_cl_em = cl_em->getEnergy();
 
@@ -418,6 +406,7 @@ int main(int argc, char** argv) {
             int n_emHits = trk_em->getSvtHits()->GetSize();
             int NDF_em = 2 * n_emHits - 5;
             double d0_em = trk_em->getD0();
+            double dY_em = pos_cl_em.at(1) - pos_trk_em.at(1);
             double dX_em = pos_cl_em.at(0) - pos_trk_em.at(0);
 
             if (!(pos_trk_em.at(1) * cl_em->getPosition().at(1) > 0)) {
@@ -443,6 +432,8 @@ int main(int argc, char** argv) {
                     h_d0_em_botNoL1->Fill(d0_em);
                 }
             }
+
+
 
 
             if (n_emHits == 5) {
@@ -522,6 +513,7 @@ int main(int argc, char** argv) {
             bool hasepL6 = HasL6Hit(trk_ep);
 
 
+
             if (!(pos_trk_ep.at(1) * cl_ep->getPosition().at(1) > 0)) {
                 cout << "               =============================================== " << endl;
                 cout << " A rare event, when cluster and track positions are not in the same half" << endl;
@@ -536,6 +528,7 @@ int main(int argc, char** argv) {
             int n_epHits = trk_ep->getSvtHits()->GetSize();
             int NDF_ep = 2 * n_epHits - 5;
             double d0_ep = trk_ep->getD0();
+            double dY_ep = pos_cl_ep.at(1) - pos_trk_ep.at(1);
             double dX_ep = pos_cl_ep.at(0) - pos_trk_ep.at(0);
 
 
@@ -581,6 +574,14 @@ int main(int argc, char** argv) {
 
 
 
+
+            if (HasL1Hit(trk_ep) && HasL1Hit(trk_em)) {
+                h_Mv0_WithL1->Fill(mV0);
+            }else{
+                h_Mv0_NoL1->Fill(mV0);
+            }
+
+
             IsTightcldT = IsCldtTightCutPass(cl_em, cl_ep);
             IsTightepClTrkdT = IsTightTrkClust_dtCutPassed(trk_ep, cl_ep);
             IsTightemClTrkdT = IsTightTrkClust_dtCutPassed(trk_em, cl_em);
@@ -589,6 +590,10 @@ int main(int argc, char** argv) {
             IsTighteptrkChi2 = IsTightChi2NdfCutPassed(trk_ep);
             IsTightemtrkChi2 = IsTightChi2NdfCutPassed(trk_em);
             IsTightPem = IsTightemMaxMomCut(P_em);
+
+
+            //            cout<<IsTightcldT<<"   "<<IsTightepClTrkdT<<"   "<<IsTightemClTrkdT<<"   "<<IsTightemTrkClMatch<<"   "<<IsTightepTrkClMatch<<"   "
+            //                    <<IsTighteptrkChi2<<"   "<<IsTightemtrkChi2<<"   "<<IsTightPem<<endl;
 
             // =========================================================
             // We don't need tracks that don't have hit lin L1
@@ -623,15 +628,19 @@ int main(int argc, char** argv) {
                 if (pos_trk_em.at(1) > 0.) {
                     if (hasemL6) {
                         h_dX_Top_NegWithL6->Fill(P_em, dX_em);
+                        h_dY_Top_NegWithL6->Fill(P_em, dY_em);
                     } else {
                         h_dX_Top_NegNoL6->Fill(P_em, dX_em);
+                        h_dY_Top_NegNoL6->Fill(P_em, dY_em);
                     }
 
                 } else {
                     if (hasemL6) {
                         h_dX_Bot_NegWithL6->Fill(P_em, dX_em);
+                        h_dY_Bot_NegWithL6->Fill(P_em, dY_em);
                     } else {
                         h_dX_Bot_NegNoL6->Fill(P_em, dX_em);
+                        h_dY_Bot_NegNoL6->Fill(P_em, dY_em);
                     }
 
                 }
@@ -643,14 +652,18 @@ int main(int argc, char** argv) {
                 if (pos_trk_ep.at(1) > 0.) {
                     if (hasepL6) {
                         h_dX_Top_PosWithL6->Fill(P_ep, dX_ep);
+                        h_dY_Top_PosWithL6->Fill(P_ep, dY_ep);
                     } else {
                         h_dX_Top_PosNoL6->Fill(P_ep, dX_ep);
-                    }                                      
+                        h_dY_Top_PosNoL6->Fill(P_ep, dY_ep);
+                    }
                 } else {
                     if (hasepL6) {
                         h_dX_Bot_PosWithL6->Fill(P_ep, dX_ep);
+                        h_dY_Bot_PosWithL6->Fill(P_ep, dY_ep);
                     } else {
                         h_dX_Bot_PosNoL6->Fill(P_ep, dX_ep);
+                        h_dY_Bot_PosNoL6->Fill(P_ep, dY_ep);
                     }
                 }
 
@@ -666,4 +679,3 @@ int main(int argc, char** argv) {
     gDirectory->Write();
     return 0;
 }
-

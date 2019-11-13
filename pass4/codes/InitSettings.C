@@ -5,6 +5,79 @@
 void InitVariables(std::string dataSet) {
 
 
+    // Defing available values for Ap simulation
+    ApMassSet.insert(50);
+    ApMassSet.insert(55);
+    ApMassSet.insert(60);
+    ApMassSet.insert(65);
+    ApMassSet.insert(70);
+    ApMassSet.insert(75);
+    ApMassSet.insert(80);
+    ApMassSet.insert(85);
+    ApMassSet.insert(90);
+    ApMassSet.insert(95);
+    ApMassSet.insert(100);
+    ApMassSet.insert(125);
+    ApMassSet.insert(150);
+    ApMassSet.insert(175);
+
+    // ========================================================================
+    // ========= Let's figure it out which data source will be analyzed Rad, Tri, Date etc
+    // ========================================================================
+
+    isData = false;
+    isTri = false;
+    isRad = false;
+    isWab = false;
+    isMC = false;
+
+    if (dataSet.compare("Data") == 0) {
+        isData = true;
+        //inpFileName = "../Data/hps_008099.All_dst_4.2.root";
+        inpFileName = "../Data/hps_008099_All_v0_4.2.root";
+        outFileName = "EventSelection_Data.root";
+    } else {
+
+        isMC = true;
+
+        if (dataSet.compare("WAB") == 0) {
+            isWab = true;
+            inpFileName = "../Data/WabBeamPass4.root";
+            outFileName = "EventSelection_WAB.root";
+        } else if (dataSet.compare("Rad") == 0) {
+            isRad = true;
+            inpFileName = "../Data/RADWBTPass4.root";
+            outFileName = "EventSelection_Rad.root";
+        } else if (dataSet.compare("Tri") == 0) {
+            isTri = true;
+            inpFileName = "../Data/TriBeamPass4.root";
+            outFileName = "EventSelection_Tri.root";
+        } else if (dataSet.compare("Ap") == 0) {
+            isAp = true;
+            if (ApMassSet.count(ApMass) > 0) {
+
+                inpFileName = Form("../Data/Ap_%dMeV.root", ApMass);
+                outFileName = Form("EventSelection_Ap_%dMeV.root", ApMass);
+
+
+            } else {
+                cout << "Wrong, or No Ap mass is provided. The mass is " << ApMass << endl;
+                cout << "Exiting" << endl;
+                exit(1);
+            }
+        } else {
+
+            cout << "As a data set you provided " << dataSet << endl;
+            cout << "This is not a correct dataset. Exiting" << endl;
+            exit(1);
+        }
+    }
+
+
+    file_in = new TFile(inpFileName.c_str());
+
+
+
     f_clTBotUpLim = new TF1("f_clTBotUpLim", "[0] + x*( [1] + x*[2] )", 0., 2.5);
     f_clTBotLowLim = new TF1("f_clTBotLowLim", "[0] + x*( [1] + x*[2] )", 0., 2.5);
     f_clTTopUpLim = new TF1("f_clTTopUpLim", "[0] + x*( [1] + x*[2] )", 0., 2.5);
@@ -55,10 +128,11 @@ void InitVariables(std::string dataSet) {
     f_trkCl_dt_Bot_TightLowerLim = new TF1("f_trkCl_dt_Bot_TightLowerLim", "[0] + x*( [1] + x*([2] + x*[3]) )", 0., 2.5);
 
 
-
-    if (dataSet.compare("Data") == 0) {
+    if (isData) {
 
         CL_trk_time_Offset = CL_trk_time_Offset_Data;
+
+        chi2NDFTighCut = chi2NDFTighCut_Data;
 
         ep_d0TightCutMax = ep_d0TightCutMax_Data;
         ep_d0TightCutMin = ep_d0TightCutMin_Data;
@@ -67,7 +141,7 @@ void InitVariables(std::string dataSet) {
         em_d0TightCutMin = em_d0TightCutMin_Data;
 
         cl_dTCut_Tight = cl_dTCut_Tight_Data;
-        
+
         Pem_MaxTight = Pem_MaxTight_Data;
 
         f_clTBotUpLim->SetParameters(58.5, 3.40282, -1.00306);
@@ -75,8 +149,8 @@ void InitVariables(std::string dataSet) {
         f_clTTopUpLim->SetParameters(58.4842, 6.33371, -3.54136);
         f_clTTopLowLim->SetParameters(49.9385, 1.38759, 0.0484333);
 
-        
-        
+
+
 
         f_dXTopWithL6Pos_TightUpperLim->SetParameters(-5.98409, 26.061, -11.688);
         f_dXTopWithL6Pos_TightLowerLim->SetParameters(-13.1351, 13.1293, -2.22706);
@@ -103,8 +177,6 @@ void InitVariables(std::string dataSet) {
         f_dXBotNoL6Neg_TightUpperLim->SetParameters(44.0713, -58.8599, 3.79157, 10.3651);
         f_dXBotNoL6Neg_TightLowerLim->SetParameters(-1.81492, -55.8293, 84.5025, -34.4477);
 
-        
-        
         f_trkCl_dt_Top_TightUpperLim->SetParameters(-6.56042, 27.9583, -25.605, 6.9747);
         f_trkCl_dt_Top_TightLowerLim->SetParameters(-1.55686, -3.51391, 4.19438, -1.08659);
 
@@ -112,14 +184,68 @@ void InitVariables(std::string dataSet) {
         f_trkCl_dt_Bot_TightLowerLim->SetParameters(-3.33916, -0.537733, 2.06764, -0.629115);
 
 
-    } else if (dataSet.compare("MC") == 0) {
+    } else if (isMC) {
 
         CL_trk_time_Offset = CL_trk_time_Offset_tri;
+
+        chi2NDFTighCut = chi2NDFTighCut_MC;
+
+        ep_d0TightCutMax = ep_d0TightCutMax_Data;
+        ep_d0TightCutMin = ep_d0TightCutMin_Data;
+
+        em_d0TightCutMax = em_d0TightCutMax_Data;
+        em_d0TightCutMin = em_d0TightCutMin_Data;
+
+        cl_dTCut_Tight = cl_dTCut_Tight_Data;
+
+        Pem_MaxTight = Pem_MaxTight_Data;
+
 
         f_clTBotUpLim->SetParameters(47.5, 0., 0.);
         f_clTBotLowLim->SetParameters(39, 0., 0.);
         f_clTTopUpLim->SetParameters(60., 0., 0.);
         f_clTTopLowLim->SetParameters(30., 0., 0.);
+
+
+        // ==================================================================
+        // ==================================================================
+        // ======= As a temporary solution I will init functions with data
+        // ======= values, but later these values should be adjusted for MC.
+        // ==================================================================
+        // ==================================================================
+
+        f_dXTopWithL6Pos_TightUpperLim->SetParameters(-5.98409, 26.061, -11.688);
+        f_dXTopWithL6Pos_TightLowerLim->SetParameters(-13.1351, 13.1293, -2.22706);
+
+        f_dXTopNoL6Pos_TightUpperLim->SetParameters(-39.666, 224.024, -290.323, 111.805);
+        f_dXTopNoL6Pos_TightLowerLim->SetParameters(-80.858, 160.212, -89.0708, 9.70467);
+
+        f_dXBotWithL6Pos_TightUpperLim->SetParameters(-12.2105, 53.4947, -47.773, 12.7416);
+        f_dXBotWithL6Pos_TightLowerLim->SetParameters(-4.78296, -23.0808, 25.5697, -6.67282);
+
+        f_dXBotNoL6Pos_TightUpperLim->SetParameters(-61.102, 277.35, -330.309, 117.842);
+        f_dXBotNoL6Pos_TightLowerLim->SetParameters(-91.7703, 208.185, -162.909, 41.4299);
+
+
+        f_dXTopWithL6Neg_TightUpperLim->SetParameters(-17.1488, 73.6343, -62.0659, 15.5421);
+        f_dXTopWithL6Neg_TightLowerLim->SetParameters(13.9718, -64.9545, 59.9272, -15.7356);
+
+        f_dXTopNoL6Neg_TightUpperLim->SetParameters(67.1155, -135.967, 102.147, -25.9778);
+        f_dXTopNoL6Neg_TightLowerLim->SetParameters(12.7772, -95.4775, 119.617, -41.3284);
+
+        f_dXBotWithL6Neg_TightUpperLim->SetParameters(-1.77583, 21.8994, -20.4999, 5.22121);
+        f_dXBotWithL6Neg_TightLowerLim->SetParameters(14.5461, -62.4698, 53.6471, -13.6255);
+
+        f_dXBotNoL6Neg_TightUpperLim->SetParameters(44.0713, -58.8599, 3.79157, 10.3651);
+        f_dXBotNoL6Neg_TightLowerLim->SetParameters(-1.81492, -55.8293, 84.5025, -34.4477);
+
+        f_trkCl_dt_Top_TightUpperLim->SetParameters(-6.56042, 27.9583, -25.605, 6.9747);
+        f_trkCl_dt_Top_TightLowerLim->SetParameters(-1.55686, -3.51391, 4.19438, -1.08659);
+
+        f_trkCl_dt_Bot_TightUpperLim->SetParameters(-6.15725, 25.4919, -22.3805, 5.73573);
+        f_trkCl_dt_Bot_TightLowerLim->SetParameters(-3.33916, -0.537733, 2.06764, -0.629115);
+
+
     }
 
     TFile *file_ECalTimeCorrections = new TFile("ECalTimeCorrections.root", "Read");
@@ -140,6 +266,9 @@ void InitVariables(std::string dataSet) {
     IsTightPem = false;
     IsTightD0ep = false;
     IsTightD0em = false;
+
+    // ==== We want to open it at the end, that gDirectory->Write will try to save histos in this file ===
+    file_out = new TFile(outFileName.c_str(), "Recreate");
 }
 
 void ResetEventFlags() {
@@ -202,8 +331,8 @@ bool CheckTightCuts(std::string astr) {
     } else if (astr.compare("Pem") == 0) {
         CheckStatus = IsTightcldT && IsTightemClTrkdT && IsTightepClTrkdT && IsTightemTrkClMatch && IsTightepTrkClMatch && IsTightemtrkChi2 && IsTighteptrkChi2;
     } else {
-        cout << "Wrong Argument is provided in the CheckTighCuts function.  Your argument is "<<astr.c_str()<<endl;
-        cout<<" The list of possible arguments are" << endl;
+        cout << "Wrong Argument is provided in the CheckTighCuts function.  Your argument is " << astr.c_str() << endl;
+        cout << " The list of possible arguments are" << endl;
         cout << "\"cldT\"             Applies strong cuts to all other variables except the cluster time difference cut" << endl;
         cout << "\"emClTrkdT\"        Applies strong cuts to all other variables except the trk-cluster time diff cut for e-" << endl;
         cout << "\"epClTrkdT\"        Applies strong cuts to all other variables except the trk-cluster time diff cut for e+" << endl;
@@ -237,12 +366,10 @@ bool IsTightChi2NdfCutPassed(GblTrack* trk) {
     // For the "Tight" chi2/NDF we didn't see any significant difference
     // wrt 5/6 hits tracks, and whether the track is in the Bottom or Top
 
-    if (isData) {
 
-        if (trk->getChi2() / (2. * (trk->getSvtHits()->GetSize()) - 5.) < chi2NDFTighCut_tData) {
-            checkStatus = true;
-        }
 
+    if (trk->getChi2() / (2. * (trk->getSvtHits()->GetSize()) - 5.) < chi2NDFTighCut) {
+        checkStatus = true;
     }
 
     return checkStatus;
@@ -259,6 +386,7 @@ bool IsTightTrkClust_dtCutPassed(GblTrack *trk, EcalCluster *cl) {
 
     double P = GetMagnitude(trk->getMomentum());
     double dt = cl->getClusterTime() - CL_trk_time_Offset - trk->getTrackTime();
+
 
     if (cl->getPosition().at(1) > 0) {
         timeMatch = (dt > f_trkCl_dt_Top_TightLowerLim->Eval(P)) && (dt < f_trkCl_dt_Top_TightUpperLim->Eval(P));
@@ -318,7 +446,7 @@ bool IsTightTrkClust_dXCutPassed(GblTrack *trk, EcalCluster *cl) {
             }
         }
     }
-    
+
     return posMatch;
 }
 
@@ -391,7 +519,7 @@ bool IsTightTrkClustCutPassed(GblTrack *trk, EcalCluster *cl) {
     return timeMatch*posMatch;
 }
 
-bool IsTightemMaxMomCut(double P){
+bool IsTightemMaxMomCut(double P) {
     return (P < Pem_MaxTight);
 }
 
