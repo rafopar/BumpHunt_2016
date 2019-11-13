@@ -24,6 +24,11 @@ pass4/codes/EventSelection_hadded.root
 pass4/codes/EventSelection_tmp.root
 
 
+pass1/codes/.Mass_res_chi2.cc.swp
+pass4/Latex/Resonance_Search_2016.bbl
+pass4/Latex/Resonance_Search_2016.blg
+
+
 # Some directories
 pass1/Slides/
 pass1/Data/
