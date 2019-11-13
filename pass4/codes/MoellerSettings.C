@@ -1,0 +1,141 @@
+#include "MoellerSettings.h"
+
+#include <TFile.h>
+
+#include <hps_event/HpsEvent.h>
+#include <hps_event/EcalCluster.h>
+
+#include <iostream>
+
+using namespace std;
+
+void InitSettings(std::string dataSet) {
+
+
+    isData = false;
+    isMC = false;
+
+
+    if (dataSet.compare("Data") == 0) {
+
+        isData = true;
+        //inpFileName = "../Data/hps_008099_All_Moller_4.2.root";
+        //inpFileName = "../Data/hps_007796_All_Moller_4.2.root";
+        //inpFileName = "../Data/hps_007966_All_Moller_4.2.root";
+        //inpFileName = "../Data/hps_008096_All_Moller_4.2.root";
+        inpFileName = "../Data/hps_Moeller_Data_All.root";
+        outFileName = "MoellerAnalyze_Data.root";
+
+    } else if (dataSet.compare("MC") == 0) {
+        isMC = true;
+
+        inpFileName = "../Data/olv3_HPS-PhysicsRun2016-Nominal-v4-4-fieldmap_3.8-fix_noTrigger_All.root";
+        outFileName = "MoellerAnalyze_MV.root";
+    }
+
+    file_in = new TFile(inpFileName.c_str(), "Read");
+
+    tr1 = (TTree*) file_in->Get("HPS_Event");
+
+    ev = new HpsEvent();
+
+    b_hps_event = tr1->GetBranch("Event");
+    b_hps_event->SetAddress(&ev);
+
+    SVTtrack = nullptr;
+    trk = nullptr;
+    cl = nullptr;
+    clTop = nullptr;
+    clBot = nullptr;
+    ec_hit = nullptr;
+    svt_hit = nullptr;
+    part = nullptr;
+
+    Topem = nullptr;
+    Botem = nullptr;
+
+    if (isData) {
+        CL_trk_time_Offset = CL_trk_time_Offset_Data;
+    }
+
+
+    if (isMC) {
+        CL_trk_time_Offset = CL_trk_time_Offset_tri;
+    }
+
+
+    // ==== We want to open it at the end, that gDirectory->Write will try to save histos in this file ===
+    file_out = new TFile(outFileName.c_str(), "Recreate");
+}
+
+void ResetEventFlags() {
+
+}
+
+void ResetConstrainedMollerFlags() {
+    Topem = nullptr;
+    Botem = nullptr;
+
+    topChi2 = 0;
+    botChi2 = 0;
+}
+
+int DoesQualifyMoeller(HpsParticle *part) {
+
+    int stat = 0;
+
+    int stat_Size = 0;
+    int stat_charges = 0;
+    int stat_oppositeHalves = 0;
+    int stat_ClusterPresence = 0;
+
+    if (part->getParticles()->GetSize() != 2) {
+        //cout << "# of v0 is " << part->getParticles()->GetSize() << endl;
+        //cout << "# of v0 daughters is not 2!" << endl;
+        stat_Size = 1;
+
+        // ===== Next two steps can not be checked, if it failes this step
+        stat = stat_Size;
+        return stat;
+    }
+
+
+    if (!(((HpsParticle*) part->getParticles()->At(0))->getCharge() < 0 && ((HpsParticle*) part->getParticles()->At(1))->getCharge() < 0)) {
+
+        cout << "Charges are    " << ((HpsParticle*) part->getParticles()->At(0)) << "   and   " << ((HpsParticle*) part->getParticles()->At(1)) << endl;
+        cout << "Moeller pairs should both have Negative charges" << endl;
+        stat_charges = 10;
+    }
+
+
+    double y_pos0 = ((GblTrack*) ((HpsParticle*) part->getParticles()->At(0))->getTracks()->At(0))->getPositionAtEcal().at(1);
+    double y_pos1 = ((GblTrack*) ((HpsParticle*) part->getParticles()->At(1))->getTracks()->At(0))->getPositionAtEcal().at(1);
+
+    if (y_pos0 * y_pos1 >= 0) {
+        cout << "Tracks are not in opposite halves." << endl;
+        stat_oppositeHalves = 100;
+    }
+
+
+    if (!(((HpsParticle*) part->getParticles()->At(0))->getClusters()->GetSize() >= 1 &&
+            ((HpsParticle*) part->getParticles()->At(1))->getClusters()->GetSize() >= 1)) {
+        //cout << "One of Moeller particles doesn't have a cluster!"<<endl;
+        stat_ClusterPresence = 500;
+    }
+
+    stat = stat_Size + stat_charges + stat_oppositeHalves + stat_ClusterPresence;
+
+    return stat;
+
+}
+
+double GetMagnitude(vector<double> v) {
+
+    double magn2 = 0;
+
+    for (int i = 0; i < v.size(); i++) {
+        magn2 = magn2 + v.at(i) * v.at(i);
+    }
+
+    return sqrt(magn2);
+}
