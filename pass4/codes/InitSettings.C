@@ -36,6 +36,9 @@ void InitVariables(std::string dataSet) {
         //inpFileName = "../Data/hps_008099.All_dst_4.2.root";
         inpFileName = "../Data/hps_008099_All_v0_4.2.root";
         outFileName = "EventSelection_Data.root";
+        trkClustMatchFileName = "TrkClustMatching_Data.root";
+        cutHistFileName = "EvSelectionCuts_Data.root";
+        cutHistFileName2 = "EvSelectionCutHists_Data.root";
     } else {
 
         isMC = true;
@@ -75,8 +78,9 @@ void InitVariables(std::string dataSet) {
 
 
     file_in = new TFile(inpFileName.c_str());
-
-
+    file_trkClustMatch = new TFile(trkClustMatchFileName.c_str(), "Read");
+    file_CutHists = new TFile(cutHistFileName.c_str(), "Read");
+    file_CutHists2 = new TFile(cutHistFileName2.c_str(), "Recreate");
 
     f_clTBotUpLim = new TF1("f_clTBotUpLim", "[0] + x*( [1] + x*[2] )", 0., 2.5);
     f_clTBotLowLim = new TF1("f_clTBotLowLim", "[0] + x*( [1] + x*[2] )", 0., 2.5);
@@ -128,7 +132,28 @@ void InitVariables(std::string dataSet) {
     f_trkCl_dt_Bot_TightLowerLim = new TF1("f_trkCl_dt_Bot_TightLowerLim", "[0] + x*( [1] + x*([2] + x*[3]) )", 0., 2.5);
 
 
+    // === ============= ====
+    // === Other Functions ====
+    // === ============= ====
+    f_TrashUp_dX_Top_PosWithL6 = new TF1("f_TrashUp_dX_Top_PosWithL6", "[0] + [1]/(x - [2])", 0., 2.2);
+    f_TrashLow_dX_Top_PosWithL6 = new TF1("f_TrashLow_dX_Top_PosWithL6", "[0] + [1]/(x - [2])", 0., 2.2);
+    f_TrashUp_dX_Top_PosNoL6 = new TF1("f_TrashUp_dX_Top_PosNoL6", "[0] + [1]/(x - [2])", 0., 2.2);
+    f_TrashLow_dX_Top_PosNoL6 = new TF1("f_TrashLow_dX_Top_PosNoL6", "[0] + [1]/(x - [2])", 0., 2.2);
+    f_TrashUp_dX_Bot_PosWithL6 = new TF1("f_TrashUp_dX_Bot_PosWithL6", "[0] + [1]/(x - [2])", 0., 2.2);
+    f_TrashLow_dX_Bot_PosWithL6 = new TF1("f_TrashLow_dX_Bot_PosWithL6", "[0] + [1]/(x - [2])", 0., 2.2);
+    f_TrashUp_dX_Bot_PosNoL6 = new TF1("f_TrashUp_dX_Bot_PosNoL6", "[0] + [1]/(x - [2])", 0., 2.2);
+    f_TrashLow_dX_Bot_PosNoL6 = new TF1("f_TrashLow_dX_Bot_PosNoL6", "[0] + [1]/(x - [2])", 0., 2.2);
+    f_TrashUp_dX_Top_NegWithL6 = new TF1("f_TrashUp_dX_Top_NegWithL6", "[0] + [1]/(x - [2])", 0., 2.2);
+    f_TrashLow_dX_Top_NegWithL6 = new TF1("f_TrashLow_dX_Top_NegWithL6", "[0] + [1]/(x - [2])", 0., 2.2);
+    f_TrashUp_dX_Top_NegNoL6 = new TF1("f_TrashUp_dX_Top_NegNoL6", "[0] + [1]/(x - [2])", 0., 2.2);
+    f_TrashLow_dX_Top_NegNoL6 = new TF1("f_TrashLow_dX_Top_NegNoL6", "[0] + [1]/(x - [2])", 0., 2.2);
+    f_TrashUp_dX_Bot_NegWithL6 = new TF1("f_TrashUP_dX_Bot_NegWithL6", "[0] + [1]/(x - [2])", 0., 2.2);
+    f_TrashLow_dX_Bot_NegWithL6 = new TF1("f_TrashLow_dX_Bot_NegWithL6", "[0] + [1]/(x - [2])", 0., 2.2);
+    f_TrashUp_dX_Bot_NegNoL6 = new TF1("f_TrashUP_dX_Bot_NegNoL6", "[0] + [1]/(x - [2])", 0., 2.2);
+    f_TrashLow_dX_Bot_NegNoL6 = new TF1("f_TrashLow_dX_Bot_NegNoL6", "[0] + [1]/(x - [2])", 0., 2.2);
+
     if (isData) {
+
 
         CL_trk_time_Offset = CL_trk_time_Offset_Data;
 
@@ -141,15 +166,19 @@ void InitVariables(std::string dataSet) {
         em_d0TightCutMin = em_d0TightCutMin_Data;
 
         cl_dTCut_Tight = cl_dTCut_Tight_Data;
+        cl_dTcut = cl_dTcut_Data;
 
         Pem_MaxTight = Pem_MaxTight_Data;
+
+        Pem_MaxCut = Pem_MaxCut_Data;
+        PsumCutMax = PsumCutMax_Data;
+        PsumCutMin = PsumCutMin_Data;
+        d0_cut = d0_cut_Data;
 
         f_clTBotUpLim->SetParameters(58.5, 3.40282, -1.00306);
         f_clTBotLowLim->SetParameters(45.51, 7.55268, -1.89745);
         f_clTTopUpLim->SetParameters(58.4842, 6.33371, -3.54136);
         f_clTTopLowLim->SetParameters(49.9385, 1.38759, 0.0484333);
-
-
 
 
         f_dXTopWithL6Pos_TightUpperLim->SetParameters(-5.98409, 26.061, -11.688);
@@ -183,6 +212,25 @@ void InitVariables(std::string dataSet) {
         f_trkCl_dt_Bot_TightUpperLim->SetParameters(-6.15725, 25.4919, -22.3805, 5.73573);
         f_trkCl_dt_Bot_TightLowerLim->SetParameters(-3.33916, -0.537733, 2.06764, -0.629115);
 
+
+        f_TrashUp_dX_Top_PosWithL6->SetParameters(7., 20., -0.5);
+        f_TrashLow_dX_Top_PosWithL6->SetParameters(7., -25., 0.);
+        f_TrashUp_dX_Top_PosNoL6->SetParameters(0., 16., 0.24);
+        f_TrashLow_dX_Top_PosNoL6->SetParameters(5., -15., 0.24);
+        f_TrashUp_dX_Bot_PosWithL6->SetParameters(-1., 25., -0.25);
+        f_TrashLow_dX_Bot_PosWithL6->SetParameters(1., -25., -0.25);
+        f_TrashUp_dX_Bot_PosNoL6->SetParameters(0., 16., 0.24);
+        f_TrashLow_dX_Bot_PosNoL6->SetParameters(5., -18., 0.18);
+        f_TrashUp_dX_Top_NegWithL6->SetParameters(4., 25., -0.45);
+        f_TrashLow_dX_Top_NegWithL6->SetParameters(-4., -25., -0.45);
+        f_TrashUp_dX_Top_NegNoL6->SetParameters(2., 15., 0.24);
+        f_TrashLow_dX_Top_NegNoL6->SetParameters(0., -16., 0.24);
+        f_TrashUp_dX_Bot_NegWithL6->SetParameters(11., 25., -1.95);
+        f_TrashLow_dX_Bot_NegWithL6->SetParameters(-11., -25., -1.95);
+        f_TrashUp_dX_Bot_NegNoL6->SetParameters(3., 10., 0.25);
+        f_TrashLow_dX_Bot_NegNoL6->SetParameters(0., -16., 0.24);
+
+        InitCutHistograms();
 
     } else if (isMC) {
 
@@ -287,6 +335,20 @@ void ResetV0Flags() {
     IsTightD0ep = false;
     IsTightD0em = false;
 
+    IscldT = false;
+    IsemClTrkdT = false;
+    IsepClTrkdT = false;
+    IsemTrkClMatch = false;
+    IsepTrkClMatch = false;
+    IsemtrkChi2 = false;
+    IseptrkChi2 = false;
+    IsPem = false;
+    IsD0ep = false;
+    IsD0em = false;
+    IsPsumMax = false;
+    IsPsumMin = false;
+
+
     cl_ep = nullptr;
     cl_em = nullptr;
 }
@@ -306,6 +368,46 @@ std::set<int> GetVerticalCrystalls(EcalCluster* cl) {
         vert_crystals.insert(((EcalHit*) cl->getEcalHits()->At(i))->getYCrystalIndex());
     }
     return vert_crystals;
+}
+
+bool CheckAllOtherCuts(std::string astr) {
+    bool Stat = false;
+
+    if (astr.compare("cldT") == 0) {
+        Stat = IsemClTrkdT && IsepClTrkdT && IsemTrkClMatch && IsepTrkClMatch && IsPem && IsD0ep && IsPsumMin && IsPsumMax;
+    } else if (astr.compare("emClTrkdT") == 0) {
+        Stat = IscldT && IsepClTrkdT && IsemTrkClMatch && IsepTrkClMatch && IsPem && IsD0ep && IsPsumMin && IsPsumMax;
+    } else if (astr.compare("epClTrkdT") == 0) {
+        Stat = IscldT && IsemClTrkdT && IsemTrkClMatch && IsepTrkClMatch && IsPem && IsD0ep && IsPsumMin && IsPsumMax;
+    } else if (astr.compare("emClTrkMatch") == 0) {
+        Stat = IscldT && IsemClTrkdT && IsepClTrkdT && IsepTrkClMatch && IsPem && IsD0ep && IsPsumMin && IsPsumMax;
+    } else if (astr.compare("epClTrkMatch") == 0) {
+        Stat = IscldT && IsemClTrkdT && IsepClTrkdT && IsemTrkClMatch && IsPem && IsD0ep && IsPsumMin && IsPsumMax;
+    } else if (astr.compare("Pem") == 0) {
+        Stat = IscldT && IsemClTrkdT && IsepClTrkdT && IsemTrkClMatch && IsepTrkClMatch && IsD0ep && IsPsumMin && IsPsumMax;
+    } else if (astr.compare("d0ep") == 0) {
+        Stat = IscldT && IsemClTrkdT && IsepClTrkdT && IsemTrkClMatch && IsepTrkClMatch && IsPem && IsPsumMin && IsPsumMax;
+    } else if (astr.compare("PsumMax") == 0) {
+        Stat = IscldT && IsemClTrkdT && IsepClTrkdT && IsemTrkClMatch && IsepTrkClMatch && IsPem && IsD0ep && IsPsumMin;
+    } else if (astr.compare("PsumMin") == 0) {
+        Stat = IscldT && IsemClTrkdT && IsepClTrkdT && IsemTrkClMatch && IsepTrkClMatch && IsPem && IsD0ep && IsPsumMax;
+    } else {
+        cout << "Wrong Argument is provided in the CheckTighCuts function.  Your argument is " << astr.c_str() << endl;
+        cout << " The list of possible arguments are" << endl;
+        cout << "\"cldT\"             Applies cuts to all other variables except the cluster time difference cut" << endl;
+        cout << "\"emClTrkdT\"        Applies cuts to all other variables except the trk-cluster time diff cut for e-" << endl;
+        cout << "\"epClTrkdT\"        Applies cuts to all other variables except the trk-cluster time diff cut for e+" << endl;
+        cout << "\"emClTrkMatch\"     Applies cuts to all other variables except the trk-cluster Matching cut for e-" << endl;
+        cout << "\"epClTrkMatch\"     Applies cuts to all other variables except the trk-cluster Matching cut for e+" << endl;
+        cout << "\"Pem\"              Applies cuts to all other variables except the Electron momentum upper cut" << endl;
+        cout << "\"d0ep\"             Applies cuts to all other variables except the d0 of e+ track" << endl;
+        cout << "\"PsumMax\"             Applies cuts to all other variables except Psum max cut" << endl;
+        cout << "\"PsumMin\"             Applies cuts to all other variables except Psum min cut" << endl;
+        cout << "Exiting" << endl;
+        exit(1);
+    }
+
+    return Stat;
 }
 
 bool CheckTightCuts(std::string astr) {
@@ -356,7 +458,7 @@ bool IsCldtTightCutPass(EcalCluster* cl1, EcalCluster* cl2) {
         exit(1);
     }
 
-    return (TMath::Abs(cl1->getClusterTime() - cl1->getClusterTime()) < cl_dTCut_Tight);
+    return (TMath::Abs(cl1->getClusterTime() - cl2->getClusterTime()) < cl_dTCut_Tight);
 }
 
 bool IsTightChi2NdfCutPassed(GblTrack* trk) {
@@ -519,7 +621,128 @@ bool IsTightTrkClustCutPassed(GblTrack *trk, EcalCluster *cl) {
     return timeMatch*posMatch;
 }
 
+bool IscldTCut(EcalCluster* cl1, EcalCluster* cl2) {
+
+    if (cl1->getPosition().at(1) * cl2->getPosition().at(1) > 0) {
+        cout << "In function IsCldtTightCutPass clusters should be in opposite half" << endl;
+        cout << "Exiting" << endl;
+        exit(1);
+    }
+
+    return (TMath::Abs(cl1->getClusterTime() - cl2->getClusterTime()) < cl_dTcut);
+}
+
+bool IsTrkClusterdXMatch(GblTrack* trk, EcalCluster* cl) {
+
+
+    // ===== ========================================= ======
+    // ===== First, let's check track cluster time difference ======
+    // ===== ========================================= ======
+
+    // ==== 1st check whether if the trk and cluster are in the same detector hals
+
+    if (!(trk->getPositionAtEcal().at(1) * cl->getPosition().at(1) > 0)) {
+        cout << "Track and cluster are not in the same half " << endl;
+        cout << "Exiting" << endl;
+        exit(1);
+    }
+
+    bool dXMatch = false;
+
+    double P = GetMagnitude(trk->getMomentum());
+    double dX = cl->getPosition().at(0) - trk->getPositionAtEcal().at(0);
+
+    if (trk->getCharge() > 0) {
+
+        if (cl->getPosition().at(1) > 0) {
+
+            if (HasL6Hit(trk)) {
+                int bin = h_dX_Top_PosWithL6_Cut->FindBin(P, dX);
+                dXMatch = bool(h_dX_Top_PosWithL6_Cut->GetBinContent(bin));
+            } else {
+                int bin = h_dX_Top_PosNoL6_Cut->FindBin(P, dX);
+                dXMatch = bool(h_dX_Top_PosNoL6_Cut->GetBinContent(bin));
+            }
+
+        } else {
+            if (HasL6Hit(trk)) {
+                int bin = h_dX_Bot_PosWithL6_Cut->FindBin(P, dX);
+                dXMatch = bool(h_dX_Bot_PosWithL6_Cut->GetBinContent(bin));
+            } else {
+                int bin = h_dX_Bot_PosNoL6_Cut->FindBin(P, dX);
+                dXMatch = bool(h_dX_Bot_PosNoL6_Cut->GetBinContent(bin));
+            }
+        }
+    } else {
+        if (cl->getPosition().at(1) > 0) {
+
+            if (HasL6Hit(trk)) {
+                int bin = h_dX_Top_NegWithL6_Cut->FindBin(P, dX);
+                dXMatch = bool(h_dX_Top_NegWithL6_Cut->GetBinContent(bin));
+            } else {
+                int bin = h_dX_Top_NegNoL6_Cut->FindBin(P, dX);
+                dXMatch = bool(h_dX_Top_NegNoL6_Cut->GetBinContent(bin));
+            }
+
+        } else {
+            if (HasL6Hit(trk)) {
+                int bin = h_dX_Bot_NegWithL6_Cut->FindBin(P, dX);
+                dXMatch = bool(h_dX_Bot_NegWithL6_Cut->GetBinContent(bin));
+            } else {
+                int bin = h_dX_Bot_NegNoL6_Cut->FindBin(P, dX);
+                dXMatch = bool(h_dX_Bot_NegNoL6_Cut->GetBinContent(bin));
+            }
+        }
+    }
+
+    return dXMatch;
+}
+
+bool IsTrkClusterdTMatch(GblTrack* trk, EcalCluster* cl) {
+
+    // ===== ========================================= ======
+    // ===== First, let's check track cluster time difference ======
+    // ===== ========================================= ======
+
+    // ==== 1st check whether if the trk and cluster are in the same detector hals
+
+    if (!(trk->getPositionAtEcal().at(1) * cl->getPosition().at(1) > 0)) {
+        cout << "Track and cluster are not in the same half " << endl;
+        cout << "Exiting" << endl;
+        exit(1);
+    }
+    bool timeMatch = false;
+
+    double P = GetMagnitude(trk->getMomentum());
+    double dt = cl->getClusterTime() - CL_trk_time_Offset - trk->getTrackTime();
+
+    if (cl->getPosition().at(1) > 0) {
+        int bin = h_trkCl_dt_P_Top_Cut->FindBin(P, dt);
+        timeMatch = bool( h_trkCl_dt_P_Top_Cut->GetBinContent(bin));
+    } else {
+        int bin = h_trkCl_dt_P_Bot_Cut->FindBin(P, dt);
+        timeMatch = bool( h_trkCl_dt_P_Bot_Cut->GetBinContent(bin));
+    }
+
+    return timeMatch;
+}
+
+bool IsTrkClusterMatch(GblTrack *trk, EcalCluster *cl) {
+
+    bool checkStatus = false;
+    bool timeMatch = false;
+    bool posMatch = false;
+
+    timeMatch = IsTrkClusterdTMatch(trk, cl);
+    posMatch = IsTrkClusterdXMatch(trk, cl);
+
+    checkStatus = timeMatch*posMatch;
+
+    return checkStatus;
+}
+
 bool IsTightemMaxMomCut(double P) {
+
     return (P < Pem_MaxTight);
 }
 
@@ -537,6 +760,7 @@ bool IsTightD0CutPassed(GblTrack* trk) {
         } else if (trk->getOmega() > 0) {
 
             if (trk->getD0() > em_d0TightCutMin && trk->getD0() < em_d0TightCutMax) {
+
                 checkStatus = true;
             }
 
@@ -552,6 +776,7 @@ bool HasL1Hit(GblTrack *trk) {
     for (int ii = 0; ii < trk->getSvtHits()->GetSize(); ii++) {
         if (((SvtHit*) trk->getSvtHits()->At(ii))->getPosition().at(2) < 120.) {
             hasL1 = true;
+
             return hasL1;
         }
     }
@@ -563,10 +788,33 @@ bool HasL6Hit(GblTrack *trk) {
     for (int ii = 0; ii < trk->getSvtHits()->GetSize(); ii++) {
         if (((SvtHit*) trk->getSvtHits()->At(ii))->getPosition().at(2) > 850.) {
             hasL6 = true;
+
             return hasL6;
         }
     }
     return hasL6;
+}
+
+bool IsEmMaxMomCut(double P) {
+    if (P < Pem_MaxCut) {
+        return true;
+    } else {
+
+        return false;
+    }
+}
+
+bool IsPsumMaxCut(double P) {
+    return (P < PsumCutMax);
+}
+
+bool IsPsumMinCut(double P) {
+    return (P > PsumCutMin);
+}
+
+bool IsD0Cut(double d0) {
+
+    return (d0 < d0_cut);
 }
 
 vector<double> GetHitCoordAtLayer(GblTrack* trk, int layer) {
@@ -590,6 +838,7 @@ vector<double> GetHitCoordAtLayer(GblTrack* trk, int layer) {
     }
 
     if (found == false) {
+
         return vector<double>{0., 0., 0.};
     }
 
@@ -611,6 +860,7 @@ bool IsIntimeClusterCandidate(EcalCluster* cl) {
 
 
     if (cl->getClusterTime() > cl_t_min && cl->getClusterTime() < cl_t_max) {
+
         intime = true;
     }
 
@@ -628,8 +878,221 @@ double GetMagnitude(vector<double> v) {
     double magn2 = 0;
 
     for (int i = 0; i < v.size(); i++) {
+
         magn2 = magn2 + v.at(i) * v.at(i);
     }
 
     return sqrt(magn2);
+}
+
+void DefineCutGeneral(TH2D *h_inp, TH2D *h_cut, double acutFraction) {
+
+    // Just in case reset the h_cut before filling
+    h_cut->Reset();
+
+    for (int i = 0; i < h_inp->GetNbinsX(); i++) {
+
+
+        TH1D *h1D = (TH1D*) h_inp->ProjectionY("h_inp", i + 1, i + 1);
+
+        int NbinsY = h1D->GetNbinsX();
+
+        double N_All = h1D->Integral();
+
+        double cutFraction = acutFraction;
+
+        // ===== We would like to have not very poor statistics, otherwise
+        // ===== We will skip all bins that that column
+        if (N_All < 45) {
+            continue;
+        }
+
+
+        if (N_All < 100) {
+            cutFraction = 5. * acutFraction;
+        } else if (N_All < 200) {
+            cutFraction = 4. * acutFraction;
+        } else if (N_All < 500) {
+            cutFraction = 2. * acutFraction;
+        }
+
+
+        for (int iy = 0; iy < NbinsY; iy++) {
+
+
+            if (h1D->Integral(1, iy + 1) > N_All * (1 - 0.5 * cutFraction)) {
+                break;
+            }
+
+            if (h1D->Integral(1, iy + 1) > 0.5 * cutFraction * N_All) {
+
+                h_cut->SetBinContent(i + 1, iy + 1, 1);
+            }
+
+        }
+
+
+        delete h1D;
+    }
+}
+
+void InitCutHistograms() {
+
+    TH2D *h_dX_Top_PosWithL6 = (TH2D*) file_CutHists->Get("h_dX_Top_PosWithL6");
+    h_dX_Top_PosWithL6_Cut = (TH2D*) h_dX_Top_PosWithL6->Clone("h_dX_Top_PosWithL6_Cut");
+    for (int ix = 0; ix < h_dX_Top_PosWithL6->GetNbinsX(); ix++) {
+        for (int iy = 0; iy < h_dX_Top_PosWithL6->GetNbinsX(); iy++) {
+            double x = h_dX_Top_PosWithL6_Cut->GetXaxis()->GetBinCenter(ix + 1);
+            double y = h_dX_Top_PosWithL6_Cut->GetYaxis()->GetBinCenter(iy + 1);
+            if (y < f_TrashLow_dX_Top_PosWithL6->Eval(x) || y > f_TrashUp_dX_Top_PosWithL6->Eval(x)) {
+                h_dX_Top_PosWithL6->SetBinContent(ix + 1, iy + 1, 0.);
+            }
+        }
+    }
+
+    DefineCutGeneral(h_dX_Top_PosWithL6, h_dX_Top_PosWithL6_Cut, 0.01);
+    file_CutHists2->Add(h_dX_Top_PosWithL6);
+    file_CutHists2->Add(h_dX_Top_PosWithL6_Cut);
+
+    TH2D *h_dX_Top_PosNoL6 = (TH2D*) file_CutHists->Get("h_dX_Top_PosNoL6");
+    h_dX_Top_PosNoL6_Cut = (TH2D*) h_dX_Top_PosNoL6->Clone("h_dX_Top_PosNoL6_Cut");
+
+    for (int ix = 0; ix < h_dX_Top_PosNoL6->GetNbinsX(); ix++) {
+        for (int iy = 0; iy < h_dX_Top_PosNoL6->GetNbinsX(); iy++) {
+            double x = h_dX_Top_PosNoL6_Cut->GetXaxis()->GetBinCenter(ix + 1);
+            double y = h_dX_Top_PosNoL6_Cut->GetYaxis()->GetBinCenter(iy + 1);
+            if (y < f_TrashLow_dX_Top_PosNoL6->Eval(x) || y > f_TrashUp_dX_Top_PosNoL6->Eval(x)) {
+                h_dX_Top_PosNoL6->SetBinContent(ix + 1, iy + 1, 0.);
+            }
+        }
+    }
+
+    DefineCutGeneral(h_dX_Top_PosNoL6, h_dX_Top_PosNoL6_Cut, 0.01);
+    file_CutHists2->Add(h_dX_Top_PosNoL6);
+    file_CutHists2->Add(h_dX_Top_PosNoL6_Cut);
+
+
+
+    TH2D *h_dX_Bot_PosWithL6 = (TH2D*) file_CutHists->Get("h_dX_Bot_PosWithL6");
+    h_dX_Bot_PosWithL6_Cut = (TH2D*) h_dX_Bot_PosWithL6->Clone("h_dX_Bot_PosWithL6_Cut");
+    for (int ix = 0; ix < h_dX_Bot_PosWithL6->GetNbinsX(); ix++) {
+        for (int iy = 0; iy < h_dX_Bot_PosWithL6->GetNbinsX(); iy++) {
+            double x = h_dX_Bot_PosWithL6_Cut->GetXaxis()->GetBinCenter(ix + 1);
+            double y = h_dX_Bot_PosWithL6_Cut->GetYaxis()->GetBinCenter(iy + 1);
+            if (y < f_TrashLow_dX_Bot_PosWithL6->Eval(x) || y > f_TrashUp_dX_Bot_PosWithL6->Eval(x)) {
+                h_dX_Bot_PosWithL6->SetBinContent(ix + 1, iy + 1, 0.);
+            }
+        }
+    }
+
+    DefineCutGeneral(h_dX_Bot_PosWithL6, h_dX_Bot_PosWithL6_Cut, 0.01);
+    file_CutHists2->Add(h_dX_Bot_PosWithL6);
+    file_CutHists2->Add(h_dX_Bot_PosWithL6_Cut);
+
+    TH2D *h_dX_Bot_PosNoL6 = (TH2D*) file_CutHists->Get("h_dX_Bot_PosNoL6");
+    h_dX_Bot_PosNoL6_Cut = (TH2D*) h_dX_Bot_PosNoL6->Clone("h_dX_Bot_PosNoL6_Cut");
+
+    for (int ix = 0; ix < h_dX_Bot_PosNoL6->GetNbinsX(); ix++) {
+        for (int iy = 0; iy < h_dX_Bot_PosNoL6->GetNbinsX(); iy++) {
+            double x = h_dX_Bot_PosNoL6_Cut->GetXaxis()->GetBinCenter(ix + 1);
+            double y = h_dX_Bot_PosNoL6_Cut->GetYaxis()->GetBinCenter(iy + 1);
+            if (y < f_TrashLow_dX_Bot_PosNoL6->Eval(x) || y > f_TrashUp_dX_Bot_PosNoL6->Eval(x)) {
+                h_dX_Bot_PosNoL6->SetBinContent(ix + 1, iy + 1, 0.);
+            }
+        }
+    }
+
+    DefineCutGeneral(h_dX_Bot_PosNoL6, h_dX_Bot_PosNoL6_Cut, 0.01);
+    file_CutHists2->Add(h_dX_Bot_PosNoL6);
+    file_CutHists2->Add(h_dX_Bot_PosNoL6_Cut);
+
+
+
+
+    TH2D *h_dX_Top_NegWithL6 = (TH2D*) file_CutHists->Get("h_dX_Top_NegWithL6");
+    h_dX_Top_NegWithL6_Cut = (TH2D*) h_dX_Top_NegWithL6->Clone("h_dX_Top_NegWithL6_Cut");
+    for (int ix = 0; ix < h_dX_Top_NegWithL6->GetNbinsX(); ix++) {
+        for (int iy = 0; iy < h_dX_Top_NegWithL6->GetNbinsX(); iy++) {
+            double x = h_dX_Top_NegWithL6_Cut->GetXaxis()->GetBinCenter(ix + 1);
+            double y = h_dX_Top_NegWithL6_Cut->GetYaxis()->GetBinCenter(iy + 1);
+            if (y > f_TrashUp_dX_Top_NegWithL6->Eval(x) || y < f_TrashLow_dX_Top_NegWithL6->Eval(x)) {
+                h_dX_Top_NegWithL6->SetBinContent(ix + 1, iy + 1, 0.);
+            }
+        }
+    }
+
+    DefineCutGeneral(h_dX_Top_NegWithL6, h_dX_Top_NegWithL6_Cut, 0.01);
+    file_CutHists2->Add(h_dX_Top_NegWithL6);
+    file_CutHists2->Add(h_dX_Top_NegWithL6_Cut);
+
+    TH2D *h_dX_Top_NegNoL6 = (TH2D*) file_CutHists->Get("h_dX_Top_NegNoL6");
+    h_dX_Top_NegNoL6_Cut = (TH2D*) h_dX_Top_NegNoL6->Clone("h_dX_Top_NegNoL6_Cut");
+
+    for (int ix = 0; ix < h_dX_Top_NegNoL6->GetNbinsX(); ix++) {
+        for (int iy = 0; iy < h_dX_Top_NegNoL6->GetNbinsX(); iy++) {
+            double x = h_dX_Top_NegNoL6_Cut->GetXaxis()->GetBinCenter(ix + 1);
+            double y = h_dX_Top_NegNoL6_Cut->GetYaxis()->GetBinCenter(iy + 1);
+            if (y > f_TrashUp_dX_Top_NegNoL6->Eval(x) || y < f_TrashLow_dX_Top_NegNoL6->Eval(x)) {
+                h_dX_Top_NegNoL6->SetBinContent(ix + 1, iy + 1, 0.);
+            }
+        }
+    }
+
+    DefineCutGeneral(h_dX_Top_NegNoL6, h_dX_Top_NegNoL6_Cut, 0.01);
+    file_CutHists2->Add(h_dX_Top_NegNoL6);
+    file_CutHists2->Add(h_dX_Top_NegNoL6_Cut);
+
+
+
+    TH2D *h_dX_Bot_NegWithL6 = (TH2D*) file_CutHists->Get("h_dX_Bot_NegWithL6");
+    h_dX_Bot_NegWithL6_Cut = (TH2D*) h_dX_Bot_NegWithL6->Clone("h_dX_Bot_NegWithL6_Cut");
+    for (int ix = 0; ix < h_dX_Bot_NegWithL6->GetNbinsX(); ix++) {
+        for (int iy = 0; iy < h_dX_Bot_NegWithL6->GetNbinsX(); iy++) {
+            double x = h_dX_Bot_NegWithL6_Cut->GetXaxis()->GetBinCenter(ix + 1);
+            double y = h_dX_Bot_NegWithL6_Cut->GetYaxis()->GetBinCenter(iy + 1);
+            if (y > f_TrashUp_dX_Bot_NegWithL6->Eval(x) || y < f_TrashLow_dX_Bot_NegWithL6->Eval(x)) {
+                h_dX_Bot_NegWithL6->SetBinContent(ix + 1, iy + 1, 0.);
+            }
+        }
+    }
+
+    DefineCutGeneral(h_dX_Bot_NegWithL6, h_dX_Bot_NegWithL6_Cut, 0.01);
+    file_CutHists2->Add(h_dX_Bot_NegWithL6);
+    file_CutHists2->Add(h_dX_Bot_NegWithL6_Cut);
+
+    TH2D *h_dX_Bot_NegNoL6 = (TH2D*) file_CutHists->Get("h_dX_Bot_NegNoL6");
+    h_dX_Bot_NegNoL6_Cut = (TH2D*) h_dX_Bot_NegNoL6->Clone("h_dX_Bot_NegNoL6_Cut");
+
+    for (int ix = 0; ix < h_dX_Bot_NegNoL6->GetNbinsX(); ix++) {
+        for (int iy = 0; iy < h_dX_Bot_NegNoL6->GetNbinsX(); iy++) {
+            double x = h_dX_Bot_NegNoL6_Cut->GetXaxis()->GetBinCenter(ix + 1);
+            double y = h_dX_Bot_NegNoL6_Cut->GetYaxis()->GetBinCenter(iy + 1);
+            if (y > f_TrashUp_dX_Bot_NegNoL6->Eval(x) || y < f_TrashLow_dX_Bot_NegNoL6->Eval(x)) {
+                h_dX_Bot_NegNoL6->SetBinContent(ix + 1, iy + 1, 0.);
+            }
+        }
+    }
+
+    DefineCutGeneral(h_dX_Bot_NegNoL6, h_dX_Bot_NegNoL6_Cut, 0.01);
+    file_CutHists2->Add(h_dX_Bot_NegNoL6);
+    file_CutHists2->Add(h_dX_Bot_NegNoL6_Cut);
+
+    TH2D *h_trkCl_dt_P_Top = (TH2D*) file_trkClustMatch->Get("h_trkCl_dt_P_Top");
+    h_trkCl_dt_P_Top_Cut = (TH2D*) h_trkCl_dt_P_Top->Clone("h_trkCl_dt_P_Top_Cut");
+    DefineCutGeneral(h_trkCl_dt_P_Top, h_trkCl_dt_P_Top_Cut, 0.01);
+    file_CutHists2->Add(h_trkCl_dt_P_Top);
+    file_CutHists2->Add(h_trkCl_dt_P_Top_Cut);
+
+    TH2D *h_trkCl_dt_P_Bot = (TH2D*) file_trkClustMatch->Get("h_trkCl_dt_P_Bot");
+    h_trkCl_dt_P_Bot_Cut = (TH2D*) h_trkCl_dt_P_Bot->Clone("h_trkCl_dt_P_Bot_Cut");
+    DefineCutGeneral(h_trkCl_dt_P_Bot, h_trkCl_dt_P_Bot_Cut, 0.01);
+    file_CutHists2->Add(h_trkCl_dt_P_Bot);
+    file_CutHists2->Add(h_trkCl_dt_P_Bot_Cut);
+
+
+    file_CutHists2->Write();
+    //file_CutHists2->Close();
+
+
+
 }

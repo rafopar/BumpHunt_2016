@@ -4,6 +4,7 @@
 #include <set>
 #include <map>
 #include <TF1.h>
+#include <TH2D.h>
 #include <hps_event/EcalCluster.h>
 
 using namespace std;
@@ -25,7 +26,7 @@ double cl_t_max = 63.;
 double cl_t_min = 50.;
 
 const double pos_d0_cut = 1.1;
-const double Psum_min = 1.51; // GeV
+const double PsumCutMin_Data = 1.51; // GeV
 
 const double chi2NDFTighCut_Data = 2;
 const double chi2NDFTighCut_MC = 2;
@@ -41,7 +42,13 @@ const double cl_dTCut_Tight_Data = 0.7;
 
 const int nSVTLayers = 6;
 
-const double Pem_MaxTight_Data = 1.7;
+const double Pem_MaxTight_Data = 1.75;
+const double Pem_MaxCut_Data = 1.75;
+
+const double cl_dTcut_Data = 1.43;
+const double PsumCutMax_Data = 2.4;
+
+const double d0_cut_Data = 1.18; // From pass1 Data and MC, will be revised with new MC
 
 // =========================================================================
 // =====  Definition of Non-Const Variables
@@ -73,6 +80,25 @@ bool IsTightPem;
 bool IsTightD0ep;
 bool IsTightD0em;
 
+
+// =========================================================================
+// ==== Flags for cuts on different variables (Those are Non-Tight cut flags)
+// =========================================================================
+
+bool IscldT;
+bool IsemClTrkdT;
+bool IsepClTrkdT;
+bool IsemTrkClMatch;
+bool IsepTrkClMatch;
+bool IsemtrkChi2;
+bool IseptrkChi2;
+bool IsPem;
+bool IsD0ep;
+bool IsD0em;
+bool IsPsumMax;
+bool IsPsumMin;
+
+
 // ==== ============================
 // ==== Int variables
 // ==== ============================
@@ -90,6 +116,14 @@ double ep_d0TightCutMin;
 
 double em_d0TightCutMax;
 double em_d0TightCutMin;
+
+double Pem_MaxCut;
+
+double cl_dTcut;
+
+double PsumCutMax;
+double PsumCutMin;
+double d0_cut;
 
 double SVTLayerBinnings[nSVTLayers + 1] = {50., 150., 250., 400., 600., 800., 950.};
 
@@ -116,6 +150,9 @@ std::string dataSet;
 
 std::string inpFileName;
 std::string outFileName;
+std::string trkClustMatchFileName;
+std::string cutHistFileName;
+std::string cutHistFileName2;
 
 
 
@@ -135,6 +172,14 @@ TH2D *h_time_Corrections;
 // =========================================================================
 TFile *file_in;
 TFile *file_out;
+/*The file that contains trk-cluster Matching histograms*/
+TFile *file_trkClustMatch;
+/* Histograms from this file will be used for determining cut limits e.g. keeping 99% of events */
+TFile *file_CutHists;
+/* This file will contain same histograms for cut determination, and also actual histograms that
+ * were determined, i.e. if the variable is acceptable, then the corresponding bin content is 1, otherwise it is 0
+ */
+TFile *file_CutHists2;
 
 
 // =========================================================================
@@ -188,6 +233,49 @@ TF1 *f_trkCl_dt_Top_TightLowerLim;
 TF1 *f_trkCl_dt_Bot_TightUpperLim;
 TF1 *f_trkCl_dt_Bot_TightLowerLim;
 
+
+// === ================== ===
+// === Some histograms need some regions to be trashed before
+// === creating Cut histograms. Below TF1 functions will 
+// ==== determine these regions
+// === ================== ===
+
+TF1 *f_TrashUp_dX_Top_PosWithL6;
+TF1 *f_TrashLow_dX_Top_PosWithL6;
+TF1 *f_TrashUp_dX_Top_PosNoL6;
+TF1 *f_TrashLow_dX_Top_PosNoL6;
+TF1 *f_TrashUp_dX_Bot_PosWithL6;
+TF1 *f_TrashLow_dX_Bot_PosWithL6;
+TF1 *f_TrashUp_dX_Bot_PosNoL6;
+TF1 *f_TrashLow_dX_Bot_PosNoL6;
+
+TF1 *f_TrashUp_dX_Top_NegWithL6;
+TF1 *f_TrashLow_dX_Top_NegWithL6;
+TF1 *f_TrashUp_dX_Top_NegNoL6;
+TF1 *f_TrashLow_dX_Top_NegNoL6;
+TF1 *f_TrashUp_dX_Bot_NegWithL6;
+TF1 *f_TrashLow_dX_Bot_NegWithL6;
+TF1 *f_TrashUp_dX_Bot_NegNoL6;
+TF1 *f_TrashLow_dX_Bot_NegNoL6;
+
+
+
+// ========= ========================================================================= ========
+// ========= Histograms  ========
+// ========= ========================================================================= ========
+TH2D *h_dX_Top_PosWithL6_Cut;
+TH2D *h_dX_Top_PosNoL6_Cut;
+TH2D *h_dX_Bot_PosWithL6_Cut;
+TH2D *h_dX_Bot_PosNoL6_Cut;
+
+TH2D *h_dX_Top_NegWithL6_Cut;
+TH2D *h_dX_Top_NegNoL6_Cut;
+TH2D *h_dX_Bot_NegWithL6_Cut;
+TH2D *h_dX_Bot_NegNoL6_Cut;
+
+TH2D *h_trkCl_dt_P_Top_Cut;
+TH2D *h_trkCl_dt_P_Bot_Cut;
+
 // ========= ========================================================================= ========
 // ========= DST HPS type variables
 // ========= ========================================================================= ========
@@ -225,6 +313,13 @@ void CorrectClusterTime(EcalCluster*);
 
 // ======= This function returns number of rows the given crystal cover.
 std::set<int> GetVerticalCrystalls(EcalCluster*);
+
+
+// ========= ============================================================= ============
+// ========= This check if all other variables (Except the given) passed cuts
+// ========= ============================================================= ============
+
+bool CheckAllOtherCuts(std::string);
 
 
 // ========= ============================================================= ============
@@ -292,6 +387,50 @@ bool HasL1Hit(GblTrack*);
 // ========= ============================================================= ============
 bool HasL6Hit(GblTrack*);
 
+
+// ========= ============================================================= ============
+// ========= Cluster time difference cut
+// ========= ============================================================= ============
+bool IscldTCut(EcalCluster*, EcalCluster*);
+
+// ========= ============================================================= ============
+// ========= The Electron Momentum cut ============
+// ========= ============================================================= ============
+bool IsEmMaxMomCut(double);
+
+// ========= ============================================================= ============
+// ========= TrackClusterMatching ============
+// ========= ============================================================= ============
+bool IsTrkClusterMatch(GblTrack*, EcalCluster*);
+
+
+// ========= ============================================================= ============
+// ========= Track-Cluster dX Matching ============
+// ========= ============================================================= ============
+bool IsTrkClusterdXMatch(GblTrack*, EcalCluster*);
+
+// ========= ============================================================= ============
+// ========= Track-Cluster time difference Matching ============
+// ========= ============================================================= ============
+bool IsTrkClusterdTMatch(GblTrack*, EcalCluster*);
+
+
+// ========= ============================================================= ============
+// ========= Psum cut ============
+// ========= ============================================================= ============
+bool IsPsumMaxCut(double);
+
+// ========= ============================================================= ============
+// ========= Psum cut ============
+// ========= ============================================================= ============
+bool IsPsumMinCut(double);
+
+
+// ========= ============================================================= ============
+// ========= d0 cut ============
+// ========= ============================================================= ============
+bool IsD0Cut(double);
+
 // ========= ============================================================= ============
 // ========= This function returns the position of the hit associated to the track
 // ========= in the given layer
@@ -306,9 +445,25 @@ vector<double> GetHitCoordAtLayer(GblTrack*, int);
 
 double GetMagnitude(vector<double>);
 
+// ===== ==============================================     ======
+// ===== A function that you give as a 1st argument the     ======
+// ===== input histogram, and for each xbin, it determines  ======
+// ===== lbin, rbin, that events below lbin are less than   ======
+// ===== a half of a given fraction (3rd argument), and     ======
+// ===== and events above the rbin are similarly less       ======
+// ===== than the half od a given fraction. The bin content ======
+// ===== of all bins in between lbin and rbin are set to 1  ======
+// ===== and the rest of bins are set to 0.                 ======
+// ===== ==============================================     ======
 
+void DefineCutGeneral(TH2D*, TH2D*, double);
 
-
+// ===== ==============================================     ======
+// ===== This function will go over all 2D Cut histograms   ======
+// ===== and for each histo, will create and Initialize cut ======
+// ===== histograms.                                        ======
+// ===== ==============================================     ======
+void InitCutHistograms();
 
 
 

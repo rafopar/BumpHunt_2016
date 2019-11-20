@@ -61,6 +61,7 @@ int main(int argc, char** argv) {
     TH2D *h_dtCorr_Esum2 = new TH2D("h_dtCorr_Esum2", "", 200, 0., 1.2 * Eb, 200, -15., 15.);
 
     TH2D *h_cl_yxc1 = new TH2D("h_cl_yxc1", "", 200, -300., 370, 200, -90., 90.);
+    TH2D *h_cl_yxc_TEST1 = new TH2D("h_cl_yxc_TEST1", "", 200, -300., 370, 200, -90., 90.);
 
     TH1D *h_tr_P_pos1 = new TH1D("h_tr_P_pos1", "", 200, 0., 1.2 * Eb);
     TH1D *h_tr_P_neg1 = new TH1D("h_tr_P_neg1", "", 200, 0., 1.2 * Eb);
@@ -116,21 +117,27 @@ int main(int argc, char** argv) {
     TH1D *h_d0_ep_botWithL1 = new TH1D("h_d0_ep_botWithL1", "", 200, -3.5, 3.5);
     TH1D *h_d0_ep_botNoL1 = new TH1D("h_d0_ep_botNoL1", "", 200, -3.5, 3.5);
 
+    TH1D *h_Psum1 = new TH1D("h_Psum1", "", 200, 0.7, 1.2 * Eb);
+    TH1D *h_Psum2 = new TH1D("h_Psum2", "", 200, 0.7, 1.2 * Eb);
+    TH1D *h_Psum3 = new TH1D("h_Psum3", "", 200, 0.7, 1.2 * Eb);
+    TH1D *h_Psum4 = new TH1D("h_Psum4", "", 200, 0.7, 1.2 * Eb);
 
     TH1D *h_Pem_TightCut1 = new TH1D("h_Pem_TightCut1", "", 200, 0., Eb);
 
     TH1D *h_em_Chi2Ndf1 = new TH1D("h_em_Chi2Ndf1", "", 200, 0., 13.);
     TH1D *h_ep_Chi2Ndf1 = new TH1D("h_ep_Chi2Ndf1", "", 200, 0., 13.);
 
-    TH2D *h_dX_Top_PosWithL6 = new TH2D("h_dX_Top_PosWithL6", "", 200, 0., Eb, 200, -50., 50.);
-    TH2D *h_dX_Top_PosNoL6 = new TH2D("h_dX_Top_PosNoL6", "", 200, 0., Eb, 200, -50., 50.);
-    TH2D *h_dX_Bot_PosWithL6 = new TH2D("h_dX_Bot_PosWithL6", "", 200, 0., Eb, 200, -50., 50.);
-    TH2D *h_dX_Bot_PosNoL6 = new TH2D("h_dX_Bot_PosNoL6", "", 200, 0., Eb, 200, -50., 50.);
+    TH2D *h_dX_Top_PosWithL6 = new TH2D("h_dX_Top_PosWithL6", "", 100, 0., Eb, 100, -50., 50.);
+    TH2D *h_dX_Top_PosNoL6 = new TH2D("h_dX_Top_PosNoL6", "", 100, 0., Eb, 100, -50., 50.);
+    TH2D *h_dX_Bot_PosWithL6 = new TH2D("h_dX_Bot_PosWithL6", "", 100, 0., Eb, 100, -50., 50.);
+    TH2D *h_dX_Bot_PosNoL6 = new TH2D("h_dX_Bot_PosNoL6", "", 100, 0., Eb, 100, -50., 50.);
 
-    TH2D *h_dX_Top_NegWithL6 = new TH2D("h_dX_Top_NegWithL6", "", 200, 0., Eb, 200, -50., 50.);
-    TH2D *h_dX_Top_NegNoL6 = new TH2D("h_dX_Top_NegNoL6", "", 200, 0., Eb, 200, -50., 50.);
-    TH2D *h_dX_Bot_NegWithL6 = new TH2D("h_dX_Bot_NegWithL6", "", 200, 0., Eb, 200, -50., 50.);
-    TH2D *h_dX_Bot_NegNoL6 = new TH2D("h_dX_Bot_NegNoL6", "", 200, 0., Eb, 200, -50., 50.);
+    TH2D *h_dX_Top_NegWithL6 = new TH2D("h_dX_Top_NegWithL6", "", 100, 0., Eb, 100, -50., 50.);
+    TH2D *h_dX_Top_NegNoL6 = new TH2D("h_dX_Top_NegNoL6", "", 100, 0., Eb, 100, -50., 50.);
+    TH2D *h_dX_Bot_NegWithL6 = new TH2D("h_dX_Bot_NegWithL6", "", 100, 0., Eb, 100, -50., 50.);
+    TH2D *h_dX_Bot_NegNoL6 = new TH2D("h_dX_Bot_NegNoL6", "", 100, 0., Eb, 100, -50., 50.);
+    TH2D *h_dX_Bot_NegNoL6_Test1 = new TH2D("h_dX_Bot_NegNoL6_Test1", "", 200, 0., Eb, 200, -50., 50.);
+    TH2D *h_dX_Bot_NegNoL6_Test2 = new TH2D("h_dX_Bot_NegNoL6_Test2", "", 200, 0., Eb, 200, -50., 50.);
 
     TH2D *h_dY_Top_PosWithL6 = new TH2D("h_dY_Top_PosWithL6", "", 200, 0., Eb, 200, -50., 50.);
     TH2D *h_dY_Top_PosNoL6 = new TH2D("h_dY_Top_PosNoL6", "", 200, 0., Eb, 200, -50., 50.);
@@ -146,6 +153,20 @@ int main(int argc, char** argv) {
     TH2D *h_dX_Top_TEST_NoL6 = new TH2D("h_dX_Top_TEST_NoL6", "", 200, 0., Eb, 200, -50., 50.);
     TH2D *h_dX_Bot_TEST_WithL6 = new TH2D("h_dX_Bot_TEST_WithL6", "", 200, 0., Eb, 200, -50., 50.);
     TH2D *h_dX_Bot_TEST_NoL6 = new TH2D("h_dX_Bot_TEST_NoL6", "", 200, 0., Eb, 200, -50., 50.);
+
+
+    // =============== Final Event Selection Cuts Cuts ==========
+    TH1D *h_Minv_Final1 = new TH1D("h_Minv_Final1", "", 200, 0., 0.24 );
+    TH1D *h_Minv_PMax_Final1 = new TH1D("h_Minv_PMax_Final1", "", 200, 0., 0.24);
+    TH1D *h_Minv_PMin_Final1 = new TH1D("h_Minv_PMin_Final1", "", 200, 0., 0.24);
+    TH1D *h_Minv_cldT_Final1 = new TH1D("h_Minv_cldT_Final1", "", 200, 0., 0.24);
+    TH1D *h_Minv_epClTrkdT_Final1 = new TH1D("h_Minv_epClTrkdT_Final1", "", 200, 0., 0.24);
+    TH1D *h_Minv_emClTrkdT_Final1 = new TH1D("h_Minv_emClTrkdT_Final1", "", 200, 0., 0.24);
+    TH1D *h_Minv_epClTrkMatch_Final1 = new TH1D("h_Minv_epClTrkMatch_Final1", "", 200, 0., 0.24);
+    TH1D *h_Minv_emClTrkMatch_Final1 = new TH1D("h_Minv_emClTrkMatch_Final1", "", 200, 0., 0.24);
+    TH1D *h_Minv_Pem_Final1 = new TH1D("h_Minv_Pem_Final1", "", 200, 0., 0.24);
+    TH1D *h_Minv_d0ep_Final1 = new TH1D("h_Minv_d0ep_Final1", "", 200, 0., 0.24);
+
 
 
 
@@ -187,7 +208,7 @@ int main(int argc, char** argv) {
 
     cout << "Number of events is " << nev << endl;
 
-    //nev = 500000;
+    nev = 500;
     for (int ientry = 0; ientry < nev; ientry++) {
 
         tr1->GetEntry(ientry);
@@ -340,6 +361,7 @@ int main(int argc, char** argv) {
                 exit(1);
             }
 
+            double Psum = GetMagnitude(cur_v0->getMomentum());
             HpsParticle *em;
             HpsParticle *ep;
             //HpsParticle *part0 = ((HpsParticle*)cur_v0->getParticles()->At(0)) ;
@@ -577,10 +599,12 @@ int main(int argc, char** argv) {
 
             if (HasL1Hit(trk_ep) && HasL1Hit(trk_em)) {
                 h_Mv0_WithL1->Fill(mV0);
-            }else{
+            } else {
                 h_Mv0_NoL1->Fill(mV0);
             }
 
+
+            h_Psum1->Fill(Psum);
 
             IsTightcldT = IsCldtTightCutPass(cl_em, cl_ep);
             IsTightepClTrkdT = IsTightTrkClust_dtCutPassed(trk_ep, cl_ep);
@@ -599,10 +623,15 @@ int main(int argc, char** argv) {
             // We don't need tracks that don't have hit lin L1
             // =========================================================
 
-            if (!(hasemL1 && hasepL1)) {
+            //if (!(hasemL1 && hasepL1)) {
+            if (!hasepL1) {
                 continue;
             }
 
+            if (IsTightcldT && IsTightPem && IsTightemtrkChi2 && IsTighteptrkChi2 && IsTightepTrkClMatch && IsTightemTrkClMatch && IsTightemClTrkdT && IsTightepClTrkdT
+                    && IsTightcldT) {
+                h_Psum2->Fill(Psum);
+            }
 
             if (CheckTightCuts("cldT")) {
                 h_cl_dt_Esum_posnegTight1->Fill(E_cl_ep + E_cl_em, t_cl_ep - t_cl_em);
@@ -619,9 +648,6 @@ int main(int argc, char** argv) {
             if (CheckTightCuts("epTrkChi2")) {
                 h_ep_Chi2Ndf1->Fill(chi2_ep / double(NDF_ep));
             }
-
-
-
 
             if (CheckTightCuts("emClTrkMatch")) {
 
@@ -641,6 +667,17 @@ int main(int argc, char** argv) {
                     } else {
                         h_dX_Bot_NegNoL6->Fill(P_em, dX_em);
                         h_dY_Bot_NegNoL6->Fill(P_em, dY_em);
+
+                        if (pos_cl_em.at(0) < -260.) {
+                            h_dX_Bot_NegNoL6_Test1->Fill(P_em, dX_em);
+                        } else {
+                            h_dX_Bot_NegNoL6_Test2->Fill(P_em, dX_em);
+                        }
+
+                        if (dX_em > -7 - 18. / (0.2 - P_em)) {
+                            h_cl_yxc_TEST1->Fill(pos_cl_em.at(0), pos_cl_em.at(1));
+                        }
+
                     }
 
                 }
@@ -670,6 +707,58 @@ int main(int argc, char** argv) {
             }
 
 
+
+            // ===============================================================================================
+            // ====== Selecting Final V0 candidates
+            // ===============================================================================================
+
+            IsPsumMax = IsPsumMaxCut(Psum);
+            IsPsumMin = IsPsumMinCut(Psum);
+            IscldT = IscldTCut(cl_em, cl_ep);
+            IsemClTrkdT = IsTrkClusterdTMatch(trk_em, cl_em);
+            IsepClTrkdT = IsTrkClusterdTMatch(trk_ep, cl_ep);
+            IsemTrkClMatch = IsTrkClusterdXMatch(trk_em, cl_em);
+            IsepTrkClMatch = IsTrkClusterdXMatch(trk_ep, cl_ep);
+            IsPem = IsEmMaxMomCut(P_em);
+            IsD0ep = IsD0Cut(d0_ep);
+
+            if (CheckAllOtherCuts("PsumMax")) {
+                h_Minv_PMax_Final1->Fill(mV0);
+            }
+
+            if (CheckAllOtherCuts("PsumMin")) {
+                h_Minv_PMin_Final1->Fill(mV0);
+            }
+
+            if (CheckAllOtherCuts("cldT")) {
+                h_Minv_cldT_Final1->Fill(mV0);
+            }
+
+            if (CheckAllOtherCuts("epClTrkdT")) {
+                h_Minv_epClTrkdT_Final1->Fill(mV0);
+            }
+
+            if (CheckAllOtherCuts("emClTrkdT")) {
+                h_Minv_emClTrkdT_Final1->Fill(mV0);
+            }
+
+            if (CheckAllOtherCuts("epClTrkMatch")) {
+                h_Minv_epClTrkMatch_Final1->Fill(mV0);
+            }
+            if (CheckAllOtherCuts("emClTrkMatch")) {
+                h_Minv_emClTrkMatch_Final1->Fill(mV0);
+            }
+
+            if (CheckAllOtherCuts("emClTrkdT")) {
+                h_Minv_Pem_Final1->Fill(mV0);
+            }
+            if (CheckAllOtherCuts("d0ep")) {
+                h_Minv_d0ep_Final1->Fill(mV0);
+
+                if (IsD0ep) {
+                    h_Minv_Final1->Fill(mV0);
+                }
+            }
 
 
         }
