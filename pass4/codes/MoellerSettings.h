@@ -17,6 +17,7 @@ const double radian = 57.29578;
 const double Eb = 2.306;
 const double CL_trk_time_Offset_Data = 55.;
 const double CL_trk_time_Offset_tri = 43.5;
+const double phi_rot = 0.03; // The 30 mrad rotation
 double CL_trk_time_Offset;
 double cl_t_max = 63.;
 double cl_t_min = 50.;
