@@ -120,7 +120,7 @@ int main(int argc, char** argv) {
     TH2D *h_Chi2NDF_TCM5 = new TH2D("h_Chi2NDF_TCM5", "", 200, 0.02, 0.12, 200, 0., 12.);
     
     int nev = tr1->GetEntries();
-    //nev = 500000;
+    //nev = 1000000;
 
     cout << "Number of events is " << nev << endl;
 
@@ -209,8 +209,13 @@ int main(int argc, char** argv) {
             vector<double> P_Top_emVect = ((GblTrack*) Topem->getTracks()->At(0))->getMomentum();
             vector<double> P_Bot_emVect = ((GblTrack*) Botem->getTracks()->At(0))->getMomentum();
 
-            double phiTop = atan2(P_Top_emVect.at(1), P_Top_emVect.at(0)) * TMath::RadToDeg();
-            double phiBot = atan2(P_Bot_emVect.at(1), P_Bot_emVect.at(0)) * TMath::RadToDeg();
+            double Px_TopRot = P_Top_emVect.at(0)*cos(phi_rot) - P_Top_emVect.at(2)*sin(phi_rot);
+            double Px_BotRot = P_Bot_emVect.at(0)*cos(phi_rot) - P_Bot_emVect.at(2)*sin(phi_rot);
+            
+            double phiTop = atan2(P_Top_emVect.at(1), Px_TopRot) * TMath::RadToDeg();
+            double phiBot = atan2(P_Bot_emVect.at(1), Px_BotRot) * TMath::RadToDeg();
+//            double phiTop = atan2(P_Top_emVect.at(1), P_Top_emVect.at(0)) * TMath::RadToDeg();
+//            double phiBot = atan2(P_Bot_emVect.at(1), P_Bot_emVect.at(0)) * TMath::RadToDeg();
 
             h_phi_TopBot1->Fill(phiBot, phiTop);
 
@@ -252,7 +257,7 @@ int main(int argc, char** argv) {
             h_BotMatchChi2_1->Fill(MatchingChi2Bot);
 
 
-            if (P_TCM > 2.24 && P_TCM < 2.4 /*&& cl_dT > -1.5 && cl_dT < 1.5 */) {
+            if (P_TCM > 2.25 && P_TCM < 2.4 /*&& cl_dT > -1.5 && cl_dT < 1.5 */) {
                 h_MTCMoeller2->Fill(M_TCM);
                 h_P_TopBot2->Fill(P_Bot, P_Top);
                 h_dX_P_Top2->Fill(P_Top, dX_Top);
@@ -280,9 +285,8 @@ int main(int argc, char** argv) {
                     h_Chi2NDF_TCM3->Fill(M_TCM, chi2NDF_Sum);
 
 
-                    if (/* xTopCl < -65. && xBotCl < -65. && xTopCl < -160. - xBotCl * 1. && xTopCl > -175. - xBotCl * 1. &&  */
-                            (MatchingChi2Top - 5) * (MatchingChi2Bot - 5) < 0. && TMath::Min(MatchingChi2Top, MatchingChi2Bot) < 3.5 &&
-                            tr_dT > -2.5 && tr_dT < 1.5) {
+                    if (  (MatchingChi2Top - 5) * (MatchingChi2Bot - 5) < 0. && TMath::Min(MatchingChi2Top, MatchingChi2Bot) < 3.5 && tr_dT > -2.5 && tr_dT < 1.5 
+                         /* && (phiTop > phiBot + 165) && (phiTop < phiBot + 190.  )*/  ) {
                         h_MTCMoeller4->Fill(M_TCM);
                         h_phi_TopBot4->Fill(phiBot, phiTop);
                         h_VertChi2_4->Fill(VertexChi2);
