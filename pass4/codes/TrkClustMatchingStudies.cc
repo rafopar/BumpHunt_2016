@@ -152,8 +152,8 @@ int main(int argc, char** argv) {
     TH2D *h_trkCl_dt_P_Bot_Neg_5hit = new TH2D("h_trkCl_dt_P_Bot_Neg_5hit", "", 200, 0., 2.5, 200, -15., 15.);
 
 
-    TH2D *h_trkCl_dt_P_Top = new TH2D("h_trkCl_dt_P_Top", "", 200, 0., 2.5, 200, -10., 10.);
-    TH2D *h_trkCl_dt_P_Bot = new TH2D("h_trkCl_dt_P_Bot", "", 200, 0., 2.5, 200, -10., 10.);
+    TH2D *h_trkCl_dt_P_Top = new TH2D("h_trkCl_dt_P_Top", "", 100, 0., 2.5, 100, -10., 10.);
+    TH2D *h_trkCl_dt_P_Bot = new TH2D("h_trkCl_dt_P_Bot", "", 100, 0., 2.5, 100, -10., 10.);
     
     HpsEvent *ev = new HpsEvent();
     //tr1->SetBranchAddress("HPS_Event", ev);
