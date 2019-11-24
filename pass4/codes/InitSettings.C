@@ -43,10 +43,25 @@ void InitVariables(std::string dataSet) {
 
         isMC = true;
 
+        cutHistFileName = "EvSelectionCuts_Data.root";
+
         if (dataSet.compare("WAB") == 0) {
             isWab = true;
             inpFileName = "../Data/WabBeamPass4.root";
-            outFileName = "EventSelection_WAB.root";
+            //inpFileName = "../Data/WABBT_Pass4_pairs1.root";
+
+            if (isEventSelection) {
+                outFileName = "EventSelection_WAB.root";
+            } else if (isTrkClusterMatching) {
+                outFileName = "TrkClustMatching_WAB.root";
+            } else if (isECalTimeStudies) {
+                outFileName = "ECalTimingStudies_WAB.root";
+            }
+
+            trkClustMatchFileName = "TrkClustMatching_Data.root";
+            cutHistFileName = "EvSelectionCuts_Data.root";
+            cutHistFileName2 = "EvSelectionCutHists_Data.root";
+
         } else if (dataSet.compare("Rad") == 0) {
             isRad = true;
             inpFileName = "../Data/RADWBTPass4.root";
@@ -78,9 +93,12 @@ void InitVariables(std::string dataSet) {
 
 
     file_in = new TFile(inpFileName.c_str());
-    file_trkClustMatch = new TFile(trkClustMatchFileName.c_str(), "Read");
-    file_CutHists = new TFile(cutHistFileName.c_str(), "Read");
-    file_CutHists2 = new TFile(cutHistFileName2.c_str(), "Recreate");
+
+    if (isEventSelection) {
+        file_trkClustMatch = new TFile(trkClustMatchFileName.c_str(), "Read");
+        file_CutHists = new TFile(cutHistFileName.c_str(), "Read");
+        file_CutHists2 = new TFile(cutHistFileName2.c_str(), "Recreate");
+    }
 
     f_clTBotUpLim = new TF1("f_clTBotUpLim", "[0] + x*( [1] + x*[2] )", 0., 2.5);
     f_clTBotLowLim = new TF1("f_clTBotLowLim", "[0] + x*( [1] + x*[2] )", 0., 2.5);
@@ -230,27 +248,43 @@ void InitVariables(std::string dataSet) {
         f_TrashUp_dX_Bot_NegNoL6->SetParameters(3., 10., 0.25);
         f_TrashLow_dX_Bot_NegNoL6->SetParameters(0., -16., 0.24);
 
-        InitCutHistograms();
+
+        if (isEventSelection) {
+            InitCutHistograms();
+        }
 
     } else if (isMC) {
 
         CL_trk_time_Offset = CL_trk_time_Offset_tri;
 
+        if (isWab) {
+            CL_trk_time_Offset = CL_trk_time_Offset_WAB;
+        }
+
         chi2NDFTighCut = chi2NDFTighCut_MC;
 
-        ep_d0TightCutMax = ep_d0TightCutMax_Data;
-        ep_d0TightCutMin = ep_d0TightCutMin_Data;
+        cl_dTCut_Tight = cl_dTCut_Tight_MC;
 
-        em_d0TightCutMax = em_d0TightCutMax_Data;
-        em_d0TightCutMin = em_d0TightCutMin_Data;
+        Pem_MaxTight = Pem_MaxTight_MC;
 
-        cl_dTCut_Tight = cl_dTCut_Tight_Data;
+
+        ep_d0TightCutMax = ep_d0TightCutMax_MC;
+        ep_d0TightCutMin = ep_d0TightCutMin_MC;
+
+        em_d0TightCutMax = em_d0TightCutMax_MC;
+        em_d0TightCutMin = em_d0TightCutMin_MC;
+
+        cl_dTcut = cl_dTcut_Data;
 
         Pem_MaxTight = Pem_MaxTight_Data;
 
+        Pem_MaxCut = Pem_MaxCut_MC;
+        PsumCutMax = PsumCutMax_MC;
+        PsumCutMin = PsumCutMin_MC;
+        d0_cut = d0_cut_MC;
 
-        f_clTBotUpLim->SetParameters(47.5, 0., 0.);
-        f_clTBotLowLim->SetParameters(39, 0., 0.);
+        f_clTBotUpLim->SetParameters(48., 0., 0.);
+        f_clTBotLowLim->SetParameters(38, 0., 0.);
         f_clTTopUpLim->SetParameters(60., 0., 0.);
         f_clTTopLowLim->SetParameters(30., 0., 0.);
 
@@ -293,6 +327,27 @@ void InitVariables(std::string dataSet) {
         f_trkCl_dt_Bot_TightUpperLim->SetParameters(-6.15725, 25.4919, -22.3805, 5.73573);
         f_trkCl_dt_Bot_TightLowerLim->SetParameters(-3.33916, -0.537733, 2.06764, -0.629115);
 
+
+        f_TrashUp_dX_Top_PosWithL6->SetParameters(7., 20., -0.5);
+        f_TrashLow_dX_Top_PosWithL6->SetParameters(7., -25., 0.);
+        f_TrashUp_dX_Top_PosNoL6->SetParameters(0., 16., 0.24);
+        f_TrashLow_dX_Top_PosNoL6->SetParameters(5., -15., 0.24);
+        f_TrashUp_dX_Bot_PosWithL6->SetParameters(-1., 25., -0.25);
+        f_TrashLow_dX_Bot_PosWithL6->SetParameters(1., -25., -0.25);
+        f_TrashUp_dX_Bot_PosNoL6->SetParameters(0., 16., 0.24);
+        f_TrashLow_dX_Bot_PosNoL6->SetParameters(5., -18., 0.18);
+        f_TrashUp_dX_Top_NegWithL6->SetParameters(4., 25., -0.45);
+        f_TrashLow_dX_Top_NegWithL6->SetParameters(-4., -25., -0.45);
+        f_TrashUp_dX_Top_NegNoL6->SetParameters(2., 15., 0.24);
+        f_TrashLow_dX_Top_NegNoL6->SetParameters(0., -16., 0.24);
+        f_TrashUp_dX_Bot_NegWithL6->SetParameters(11., 25., -1.95);
+        f_TrashLow_dX_Bot_NegWithL6->SetParameters(-11., -25., -1.95);
+        f_TrashUp_dX_Bot_NegNoL6->SetParameters(3., 10., 0.25);
+        f_TrashLow_dX_Bot_NegNoL6->SetParameters(0., -16., 0.24);
+
+        if (isEventSelection) {
+            InitCutHistograms();
+        }
 
     }
 
@@ -355,11 +410,15 @@ void ResetV0Flags() {
 
 void CorrectClusterTime(EcalCluster* cl) {
 
-    int y_ind = cl->getSeed()->getYCrystalIndex();
-    int x_ind = cl->getSeed()->getXCrystalIndex();
+    // ==== Just in case, we should make sure, the input data source is Data, not MC
 
-    double t_corr = h_time_Corrections->GetBinContent(h_time_Corrections->FindBin(x_ind, y_ind));
-    cl->setClusterTime(cl->getClusterTime() - t_corr);
+    if (isData) {
+        int y_ind = cl->getSeed()->getYCrystalIndex();
+        int x_ind = cl->getSeed()->getXCrystalIndex();
+
+        double t_corr = h_time_Corrections->GetBinContent(h_time_Corrections->FindBin(x_ind, y_ind));
+        cl->setClusterTime(cl->getClusterTime() - t_corr);
+    }
 }
 
 std::set<int> GetVerticalCrystalls(EcalCluster* cl) {
@@ -488,7 +547,6 @@ bool IsTightTrkClust_dtCutPassed(GblTrack *trk, EcalCluster *cl) {
 
     double P = GetMagnitude(trk->getMomentum());
     double dt = cl->getClusterTime() - CL_trk_time_Offset - trk->getTrackTime();
-
 
     if (cl->getPosition().at(1) > 0) {
         timeMatch = (dt > f_trkCl_dt_Top_TightLowerLim->Eval(P)) && (dt < f_trkCl_dt_Top_TightUpperLim->Eval(P));

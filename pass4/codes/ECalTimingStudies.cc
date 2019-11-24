@@ -34,8 +34,25 @@ using namespace std;
  * 
  */
 int main(int argc, char** argv) {
-    
-    InitVariables();
+
+    if (argc >= 2) {
+
+        dataSet = argv[1];
+
+        if (argc == 3) {
+            ApMass = atoi(argv[2]);
+        }
+
+    } else {
+        cout << "No argument is provided " << endl;
+        cout << "Rus as follows: Eg  ./EventSelection.exe Data" << endl;
+        cout << "Exiting" << endl;
+
+        exit(1);
+    }
+
+    isECalTimeStudies = true;
+    InitVariables(dataSet);
 
     TFile *file_in = new TFile("../Data/hps_008099.All_dst_4.2.root");
 
@@ -73,7 +90,7 @@ int main(int argc, char** argv) {
     for (int ix = -23; ix <= 23; ix++) {
         for (int iy = -5; iy <= 5; iy++) {
             m_h_cl_dt_crystal[std::pair<int, int>(ix, iy)] = new TH1D(Form("m_h_cl_dt_crystal_%d_%d", ix, iy), "", 200, -5., 5.);
-            m_h_Esum_dt_crystal[std::pair<int, int>(ix, iy)] = new TH2D(Form("m_h_Esum_dt_crystal_%d_%d", ix, iy), "", 200, 0., 1.2*Eb, 200, -15., 15.);
+            m_h_Esum_dt_crystal[std::pair<int, int>(ix, iy)] = new TH2D(Form("m_h_Esum_dt_crystal_%d_%d", ix, iy), "", 200, 0., 1.2 * Eb, 200, -15., 15.);
         }
     }
 
@@ -150,15 +167,15 @@ int main(int argc, char** argv) {
                 h_cl_E_tTop1->Fill(cl_E, cl_t);
                 cl_t_max = 70.;
                 cl_t_min = 30.;
-//                cl_t_max = f_clTTopUpLim->Eval(cl_E);
-//                cl_t_min = f_clTTopLowLim->Eval(cl_E);
+                //                cl_t_max = f_clTTopUpLim->Eval(cl_E);
+                //                cl_t_min = f_clTTopLowLim->Eval(cl_E);
             } else {
                 h_cl_E_tBot1->Fill(cl_E, cl_t);
                 cl_t_max = f_clTBotUpLim->Eval(cl_E);
                 cl_t_min = f_clTBotLowLim->Eval(cl_E);
             }
-            
-            
+
+
             if (!(cl_t > cl_t_min && cl_t < cl_t_max)) {
                 continue;
             }
@@ -199,7 +216,7 @@ int main(int argc, char** argv) {
                 double t_bot_corrected = clBot->getClusterTime() - botTimeCorrection;
 
                 double dtCorr = t_top_corrected - t_bot_corrected;
-                                
+
                 double x_Top = clTop->getPosition().at(0);
                 double x_Bot = clBot->getPosition().at(0);
 
@@ -210,7 +227,7 @@ int main(int argc, char** argv) {
                 if (Esum > 0.75 * Eb) {
                     m_h_cl_dt_crystal[std::pair<int, int>(ix_top, iy_top)]->Fill(dt);
                     m_h_cl_dt_crystal[std::pair<int, int>(ix_bot, iy_bot)]->Fill(-dt);
-                    
+
                 }
 
                 m_h_Esum_dt_crystal[std::pair<int, int>(ix_top, iy_top)]->Fill(Esum, dt);

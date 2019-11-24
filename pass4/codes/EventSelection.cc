@@ -44,9 +44,8 @@ int main(int argc, char** argv) {
         exit(1);
     }
 
+    isEventSelection = true;
     InitVariables(dataSet);
-
-
 
     TTree *tr1 = (TTree*) file_in->Get("HPS_Event");
 
@@ -156,7 +155,7 @@ int main(int argc, char** argv) {
 
 
     // =============== Final Event Selection Cuts Cuts ==========
-    TH1D *h_Minv_Final1 = new TH1D("h_Minv_Final1", "", 200, 0., 0.24 );
+    TH1D *h_Minv_Final1 = new TH1D("h_Minv_Final1", "", 200, 0., 0.24);
     TH1D *h_Minv_PMax_Final1 = new TH1D("h_Minv_PMax_Final1", "", 200, 0., 0.24);
     TH1D *h_Minv_PMin_Final1 = new TH1D("h_Minv_PMin_Final1", "", 200, 0., 0.24);
     TH1D *h_Minv_cldT_Final1 = new TH1D("h_Minv_cldT_Final1", "", 200, 0., 0.24);
@@ -208,7 +207,7 @@ int main(int argc, char** argv) {
 
     cout << "Number of events is " << nev << endl;
 
-    nev = 500;
+    nev = 50000;
     for (int ientry = 0; ientry < nev; ientry++) {
 
         tr1->GetEntry(ientry);
@@ -233,8 +232,13 @@ int main(int argc, char** argv) {
         for (int i_cl = 0; i_cl < n_cl; i_cl++) {
             cl = ev->getEcalCluster(i_cl);
 
-            // ===== Correct the cluster time at the earliest stage
-            CorrectClusterTime(cl);
+            // ===== Correct the cluster time at the earliest stage =====
+            // ===== The correction is needed only for Data, so, we =====
+            // ===== will check, if it is data, and then only will  =====
+            // ===== apply the correction                           =====
+            if (isData) {
+                CorrectClusterTime(cl);
+            }
 
             double cl_E = cl->getEnergy();
             double cl_t = cl->getClusterTime();
@@ -616,8 +620,8 @@ int main(int argc, char** argv) {
             IsTightPem = IsTightemMaxMomCut(P_em);
 
 
-            //            cout<<IsTightcldT<<"   "<<IsTightepClTrkdT<<"   "<<IsTightemClTrkdT<<"   "<<IsTightemTrkClMatch<<"   "<<IsTightepTrkClMatch<<"   "
-            //                    <<IsTighteptrkChi2<<"   "<<IsTightemtrkChi2<<"   "<<IsTightPem<<endl;
+            //            cout << IsTightcldT << "   " << IsTightepClTrkdT << "   " << IsTightemClTrkdT << "   " << IsTightemTrkClMatch << "   " << IsTightepTrkClMatch << "   "
+            //                    << IsTighteptrkChi2 << "   " << IsTightemtrkChi2 << "   " << IsTightPem << endl;
 
             // =========================================================
             // We don't need tracks that don't have hit lin L1

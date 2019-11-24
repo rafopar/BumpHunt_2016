@@ -27,21 +27,13 @@ using namespace std;
  * 
  */
 int main(int argc, char** argv) {
-
+    
     if (argc >= 2) {
 
         dataSet = argv[1];
 
-        if (!(dataSet.compare("Data") == 0 || dataSet.compare("MC") == 0)) {
-            cout << "The 1st argument should be data set, and it should be either \"Data\" or \"MC\" " << endl;
-            cout << "Exiting" << endl;
-            exit(1);
-        }
-
-        if (dataSet.compare("Data") == 0) {
-            isData = true;
-        } else {
-            isData = false;
+        if (argc == 3) {
+            ApMass = atoi(argv[2]);
         }
 
     } else {
@@ -51,14 +43,9 @@ int main(int argc, char** argv) {
 
         exit(1);
     }
-
+    
+    isTrkClusterMatching = true;
     InitVariables(dataSet);
-
-    if (isData) {
-        file_in = new TFile("../Data/hps_008099.All_dst_4.2.root");
-    } else {
-        file_in = new TFile("../Data/WabBeamPass4.root");
-    }
 
 
     TTree *tr1 = (TTree*) file_in->Get("HPS_Event");
@@ -175,7 +162,7 @@ int main(int argc, char** argv) {
 
     cout << "Number of events is " << nev << endl;
 
-    //nev = 100000;
+    nev = 2000;
     for (int ientry = 0; ientry < nev; ientry++) {
 
         tr1->GetEntry(ientry);
@@ -298,7 +285,6 @@ int main(int argc, char** argv) {
                 h_dY_P_BotPos1->Fill(P_ep, pos_cl_ep.at(1) - pos_trk_ep.at(1));
 
                 int seedY = ((EcalCluster*) ep->getClusters()->At(0))->getSeed()->getYCrystalIndex();
-
                 
                 h_trkCl_dt_P_Top->Fill(P_em, t_cl_em - trk_em->getTrackTime() - CL_trk_time_Offset);
                 h_trkCl_dt_P_Bot->Fill(P_ep, t_cl_ep - trk_ep->getTrackTime() - CL_trk_time_Offset);

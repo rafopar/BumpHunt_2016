@@ -18,7 +18,7 @@ const double radian = 57.29578;
 const double Eb = 2.306;
 const double CL_trk_time_Offset_Data = 55.;
 const double CL_trk_time_Offset_tri = 43.5;
-//const double CL_trk_time_Offset_tri = 51.64;
+const double CL_trk_time_Offset_WAB = 51.2517;
 double CL_trk_time_Offset;
 //const double cl_t_max = 80.;
 //const double cl_t_min = 20.;
@@ -26,7 +26,6 @@ double cl_t_max = 63.;
 double cl_t_min = 50.;
 
 const double pos_d0_cut = 1.1;
-const double PsumCutMin_Data = 1.51; // GeV
 
 const double chi2NDFTighCut_Data = 2;
 const double chi2NDFTighCut_MC = 2;
@@ -34,21 +33,32 @@ double chi2NDFTighCut;
 
 const double ep_d0TightCutMax_Data = 0.5;
 const double ep_d0TightCutMin_Data = -0.7;
+const double ep_d0TightCutMax_MC = 0.4;
+const double ep_d0TightCutMin_MC = -0.5;
 
 const double em_d0TightCutMax_Data = 0.7;
 const double em_d0TightCutMin_Data = -0.7;
+const double em_d0TightCutMax_MC = 0.7;
+const double em_d0TightCutMin_MC = -0.7;
 
 const double cl_dTCut_Tight_Data = 0.7;
+const double cl_dTCut_Tight_MC = 0.4;
 
 const int nSVTLayers = 6;
 
 const double Pem_MaxTight_Data = 1.75;
+const double Pem_MaxTight_MC = 1.75;
 const double Pem_MaxCut_Data = 1.75;
+const double Pem_MaxCut_MC = 1.75;
 
 const double cl_dTcut_Data = 1.43;
 const double PsumCutMax_Data = 2.4;
+const double PsumCutMax_MC = 2.4;
+const double PsumCutMin_Data = 1.51; // GeV
+const double PsumCutMin_MC = 1.51; // GeV
 
 const double d0_cut_Data = 1.18; // From pass1 Data and MC, will be revised with new MC
+const double d0_cut_MC = 0.7; // Needs to be verified
 
 // =========================================================================
 // =====  Definition of Non-Const Variables
@@ -98,6 +108,13 @@ bool IsD0em;
 bool IsPsumMax;
 bool IsPsumMin;
 
+
+// ========================================================================
+// === Bool variables defining which program is running
+// ========================================================================
+bool isEventSelection = false;
+bool isTrkClusterMatching = false;
+bool isECalTimeStudies = false;
 
 // ==== ============================
 // ==== Int variables
