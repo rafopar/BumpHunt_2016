@@ -53,7 +53,7 @@ The main goal of event selection cuts is to maximize signal sensitivity.
 
 In this analysis only events with ``Pair1'' trigger (see \cite{TriggerNote} for the description of HPS triggers) are used.
 
-\subsection{Cluster timing cuts}
+\subsection{Cluster timing cuts}\label{sec:cldTcuts}
 The readout window of ECal FADC data is 200 ns. Clusters coming from the physics events, that generated the trigger, are located in a narrow time range (few ns width because of the trigger jitter) in the readout window around $\mathrm{t = 56\; ns}$.
 %%%%%%%%%%%%%%%%%%%%%%%%%% F I G U R E %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{figure}[!htb]
@@ -125,13 +125,45 @@ Then in order to determine the optimal cut on the cluster time difference, we wi
 %%%%%%%%%%%%%%%%%%%%%%%%%% F I G U R E %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 The $\mathrm{\frac{\displaystyle S}{\displaystyle \sqrt{S + Bgr}}} $ ratio as a function of cluster time difference cut is shown in Fig.\ref{fig:cl_dtOptimumCut}, where the maximum value at $\mathrm{\Delta t < 1.43\;ns}$ is indicated by a vertical dashed line.
 
+\subsection{Two dimensinal cuts}
+Some of event selections cuts described below are two dimensinal cuts, i.e. the cut value depends on the value of another variable. In most of cases two dimensional cuts are implemented as a function of particle's momentum.
+
+In general, to study the distribution of a given variable for a ''signal like`` particle, the rest of event selection cuts are applied, to make as clean as possible signal.  
+The only exception is the two cluster time difference cut, which is described in section \ref{sec:cldTcuts} ).
+Applying the rest of cuts except the one under the investigation, will ensure the 
+accidental background is minimal (negligible), and the resulting distribution will represent actuall signal (the $e^{-}$, $e^{+}$, ($X$) final state). In most of cases the distribution is not Gaussian, even when it represent a small momentum bin.
+%%%%%%%%%%%%%%%%%%%%%%%%%% F I G U R E %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{figure}[!htb]
+ \centering
+ \grinp[width=0.75\tw]{Figs/CutLimitTests.pdf}
+ \caption{Illustration of  $3\sigma$ cut limits vs $99\%$ cut limits on a toy distribution.}
+ \label{fig:CutLimitIllustration}
+\end{figure}
+%%%%%%%%%%%%%%%%%%%%%%%%%% F I G U R E %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+In such cases, the conventional $\pm 3\sigma$ cuts will not be will not keep $99.7\%$ but rather might cut more events. As an example in Fig.\ref{fig:CutLimitIllustration} shown a toy distribution which is not a pure Gaussian, but rather has a tail on the left side. The Gaussian fit is shown on top if the histogram and $\pm 3\sigma$ limits are shown by vertical red lines. One can see that $-3\sigma$ limit will cut several $\%$ of events rather than $0.3\%$. Instead it was decided to choose left and right cuts limits such that will keep $99\%$ of the signal and will throw $0.5\%$ of signal events from each side. In this particular case $99\%$ cut limits are shown by blue vertical lines.
+\subsection{Track-Cluster Matching}
+The offline reconstruction code forms particles by matching tracks and clusters to each other, by utilizing spatial coordinate and time differences between tracks and clusters.
+In the offline reconstruction the matching is quite loose (''Better to keep junk, rather than throwing a good particle``). In this section spatial and time matching cuts are described. Both, time and position resolution of $e^{-}$ and $e^{+}$ clusters depend on particle momentum. The precision of the track projected coordinate at the ECal face does depend on the track momentum too. Because of these reasons we studied track-cluster matching as a function of momentum.
+
+\subsubsection{time matching}
+In addition to the momentum dependence we noticed also slight difference between top and bottom sectors, therefore two separate cuts are developed for each detector half.
+% %%%%%%%%%%%%%%%%%%%%%%%%%% F I G U R E %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{figure}[!htb]
+ \centering
+ \subfloat[]{\label{fig:ClTrkDtBot}\grinp[width=0.45\tw]{Figs/trk_cl_timeDiffCut_Bot_Data.pdf}}
+ \subfloat[]{\label{fig:ClTrkDtTop}\grinp[width=0.45\tw]{Figs/trk_cl_timeDiffCut_Top_Data.pdf}}
+ \caption{Cluster-Track time difference as a function of particle momentum. Left plot represents particles in the bottom half, and the right plot represents particles in the top half of the detector. The area marked by Red dots represents the acceptance region. }
+ \label{fig:ClTrkTimeMatch}
+\end{figure}
+%%%%%%%%%%%%%%%%%%%%%%%%%% F I G U R E %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+In Fig.\ref{fig:ClTrkTimeMatch} shown Cluster-Track time difference as a function of particle momentum. Left plot represents particles in the bottom half, and the right plot represents particles in the top half of the detector. The area marked by Red dots represents the acceptance region.
+
 
 \subsection{Track $\chi^{2}$ cuts}
-\subsection{Track-Cluster Matching}
-This section should include both spatial and time matching of clusters and tracks.
-\subsection{WAB Suppresion cuts}
+
+\subsection{WAB Suppression cuts}
 Describe L1 and $\mathrm{d_{0}}$ cuts. \\
-Mention why L1 is important, addition of suppresing WABs, it also significantly
+Mention why L1 is important, addition of suppressing WABs, it also significantly
 improves the mass resolution.
 
 
