@@ -75,7 +75,7 @@ The next step is to cut pairs of top-bottom clusters that are far from each othe
  \label{fig:clTimeUncorCorr}
 \end{figure}
 %%%%%%%%%%%%%%%%%%%%%%%%%% F I G U R E %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-During the analysis is was found that ECal cluster times can be improved, in particular the dashed red histogram in Fig.\ref{fig:clTimeUncorCorr} shows the time difference between top and bottom clusters\footnote{For the sake of better visualization, the plot shows doesn't fully show the entire central peak. } at high $\mathrm{E_{sum}}$ region ($\mathrm{1.9\;GeV  < E_{Sum} < 2.4\; GeV}$). As one can see there is a bump at around $\mathrm{2\;ns}$, while the at $\mathrm{-2\;ns}$ there is no clear bump. This suggests that time offsets of some crystals might be wrong.
+During the analysis is was found that ECal cluster times can be improved, in particular the dashed red histogram in Fig.\ref{fig:clTimeUncorCorr} shows the time difference between top and bottom clusters\footnote{For the sake of better visualization, the plot doesn't fully show the entire central peak. } at high $\mathrm{E_{sum}}$ region ($\mathrm{1.9\;GeV  < E_{Sum} < 2.4\; GeV}$). As one can see there is a bump at around $\mathrm{2\;ns}$, while the at $\mathrm{-2\;ns}$ there is no clear bump. This suggests that time offsets of some crystals might be wrong.
 %%%%%%%%%%%%%%%%%%%%%%%%%% F I G U R E %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{figure}[!htb] 
  \centering
@@ -140,7 +140,29 @@ accidental background is minimal (negligible), and the resulting distribution wi
  \label{fig:CutLimitIllustration}
 \end{figure}
 %%%%%%%%%%%%%%%%%%%%%%%%%% F I G U R E %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-In such cases, the conventional $\pm 3\sigma$ cuts will not be will not keep $99.7\%$ but rather might cut more events. As an example in Fig.\ref{fig:CutLimitIllustration} shown a toy distribution which is not a pure Gaussian, but rather has a tail on the left side. The Gaussian fit is shown on top if the histogram and $\pm 3\sigma$ limits are shown by vertical red lines. One can see that $-3\sigma$ limit will cut several $\%$ of events rather than $0.3\%$. Instead it was decided to choose left and right cuts limits such that will keep $99\%$ of the signal and will throw $0.5\%$ of signal events from each side. In this particular case $99\%$ cut limits are shown by blue vertical lines.
+In such cases, the conventional $\pm 3\sigma$ cuts will not be will not keep $99.7\%$ but rather might cut more events. As an example in Fig.\ref{fig:CutLimitIllustration} shown a toy distribution which is not a pure Gaussian, but rather has a tail on the left side. The Gaussian fit is shown on top if the histogram and $\pm 3\sigma$ limits are shown by vertical red lines. One can see that $-3\sigma$ limit will cut several $\%$ of events rather than $0.3\%$. Instead it was decided to choose left and right cuts limits such that will keep $99\%$ of the signal and will throw $0.5\%$ of signal events from each side. In this particular case $99\%$ cut limits are shown by blue vertical lines. \newline \indent
+There are some special cases in this algorithm, which are explained below. 
+\vskip 1cm
+1. The number of events in the one dimensional projected histogram is too low. In this case, when then number of events is below 45, then the entire momentum bin is considered as out of acceptance. Note: the data sample that we use, has such statistics, that two dimensional original histograms that we use have about 200K or more events, and binning is chosen such, that the total number of events that are in the ''$N < 45$`` category one dimensional histograms are significantly less than $1\%$ of the original two dimensional histogram.
+\vskip 1cm
+2. The number of events in the one dimensional histogram is more than 45, however it is not high enough (order of thousands). In this case the $0.5\%$ events that should be cut out from each side of the distribution is very small number e.g. 1, 2, 3 or even 0, if the number of events is in between 45 and 200. So in order to apply some cuts rather than no-cut or very loose cut, the $99\%$ requirement is released for histograms having less than 500 events ($N < 500$).
+In general the cut limits for different statistic cases are summarized
+\begin{table}[!htb]
+ \centering
+ \begin{tabular}{|l|r|}
+  \hline
+  $\#$ of events & cut limit \\ \hline
+  $\mathrm{ N > 500}$ & $98\%$ \\ \hline
+  $\mathrm{200 < N < 500}$ & $98\%$ \\ \hline
+  $\mathrm{100 < N < 200}$ & $96\%$ \\ \hline
+  $\mathrm{45 < N < 100}$ & $95\%$ \\ \hline
+  $\mathrm{N < 45}$ & $0\%$ \\ \hline
+ \end{tabular}
+\caption{Cut limits for different statistic scenarios.}
+\label{tb:2DCutLimits}
+\end{table}
+
+
 \subsection{Track-Cluster Matching}
 The offline reconstruction code forms particles by matching tracks and clusters to each other, by utilizing spatial coordinate and time differences between tracks and clusters.
 In the offline reconstruction the matching is quite loose (''Better to keep junk, rather than throwing a good particle``). In this section spatial and time matching cuts are described. Both, time and position resolution of $e^{-}$ and $e^{+}$ clusters depend on particle momentum. The precision of the track projected coordinate at the ECal face does depend on the track momentum too. Because of these reasons we studied track-cluster matching as a function of momentum.
