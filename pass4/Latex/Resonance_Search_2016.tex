@@ -157,11 +157,12 @@ There are some special cases in this algorithm, which are explained below.
 \vskip 1cm
 2. The number of events in the one dimensional histogram is more than 45, however it is not high enough (order of thousands). In this case the $0.5\%$ events that should be cut out from each side of the distribution is very small number e.g. 1, 2, 3 or even 0, if the number of events is in between 45 and 200. So in order to apply some cuts rather than no-cut or very loose cut, the $99\%$ requirement is released for histograms having less than 500 events ($N < 500$).
 In general cut limits for different statistic cases are summarized
+%%%%%%%%%%%%%%%%%%%%%%%%%% T A B L E %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{table}[!htb]
  \centering
  \begin{tabular}{|l|r|}
   \hline
-  $\#$ of events & cut limit \\ \hline
+ \textbf{ $\#$ of events} & \textbf{Cut limit} \\ \hline
   $\mathrm{ N > 500}$ & $99\%$ \\ \hline
   $\mathrm{200 < N < 500}$ & $98\%$ \\ \hline
   $\mathrm{100 < N < 200}$ & $96\%$ \\ \hline
@@ -171,6 +172,7 @@ In general cut limits for different statistic cases are summarized
 \caption{Cut limits for different statistic scenarios.}
 \label{tb:2DCutLimits}
 \end{table}
+%%%%%%%%%%%%%%%%%%%%%%%%%% T A B L E %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 in table \ref{tb:2DCutLimits}.
 
 \subsection{Track-Cluster Matching}
@@ -206,11 +208,11 @@ To maximize the the reach, we should maximize the figure of Merit, which is
 Where $\dstl \sqrt{N_{Tot}}$ is the number of events in the given mass bin, and 
 $\dstl \sigma_{m}$ is the mass resolution for the given mass (see appendix \ref{sec:AppendixFOM} for more details about eq. \ref{eq:FOM_massres_Final}).
 
-We have used the \Mlr process to estimate the impact of the track quality on the mass resolution. The square root of the center of mass energy in the \Mlr process, is fixed for a given beam energy, and is equal:
+We have used the \Mlr process to estimate the impact of the track quality on the mass resolution. The square root of the center of mass energy in the \Mlr process, is fixed for a given beam energy, and is equal (neglecting electron mass square terms):
 \begin{equation}
  \dstl M_{ee}^{\mathrm{c.m.}} = \sqrt{2\cdot m_{e}\cdot E_{b}}
 \end{equation}
-This is will be equal to the invariant mass of final state electrons in the \Mlr process.
+The square root of the center of mass energy is also equal to the invariant mass of final state electrons in the \Mlr process. Hence we will use the \Mlr process to estimate the effect of track quality on the mass resolution.
 
 
 \subsection{WAB Suppression cuts}
@@ -252,7 +254,7 @@ $\dstl N_{A^{\prime}}$ events in the given mass bin  can be expressed in terms o
 \end{equation}
 Here $f_{\mathrm{Rad}}$ is the radiative fraction, and $\delta m$ is the width of the mass bin which is proportional to the mass resolution $\sim \sigma_{m}$ (look \cite{AprimeFixedTargetTheory} for the description of the rest of variables). 
 Using eq.\ref{eq:NAprime} for $N_{A^{\prime}}$, $\dstl\sqrt{N_{\mathrm{Tot}}}$ for 
-$\sigma_{\mathrm{stat}}$, and $\dstl \sigma_{m}$ for $\delta m$, FOM can be expressed as
+$\sigma_{\mathrm{stat}}$, and $\dstl \sigma_{m}$ for $\delta m$, we can express FOM as
 \begin{equation}
  \mathrm {FOM} \sim \frac{\dstl \sqrt{N_{\mathrm{Tot}}}}{\sigma_{mass}}
 \end{equation}
