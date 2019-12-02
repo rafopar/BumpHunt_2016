@@ -13,7 +13,16 @@
 %\usepackage{subcaption}
 \usepackage{subfig}
 \usepackage{authblk}
-\usepackage{url}
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,      
+    urlcolor=cyan,
+    citecolor=red
+}
+%\usepackage{url}
+\usepackage{appendix}
 
 \oddsidemargin = -14mm
 \topmargin = -2.9cm
@@ -25,6 +34,7 @@
 \def \tw {\textwidth}
 \def\dfrac#1#2{\displaystyle{{#1}\over{#2}}}
 \def \dstl {\displaystyle}
+\def \Mlr {M\o ller }
 \definecolor{GREEN}{rgb}{0.,0.8,0}
 \definecolor{RED}{rgb}{1,0,0}
 \definecolor{ORANGE}{rgb}{1,0.5,0}
@@ -146,13 +156,13 @@ There are some special cases in this algorithm, which are explained below.
 1. The number of events in the one dimensional projected histogram is too low. In this case, when then number of events is below 45, then the entire momentum bin is considered as out of acceptance. Note: the data sample that we use, has such statistics, that two dimensional original histograms that we use have about 200K or more events, and binning is chosen such, that the total number of events that are in the ''$N < 45$`` category one dimensional histograms are significantly less than $1\%$ of the original two dimensional histogram.
 \vskip 1cm
 2. The number of events in the one dimensional histogram is more than 45, however it is not high enough (order of thousands). In this case the $0.5\%$ events that should be cut out from each side of the distribution is very small number e.g. 1, 2, 3 or even 0, if the number of events is in between 45 and 200. So in order to apply some cuts rather than no-cut or very loose cut, the $99\%$ requirement is released for histograms having less than 500 events ($N < 500$).
-In general the cut limits for different statistic cases are summarized
+In general cut limits for different statistic cases are summarized
 \begin{table}[!htb]
  \centering
  \begin{tabular}{|l|r|}
   \hline
   $\#$ of events & cut limit \\ \hline
-  $\mathrm{ N > 500}$ & $98\%$ \\ \hline
+  $\mathrm{ N > 500}$ & $99\%$ \\ \hline
   $\mathrm{200 < N < 500}$ & $98\%$ \\ \hline
   $\mathrm{100 < N < 200}$ & $96\%$ \\ \hline
   $\mathrm{45 < N < 100}$ & $95\%$ \\ \hline
@@ -161,7 +171,7 @@ In general the cut limits for different statistic cases are summarized
 \caption{Cut limits for different statistic scenarios.}
 \label{tb:2DCutLimits}
 \end{table}
-
+in table \ref{tb:2DCutLimits}.
 
 \subsection{Track-Cluster Matching}
 The offline reconstruction code forms particles by matching tracks and clusters to each other, by utilizing spatial coordinate and time differences between tracks and clusters.
@@ -178,10 +188,30 @@ In addition to the momentum dependence we noticed also slight difference between
  \label{fig:ClTrkTimeMatch}
 \end{figure}
 %%%%%%%%%%%%%%%%%%%%%%%%%% F I G U R E %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-In Fig.\ref{fig:ClTrkTimeMatch} shown Cluster-Track time difference as a function of particle momentum. Left plot represents particles in the bottom half, and the right plot represents particles in the top half of the detector. The area marked by Red dots represents the acceptance region.
+In Fig.\ref{fig:ClTrkTimeMatch} shown Cluster-Track time difference as a function of particle momentum. Left plot represents particles in the bottom half, and the right plot represents particles in the top half of the detector. 
+{\color{Red} The Cl-Trk time difference plot should be replaced, i.e. The original 2D distribution here doesn't correspond to the ''n-1`` cut. }
 
 
-\subsection{Track $\chi^{2}$ cuts}
+\subsection{Track quality cuts}
+The point of track quality cuts is to maximize the figure of merit. 
+It is natural to think, if the track quality (in terms of $\chi^{2}$ per degrees of freedom)
+is poor, then that could result in worse mass resolution, 
+and consequently will have a negative impact on the experiment reach. 
+
+To maximize the the reach, we should maximize the figure of Merit, which is 
+\begin{equation}
+ \mathrm{FOM} \sim \frac{\dstl \sqrt{N_{Tot}}}{\dstl \sigma_{m}}
+ \label{eq:FOM_massres_Final}
+\end{equation}
+Where $\dstl \sqrt{N_{Tot}}$ is the number of events in the given mass bin, and 
+$\dstl \sigma_{m}$ is the mass resolution for the given mass (see appendix \ref{sec:AppendixFOM} for more details about eq. \ref{eq:FOM_massres_Final}).
+
+We have used the \Mlr process to estimate the impact of the track quality on the mass resolution. The square root of the center of mass energy in the \Mlr process, is fixed for a given beam energy, and is equal:
+\begin{equation}
+ \dstl M_{ee}^{\mathrm{c.m.}} = \sqrt{2\cdot m_{e}\cdot E_{b}}
+\end{equation}
+This is will be equal to the invariant mass of final state electrons in the \Mlr process.
+
 
 \subsection{WAB Suppression cuts}
 Describe L1 and $\mathrm{d_{0}}$ cuts. \\
@@ -195,13 +225,45 @@ improves the mass resolution.
 
 
 \section{Study of systematics}
-Here goes studies on systematics
+Here goes studies on systematics.
+
+
+
+
+\appendix
+\appendixpage
+\addappheadtotoc
+\section{Figure of Merit in terms of Mass resolution}
+\label{sec:AppendixFOM}
+In general, the sensitivity for a signal (in our case a dark photon $A^{\prime}$) which is expressed in a form of a peak over a continuous background, is proportional to the number of signal events $\dstl N_{A^{\prime}}$, and inversely proportional to the statistical uncertainty $\sigma_{\mathrm{stat}}$ of the distribution under the peak.
+So the figure of merit is expressed as:
+\begin{equation}
+ \mathrm{FOM} = \frac{\dstl N_{A^{\prime}}}{\dstl \sigma_{\mathrm{stat}}}
+ \label{eq:FOM_massres}
+\end{equation}
+
+The $\sigma_{\mathrm{stat}} = \sqrt{N_{\mathrm{Tot}}}$, and $N_{\mathrm{Tot}}$ is the total measured number of events in the given mass bin.
+
+For a given $A^{\prime}$ mass, the expected number of dark photons, 
+$\dstl N_{A^{\prime}}$ events in the given mass bin  can be expressed in terms of number of expected Radiative trident events $N_{\mathrm{Rad}}$ using the eq.(19) of \cite{AprimeFixedTargetTheory}:
+\begin{equation}
+ N_{A^{\prime}} = \left(\frac{\dstl 3\pi \epsilon^{2}}{\dstl 2 N_{f} \alpha}\right) \left( \frac{\dstl m_{A^{\prime}}}{\delta m} \right)\cdot N_{\mathrm{Rad}} = \left(\frac{\dstl 3\pi \epsilon^{2}}{\dstl 2 N_{f} \alpha}\right) \left( \frac{\dstl m_{A^{\prime}}}{\delta m} \right) \cdot N_{\mathrm{Tot}}\cdot f_{\mathrm{Rad}}
+ \label{eq:NAprime}
+\end{equation}
+Here $f_{\mathrm{Rad}}$ is the radiative fraction, and $\delta m$ is the width of the mass bin which is proportional to the mass resolution $\sim \sigma_{m}$ (look \cite{AprimeFixedTargetTheory} for the description of the rest of variables). 
+Using eq.\ref{eq:NAprime} for $N_{A^{\prime}}$, $\dstl\sqrt{N_{\mathrm{Tot}}}$ for 
+$\sigma_{\mathrm{stat}}$, and $\dstl \sigma_{m}$ for $\delta m$, FOM can be expressed as
+\begin{equation}
+ \mathrm {FOM} \sim \frac{\dstl \sqrt{N_{\mathrm{Tot}}}}{\sigma_{mass}}
+\end{equation}
+
 
 \begin{thebibliography}{55}
  \bibitem{TriggerNote} Kyle McCarty, Valery Kubarovsky and Benjamin Raydo, ``Description and Tuning of the HPS Trigger'', HPS Note 2018-002
  \bibitem{ECalTimeCorr} Holly Szumila-Vance, ``HPS Ecal Timing Calibration for the
 Spring 2015 Engineering Run'', HPS Note 2015-011.
+
+\bibitem{AprimeFixedTargetTheory} J. D. Bjorken, R. Essig, P. Schuster and N. Toro, ``New Fixed-Target Experiments to Search for Dark Gauge Forces'' , Phys.Rev. D80 (2009) 075018, \href{https://arxiv.org/abs/0906.0580}{arXiv:0906.0580}
 \end{thebibliography}
 
- 
 \end{document}
