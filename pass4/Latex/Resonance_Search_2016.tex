@@ -24,6 +24,9 @@
 %\usepackage{url}
 \usepackage{appendix}
 
+\usepackage{lineno}
+\linenumbers
+
 \oddsidemargin = -14mm
 \topmargin = -2.9cm
 \textwidth = 19cm
@@ -213,6 +216,12 @@ We have used the \Mlr process to estimate the impact of the track quality on the
  \dstl M_{ee}^{\mathrm{c.m.}} = \sqrt{2\cdot m_{e}\cdot E_{b}}
 \end{equation}
 The square root of the center of mass energy is also equal to the invariant mass of final state electrons in the \Mlr process. Hence we will use the \Mlr process to estimate the effect of track quality on the mass resolution.
+
+\subsubsection{selection of \Mlr events}
+As a starting point, we have used so called ''\Mlr candidate events``. Those are events which contain at least one negative track in each detector half. The magnitude of their momentum sum also should be within $\mathrm{20\%}$ of beam energy:
+\begin{equation}
+ 0.8E_{\mathrm{b}} < P_{\mathrm{\Mlr}} \equiv |\vec{P}_{\mathrm{Bot}} + \vec{P}_{\mathrm{Top}}| < 1.2E_{\mathrm{b}}
+\end{equation}
 
 
 \subsection{WAB Suppression cuts}
