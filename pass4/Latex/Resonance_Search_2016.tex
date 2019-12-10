@@ -198,12 +198,12 @@ In Fig.\ref{fig:ClTrkTimeMatch} shown Cluster-Track time difference as a functio
 
 
 \subsection{Track quality cuts}
-The point of track quality cuts is to maximize the figure of merit. 
+The point of track quality cuts is to maximize the Figure Of Merit (FOM). 
 It is natural to think, if the track quality (in terms of $\chi^{2}$ per degrees of freedom)
 is poor, then that could result in worse mass resolution, 
 and consequently will have a negative impact on the experiment reach. 
 
-To maximize the the reach, we should maximize the figure of Merit, which is 
+To maximize the the reach, we should maximize the FOM, which is 
 \begin{equation}
  \mathrm{FOM} \sim \frac{\dstl \sqrt{N_{Tot}}}{\dstl \sigma_{m}}
  \label{eq:FOM_massres_Final}
@@ -218,10 +218,12 @@ We have used the \Mlr process to estimate the impact of the track quality on the
 The square root of the center of mass energy is also equal to the invariant mass of final state electrons in the \Mlr process. Hence we will use the \Mlr process to estimate the effect of track quality on the mass resolution.
 
 \subsubsection{selection of \Mlr events}
-As a starting point, we have used so called ''\Mlr candidate events``. Those are events which contain at least one negative track in each detector half. The magnitude of their momentum sum also should be within $\mathrm{20\%}$ of beam energy:
+As a starting point, we have used so called ''\Mlr candidate events`` defined by the so called ''MOUSE`` cuts \cite{MOUSE_Cuts}. Those are events which contain at least one negative track in each detector half. The magnitude of their momentum sum also should be within $\mathrm{20\%}$ of beam energy:
+%%%%%%%%%%%%%%%%%%%%%%%%%% E Q U A T I O N %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{equation}
  0.8E_{\mathrm{b}} < P_{\mathrm{\Mlr}} \equiv |\vec{P}_{\mathrm{Bot}} + \vec{P}_{\mathrm{Top}}| < 1.2E_{\mathrm{b}}
 \end{equation}
+%%%%%%%%%%%%%%%%%%%%%%%%%% E Q U A T I O N %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
 \subsection{WAB Suppression cuts}
@@ -275,6 +277,7 @@ $\sigma_{\mathrm{stat}}$, and $\dstl \sigma_{m}$ for $\delta m$, we can express 
 Spring 2015 Engineering Run'', HPS Note 2015-011.
 
 \bibitem{AprimeFixedTargetTheory} J. D. Bjorken, R. Essig, P. Schuster and N. Toro, ``New Fixed-Target Experiments to Search for Dark Gauge Forces'' , Phys.Rev. D80 (2009) 075018, \href{https://arxiv.org/abs/0906.0580}{arXiv:0906.0580}
+\bibitem{MOUSE_Cuts} Miriam Diamond's talk at Analyis group meeting On 16-Oct-2018, (password protected) \href{https://confluence.slac.stanford.edu/display/hpsg/October+16%2C+2018}{https://confluence.slac.stanford.edu/display/hpsg/October+16\%2C+2018}
 \end{thebibliography}
 
 \end{document}

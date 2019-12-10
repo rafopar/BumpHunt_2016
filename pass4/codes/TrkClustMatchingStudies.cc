@@ -27,7 +27,7 @@ using namespace std;
  * 
  */
 int main(int argc, char** argv) {
-    
+
     if (argc >= 2) {
 
         dataSet = argv[1];
@@ -43,14 +43,14 @@ int main(int argc, char** argv) {
 
         exit(1);
     }
-    
+
     isTrkClusterMatching = true;
     InitVariables(dataSet);
 
 
     TTree *tr1 = (TTree*) file_in->Get("HPS_Event");
-
-    TFile *file_out = new TFile(Form("TrkClustMatching_%s.root", dataSet.c_str()), "Recreate");
+    //
+    //    TFile *file_out = new TFile(Form("TrkClustMatching_%s.root", dataSet.c_str()), "Recreate");
 
     TH2D *h_dX_P_TopPos1 = new TH2D("h_dX_P_TopPos1", "", 200, 0., 1.2 * Eb, 200, -50., 50.);
     TH2D *h_dX_P_BotPos1 = new TH2D("h_dX_P_BotPos1", "", 200, 0., 1.2 * Eb, 200, -50., 50.);
@@ -62,14 +62,14 @@ int main(int argc, char** argv) {
     TH2D *h_dY_P_TopNeg1 = new TH2D("h_dY_P_TopNeg1", "", 200, 0., 1.2 * Eb, 200, -50., 50.);
     TH2D *h_dY_P_BotNeg1 = new TH2D("h_dY_P_BotNeg1", "", 200, 0., 1.2 * Eb, 200, -50., 50.);
 
-    TH2D *h_dX_P_WithL6_TopPos1 = new TH2D("h_dX_P_WithL6_TopPos1", "", 200, 0., 1.2 * Eb, 200, -50., 50.);
-    TH2D *h_dX_P_WithL6_BotPos1 = new TH2D("h_dX_P_WithL6_BotPos1", "", 200, 0., 1.2 * Eb, 200, -50., 50.);
-    TH2D *h_dX_P_NoL6_TopPos1 = new TH2D("h_dX_P_NoL6_TopPos1", "", 200, 0., 1.2 * Eb, 200, -50., 50.);
-    TH2D *h_dX_P_NoL6_BotPos1 = new TH2D("h_dX_P_NoL6_BotPos1", "", 200, 0., 1.2 * Eb, 200, -50., 50.);
-    TH2D *h_dX_P_WithL6_TopNeg1 = new TH2D("h_dX_P_WithL6_TopNeg1", "", 200, 0., 1.2 * Eb, 200, -50., 50.);
-    TH2D *h_dX_P_WithL6_BotNeg1 = new TH2D("h_dX_P_WithL6_BotNeg1", "", 200, 0., 1.2 * Eb, 200, -50., 50.);
-    TH2D *h_dX_P_NoL6_TopNeg1 = new TH2D("h_dX_P_NoL6_TopNeg1", "", 200, 0., 1.2 * Eb, 200, -50., 50.);
-    TH2D *h_dX_P_NoL6_BotNeg1 = new TH2D("h_dX_P_NoL6_BotNeg1", "", 200, 0., 1.2 * Eb, 200, -50., 50.);
+    TH2D *h_dX_P_WithL6_TopPos1 = new TH2D("h_dX_P_WithL6_TopPos1", "", 100, 0., 1.2 * Eb, 100, -50., 50.);
+    TH2D *h_dX_P_WithL6_BotPos1 = new TH2D("h_dX_P_WithL6_BotPos1", "", 100, 0., 1.2 * Eb, 100, -50., 50.);
+    TH2D *h_dX_P_NoL6_TopPos1 = new TH2D("h_dX_P_NoL6_TopPos1", "", 100, 0., 1.2 * Eb, 100, -50., 50.);
+    TH2D *h_dX_P_NoL6_BotPos1 = new TH2D("h_dX_P_NoL6_BotPos1", "", 100, 0., 1.2 * Eb, 100, -50., 50.);
+    TH2D *h_dX_P_WithL6_TopNeg1 = new TH2D("h_dX_P_WithL6_TopNeg1", "", 100, 0., 1.2 * Eb, 100, -50., 50.);
+    TH2D *h_dX_P_WithL6_BotNeg1 = new TH2D("h_dX_P_WithL6_BotNeg1", "", 100, 0., 1.2 * Eb, 100, -50., 50.);
+    TH2D *h_dX_P_NoL6_TopNeg1 = new TH2D("h_dX_P_NoL6_TopNeg1", "", 100, 0., 1.2 * Eb, 100, -50., 50.);
+    TH2D *h_dX_P_NoL6_BotNeg1 = new TH2D("h_dX_P_NoL6_BotNeg1", "", 100, 0., 1.2 * Eb, 100, -50., 50.);
 
     TH2D *h_dY_P_WithL6_TopPos1 = new TH2D("h_dY_P_WithL6_TopPos1", "", 200, 0., 1.2 * Eb, 200, -50., 50.);
     TH2D *h_dY_P_WithL6_BotPos1 = new TH2D("h_dY_P_WithL6_BotPos1", "", 200, 0., 1.2 * Eb, 200, -50., 50.);
@@ -141,7 +141,7 @@ int main(int argc, char** argv) {
 
     TH2D *h_trkCl_dt_P_Top = new TH2D("h_trkCl_dt_P_Top", "", 100, 0., 2.5, 100, -10., 10.);
     TH2D *h_trkCl_dt_P_Bot = new TH2D("h_trkCl_dt_P_Bot", "", 100, 0., 2.5, 100, -10., 10.);
-    
+
     HpsEvent *ev = new HpsEvent();
     //tr1->SetBranchAddress("HPS_Event", ev);
 
@@ -162,7 +162,7 @@ int main(int argc, char** argv) {
 
     cout << "Number of events is " << nev << endl;
 
-    nev = 2000;
+    //nev = 100000;
     for (int ientry = 0; ientry < nev; ientry++) {
 
         tr1->GetEntry(ientry);
@@ -215,6 +215,22 @@ int main(int argc, char** argv) {
             }
 
 
+
+            if (em->getClusters()->GetSize() > 0 &&  ep->getClusters()->GetSize() > 0) {
+                cl_em = (EcalCluster*) em->getClusters()->At(0);
+                cl_ep = (EcalCluster*) ep->getClusters()->At(0);                
+            }else {
+                cout << "Rare event didn't give a cluster" << endl;
+                continue;
+            }
+
+
+            if (cl_em->getPosition().at(1) * cl_ep->getPosition().at(1) > 0) {
+                cout << "A rare event when e- and e+ in V0 are in the same detector half " << endl;
+                continue;
+            }
+
+
             // ======== Getting Electron related variables ========
             bool emHasCl = false;
             vector<double> pos_cl_em{-9999, -9999, -9999};
@@ -223,7 +239,7 @@ int main(int argc, char** argv) {
             double E_cl_em = -9999;
 
             if (em->getClusters()->GetSize() > 0) {
-                EcalCluster* cl_em = (EcalCluster*) em->getClusters()->At(0);
+                //EcalCluster* cl_em = (EcalCluster*) em->getClusters()->At(0);
                 pos_cl_em = cl_em->getPosition();
                 t_cl_em = cl_em->getClusterTime();
 
@@ -255,7 +271,7 @@ int main(int argc, char** argv) {
             double E_cl_ep = -9999;
 
             if (ep->getClusters()->GetSize() > 0) {
-                EcalCluster *cl_ep = (EcalCluster*) ep->getClusters()->At(0);
+                //EcalCluster *cl_ep = (EcalCluster*) ep->getClusters()->At(0);
                 pos_cl_ep = cl_ep->getPosition();
                 t_cl_ep = cl_ep->getClusterTime();
                 E_cl_ep = cl_ep->getEnergy();
@@ -285,19 +301,19 @@ int main(int argc, char** argv) {
                 h_dY_P_BotPos1->Fill(P_ep, pos_cl_ep.at(1) - pos_trk_ep.at(1));
 
                 int seedY = ((EcalCluster*) ep->getClusters()->At(0))->getSeed()->getYCrystalIndex();
-                
+
                 h_trkCl_dt_P_Top->Fill(P_em, t_cl_em - trk_em->getTrackTime() - CL_trk_time_Offset);
                 h_trkCl_dt_P_Bot->Fill(P_ep, t_cl_ep - trk_ep->getTrackTime() - CL_trk_time_Offset);
 
                 if (trk_ep->getSvtHits()->GetSize() == 6) {
                     h_trkCl_dt_P_Bot_Pos_6hit->Fill(P_ep, t_cl_ep - trk_ep->getTrackTime() - CL_trk_time_Offset);
-                }else{
+                } else {
                     h_trkCl_dt_P_Bot_Pos_5hit->Fill(P_ep, t_cl_ep - trk_ep->getTrackTime() - CL_trk_time_Offset);
                 }
 
                 if (trk_em->getSvtHits()->GetSize() == 6) {
                     h_trkCl_dt_P_Top_Neg_6hit->Fill(P_em, t_cl_em - trk_em->getTrackTime() - CL_trk_time_Offset);
-                }else{
+                } else {
                     h_trkCl_dt_P_Top_Neg_5hit->Fill(P_em, t_cl_em - trk_em->getTrackTime() - CL_trk_time_Offset);
                 }
 
@@ -362,21 +378,21 @@ int main(int argc, char** argv) {
 
                 h_trkCl_dt_P_Top->Fill(P_ep, t_cl_ep - trk_ep->getTrackTime() - CL_trk_time_Offset);
                 h_trkCl_dt_P_Bot->Fill(P_em, t_cl_em - trk_em->getTrackTime() - CL_trk_time_Offset);
-                                
+
                 if (trk_ep->getSvtHits()->GetSize() == 6) {
                     h_trkCl_dt_P_Top_Pos_6hit->Fill(P_ep, t_cl_ep - trk_ep->getTrackTime() - CL_trk_time_Offset);
-                }else{
+                } else {
                     h_trkCl_dt_P_Top_Pos_5hit->Fill(P_ep, t_cl_ep - trk_ep->getTrackTime() - CL_trk_time_Offset);
                 }
 
                 if (trk_em->getSvtHits()->GetSize() == 6) {
                     h_trkCl_dt_P_Bot_Neg_6hit->Fill(P_em, t_cl_em - trk_em->getTrackTime() - CL_trk_time_Offset);
-                }else{
+                } else {
                     h_trkCl_dt_P_Bot_Neg_5hit->Fill(P_em, t_cl_em - trk_em->getTrackTime() - CL_trk_time_Offset);
                 }
-                
-                
-                
+
+
+
                 if (HasL6Hit(trk_ep)) {
                     h_dX_P_WithL6_TopPos1->Fill(P_ep, pos_cl_ep.at(0) - pos_trk_ep.at(0));
                     h_dY_P_WithL6_TopPos1->Fill(P_ep, pos_cl_ep.at(1) - pos_trk_ep.at(1));

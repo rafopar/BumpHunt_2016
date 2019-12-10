@@ -49,6 +49,9 @@ int main(int argc, char** argv) {
 
     TTree *tr1 = (TTree*) file_in->Get("HPS_Event");
 
+    TH1D *h_nV0_1 = new TH1D("h_nV0_1", "", 11, -0.5, 10.5);
+    TH1D *h_nV0_2 = new TH1D("h_nV0_2", "", 11, -0.5, 10.5);
+
     TH1D *h_n_c1l = new TH1D("h_n_cl1", "", 15, -0.5, 14.5);
     TH1D *h_clE1 = new TH1D("h_clE1", "", 200, 0., 1.2 * Eb);
     TH2D *h_cl_E_t1 = new TH2D("h_cl_E_t1", "", 200, 0., 1.2 * Eb, 200, 0., 180.);
@@ -121,6 +124,16 @@ int main(int argc, char** argv) {
     TH1D *h_Psum3 = new TH1D("h_Psum3", "", 200, 0.7, 1.2 * Eb);
     TH1D *h_Psum4 = new TH1D("h_Psum4", "", 200, 0.7, 1.2 * Eb);
 
+    TH1D *h_Psum_Test1 = new TH1D("h_Psum_Test1", "", 200, 0.7, 1.2 * Eb);
+    TH1D *h_Psum_Test2 = new TH1D("h_Psum_Test2", "", 200, 0.7, 1.2 * Eb);
+    TH1D *h_Psum_Test3 = new TH1D("h_Psum_Test3", "", 200, 0.7, 1.2 * Eb);
+    TH1D *h_Psum_Test4 = new TH1D("h_Psum_Test4", "", 200, 0.7, 1.2 * Eb);
+    TH1D *h_Psum_Test5 = new TH1D("h_Psum_Test5", "", 200, 0.7, 1.2 * Eb);
+    TH1D *h_Psum_Test6 = new TH1D("h_Psum_Test6", "", 200, 0.7, 1.2 * Eb);
+    TH1D *h_Psum_Test7 = new TH1D("h_Psum_Test7", "", 200, 0.7, 1.2 * Eb);
+    TH1D *h_Psum_Test8 = new TH1D("h_Psum_Test8", "", 200, 0.7, 1.2 * Eb);
+    TH1D *h_Psum_Test9 = new TH1D("h_Psum_Test9", "", 200, 0.7, 1.2 * Eb);
+
     TH1D *h_Pem_TightCut1 = new TH1D("h_Pem_TightCut1", "", 200, 0., Eb);
 
     TH1D *h_em_Chi2Ndf1 = new TH1D("h_em_Chi2Ndf1", "", 200, 0., 13.);
@@ -167,7 +180,11 @@ int main(int argc, char** argv) {
     TH1D *h_Minv_d0ep_Final1 = new TH1D("h_Minv_d0ep_Final1", "", 200, 0., 0.24);
 
 
+    // =============== n-1 histograms, i.e. these histograms are filled when cuts on the rest of variables are applied
 
+    TH1D *h_d0_ep_Nminus1 = new TH1D("h_d0_ep_Nminus1", "", 200, -3.5, 3.5);
+    TH1D *h_Pem_Nminus1 = new TH1D("h_Pem_Nminus1", "", 200, 0., Eb);
+    TH1D *h_cl_dt_Nminus1 = new TH1D("h_cl_dt_Nminus1", "", 200, -5., 5.);
 
     HpsEvent *ev = new HpsEvent();
     //tr1->SetBranchAddress("HPS_Event", ev);
@@ -207,7 +224,7 @@ int main(int argc, char** argv) {
 
     cout << "Number of events is " << nev << endl;
 
-    nev = 50000;
+    //nev = 500000;
     for (int ientry = 0; ientry < nev; ientry++) {
 
         tr1->GetEntry(ientry);
@@ -345,6 +362,9 @@ int main(int argc, char** argv) {
 
 
         int nTC_V0 = ev->getNumberOfParticles(HpsParticle::TC_V0_CANDIDATE);
+
+        h_nV0_1->Fill(nTC_V0);
+        int n_realV0 = 0;
 
         for (int iv0 = 0; iv0 < nTC_V0; iv0++) {
 
@@ -726,46 +746,68 @@ int main(int argc, char** argv) {
             IsPem = IsEmMaxMomCut(P_em);
             IsD0ep = IsD0Cut(d0_ep);
 
+
+
             if (CheckAllOtherCuts("PsumMax")) {
                 h_Minv_PMax_Final1->Fill(mV0);
+                h_Psum_Test1->Fill(Psum);
             }
 
             if (CheckAllOtherCuts("PsumMin")) {
                 h_Minv_PMin_Final1->Fill(mV0);
+                h_Psum3->Fill(Psum);
+                h_Psum_Test2->Fill(Psum);
             }
 
             if (CheckAllOtherCuts("cldT")) {
                 h_Minv_cldT_Final1->Fill(mV0);
+                h_Psum_Test3->Fill(Psum);
+
+                h_cl_dt_Nminus1->Fill(t_cl_ep - t_cl_em);
             }
 
             if (CheckAllOtherCuts("epClTrkdT")) {
                 h_Minv_epClTrkdT_Final1->Fill(mV0);
+                h_Psum_Test4->Fill(Psum);
             }
 
             if (CheckAllOtherCuts("emClTrkdT")) {
                 h_Minv_emClTrkdT_Final1->Fill(mV0);
+                h_Psum_Test5->Fill(Psum);
             }
 
             if (CheckAllOtherCuts("epClTrkMatch")) {
                 h_Minv_epClTrkMatch_Final1->Fill(mV0);
+                h_Psum_Test6->Fill(Psum);
             }
             if (CheckAllOtherCuts("emClTrkMatch")) {
                 h_Minv_emClTrkMatch_Final1->Fill(mV0);
+                h_Psum_Test7->Fill(Psum);
             }
 
-            if (CheckAllOtherCuts("emClTrkdT")) {
+            if (CheckAllOtherCuts("Pem")) {
                 h_Minv_Pem_Final1->Fill(mV0);
+                h_Psum_Test8->Fill(Psum);
+
+                h_Pem_Nminus1->Fill(P_em);
             }
             if (CheckAllOtherCuts("d0ep")) {
                 h_Minv_d0ep_Final1->Fill(mV0);
+                h_Psum_Test9->Fill(Psum);
+
+                h_d0_ep_Nminus1->Fill(d0_ep);
 
                 if (IsD0ep) {
                     h_Minv_Final1->Fill(mV0);
+                    h_Psum4->Fill(Psum);
+
+                    n_realV0 = n_realV0 + 1;
                 }
             }
 
 
         }
+        h_nV0_2->Fill(n_realV0);
 
     }
 

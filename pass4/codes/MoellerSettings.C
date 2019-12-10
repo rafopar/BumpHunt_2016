@@ -69,7 +69,6 @@ void InitSettings(std::string dataSet) {
 }
 
 void ResetEventFlags() {
-
 }
 
 void ResetConstrainedMollerFlags() {
@@ -78,6 +77,9 @@ void ResetConstrainedMollerFlags() {
 
     topChi2 = 0;
     botChi2 = 0;
+    
+    HasTopL1 = false;
+    HasBotL1 = false;
 }
 
 int DoesQualifyMoeller(HpsParticle *part) {
@@ -127,6 +129,18 @@ int DoesQualifyMoeller(HpsParticle *part) {
 
     return stat;
 
+}
+
+bool HasL1Hit(GblTrack *trk) {
+    bool hasL1 = false;
+    for (int ii = 0; ii < trk->getSvtHits()->GetSize(); ii++) {
+        if (((SvtHit*) trk->getSvtHits()->At(ii))->getPosition().at(2) < 120.) {
+            hasL1 = true;
+
+            return hasL1;
+        }
+    }
+    return hasL1;
 }
 
 double GetMagnitude(vector<double> v) {

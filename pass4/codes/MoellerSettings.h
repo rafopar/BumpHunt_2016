@@ -36,6 +36,9 @@ bool isData;
 bool isMC;
 
 
+bool HasTopL1 = false;
+bool HasBotL1 = false;
+
 double Pem_MaxTight;
 double cl_dTCut_Tight;
 
@@ -102,6 +105,10 @@ void ResetConstrainedMollerFlags();
 
 int DoesQualifyMoeller(HpsParticle*);
 
+// ========= ============================================================= ============
+// ========= This function checks whether the track has a hit in L1
+// ========= ============================================================= ============
+bool HasL1Hit(GblTrack*);
 
 //========================================================
 //===== Returns square root of the sum of elements

@@ -35,7 +35,16 @@ void InitVariables(std::string dataSet) {
         isData = true;
         //inpFileName = "../Data/hps_008099.All_dst_4.2.root";
         inpFileName = "../Data/hps_008099_All_v0_4.2.root";
-        outFileName = "EventSelection_Data.root";
+
+        if (isEventSelection) {
+            outFileName = "EventSelection_Data.root";
+        } else if (isTrkClusterMatching) {
+            outFileName = "TrkClustMatching_Data.root";
+        } else if (isECalTimeStudies) {
+            outFileName = "ECalTimingStudies_Data.root";
+        }
+
+
         trkClustMatchFileName = "TrkClustMatching_Data.root";
         cutHistFileName = "EvSelectionCuts_Data.root";
         cutHistFileName2 = "EvSelectionCutHists_Data.root";
@@ -47,7 +56,7 @@ void InitVariables(std::string dataSet) {
 
         if (dataSet.compare("WAB") == 0) {
             isWab = true;
-            inpFileName = "../Data/WabBeamPass4.root";
+            inpFileName = "../Data/WABBT_Pass4_pairs1.root";
             //inpFileName = "../Data/WABBT_Pass4_pairs1.root";
 
             if (isEventSelection) {
@@ -58,24 +67,63 @@ void InitVariables(std::string dataSet) {
                 outFileName = "ECalTimingStudies_WAB.root";
             }
 
-            trkClustMatchFileName = "TrkClustMatching_Data.root";
-            cutHistFileName = "EvSelectionCuts_Data.root";
-            cutHistFileName2 = "EvSelectionCutHists_Data.root";
+            trkClustMatchFileName = "TrkClustMatching_WAB.root";
+            cutHistFileName = "EvSelectionCuts_WAB.root";
+            cutHistFileName2 = "EvSelectionCutHists_WAB.root";
 
         } else if (dataSet.compare("Rad") == 0) {
             isRad = true;
-            inpFileName = "../Data/RADWBTPass4.root";
-            outFileName = "EventSelection_Rad.root";
+            inpFileName = "../Data/RAD_Beam_pass4.root";
+
+            if (isEventSelection) {
+                outFileName = "EventSelection_Rad.root";
+            } else if (isTrkClusterMatching) {
+                outFileName = "TrkClustMatching_Rad.root";
+            } else if (isECalTimeStudies) {
+                outFileName = "ECalTimingStudies_Rad.root";
+            }
+
+            trkClustMatchFileName = "TrkClustMatching_Rad.root";
+            cutHistFileName = "EvSelectionCuts_Rad.root";
+            cutHistFileName2 = "EvSelectionCutHists_Rad.root";
+
         } else if (dataSet.compare("Tri") == 0) {
             isTri = true;
-            inpFileName = "../Data/TriBeamPass4.root";
-            outFileName = "EventSelection_Tri.root";
+            inpFileName = "../Data/tritrig_Pass4_iss640.root";
+            //inpFileName = "../Data/tritrig_Pass4_Files1To200.root";
+
+            if (isEventSelection) {
+                outFileName = "EventSelection_Tri.root";
+            } else if (isTrkClusterMatching) {
+                outFileName = "TrkClustMatching_Tri.root";
+            } else if (isECalTimeStudies) {
+                outFileName = "ECalTimingStudies_Tri.root";
+            }
+
+            trkClustMatchFileName = "TrkClustMatching_Tri.root";
+            cutHistFileName = "EvSelectionCuts_Tri.root";
+            cutHistFileName2 = "EvSelectionCutHists_Tri.root";
+
+
         } else if (dataSet.compare("Ap") == 0) {
             isAp = true;
             if (ApMassSet.count(ApMass) > 0) {
 
                 inpFileName = Form("../Data/Ap_%dMeV.root", ApMass);
                 outFileName = Form("EventSelection_Ap_%dMeV.root", ApMass);
+
+
+                if (isEventSelection) {
+                    outFileName = Form("EventSelection_Ap_%d_MeV.root", ApMass);
+                } else if (isTrkClusterMatching) {
+                    outFileName = Form("TrkClustMatching_Ap_%d_MeV.root", ApMass);
+                } else if (isECalTimeStudies) {
+                    outFileName = Form("ECalTimingStudies_Ap_%d_MeV.root", ApMass);
+                }
+
+                trkClustMatchFileName = Form("TrkClustMatching_Ap_%d_MeV.root", ApMass);
+                cutHistFileName = Form("EvSelectionCuts_Ap_%d_MeV.root", ApMass);
+                cutHistFileName2 = Form("EvSelectionCutHists_Ap_%d_MeV.root", ApMass);
 
 
             } else {
@@ -198,7 +246,6 @@ void InitVariables(std::string dataSet) {
         f_clTTopUpLim->SetParameters(58.4842, 6.33371, -3.54136);
         f_clTTopLowLim->SetParameters(49.9385, 1.38759, 0.0484333);
 
-
         f_dXTopWithL6Pos_TightUpperLim->SetParameters(-5.98409, 26.061, -11.688);
         f_dXTopWithL6Pos_TightLowerLim->SetParameters(-13.1351, 13.1293, -2.22706);
 
@@ -259,6 +306,8 @@ void InitVariables(std::string dataSet) {
 
         if (isWab) {
             CL_trk_time_Offset = CL_trk_time_Offset_WAB;
+        } else if (isRad) {
+            CL_trk_time_Offset = CL_trk_time_Offset_Rad;
         }
 
         chi2NDFTighCut = chi2NDFTighCut_MC;

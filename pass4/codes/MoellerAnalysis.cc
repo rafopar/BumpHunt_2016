@@ -73,6 +73,7 @@ int main(int argc, char** argv) {
     TH2D *h_phi_TopBot2 = new TH2D("h_phi_TopBot2", "", 200, -180., 0., 200, 0., 180.);
     TH2D *h_phi_TopBot3 = new TH2D("h_phi_TopBot3", "", 200, -180., 0., 200, 0., 180.);
     TH2D *h_phi_TopBot4 = new TH2D("h_phi_TopBot4", "", 200, -180., 0., 200, 0., 180.);
+    TH2D *h_phi_TopBot4 = new TH2D("h_phi_TopBot5", "", 200, -180., 0., 200, 0., 180.);
 
     TH2D *h_cl_dT_Psum1 = new TH2D("h_cl_dT_Psum1", "", 200, 0.5, 1.3 * Eb, 200, -5.5, 5.5);
     TH2D *h_P_TopBot1 = new TH2D("h_P_TopBot1", "", 200, 0.1, 1.2 * Eb, 200, 0.1, 1.2 * Eb);
@@ -118,7 +119,7 @@ int main(int argc, char** argv) {
     TH2D *h_Chi2NDF_TCM3 = new TH2D("h_Chi2NDF_TCM3", "", 200, 0.02, 0.12, 200, 0., 12.);
     TH2D *h_Chi2NDF_TCM4 = new TH2D("h_Chi2NDF_TCM4", "", 200, 0.02, 0.12, 200, 0., 12.);
     TH2D *h_Chi2NDF_TCM5 = new TH2D("h_Chi2NDF_TCM5", "", 200, 0.02, 0.12, 200, 0., 12.);
-    
+
     int nev = tr1->GetEntries();
     //nev = 1000000;
 
@@ -189,8 +190,12 @@ int main(int argc, char** argv) {
 
             double chi2NDF_Sum = (topChi2 + botChi2) / (2 * (NHitsTop + NHitsBot) - 10.);
 
+            HasTopL1 = HasL1Hit((GblTrack*) Topem->getTracks()->At(0));
+            HasBotL1 = HasL1Hit((GblTrack*) Botem->getTracks()->At(0));
+
+
             h_Chi2NDF_TCM1->Fill(M_TCM, chi2NDF_Sum);
-            
+
             h_ToptrkChiNDF1->Fill(topChi2NDF);
             h_BottrkChiNDF1->Fill(botChi2NDF);
 
@@ -209,13 +214,13 @@ int main(int argc, char** argv) {
             vector<double> P_Top_emVect = ((GblTrack*) Topem->getTracks()->At(0))->getMomentum();
             vector<double> P_Bot_emVect = ((GblTrack*) Botem->getTracks()->At(0))->getMomentum();
 
-            double Px_TopRot = P_Top_emVect.at(0)*cos(phi_rot) - P_Top_emVect.at(2)*sin(phi_rot);
-            double Px_BotRot = P_Bot_emVect.at(0)*cos(phi_rot) - P_Bot_emVect.at(2)*sin(phi_rot);
-            
+            double Px_TopRot = P_Top_emVect.at(0) * cos(phi_rot) - P_Top_emVect.at(2) * sin(phi_rot);
+            double Px_BotRot = P_Bot_emVect.at(0) * cos(phi_rot) - P_Bot_emVect.at(2) * sin(phi_rot);
+
             double phiTop = atan2(P_Top_emVect.at(1), Px_TopRot) * TMath::RadToDeg();
             double phiBot = atan2(P_Bot_emVect.at(1), Px_BotRot) * TMath::RadToDeg();
-//            double phiTop = atan2(P_Top_emVect.at(1), P_Top_emVect.at(0)) * TMath::RadToDeg();
-//            double phiBot = atan2(P_Bot_emVect.at(1), P_Bot_emVect.at(0)) * TMath::RadToDeg();
+            //            double phiTop = atan2(P_Top_emVect.at(1), P_Top_emVect.at(0)) * TMath::RadToDeg();
+            //            double phiBot = atan2(P_Bot_emVect.at(1), P_Bot_emVect.at(0)) * TMath::RadToDeg();
 
             h_phi_TopBot1->Fill(phiBot, phiTop);
 
@@ -285,8 +290,8 @@ int main(int argc, char** argv) {
                     h_Chi2NDF_TCM3->Fill(M_TCM, chi2NDF_Sum);
 
 
-                    if (  (MatchingChi2Top - 5) * (MatchingChi2Bot - 5) < 0. && TMath::Min(MatchingChi2Top, MatchingChi2Bot) < 3.5 && tr_dT > -2.5 && tr_dT < 1.5 
-                         /* && (phiTop > phiBot + 165) && (phiTop < phiBot + 190.  )*/  ) {
+                    if ((MatchingChi2Top - 5) * (MatchingChi2Bot - 5) < 0. && TMath::Min(MatchingChi2Top, MatchingChi2Bot) < 3.5 && tr_dT > -2.5 && tr_dT < 1.5
+                            /* && (phiTop > phiBot + 165) && (phiTop < phiBot + 190.  )*/) {
                         h_MTCMoeller4->Fill(M_TCM);
                         h_phi_TopBot4->Fill(phiBot, phiTop);
                         h_VertChi2_4->Fill(VertexChi2);
@@ -297,6 +302,13 @@ int main(int argc, char** argv) {
                         h_BotMatchChi2_4->Fill(MatchingChi2Bot);
                         h_TopBotMatchCh2_3->Fill(MatchingChi2Bot, MatchingChi2Top);
                         h_Chi2NDF_TCM4->Fill(M_TCM, chi2NDF_Sum);
+
+                        if (HasTopL1 && HasBotL1) {
+
+                            h_Chi2NDF_TCM5->Fill(M_TCM, chi2NDF_Sum);
+                            h_phi_TopBot4->Fill(phiBot, phiTop);
+                        }
+
                     }
                 }
 
