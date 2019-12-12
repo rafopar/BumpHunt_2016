@@ -122,7 +122,8 @@ int DoesQualifyMoeller(HpsParticle *part) {
     if (!(((HpsParticle*) part->getParticles()->At(0))->getClusters()->GetSize() >= 1 &&
             ((HpsParticle*) part->getParticles()->At(1))->getClusters()->GetSize() >= 1)) {
         //cout << "One of Moeller particles doesn't have a cluster!"<<endl;
-        stat_ClusterPresence = 500;
+        stat_ClusterPresence = 0;
+        //stat_ClusterPresence = 500;
     }
 
     stat = stat_Size + stat_charges + stat_oppositeHalves + stat_ClusterPresence;
