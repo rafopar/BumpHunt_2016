@@ -294,14 +294,15 @@ int main(int argc, char** argv) {
 
             h_PsumPdiff1->Fill(P_TCM, P_Top - P_Bot);
 
-            if ((MatchingChi2Top - 5) * (MatchingChi2Bot - 5) < 0. && TMath::Min(MatchingChi2Top, MatchingChi2Bot) < 3.5) {
+            if ((MatchingChi2Top - MatchingChi2Median) * (MatchingChi2Bot - MatchingChi2Median) < 0.
+                    && TMath::Min(MatchingChi2Top, MatchingChi2Bot) < MatchingChi2Best) {
 
                 h_PsumPdiff2->Fill(P_TCM, P_Top - P_Bot);
 
-                if (tr_dT > -2.5 && tr_dT < 1.5) {
+                if (tr_dT > tr_dT_Min && tr_dT < tr_dT_Max) {
 
                     h_PsumPdiff3->Fill(P_TCM, P_Top - P_Bot);
-                    if (P_Bot > 0.8 && P_Bot < 1.5 && P_Top > 0.8 && P_Top < 1.5) {
+                    if ( (P_Diff > PDiffLowMin && P_Diff < PDiffLowMax) || (P_Diff > PDiffHighMin && P_Diff < PDiffHighMax) ) {
                         h_cl_dT_Psum2->Fill(P_TCM, cl_dT);
                         h_Trk_dT_Psum5->Fill(P_TCM, tr_dT);
                     }
@@ -309,7 +310,7 @@ int main(int argc, char** argv) {
             }
 
 
-            if (P_TCM > 2.2 && P_TCM < 2.4 /*&& cl_dT > -1.5 && cl_dT < 1.5 */) {
+            if (P_TCM > PSumMin && P_TCM < PSumMax /*&& cl_dT > -1.5 && cl_dT < 1.5 */) {
                 h_MTCMoeller2->Fill(M_TCM);
                 h_P_TopBot2->Fill(P_Bot, P_Top);
                 h_dX_P_Top2->Fill(P_Top, dX_Top);
@@ -325,7 +326,7 @@ int main(int argc, char** argv) {
                 h_Chi2NDF_TCM2->Fill(M_TCM, chi2NDF_Sum);
 
                 //if (P_Bot > 0.8 && P_Bot < 1.5 && P_Top > 0.8 && P_Top < 1.5) {
-                if ( (P_Diff > -0.55 && P_Diff < -0.15) || (P_Diff > 0.1 && P_Diff < 0.4) ) {
+                if ( (P_Diff > PDiffLowMin && P_Diff < PDiffLowMax) || (P_Diff > PDiffHighMin && P_Diff < PDiffHighMax) ) {
                     h_MTCMoeller3->Fill(M_TCM);
                     h_dX_P_Top3->Fill(P_Top, dX_Top);
                     h_dX_P_Bot3->Fill(P_Bot, dX_Bot);
@@ -340,7 +341,8 @@ int main(int argc, char** argv) {
                     h_Chi2NDF_TCM3->Fill(M_TCM, chi2NDF_Sum);
 
 
-                    if ((MatchingChi2Top - 5) * (MatchingChi2Bot - 5) < 0. && TMath::Min(MatchingChi2Top, MatchingChi2Bot) < 3.5 && tr_dT > -2.5 && tr_dT < 1.5
+                    if ((MatchingChi2Top - MatchingChi2Median) * (MatchingChi2Bot - MatchingChi2Median) < 0. 
+                            && TMath::Min(MatchingChi2Top, MatchingChi2Bot) < MatchingChi2Best && tr_dT > tr_dT_Min && tr_dT < tr_dT_Max
                             /* && (phiTop > phiBot + 165) && (phiTop < phiBot + 190.  )*/) {
                         h_MTCMoeller4->Fill(M_TCM);
                         h_dPhi4->Fill(phiTop - phiBot);

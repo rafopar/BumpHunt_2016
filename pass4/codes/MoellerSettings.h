@@ -22,6 +22,21 @@ double CL_trk_time_Offset;
 double cl_t_max = 63.;
 double cl_t_min = 50.;
 
+
+const double tr_dT_Max =  1.5;
+const double tr_dT_Min = -2.5;
+
+const double PSumMax = 2.4;
+const double PSumMin = 2.2;
+
+const double PDiffHighMax = 0.4;
+const double PDiffHighMin = 0.1;
+const double PDiffLowMax = -0.15;
+const double PDiffLowMin = -0.55;
+
+const double MatchingChi2Median = 5.;
+const double MatchingChi2Best = 3.5;
+
 const double pos_d0_cut = 1.1;
 const double Psum_min = 1.51; // GeV
 
