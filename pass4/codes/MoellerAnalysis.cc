@@ -73,18 +73,30 @@ int main(int argc, char** argv) {
     TH2D *h_phi_TopBot2 = new TH2D("h_phi_TopBot2", "", 200, -180., 0., 200, 0., 180.);
     TH2D *h_phi_TopBot3 = new TH2D("h_phi_TopBot3", "", 200, -180., 0., 200, 0., 180.);
     TH2D *h_phi_TopBot4 = new TH2D("h_phi_TopBot4", "", 200, -180., 0., 200, 0., 180.);
-    TH2D *h_phi_TopBot4 = new TH2D("h_phi_TopBot5", "", 200, -180., 0., 200, 0., 180.);
+    TH2D *h_phi_TopBot5 = new TH2D("h_phi_TopBot5", "", 200, -180., 0., 200, 0., 180.);
+
+    TH1D *h_dPhi1 = new TH1D("h_dPhi1", "", 200, 140., 220.);
+    TH1D *h_dPhi2 = new TH1D("h_dPhi2", "", 200, 140., 220.);
+    TH1D *h_dPhi3 = new TH1D("h_dPhi3", "", 200, 140., 220.);
+    TH1D *h_dPhi4 = new TH1D("h_dPhi4", "", 200, 140., 220.);
+    TH1D *h_dPhi5 = new TH1D("h_dPhi5", "", 200, 140., 220.);
 
     TH2D *h_cl_dT_Psum1 = new TH2D("h_cl_dT_Psum1", "", 200, 0.5, 1.3 * Eb, 200, -5.5, 5.5);
+    TH2D *h_cl_dT_Psum2 = new TH2D("h_cl_dT_Psum2", "", 200, 0.5, 1.3 * Eb, 200, -5.5, 5.5);
     TH2D *h_P_TopBot1 = new TH2D("h_P_TopBot1", "", 200, 0.1, 1.2 * Eb, 200, 0.1, 1.2 * Eb);
     TH2D *h_P_TopBot2 = new TH2D("h_P_TopBot2", "", 200, 0.1, 1.2 * Eb, 200, 0.1, 1.2 * Eb);
     TH2D *h_Top_TrCldT1 = new TH2D("h_Top_TrCldT1", "", 200, 0.2, 1.2 * Eb, 200, -5.5, 5.5);
     TH2D *h_Bot_TrCldT1 = new TH2D("h_Bot_TrCldT1", "", 200, 0.2, 1.2 * Eb, 200, -5.5, 5.5);
 
+    TH2D *h_PsumPdiff1 = new TH2D("h_PsumPdiff1", "", 200, 1.8, 2.8, 200, -2., 2.);
+    TH2D *h_PsumPdiff2 = new TH2D("h_PsumPdiff2", "", 200, 1.8, 2.8, 200, -2., 2.);
+    TH2D *h_PsumPdiff3 = new TH2D("h_PsumPdiff3", "", 200, 1.8, 2.8, 200, -2., 2.);
+
     TH2D *h_Trk_dT_Psum1 = new TH2D("h_Trk_dT_Psum1", "", 200, 0.5, 1.3 * Eb, 200, -9., 9.);
     TH2D *h_Trk_dT_Psum2 = new TH2D("h_Trk_dT_Psum2", "", 200, 0.5, 1.3 * Eb, 200, -9., 9.);
     TH2D *h_Trk_dT_Psum3 = new TH2D("h_Trk_dT_Psum3", "", 200, 0.5, 1.3 * Eb, 200, -9., 9.);
     TH2D *h_Trk_dT_Psum4 = new TH2D("h_Trk_dT_Psum4", "", 200, 0.5, 1.3 * Eb, 200, -9., 9.);
+    TH2D *h_Trk_dT_Psum5 = new TH2D("h_Trk_dT_Psum5", "", 200, 0.5, 1.3 * Eb, 200, -9., 9.);
 
     TH2D *h_dX_P_Top1 = new TH2D("h_dX_P_Top1", "", 200, 0.2, 0.95 * Eb, 200, -50., 50.);
     TH2D *h_dX_P_Top2 = new TH2D("h_dX_P_Top2", "", 200, 0.2, 0.95 * Eb, 200, -50., 50.);
@@ -137,8 +149,6 @@ int main(int argc, char** argv) {
 
         int nTCMoellers = ev->getNumberOfParticles(HpsParticle::TC_MOLLER_CANDIDATE);
 
-
-
         h_nTCMoellers->Fill(nTCMoellers);
 
 
@@ -170,7 +180,7 @@ int main(int argc, char** argv) {
             h_vz_Moeller1->Fill(vz_TCM);
 
 
-            if (((EcalCluster*) ((HpsParticle*) cur_tcM->getParticles()->At(0))->getClusters()->At(0))->getPosition().at(1) > 0) {
+            if (((GblTrack*) ((HpsParticle*) cur_tcM->getParticles()->At(0))->getTracks()->At(0))->getPositionAtEcal().at(1) > 0) {
                 Topem = (HpsParticle*) cur_tcM->getParticles()->At(0);
                 Botem = (HpsParticle*) cur_tcM->getParticles()->At(1);
 
@@ -199,11 +209,17 @@ int main(int argc, char** argv) {
             h_ToptrkChiNDF1->Fill(topChi2NDF);
             h_BottrkChiNDF1->Fill(botChi2NDF);
 
+            double tTopCl = 9999.;
+            double tBotCl = 9999.;
+            if (Topem->getClusters()->GetSize() > 0) {
+                tTopCl = ((EcalCluster*) Topem->getClusters()->At(0))->getClusterTime();
+            }
+            if (Botem->getClusters()->GetSize() > 0) {
+                tBotCl = ((EcalCluster*) Botem->getClusters()->At(0))->getClusterTime();
+            }
 
             double MatchingChi2Top = Topem->getGoodnessOfPID();
             double MatchingChi2Bot = Botem->getGoodnessOfPID();
-            double tTopCl = ((EcalCluster*) Topem->getClusters()->At(0))->getClusterTime();
-            double tBotCl = ((EcalCluster*) Botem->getClusters()->At(0))->getClusterTime();
             double cl_dT = tTopCl - tBotCl;
             double P_TCM = GetMagnitude(cur_tcM->getMomentum());
             double tTopTr = ((GblTrack*) Topem->getTracks()->At(0))->getTrackTime();
@@ -223,12 +239,27 @@ int main(int argc, char** argv) {
             //            double phiBot = atan2(P_Bot_emVect.at(1), P_Bot_emVect.at(0)) * TMath::RadToDeg();
 
             h_phi_TopBot1->Fill(phiBot, phiTop);
+            h_dPhi1->Fill(phiTop - phiBot);
 
             double P_Top = GetMagnitude(P_Top_emVect);
             double P_Bot = GetMagnitude(P_Bot_emVect);
+            double P_Diff = P_Top - P_Bot;
 
-            vector<double> pos_TopCl = ((EcalCluster*) Topem->getClusters()->At(0))->getPosition();
-            vector<double> pos_BotCl = ((EcalCluster*) Botem->getClusters()->At(0))->getPosition();
+            // ====================================================================================
+            //    In 2016 data, It is quite rare to have both Moeller electrons to hit the ECal
+            //    That is why we will not require cluster to be matched with track
+            // ====================================================================================
+
+            vector<double> pos_TopCl{9999., 9999., 9999.};
+            vector<double> pos_BotCl{9999., 9999., 9999.};
+
+            if (Topem->getClusters()->GetSize() > 0) {
+                pos_TopCl = ((EcalCluster*) Topem->getClusters()->At(0))->getPosition();
+            }
+
+            if (Botem->getClusters()->GetSize() > 0) {
+                pos_BotCl = ((EcalCluster*) Botem->getClusters()->At(0))->getPosition();
+            }
 
             double xTopCl = pos_TopCl.at(0);
             double xBotCl = pos_BotCl.at(0);
@@ -261,8 +292,24 @@ int main(int argc, char** argv) {
             h_TopMatchChi2_1->Fill(MatchingChi2Top);
             h_BotMatchChi2_1->Fill(MatchingChi2Bot);
 
+            h_PsumPdiff1->Fill(P_TCM, P_Top - P_Bot);
 
-            if (P_TCM > 2.25 && P_TCM < 2.4 /*&& cl_dT > -1.5 && cl_dT < 1.5 */) {
+            if ((MatchingChi2Top - 5) * (MatchingChi2Bot - 5) < 0. && TMath::Min(MatchingChi2Top, MatchingChi2Bot) < 3.5) {
+
+                h_PsumPdiff2->Fill(P_TCM, P_Top - P_Bot);
+
+                if (tr_dT > -2.5 && tr_dT < 1.5) {
+
+                    h_PsumPdiff3->Fill(P_TCM, P_Top - P_Bot);
+                    if (P_Bot > 0.8 && P_Bot < 1.5 && P_Top > 0.8 && P_Top < 1.5) {
+                        h_cl_dT_Psum2->Fill(P_TCM, cl_dT);
+                        h_Trk_dT_Psum5->Fill(P_TCM, tr_dT);
+                    }
+                }
+            }
+
+
+            if (P_TCM > 2.2 && P_TCM < 2.4 /*&& cl_dT > -1.5 && cl_dT < 1.5 */) {
                 h_MTCMoeller2->Fill(M_TCM);
                 h_P_TopBot2->Fill(P_Bot, P_Top);
                 h_dX_P_Top2->Fill(P_Top, dX_Top);
@@ -270,19 +317,22 @@ int main(int argc, char** argv) {
                 h_X_TopBot2->Fill(xBotCl, xTopCl);
                 h_Y_TopBot2->Fill(yBotCl, yTopCl);
                 h_phi_TopBot2->Fill(phiBot, phiTop);
+                h_dPhi2->Fill(phiTop - phiBot);
                 h_VertChi2_2->Fill(VertexChi2);
                 h_Trk_dT_Psum2->Fill(P_TCM, tr_dT);
                 h_TopMatchChi2_2->Fill(MatchingChi2Top);
                 h_BotMatchChi2_2->Fill(MatchingChi2Bot);
                 h_Chi2NDF_TCM2->Fill(M_TCM, chi2NDF_Sum);
 
-                if (P_Bot > 0.6 && P_Bot < 1.6 && P_Top > 0.6 && P_Top < 1.6) {
+                //if (P_Bot > 0.8 && P_Bot < 1.5 && P_Top > 0.8 && P_Top < 1.5) {
+                if ( (P_Diff > -0.55 && P_Diff < -0.15) || (P_Diff > 0.1 && P_Diff < 0.4) ) {
                     h_MTCMoeller3->Fill(M_TCM);
                     h_dX_P_Top3->Fill(P_Top, dX_Top);
                     h_dX_P_Bot3->Fill(P_Bot, dX_Bot);
                     h_X_TopBot3->Fill(xBotCl, xTopCl);
                     h_Y_TopBot3->Fill(yBotCl, yTopCl);
                     h_phi_TopBot3->Fill(phiBot, phiTop);
+                    h_dPhi3->Fill(phiTop - phiBot);
                     h_VertChi2_3->Fill(VertexChi2);
                     h_Trk_dT_Psum3->Fill(P_TCM, tr_dT);
                     h_TopMatchChi2_3->Fill(MatchingChi2Top);
@@ -293,6 +343,7 @@ int main(int argc, char** argv) {
                     if ((MatchingChi2Top - 5) * (MatchingChi2Bot - 5) < 0. && TMath::Min(MatchingChi2Top, MatchingChi2Bot) < 3.5 && tr_dT > -2.5 && tr_dT < 1.5
                             /* && (phiTop > phiBot + 165) && (phiTop < phiBot + 190.  )*/) {
                         h_MTCMoeller4->Fill(M_TCM);
+                        h_dPhi4->Fill(phiTop - phiBot);
                         h_phi_TopBot4->Fill(phiBot, phiTop);
                         h_VertChi2_4->Fill(VertexChi2);
                         h_X_TopBot4->Fill(xBotCl, xTopCl);
@@ -306,7 +357,8 @@ int main(int argc, char** argv) {
                         if (HasTopL1 && HasBotL1) {
 
                             h_Chi2NDF_TCM5->Fill(M_TCM, chi2NDF_Sum);
-                            h_phi_TopBot4->Fill(phiBot, phiTop);
+                            h_phi_TopBot5->Fill(phiBot, phiTop);
+                            h_dPhi5->Fill(phiTop - phiBot);
                         }
 
                     }
