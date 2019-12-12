@@ -1,9 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 /* 
  * File:   FitMoellerMass.cc
  * Author: rafopar
@@ -19,7 +13,9 @@
 #include <TH2D.h>
 #include <TFile.h>
 #include <TGraph.h>
+#include <TStyle.h>
 #include <TCanvas.h>
+#include <TGraphErrors.h>
 
 using namespace std;
 
@@ -28,6 +24,8 @@ using namespace std;
  */
 int main(int argc, char** argv) {
 
+    gStyle->SetOptFit(1);
+    
     std::string dataSet;
 
     if (argc >= 2) {
@@ -71,7 +69,7 @@ int main(int argc, char** argv) {
     
     TH1D *h_Chi2Proj1 = (TH1D*)h_chi2Minv->ProjectionY("h_Chi2Proj1", 1, h_chi2Minv->GetXaxis()->FindBin(0.055) );
     
-    TGraph *grSigma = new TGraph();
+    TGraphErrors *grSigma = new TGraphErrors();
     grSigma->SetTitle("; #chi^{2}/NDF cut; #sigma [GeV]");
     grSigma->SetMarkerStyle(20);
     grSigma->SetMarkerColor(2);
@@ -107,8 +105,10 @@ int main(int argc, char** argv) {
             c1->Print("Figs/MoellerMassFits.pdf");
 
             double sigm = f_Gaus->GetParameter(2);
+            double sigmErr = f_Gaus->GetParError(2);
 
             grSigma->SetPoint(ind_chi2, chi2Cut, sigm);
+            grSigma->SetPointError(ind_chi2, 0, sigmErr);
             grNMoeller->SetPoint(ind_chi2, chi2Cut, sqrt(NMoeller));
 
             grFigOfMerit->SetPoint(ind_chi2, chi2Cut, sqrt(NMoeller)/sigm);
