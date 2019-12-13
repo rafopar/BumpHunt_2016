@@ -91,12 +91,14 @@ int main(int argc, char** argv) {
     TH2D *h_PsumPdiff1 = new TH2D("h_PsumPdiff1", "", 200, 1.8, 2.8, 200, -2., 2.);
     TH2D *h_PsumPdiff2 = new TH2D("h_PsumPdiff2", "", 200, 1.8, 2.8, 200, -2., 2.);
     TH2D *h_PsumPdiff3 = new TH2D("h_PsumPdiff3", "", 200, 1.8, 2.8, 200, -2., 2.);
+    TH2D *h_PsumPdiff4 = new TH2D("h_PsumPdiff4", "", 200, 1.8, 2.8, 200, -2., 2.);
 
     TH2D *h_Trk_dT_Psum1 = new TH2D("h_Trk_dT_Psum1", "", 200, 0.5, 1.3 * Eb, 200, -9., 9.);
     TH2D *h_Trk_dT_Psum2 = new TH2D("h_Trk_dT_Psum2", "", 200, 0.5, 1.3 * Eb, 200, -9., 9.);
     TH2D *h_Trk_dT_Psum3 = new TH2D("h_Trk_dT_Psum3", "", 200, 0.5, 1.3 * Eb, 200, -9., 9.);
     TH2D *h_Trk_dT_Psum4 = new TH2D("h_Trk_dT_Psum4", "", 200, 0.5, 1.3 * Eb, 200, -9., 9.);
     TH2D *h_Trk_dT_Psum5 = new TH2D("h_Trk_dT_Psum5", "", 200, 0.5, 1.3 * Eb, 200, -9., 9.);
+    TH2D *h_Trk_dT_Psum6 = new TH2D("h_Trk_dT_Psum6", "", 200, 0.5, 1.3 * Eb, 200, -9., 9.);
 
     TH2D *h_dX_P_Top1 = new TH2D("h_dX_P_Top1", "", 200, 0.2, 0.95 * Eb, 200, -50., 50.);
     TH2D *h_dX_P_Top2 = new TH2D("h_dX_P_Top2", "", 200, 0.2, 0.95 * Eb, 200, -50., 50.);
@@ -299,12 +301,16 @@ int main(int argc, char** argv) {
 
                 h_PsumPdiff2->Fill(P_TCM, P_Top - P_Bot);
 
+                if ((P_Diff > PDiffLowMin && P_Diff < PDiffLowMax) || (P_Diff > PDiffHighMin && P_Diff < PDiffHighMax)) {
+                    h_Trk_dT_Psum5->Fill(P_TCM, tr_dT);
+                }
+
                 if (tr_dT > tr_dT_Min && tr_dT < tr_dT_Max) {
 
                     h_PsumPdiff3->Fill(P_TCM, P_Top - P_Bot);
-                    if ( (P_Diff > PDiffLowMin && P_Diff < PDiffLowMax) || (P_Diff > PDiffHighMin && P_Diff < PDiffHighMax) ) {
+                    if ((P_Diff > PDiffLowMin && P_Diff < PDiffLowMax) || (P_Diff > PDiffHighMin && P_Diff < PDiffHighMax)) {
                         h_cl_dT_Psum2->Fill(P_TCM, cl_dT);
-                        h_Trk_dT_Psum5->Fill(P_TCM, tr_dT);
+                        h_Trk_dT_Psum6->Fill(P_TCM, tr_dT);
                     }
                 }
             }
@@ -326,7 +332,7 @@ int main(int argc, char** argv) {
                 h_Chi2NDF_TCM2->Fill(M_TCM, chi2NDF_Sum);
 
                 //if (P_Bot > 0.8 && P_Bot < 1.5 && P_Top > 0.8 && P_Top < 1.5) {
-                if ( (P_Diff > PDiffLowMin && P_Diff < PDiffLowMax) || (P_Diff > PDiffHighMin && P_Diff < PDiffHighMax) ) {
+                if ((P_Diff > PDiffLowMin && P_Diff < PDiffLowMax) || (P_Diff > PDiffHighMin && P_Diff < PDiffHighMax)) {
                     h_MTCMoeller3->Fill(M_TCM);
                     h_dX_P_Top3->Fill(P_Top, dX_Top);
                     h_dX_P_Bot3->Fill(P_Bot, dX_Bot);
@@ -341,7 +347,7 @@ int main(int argc, char** argv) {
                     h_Chi2NDF_TCM3->Fill(M_TCM, chi2NDF_Sum);
 
 
-                    if ((MatchingChi2Top - MatchingChi2Median) * (MatchingChi2Bot - MatchingChi2Median) < 0. 
+                    if ((MatchingChi2Top - MatchingChi2Median) * (MatchingChi2Bot - MatchingChi2Median) < 0.
                             && TMath::Min(MatchingChi2Top, MatchingChi2Bot) < MatchingChi2Best && tr_dT > tr_dT_Min && tr_dT < tr_dT_Max
                             /* && (phiTop > phiBot + 165) && (phiTop < phiBot + 190.  )*/) {
                         h_MTCMoeller4->Fill(M_TCM);
