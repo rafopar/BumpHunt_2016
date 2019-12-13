@@ -10,6 +10,7 @@
 \usepackage{wrapfig}
 \usepackage{rotating}
 \usepackage{caption}
+\usepackage{amsmath,amssymb}   % This was needed for "\text{\o}"
 %\usepackage{subcaption}
 \usepackage{subfig}
 \usepackage{authblk}
@@ -27,10 +28,10 @@
 \usepackage{lineno}
 \linenumbers
 
-\oddsidemargin = -14mm
-\topmargin = -2.9cm
-\textwidth = 19cm
-\textheight = 24cm
+\oddsidemargin = -10mm
+\topmargin = -2.cm
+\textwidth = 18.5cm
+\textheight = 23.5cm
 
 \def \rarr {\rightarrow}
 \def \grinp {\includegraphics}
@@ -127,7 +128,7 @@ The fit result is shown in Fig.\ref{fig:cldTFits}. Different peak components of 
 %%%%%%%%%%%%%%%%%%%%%%%%%% F I G U R E %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 function are depicted by different color. The main Gaussian function of each peak is represented by a solid line, while the secondary Gaussian is represented with a dashed line. One can see that this function fits the distribution reasonably well.
 
-Then in order to determine the optimal cut on the cluster time difference, we will use the value, which maximizes the $\mathrm{\dfrac{S}{\displaystyle \sqrt{S + Bgr}}}$ ratio, where ''S`` is the signal (in our case the central peak), and ''S + Bgr`` is the signal plus Background (the total fit function).
+Then in order to determine the optimal cut on the cluster time difference, we will use the value, which maximizes the $\mathrm{\frac{\dstl S}{\dstl \sqrt{S + Bgr}}}$ ratio, where ''S`` is the signal (in our case the central peak), and ''S + Bgr`` is the signal plus Background (the total fit function).
 %%%%%%%%%%%%%%%%%%%%%%%%%% F I G U R E %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{figure}[!htb]
  \centering
@@ -215,15 +216,57 @@ We have used the \Mlr process to estimate the impact of the track quality on the
 \begin{equation}
  \dstl M_{ee}^{\mathrm{c.m.}} = \sqrt{2\cdot m_{e}\cdot E_{b}}
 \end{equation}
-The square root of the center of mass energy is also equal to the invariant mass of final state electrons in the \Mlr process. Hence we will use the \Mlr process to estimate the effect of track quality on the mass resolution.
+The square root of the center of mass energy is also equal to the invariant mass of final state electrons in the \Mlr process. Hence we will use the \Mlr process to estimate the effect of track quality on the mass resolution. As a measure of quality of track pairs, the  combined $\chi^{2}_{\mathrm{Sum}}/\mathrm{NDF_{Sum}}$ was used, which is defined as:
+\begin{equation}
+    \chi^{2}_{\mathrm{Sum}}/\mathrm{NDF_{Sum}} = \frac{\dstl \chi^{2}_{ \mathrm{Bot}} + \chi^{2}_{\mathrm{Top}} }{ \mathrm{\dstl 2\left(N_{Bot}^{hits} + N_{Top}^{hits}\right) - 10}}
+\end{equation}
+Here $\mathrm{\chi^{2}_{Bot(Top)}}$ is the $\chi^{2}$ for bottom (top) track, and 
+$\mathrm{ N^{hits}_{Bot(Top) } }$ is the number of 3d hits for the bottom (top) track.
+In the denominator $10$ is the total number of constraints (5 from each track).
 
-\subsubsection{selection of \Mlr events}
+\subsubsection{Selection of \Mlr events}
+{\color{Red} Important: We need MC data to justify some of cuts. Some of them are natural, however they should be confirmed by MC.}
+
 As a starting point, we have used so called ''\Mlr candidate events`` defined by the so called ''MOUSE`` cuts \cite{MOUSE_Cuts}. Those are events which contain at least one negative track in each detector half. The magnitude of their momentum sum also should be within $\mathrm{20\%}$ of beam energy:
 %%%%%%%%%%%%%%%%%%%%%%%%%% E Q U A T I O N %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{equation}
- 0.8E_{\mathrm{b}} < P_{\mathrm{\Mlr}} \equiv |\vec{P}_{\mathrm{Bot}} + \vec{P}_{\mathrm{Top}}| < 1.2E_{\mathrm{b}}
+ 0.8E_{\mathrm{b}} < P_{\mathrm{M\text{\o} eller}} \equiv |\vec{P}_{\mathrm{Bot}} + \vec{P}_{\mathrm{Top}}| < 1.2E_{\mathrm{b}}
 \end{equation}
 %%%%%%%%%%%%%%%%%%%%%%%%%% E Q U A T I O N %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Note: here there is no requirement for a track to be associated with a cluster. In the \Mlr selection of 2015 run, it was required both electrons to have a cluster, however about $\times 2$ higher beam energy of 2016 run boosts electrons more, and it is almost impossible to get both electrons to hit the Calorimeter (The ECal hole significantly reduces \Mlr acceptance), however there is non zero acceptance in the tracker for \Mlr electrons.
+In \Mlr event selection, it is not critical to keep track on how much signal and background each cut throws, but rather it is important to have the final sample as clean as possible (event if some cuts might be tight). During the analysis the following cuts were used:
+\begin{itemize}
+ \item $\mathrm{P_{sum}}$ momentum sum of final state electrons. \Mlr kinematics requires this to be equal to the beam energy. In the analysis we will chose a region where the  $\mathrm{P_{sum}}$ is in the vicinity of beam energy.
+ \item $\Delta t_{\mathrm{tr}}$ time difference between top and bottom tracks. Cutting $\Delta t_{\mathrm{tr}}$ around 0, will suppress accidentals coming from different beam bunches.
+ \item Track-Cluster matching. In 2016 kinematics One of electrons misses the calorimeter, and, in the offline reconstruction, if both tracks are associated with a cluster, then it is very likely one of them is accidental or track and cluster are produced from different particles, and it will will yield a bad matching $\chi^{2}$ value (large value). To suppress accidentals we will require one of tracks to have a good matching $\chi^{2}$ (small value), and the other to have a poor $\chi^{2}$ (large value).
+ \item Cut on $\mathrm{P_{diff}}$: Momentum difference between top and bottom electrons.
+ This is cut is also based on the specific acceptance of \Mlr events. and certain momentum configuration enter into the detector acceptance. This also will help to suppress acceptance.
+ \item $\mathrm{d\phi}$: Azimuthal angular difference of two final state electrons wrt beam direction at the target. In the \Mlr kinematics $\mathrm{d\phi}$ should be $180^{\circ}$. This cut however is not used. It cuts almost nothing, when the rest of cuts is applied.
+\end{itemize}
+
+Similarly to the rest of event selection cuts for the trident final state, here for \Mlr event selection also, in order to understand where to put cuts on a given variable, cuts are applied to the rest of variables mentioned above, then the distribution of the given variable is studied.
+%%%%%%%%%%%%%%%%%%%%%%%%%% F I G U R E %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{figure}[!htb]
+ \centering
+ \subfloat[]{\label{fig:MlrTrDt}\grinp[width=0.45\tw]{Figs/dT_tr5_Data.pdf}}
+ \subfloat[]{\label{fig:MlrPsuPDiff}\grinp[width=0.45\tw]{Figs/PSumDiff3_Data.pdf}}
+ \caption{Left: Time difference between top and bottom tracks. Right: Momentum difference vs Momentum sum of Top and bottom tracks. Red lines represent cut limits. Each of this distributions are made when cuts were applied to the rest of \Mlr selection variables. }
+ \label{fig:Mlr_dT_and_PSumPDif}
+\end{figure}
+%%%%%%%%%%%%%%%%%%%%%%%%%% F I G U R E %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+In Fig.\ref{fig:Mlr_dT_and_PSumPDif} shown Time difference between top and bottom tracks (left) and Momentum difference ($\mathrm{P_{Diff}}$) vs Momentum sum ($\mathrm{P_{Sum}}$) of Top and bottom tracks (right). Red lines indicate cut region for corresponding variables {\color{Red}\textbf{ Again, we need proper MC justify these cuts }}.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%% F I G U R E %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{figure}[!htb]
+ \centering
+ \subfloat[]{\label{fig:chi2VsMassMlr}\grinp[width=0.32\tw]{Figs/Chi2NDF_Mass_Moeller_Data.pdf}}
+ \subfloat[]{\label{fig:MlrSigmChi2Cut}\grinp[width=0.32\tw]{Figs/MassSigmaChi2Cut_Data.pdf}}
+  \subfloat[]{\label{fig:chi2VsMassMlr}\grinp[width=0.32\tw]{Figs/MoellerFigOfMerit_Data.pdf}}
+
+\end{figure}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%% F I G U R E %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
 \subsection{WAB Suppression cuts}
@@ -276,8 +319,9 @@ $\sigma_{\mathrm{stat}}$, and $\dstl \sigma_{m}$ for $\delta m$, we can express 
  \bibitem{ECalTimeCorr} Holly Szumila-Vance, ``HPS Ecal Timing Calibration for the
 Spring 2015 Engineering Run'', HPS Note 2015-011.
 
-\bibitem{AprimeFixedTargetTheory} J. D. Bjorken, R. Essig, P. Schuster and N. Toro, ``New Fixed-Target Experiments to Search for Dark Gauge Forces'' , Phys.Rev. D80 (2009) 075018, \href{https://arxiv.org/abs/0906.0580}{arXiv:0906.0580}
-\bibitem{MOUSE_Cuts} Miriam Diamond's talk at Analyis group meeting On 16-Oct-2018, (password protected) \href{https://confluence.slac.stanford.edu/display/hpsg/October+16%2C+2018}{https://confluence.slac.stanford.edu/display/hpsg/October+16\%2C+2018}
+\bibitem{AprimeFixedTargetTheory} J. D. Bjorken, R. Essig, P. Schuster and N. Toro,
+``New Fixed-Target Experiments to Search for Dark Gauge Forces'', Phys.Rev. D80 (2009) 075018, \href{https://arxiv.org/abs/0906.0580}{arXiv:0906.0580}
+\bibitem{MOUSE_Cuts} Miriam Diamond's talk at analysis group meeting On 16-Oct-2018, (password protected) \href{https://confluence.slac.stanford.edu/display/hpsg/October+16%2C+2018}{https://confluence.slac.stanford.edu/display/hpsg/October+16\%2C+2018}
 \end{thebibliography}
 
 \end{document}
