@@ -29,8 +29,8 @@ const double tr_dT_Min = -2.5;
 const double PSumMax = 2.4;
 const double PSumMin = 2.2;
 
-const double PDiffHighMax = 0.4;
-const double PDiffHighMin = 0.1;
+const double PDiffHighMax = 0.35;
+const double PDiffHighMin = 0.05;
 const double PDiffLowMax = -0.15;
 const double PDiffLowMin = -0.55;
 
