@@ -186,6 +186,51 @@ int main(int argc, char** argv) {
     TH1D *h_Pem_Nminus1 = new TH1D("h_Pem_Nminus1", "", 200, 0., Eb);
     TH1D *h_cl_dt_Nminus1 = new TH1D("h_cl_dt_Nminus1", "", 200, -5., 5.);
 
+
+    // ============================= Three stages of histograms ==================================
+    // == 1. Histograms With extension "All" represent the distribution of a variable when no cut is applied
+    // == 2. Histograms With extension "AllBut" represent the distribution of a variable when, all
+    // ==    event selection cuts are applied, except the one of that variable
+    // == 3. Histograms With extension "CutEffect" represents the distribution of a given variable, 
+    // ==    when all cuts (including the given variable) are applied
+    // ============================= Three stages of histograms ==================================
+
+    TH1D *h_PsumMax_All = new TH1D("h_PsumMax_All", "", 200, 0.7, 1.2 * Eb);
+    TH1D *h_PsumMax_AllBut = new TH1D("h_PsumMax_AllBut", "", 200, 0.7, 1.2 * Eb);
+    TH1D *h_PsumMax_CutEffect = new TH1D("h_PsumMax_CutEffect", "", 200, 0.7, 1.2 * Eb);
+
+    TH1D *h_PsumMin_All = new TH1D("h_PsumMin_All", "", 200, 0.7, 1.2 * Eb);
+    TH1D *h_PsumMin_AllBut = new TH1D("h_PsumMin_AllBut", "", 200, 0.7, 1.2 * Eb);
+    TH1D *h_PsumMin_CutEffect = new TH1D("h_PsumMin_CutEffect", "", 200, 0.7, 1.2 * Eb);
+
+    TH1D *h_clDt_All = new TH1D("h_clDt_All", "", 200, -5.5, 5.5);
+    TH1D *h_clDt_AllBut = new TH1D("h_clDt_AllBut", "", 200, -5.5, 5.5);
+    TH1D *h_clDt_CutEffect = new TH1D("h_clDt_CutEffect", "", 200, -5.5, 5.5);
+
+    TH2D *h_em_cl_trk_dT_All = new TH2D("h_em_cl_trk_dT_All", "", 200, 0., 2.5, 200, -15., 15.);
+    TH2D *h_em_cl_trk_dT_AllBut = new TH2D("h_em_cl_trk_dT_AllBut", "", 200, 0., 2.5, 200, -15., 15.);
+    TH2D *h_em_cl_trk_dT_CutEffect = new TH2D("h_em_cl_trk_dT_CutEffect", "", 200, 0., 2.5, 200, -15., 15.);
+
+    TH2D *h_ep_cl_trk_dT_All = new TH2D("h_ep_cl_trk_dT_All", "", 200, 0., 2.5, 200, -15., 15.);
+    TH2D *h_ep_cl_trk_dT_AllBut = new TH2D("h_ep_cl_trk_dT_AllBut", "", 200, 0., 2.5, 200, -15., 15.);
+    TH2D *h_ep_cl_trk_dT_CutEffect = new TH2D("h_ep_cl_trk_dT_CutEffect", "", 200, 0., 2.5, 200, -15., 15.);
+
+    TH2D *h_dX_em_All = new TH2D("h_h_dX_em_All", "", 200, 0., Eb, 200, -50., 50.);
+    TH2D *h_dX_em_AllBut = new TH2D("h_h_dX_em_AllBut", "", 200, 0., Eb, 200, -50., 50.);
+    TH2D *h_dX_em_CutEffect = new TH2D("h_h_dX_em_CutEffect", "", 200, 0., Eb, 200, -50., 50.);
+
+    TH2D *h_dX_ep_All = new TH2D("h_h_dX_ep_All", "", 200, 0., Eb, 200, -50., 50.);
+    TH2D *h_dX_ep_AllBut = new TH2D("h_h_dX_ep_AllBut", "", 200, 0., Eb, 200, -50., 50.);
+    TH2D *h_dX_ep_CutEffect = new TH2D("h_h_dX_ep_CutEffect", "", 200, 0., Eb, 200, -50., 50.);
+
+    TH1D *h_Pem_All = new TH1D("h_Pem_All", "", 200, 0., 2.2);
+    TH1D *h_Pem_AllBut = new TH1D("h_Pem_AllBut", "", 200, 0., 2.2);
+    TH1D *h_Pem_CutEffect = new TH1D("h_Pem_CutEffect", "", 200, 0., 2.2);
+
+    TH1D *h_d0_ep_All = new TH1D("h_d0_ep_All", "", 200, -3.5, 3.5);
+    TH1D *h_d0_ep_AllBut = new TH1D("h_d0_ep_AllBut", "", 200, -3.5, 3.5);
+    TH1D *h_d0_ep_CutEffect = new TH1D("h_d0_ep_CutEffect", "", 200, -3.5, 3.5);
+
     HpsEvent *ev = new HpsEvent();
     //tr1->SetBranchAddress("HPS_Event", ev);
 
@@ -464,6 +509,8 @@ int main(int argc, char** argv) {
                 continue;
             }
 
+            double ClTrkDt_em = cl_em->getClusterTime() - CL_trk_time_Offset - trk_em->getTrackTime();
+
             if (pos_trk_em.at(1) > 0) {
 
                 if (HasL1Hit(trk_em)) {
@@ -569,6 +616,7 @@ int main(int argc, char** argv) {
                 continue;
             }
 
+            double ClTrkDt_ep = cl_ep->getClusterTime() - CL_trk_time_Offset - trk_ep->getTrackTime();
 
             double chi2_ep = trk_ep->getChi2();
             int n_epHits = trk_ep->getSvtHits()->GetSize();
@@ -747,59 +795,114 @@ int main(int argc, char** argv) {
             IsD0ep = IsD0Cut(d0_ep);
 
 
-
+            h_PsumMax_All->Fill(Psum);
             if (CheckAllOtherCuts("PsumMax")) {
                 h_Minv_PMax_Final1->Fill(mV0);
                 h_Psum_Test1->Fill(Psum);
+                h_PsumMax_AllBut->Fill(Psum);
+
+                if (IsPsumMax) {
+                    h_PsumMax_CutEffect->Fill(Psum);
+                }
             }
 
+            h_PsumMin_All->Fill(Psum);
             if (CheckAllOtherCuts("PsumMin")) {
                 h_Minv_PMin_Final1->Fill(mV0);
                 h_Psum3->Fill(Psum);
                 h_Psum_Test2->Fill(Psum);
+                h_PsumMin_AllBut->Fill(Psum);
+                if (IsPsumMin) {
+                    h_PsumMin_CutEffect->Fill(Psum);
+                }
             }
 
+
+            h_clDt_All->Fill(t_cl_ep - t_cl_em);
             if (CheckAllOtherCuts("cldT")) {
                 h_Minv_cldT_Final1->Fill(mV0);
                 h_Psum_Test3->Fill(Psum);
 
                 h_cl_dt_Nminus1->Fill(t_cl_ep - t_cl_em);
+                h_clDt_AllBut->Fill(t_cl_ep - t_cl_em);
+
+                if (IscldT) {
+                    h_clDt_CutEffect->Fill(t_cl_ep - t_cl_em);
+                }
             }
 
+
+            h_ep_cl_trk_dT_All->Fill(P_ep, ClTrkDt_ep);
             if (CheckAllOtherCuts("epClTrkdT")) {
                 h_Minv_epClTrkdT_Final1->Fill(mV0);
                 h_Psum_Test4->Fill(Psum);
+
+                h_ep_cl_trk_dT_AllBut->Fill(P_ep, ClTrkDt_ep);
+
+                if (IsepClTrkdT) {
+                    h_ep_cl_trk_dT_CutEffect->Fill(P_ep, ClTrkDt_ep);
+                }
+
             }
 
+            h_em_cl_trk_dT_All->Fill(P_em, ClTrkDt_em);
             if (CheckAllOtherCuts("emClTrkdT")) {
                 h_Minv_emClTrkdT_Final1->Fill(mV0);
                 h_Psum_Test5->Fill(Psum);
+                h_em_cl_trk_dT_AllBut->Fill(P_em, ClTrkDt_em);
+
+                if (IsemClTrkdT) {
+                    h_em_cl_trk_dT_CutEffect->Fill(P_em, ClTrkDt_em);
+                }
             }
 
+            h_dX_ep_All->Fill(P_ep, dX_ep);
             if (CheckAllOtherCuts("epClTrkMatch")) {
                 h_Minv_epClTrkMatch_Final1->Fill(mV0);
                 h_Psum_Test6->Fill(Psum);
+                h_dX_ep_AllBut->Fill(P_ep, dX_ep);
+                if (IsepTrkClMatch) {
+                    h_dX_ep_CutEffect->Fill(P_ep, dX_ep);
+                }
+
             }
+
+            h_dX_em_All->Fill(P_em, dX_em);
             if (CheckAllOtherCuts("emClTrkMatch")) {
                 h_Minv_emClTrkMatch_Final1->Fill(mV0);
                 h_Psum_Test7->Fill(Psum);
+                h_dX_em_AllBut->Fill(P_em, dX_em);
+
+                if (IsemTrkClMatch) {
+                    h_dX_em_CutEffect->Fill(P_em, dX_em);
+                }
             }
 
+            h_Pem_All->Fill(P_em);
             if (CheckAllOtherCuts("Pem")) {
                 h_Minv_Pem_Final1->Fill(mV0);
                 h_Psum_Test8->Fill(Psum);
 
                 h_Pem_Nminus1->Fill(P_em);
+                h_Pem_AllBut->Fill(P_em);
+
+                if (IsPem) {
+                    h_Pem_CutEffect->Fill(P_em);
+                }
             }
+
+            h_d0_ep_All->Fill(d0_ep);
             if (CheckAllOtherCuts("d0ep")) {
                 h_Minv_d0ep_Final1->Fill(mV0);
                 h_Psum_Test9->Fill(Psum);
 
                 h_d0_ep_Nminus1->Fill(d0_ep);
+                h_d0_ep_AllBut->Fill(d0_ep);
 
                 if (IsD0ep) {
                     h_Minv_Final1->Fill(mV0);
                     h_Psum4->Fill(Psum);
+                    h_d0_ep_CutEffect->Fill(d0_ep);
 
                     n_realV0 = n_realV0 + 1;
                 }
