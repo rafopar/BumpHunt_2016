@@ -18,8 +18,8 @@ const double radian = 57.29578;
 const double Eb = 2.306;
 const double CL_trk_time_Offset_Data = 55.;
 const double CL_trk_time_Offset_tri = 44.8;
-const double CL_trk_time_Offset_WAB = 51.2517;
-const double CL_trk_time_Offset_Rad = 51.2517;
+const double CL_trk_time_Offset_WAB = 44.8;
+const double CL_trk_time_Offset_Rad = 44.8;
 double CL_trk_time_Offset;
 //const double cl_t_max = 80.;
 //const double cl_t_min = 20.;
@@ -150,13 +150,13 @@ double SVTLayerBinnings[nSVTLayers + 1] = {50., 150., 250., 400., 600., 800., 95
 // ========= ================================ ============
 
 const double tritrig_SigmaGen = 1.416e-3;
-const double NGen_tritrig = 200.*50000.; /* 200 recon files, and each recon has 50K Gen events*/
+const double NGen_tritrig = 985.*50000.; /* 200 recon files, and each recon has 50K Gen events*/
 
-const double Rad_SigmaGen = 81.e-6;
-const double NGen_Rad = 200*10000.;
+const double Rad_SigmaGen = 81.61e-6;
+const double NGen_Rad = 4989*10000.;
 
 const double Wab_SigmaGen = 0.1985;
-const double NGen_Wab = 9964.*100000.;
+const double NGen_Wab = 9965.*100000.;
 
 const double Lumin8099 = 237.e9;
 

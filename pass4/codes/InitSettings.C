@@ -56,7 +56,8 @@ void InitVariables(std::string dataSet) {
 
         if (dataSet.compare("WAB") == 0) {
             isWab = true;
-            inpFileName = "../Data/WABBT_Pass4_pairs1.root";
+            inpFileName = "../Data/wab_beam_pass4.root";
+            //inpFileName = "../Data/WABBT_Pass4_pairs1.root";
             //inpFileName = "../Data/WABBT_Pass4_pairs1.root";
 
             if (isEventSelection) {
@@ -73,7 +74,8 @@ void InitVariables(std::string dataSet) {
 
         } else if (dataSet.compare("Rad") == 0) {
             isRad = true;
-            inpFileName = "../Data/RAD_Beam_pass4.root";
+            //inpFileName = "../Data/RAD_Beam_pass4.root";
+            inpFileName = "../Data/Rad_Beam_pass4.root";
 
             if (isEventSelection) {
                 outFileName = "EventSelection_Rad.root";
@@ -89,7 +91,8 @@ void InitVariables(std::string dataSet) {
 
         } else if (dataSet.compare("Tri") == 0) {
             isTri = true;
-            inpFileName = "../Data/tritrig_Pass4_iss640.root";
+            inpFileName = "../Data/tritrig_pass4.root";
+            //inpFileName = "../Data/tritrig_Pass4_iss640.root";
             //inpFileName = "../Data/tritrig_Pass4_Files1To200.root";
 
             if (isEventSelection) {
