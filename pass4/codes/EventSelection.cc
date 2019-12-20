@@ -203,9 +203,9 @@ int main(int argc, char** argv) {
     TH1D *h_PsumMin_AllBut = new TH1D("h_PsumMin_AllBut", "", 200, 0.7, 1.2 * Eb);
     TH1D *h_PsumMin_CutEffect = new TH1D("h_PsumMin_CutEffect", "", 200, 0.7, 1.2 * Eb);
 
-    TH1D *h_clDt_All = new TH1D("h_clDt_All", "", 200, -5.5, 5.5);
-    TH1D *h_clDt_AllBut = new TH1D("h_clDt_AllBut", "", 200, -5.5, 5.5);
-    TH1D *h_clDt_CutEffect = new TH1D("h_clDt_CutEffect", "", 200, -5.5, 5.5);
+    TH1D *h_clDt_All = new TH1D("h_clDt_All", "", 200, -3., 3.);
+    TH1D *h_clDt_AllBut = new TH1D("h_clDt_AllBut", "", 200, -3., 3.);
+    TH1D *h_clDt_CutEffect = new TH1D("h_clDt_CutEffect", "", 200, -3., 3.);
 
     TH2D *h_em_cl_trk_dT_All = new TH2D("h_em_cl_trk_dT_All", "", 200, 0., 2.5, 200, -15., 15.);
     TH2D *h_em_cl_trk_dT_AllBut = new TH2D("h_em_cl_trk_dT_AllBut", "", 200, 0., 2.5, 200, -15., 15.);
