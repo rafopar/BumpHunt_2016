@@ -29,8 +29,10 @@ void InitSettings(std::string dataSet) {
     } else if (dataSet.compare("MC") == 0) {
         isMC = true;
 
-        inpFileName = "../Data/olv3_HPS-PhysicsRun2016-Nominal-v4-4-fieldmap_3.8-fix_noTrigger_All.root";
-        outFileName = "MoellerAnalyze_MV.root";
+        //inpFileName = "../Data/olv3_HPS-PhysicsRun2016-Nominal-v4-4-fieldmap_3.8-fix_noTrigger_All.root";
+        inpFileName = "../Data/skim_Moeller_ClTimeFixed.root";
+        //inpFileName = "../Data/skim_Moeller.root";
+        outFileName = "MoellerAnalyze_MC.root";
     }
 
     file_in = new TFile(inpFileName.c_str(), "Read");
@@ -77,7 +79,7 @@ void ResetConstrainedMollerFlags() {
 
     topChi2 = 0;
     botChi2 = 0;
-    
+
     HasTopL1 = false;
     HasBotL1 = false;
 }
@@ -153,4 +155,49 @@ double GetMagnitude(vector<double> v) {
     }
 
     return sqrt(magn2);
+}
+
+bool TrackFiducial(double tr_x, double tr_y) {
+
+    bool fiducial = false;
+
+    if (tr_y > 0) {
+
+        if (tr_x > -125 && tr_x < -97.) {
+
+            if (tr_y > 26. && tr_y < 40.) {
+                fiducial = true;
+            }
+        } else if (tr_x > -85. && tr_x < -60.) {
+            if (tr_y > 23. && tr_y < 31.) {
+                fiducial = true;
+            }
+
+        }
+    } else {
+        if (tr_x > -112. && tr_x < -95.) {
+            if (tr_y > -40 && tr_y < -27.) {
+                fiducial = true;
+            }
+        } else if (tr_x > -95. && tr_x < -85) {
+            if (tr_y > -39. && tr_y < -33.) {
+                fiducial = true;
+            }
+
+        } else if (tr_x > -70. && tr_x < -48.) {
+            if (tr_y > -30. && tr_y < -23.) {
+                fiducial = true;
+            }
+
+        }
+    }
+
+    return fiducial;
+}
+
+bool TrackInHole(double tr_x, double tr_y) {
+    
+    bool InHole = (tr_x > -80 && tr_x < -40. && TMath::Abs(tr_y) < 30);
+
+    return InHole;
 }

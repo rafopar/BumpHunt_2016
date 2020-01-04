@@ -107,6 +107,20 @@ int main(int argc, char** argv) {
     TH2D *h_dX_P_Bot2 = new TH2D("h_dX_P_Bot2", "", 200, 0.2, 0.95 * Eb, 200, -50., 50.);
     TH2D *h_dX_P_Bot3 = new TH2D("h_dX_P_Bot3", "", 200, 0.2, 0.95 * Eb, 200, -50., 50.);
 
+    TH2D *h_dX_P_InHole_Top1 = new TH2D("h_dX_P_InHole_Top1", "", 200, 0.2, 0.95 * Eb, 200, -50., 50.);
+    TH2D *h_dX_P_InHole_Top2 = new TH2D("h_dX_P_InHole_Top2", "", 200, 0.2, 0.95 * Eb, 200, -50., 50.);
+    TH2D *h_dX_P_InHole_Top3 = new TH2D("h_dX_P_InHole_Top3", "", 200, 0.2, 0.95 * Eb, 200, -50., 50.);
+    TH2D *h_dX_P_InHole_Bot1 = new TH2D("h_dX_P_InHole_Bot1", "", 200, 0.2, 0.95 * Eb, 200, -50., 50.);
+    TH2D *h_dX_P_InHole_Bot2 = new TH2D("h_dX_P_InHole_Bot2", "", 200, 0.2, 0.95 * Eb, 200, -50., 50.);
+    TH2D *h_dX_P_InHole_Bot3 = new TH2D("h_dX_P_InHole_Bot3", "", 200, 0.2, 0.95 * Eb, 200, -50., 50.);
+
+    TH2D *h_dX_P_InECal_Top1 = new TH2D("h_dX_P_InECal_Top1", "", 200, 0.2, 0.95 * Eb, 200, -50., 50.);
+    TH2D *h_dX_P_InECal_Top2 = new TH2D("h_dX_P_InECal_Top2", "", 200, 0.2, 0.95 * Eb, 200, -50., 50.);
+    TH2D *h_dX_P_InECal_Top3 = new TH2D("h_dX_P_InECal_Top3", "", 200, 0.2, 0.95 * Eb, 200, -50., 50.);
+    TH2D *h_dX_P_InECal_Bot1 = new TH2D("h_dX_P_InECal_Bot1", "", 200, 0.2, 0.95 * Eb, 200, -50., 50.);
+    TH2D *h_dX_P_InECal_Bot2 = new TH2D("h_dX_P_InECal_Bot2", "", 200, 0.2, 0.95 * Eb, 200, -50., 50.);
+    TH2D *h_dX_P_InECal_Bot3 = new TH2D("h_dX_P_InECal_Bot3", "", 200, 0.2, 0.95 * Eb, 200, -50., 50.);
+
     TH1D *h_TopMatchChi2_1 = new TH1D("h_TopMatchChi2_1", "", 200, 0., 14.);
     TH1D *h_TopMatchChi2_2 = new TH1D("h_TopMatchChi2_2", "", 200, 0., 14.);
     TH1D *h_TopMatchChi2_3 = new TH1D("h_TopMatchChi2_3", "", 200, 0., 14.);
@@ -123,16 +137,31 @@ int main(int argc, char** argv) {
     TH2D *h_X_TopBot3 = new TH2D("h_X_TopBot3", "", 200, -150., 0., 200, -150., 0.);
     TH2D *h_X_TopBot4 = new TH2D("h_X_TopBot4", "", 200, -150., 0., 200, -150., 0.);
 
-    TH2D *h_Y_TopBot1 = new TH2D("h_Y_TopBot1", "", 200, -90., 0., 200, 0., 00.);
-    TH2D *h_Y_TopBot2 = new TH2D("h_Y_TopBot2", "", 200, -90., 0., 200, 0., 00.);
-    TH2D *h_Y_TopBot3 = new TH2D("h_Y_TopBot3", "", 200, -90., 0., 200, 0., 00.);
-    TH2D *h_Y_TopBot4 = new TH2D("h_Y_TopBot4", "", 200, -90., 0., 200, 0., 00.);
+    TH2D *h_Y_TopBot1 = new TH2D("h_Y_TopBot1", "", 200, -90., 0., 200, 0., 90.);
+    TH2D *h_Y_TopBot2 = new TH2D("h_Y_TopBot2", "", 200, -90., 0., 200, 0., 90.);
+    TH2D *h_Y_TopBot3 = new TH2D("h_Y_TopBot3", "", 200, -90., 0., 200, 0., 90.);
+    TH2D *h_Y_TopBot4 = new TH2D("h_Y_TopBot4", "", 200, -90., 0., 200, 0., 90.);
 
     TH2D *h_Chi2NDF_TCM1 = new TH2D("h_Chi2NDF_TCM1", "", 200, 0.02, 0.12, 200, 0., 12.);
     TH2D *h_Chi2NDF_TCM2 = new TH2D("h_Chi2NDF_TCM2", "", 200, 0.02, 0.12, 200, 0., 12.);
     TH2D *h_Chi2NDF_TCM3 = new TH2D("h_Chi2NDF_TCM3", "", 200, 0.02, 0.12, 200, 0., 12.);
     TH2D *h_Chi2NDF_TCM4 = new TH2D("h_Chi2NDF_TCM4", "", 200, 0.02, 0.12, 200, 0., 12.);
     TH2D *h_Chi2NDF_TCM5 = new TH2D("h_Chi2NDF_TCM5", "", 200, 0.02, 0.12, 200, 0., 12.);
+    TH2D *h_Chi2NDF_TCM6 = new TH2D("h_Chi2NDF_TCM6", "", 200, 0.02, 0.12, 200, 0., 12.);
+    TH2D *h_Chi2NDF_TCM_Top6 = new TH2D("h_Chi2NDF_TCM_Top6", "", 200, 0.02, 0.12, 200, 0., 12.);
+    TH2D *h_Chi2NDF_TCM_Bot6 = new TH2D("h_Chi2NDF_TCM_Bot6", "", 200, 0.02, 0.12, 200, 0., 12.);
+
+    TH2D *h_tr_yxc_1 = new TH2D("h_tr_yxc_1", "", 200, -300., 270, 200, -90., 90.);
+    TH2D *h_tr_yxc_2 = new TH2D("h_tr_yxc_2", "", 200, -300., 270, 200, -90., 90.);
+    TH2D *h_tr_yxc_3 = new TH2D("h_tr_yxc_3", "", 200, -300., 270, 200, -90., 90.);
+    TH2D *h_tr_yxc_4 = new TH2D("h_tr_yxc_4", "", 200, -300., 270, 200, -90., 90.);
+    TH2D *h_tr_yxc_5 = new TH2D("h_tr_yxc_5", "", 200, -300., 270, 200, -90., 90.);
+
+    TH2D *h_cl_yxc_1 = new TH2D("h_cl_yxc_1", "", 200, -300., 270, 200, -90., 90.);
+    TH2D *h_cl_yxc_2 = new TH2D("h_cl_yxc_2", "", 200, -300., 270, 200, -90., 90.);
+    TH2D *h_cl_yxc_3 = new TH2D("h_cl_yxc_3", "", 200, -300., 270, 200, -90., 90.);
+    TH2D *h_cl_yxc_4 = new TH2D("h_cl_yxc_4", "", 200, -300., 270, 200, -90., 90.);
+    TH2D *h_cl_yxc_5 = new TH2D("h_cl_yxc_5", "", 200, -300., 270, 200, -90., 90.);
 
     int nev = tr1->GetEntries();
     //nev = 1000000;
@@ -263,6 +292,8 @@ int main(int argc, char** argv) {
                 pos_BotCl = ((EcalCluster*) Botem->getClusters()->At(0))->getPosition();
             }
 
+            //cout<<Topem->getClusters()->GetSize()<<"     "<<Botem->getClusters()->GetSize()<<endl;
+
             double xTopCl = pos_TopCl.at(0);
             double xBotCl = pos_BotCl.at(0);
             double yTopCl = pos_TopCl.at(1);
@@ -271,10 +302,39 @@ int main(int argc, char** argv) {
             vector<double> pos_TopTrk = ((GblTrack*) Topem->getTracks()->At(0))->getPositionAtEcal();
             vector<double> pos_BotTrk = ((GblTrack*) Botem->getTracks()->At(0))->getPositionAtEcal();
 
+            double yTopTr = pos_TopTrk.at(1);
+            double xTopTr = pos_TopTrk.at(0);
+            double yBotTr = pos_BotTrk.at(1);
+            double xBotTr = pos_BotTrk.at(0);
+
+            TopTrkFiducial = TrackFiducial(xTopTr, yTopTr);
+            BotTrkFiducial = TrackFiducial(xBotTr, yBotTr);
+
+            TopTrkInHole = TrackInHole(xTopTr, yTopTr);
+            BotTrkInHole = TrackInHole(xBotTr, yBotTr);
+
             double tr_dT = tTopTr - tBotTr;
 
             double dX_Top = pos_TopCl.at(0) - pos_TopTrk.at(0);
             double dX_Bot = pos_BotCl.at(0) - pos_BotTrk.at(0);
+
+            h_tr_yxc_1->Fill(xTopTr, yTopTr);
+            h_tr_yxc_1->Fill(xBotTr, yBotTr);
+            h_cl_yxc_1->Fill(xTopCl, yTopCl);
+            h_cl_yxc_1->Fill(xBotCl, yBotCl);
+
+
+            if (TopTrkInHole) {
+                h_dX_P_InHole_Top1->Fill(P_Top, dX_Top);
+            } else {
+                h_dX_P_InECal_Top1->Fill(P_Top, dX_Top);
+            }
+
+            if (BotTrkInHole) {
+                h_dX_P_InHole_Bot1->Fill(P_Bot, dX_Bot);
+            } else {
+                h_dX_P_InECal_Bot1->Fill(P_Bot, dX_Bot);
+            }
 
             h_cl_dT_Psum1->Fill(P_TCM, cl_dT);
             h_P_TopBot1->Fill(P_Bot, P_Top);
@@ -295,6 +355,7 @@ int main(int argc, char** argv) {
             h_BotMatchChi2_1->Fill(MatchingChi2Bot);
 
             h_PsumPdiff1->Fill(P_TCM, P_Top - P_Bot);
+
 
             if ((MatchingChi2Top - MatchingChi2Median) * (MatchingChi2Bot - MatchingChi2Median) < 0.
                     && TMath::Min(MatchingChi2Top, MatchingChi2Bot) < MatchingChi2Best) {
@@ -317,10 +378,23 @@ int main(int argc, char** argv) {
 
 
             if (P_TCM > PSumMin && P_TCM < PSumMax /*&& cl_dT > -1.5 && cl_dT < 1.5 */) {
+
+                //cout<<"xBotCl = "<<xBotCl<<"      xTopCl = "<<xTopCl<<endl;
+
                 h_MTCMoeller2->Fill(M_TCM);
                 h_P_TopBot2->Fill(P_Bot, P_Top);
                 h_dX_P_Top2->Fill(P_Top, dX_Top);
                 h_dX_P_Bot2->Fill(P_Bot, dX_Bot);
+                if (TopTrkInHole) {
+                    h_dX_P_InHole_Top2->Fill(P_Top, dX_Top);
+                } else {
+                    h_dX_P_InECal_Top2->Fill(P_Top, dX_Top);
+                }
+                if (BotTrkInHole) {
+                    h_dX_P_InHole_Bot2->Fill(P_Bot, dX_Bot);
+                } else {
+                    h_dX_P_InECal_Bot2->Fill(P_Bot, dX_Bot);
+                }
                 h_X_TopBot2->Fill(xBotCl, xTopCl);
                 h_Y_TopBot2->Fill(yBotCl, yTopCl);
                 h_phi_TopBot2->Fill(phiBot, phiTop);
@@ -330,12 +404,27 @@ int main(int argc, char** argv) {
                 h_TopMatchChi2_2->Fill(MatchingChi2Top);
                 h_BotMatchChi2_2->Fill(MatchingChi2Bot);
                 h_Chi2NDF_TCM2->Fill(M_TCM, chi2NDF_Sum);
+                h_tr_yxc_2->Fill(xTopTr, yTopTr);
+                h_tr_yxc_2->Fill(xBotTr, yBotTr);
+                h_cl_yxc_2->Fill(xTopCl, yTopCl);
+                h_cl_yxc_2->Fill(xBotCl, yBotCl);
+
 
                 //if (P_Bot > 0.8 && P_Bot < 1.5 && P_Top > 0.8 && P_Top < 1.5) {
                 if ((P_Diff > PDiffLowMin && P_Diff < PDiffLowMax) || (P_Diff > PDiffHighMin && P_Diff < PDiffHighMax)) {
                     h_MTCMoeller3->Fill(M_TCM);
                     h_dX_P_Top3->Fill(P_Top, dX_Top);
                     h_dX_P_Bot3->Fill(P_Bot, dX_Bot);
+                    if (TopTrkInHole) {
+                        h_dX_P_InHole_Top3->Fill(P_Top, dX_Top);
+                    } else {
+                        h_dX_P_InECal_Top3->Fill(P_Top, dX_Top);
+                    }
+                    if (BotTrkInHole) {
+                        h_dX_P_InHole_Bot3->Fill(P_Bot, dX_Bot);
+                    } else {
+                        h_dX_P_InECal_Bot3->Fill(P_Bot, dX_Bot);
+                    }
                     h_X_TopBot3->Fill(xBotCl, xTopCl);
                     h_Y_TopBot3->Fill(yBotCl, yTopCl);
                     h_phi_TopBot3->Fill(phiBot, phiTop);
@@ -345,6 +434,41 @@ int main(int argc, char** argv) {
                     h_TopMatchChi2_3->Fill(MatchingChi2Top);
                     h_BotMatchChi2_3->Fill(MatchingChi2Bot);
                     h_Chi2NDF_TCM3->Fill(M_TCM, chi2NDF_Sum);
+                    h_tr_yxc_3->Fill(xTopTr, yTopTr);
+                    h_tr_yxc_3->Fill(xBotTr, yBotTr);
+                    h_cl_yxc_3->Fill(xTopCl, yTopCl);
+                    h_cl_yxc_3->Fill(xBotCl, yBotCl);
+
+                    bool testTopMatchingCut = false;
+                    bool testBotMatchingCut = false;
+
+                    if (TopTrkInHole) {
+                        testTopMatchingCut = TMath::Abs(dX_Top) > 50.;
+                    } else {
+                        testTopMatchingCut = P_Top < 1.1 && dX_Top > -5 && dX_Top < 6;
+                    }
+
+                    if (BotTrkInHole) {
+                        testBotMatchingCut = TMath::Abs(dX_Bot) > 50.;
+                    } else {
+                        testBotMatchingCut = P_Bot < 1.15 && dX_Bot > -8 && dX_Bot < 3;
+                    }
+
+                    if (!(TopTrkFiducial && BotTrkFiducial)) {
+                        continue;
+                    }
+
+                    if (testTopMatchingCut && testBotMatchingCut && tr_dT > tr_dT_Min && tr_dT < tr_dT_Max) {
+                        h_Chi2NDF_TCM6->Fill(M_TCM, chi2NDF_Sum);
+                        h_PsumPdiff4->Fill(P_TCM, P_Top - P_Bot);
+
+                        if (P_Top > P_Bot) {
+                            h_Chi2NDF_TCM_Top6->Fill(M_TCM, chi2NDF_Sum);
+                        } else {
+                            h_Chi2NDF_TCM_Bot6->Fill(M_TCM, chi2NDF_Sum);
+                        }
+                    }
+
 
 
                     if ((MatchingChi2Top - MatchingChi2Median) * (MatchingChi2Bot - MatchingChi2Median) < 0.
@@ -361,12 +485,20 @@ int main(int argc, char** argv) {
                         h_BotMatchChi2_4->Fill(MatchingChi2Bot);
                         h_TopBotMatchCh2_3->Fill(MatchingChi2Bot, MatchingChi2Top);
                         h_Chi2NDF_TCM4->Fill(M_TCM, chi2NDF_Sum);
+                        h_tr_yxc_4->Fill(xTopTr, yTopTr);
+                        h_tr_yxc_4->Fill(xBotTr, yBotTr);
+                        h_cl_yxc_4->Fill(xTopCl, yTopCl);
+                        h_cl_yxc_4->Fill(xBotCl, yBotCl);
 
                         if (HasTopL1 && HasBotL1) {
 
-                            h_Chi2NDF_TCM5->Fill(M_TCM, chi2NDF_Sum);
                             h_phi_TopBot5->Fill(phiBot, phiTop);
                             h_dPhi5->Fill(phiTop - phiBot);
+                            h_Chi2NDF_TCM5->Fill(M_TCM, chi2NDF_Sum);
+                            h_tr_yxc_5->Fill(xTopTr, yTopTr);
+                            h_tr_yxc_5->Fill(xBotTr, yBotTr);
+                            h_cl_yxc_5->Fill(xTopCl, yTopCl);
+                            h_cl_yxc_5->Fill(xBotCl, yBotCl);
                         }
 
                     }

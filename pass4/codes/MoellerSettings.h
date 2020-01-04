@@ -27,7 +27,7 @@ const double tr_dT_Max =  1.5;
 const double tr_dT_Min = -2.5;
 
 const double PSumMax = 2.4;
-const double PSumMin = 2.2;
+const double PSumMin = 2.;
 
 const double PDiffHighMax = 0.35;
 const double PDiffHighMin = 0.05;
@@ -50,6 +50,13 @@ const double cl_dTCut_Tight_Data = 0.8;
 bool isData;
 bool isMC;
 
+/* Here the fiducial is not related to the detector volume, but rather it is a region determined by MC
+ representing the Moeller acceptance*/
+bool TopTrkFiducial = false; 
+bool BotTrkFiducial = false;
+
+bool TopTrkInHole = false;   // A flag telling whether the Top track went through the ECal hole
+bool BotTrkInHole = false;   // A flag telling whether the Bottom track went through the ECal hole
 
 bool HasTopL1 = false;
 bool HasBotL1 = false;
