@@ -215,9 +215,9 @@ int main(int argc, char** argv) {
     TH2D *h_ep_cl_trk_dT_AllBut = new TH2D("h_ep_cl_trk_dT_AllBut", "", 200, 0., 2.5, 200, -15., 15.);
     TH2D *h_ep_cl_trk_dT_CutEffect = new TH2D("h_ep_cl_trk_dT_CutEffect", "", 200, 0., 2.5, 200, -15., 15.);
 
-    TH2D *h_dX_em_All = new TH2D("h_h_dX_em_All", "", 200, 0., Eb, 200, -50., 50.);
-    TH2D *h_dX_em_AllBut = new TH2D("h_h_dX_em_AllBut", "", 200, 0., Eb, 200, -50., 50.);
-    TH2D *h_dX_em_CutEffect = new TH2D("h_h_dX_em_CutEffect", "", 200, 0., Eb, 200, -50., 50.);
+    TH2D *h_dX_em_All = new TH2D("h_dX_em_All", "", 200, 0., Eb, 200, -50., 50.);
+    TH2D *h_dX_em_AllBut = new TH2D("h_dX_em_AllBut", "", 200, 0., Eb, 200, -50., 50.);
+    TH2D *h_dX_em_CutEffect = new TH2D("h_dX_em_CutEffect", "", 200, 0., Eb, 200, -50., 50.);
 
     TH2D *h_dX_ep_All = new TH2D("h_h_dX_ep_All", "", 200, 0., Eb, 200, -50., 50.);
     TH2D *h_dX_ep_AllBut = new TH2D("h_h_dX_ep_AllBut", "", 200, 0., Eb, 200, -50., 50.);
