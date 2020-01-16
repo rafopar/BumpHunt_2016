@@ -178,7 +178,9 @@ int main(int argc, char** argv) {
         ResetEventFlags();
 
 
-        int nTCMoellers = ev->getNumberOfParticles(HpsParticle::TC_MOLLER_CANDIDATE);
+        HpsParticle::ParticleType MlrPart = HpsParticle::TC_MOLLER_CANDIDATE;
+        
+        int nTCMoellers = ev->getNumberOfParticles(MlrPart);
 
         h_nTCMoellers->Fill(nTCMoellers);
 
@@ -187,7 +189,7 @@ int main(int argc, char** argv) {
 
             ResetConstrainedMollerFlags();
 
-            HpsParticle *cur_tcM = ev->getParticle(HpsParticle::TC_MOLLER_CANDIDATE, iTCM);
+            HpsParticle *cur_tcM = ev->getParticle(MlrPart, iTCM);
 
             int qualifyStat = DoesQualifyMoeller(cur_tcM);
 
