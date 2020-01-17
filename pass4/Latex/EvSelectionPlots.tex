@@ -1,0 +1,226 @@
+\documentclass[letterpaper,12pt]{article}
+%documentclass[superscriptaddress,preprintnumbers,amsmath,amssymb,aps,11pt]{revtex4}
+%\usepackage[]{authblk}
+%\usepackage{graphics}
+\usepackage[dvipdf]{graphics}
+%\usepackage{subfig}  % For subfloats
+\usepackage{color}
+\usepackage[usenames,dvipsnames]{xcolor}
+\usepackage{epsfig}
+\usepackage{wrapfig}
+\usepackage{rotating}
+\usepackage{caption}
+\usepackage{amsmath,amssymb}   % This was needed for "\text{\o}"
+%\usepackage{subcaption}
+\usepackage{subfig}
+\usepackage{authblk}
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,      
+    urlcolor=cyan,
+    citecolor=red
+}
+%\usepackage{url}
+\usepackage{appendix}
+
+\usepackage{lineno}
+\linenumbers
+
+\oddsidemargin = -10mm
+\topmargin = -2.cm
+\textwidth = 18.5cm
+\textheight = 23.5cm
+
+\def \rarr {\rightarrow}
+\def \grinp {\includegraphics}
+\def \tw {\textwidth}
+\def\dfrac#1#2{\displaystyle{{#1}\over{#2}}}
+\def \dstl {\displaystyle}
+\def \Mlr {M\o ller }
+\definecolor{GREEN}{rgb}{0.,0.8,0}
+\definecolor{RED}{rgb}{1,0,0}
+\definecolor{ORANGE}{rgb}{1,0.5,0}
+
+%\author{Bump hunt folks}
+\title{Event Selection Plots}
+
+\begin{document}
+
+\begin{figure}[!htb]
+  \centering
+  \subfloat{\label{fig:PSumMax_All}\grinp[width=0.32\tw]{Figs/PsumMax_All.pdf}}
+  \subfloat{\label{fig:PSumMax_AllBut}\grinp[width=0.32\tw]{Figs/PsumMax_AllBut.pdf}}
+  \subfloat{\label{fig:PSumMax_CutEffect}\grinp[width=0.32\tw]{Figs/PsumMax_CutEffect.pdf}}
+  \caption{Progress of $\mathrm{P_{Sum}}$ Max cut.}
+\end{figure}
+ 
+\begin{figure}[!htb]
+  \centering
+  \subfloat{\label{fig:PSumMin_All}\grinp[width=0.32\tw]{Figs/PsumMin_All.pdf}}
+  \subfloat{\label{fig:PSumMin_AllBut}\grinp[width=0.32\tw]{Figs/PsumMin_AllBut.pdf}}
+  \subfloat{\label{fig:PSumMin_CutEffect}\grinp[width=0.32\tw]{Figs/PsumMin_CutEffect.pdf}}
+  \caption{Progress of $\mathrm{P_{Sum}}$ Min cut.}
+\end{figure}
+
+\begin{figure}[!htb]
+  \centering
+  \subfloat{\label{fig:Pem_All}\grinp[width=0.32\tw]{Figs/Pem_All.pdf}}
+  \subfloat{\label{fig:Pem_AllBut}\grinp[width=0.32\tw]{Figs/Pem_AllBut.pdf}}
+  \subfloat{\label{fig:Pem_CutEffect}\grinp[width=0.32\tw]{Figs/Pem_CutEffect.pdf}}
+  \caption{Progress of $P_{e^{-}}$ cut.}
+\end{figure}
+ 
+ \begin{figure}[!htb]
+  \centering
+  \subfloat{\label{fig:clDt_All}\grinp[width=0.32\tw]{Figs/clDt_All.pdf}}
+  \subfloat{\label{fig:clDt_AllBut}\grinp[width=0.32\tw]{Figs/clDt_AllBut.pdf}}
+  \subfloat{\label{fig:clDt_CutEffect}\grinp[width=0.32\tw]{Figs/clDt_CutEffect.pdf}}
+  \caption{Progress of Cluster time difference cut.}
+\end{figure}
+
+  \begin{figure}[!htb]
+  \centering
+  \subfloat{\label{fig:d0_ep_All}\grinp[width=0.32\tw]{Figs/d0_ep_All.pdf}}
+  \subfloat{\label{fig:d0_ep_AllBut}\grinp[width=0.32\tw]{Figs/d0_ep_AllBut.pdf}}
+  \subfloat{\label{fig:d0_ep_CutEffect}\grinp[width=0.32\tw]{Figs/d0_ep_CutEffect.pdf}}
+  \caption{Progress of positron $d_{0}$ cut.}
+\end{figure}
+
+%%%%%%%%%%%%%%%%%%% Electron cl - trk dt cuts %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{figure}[!htb]
+ \centering
+ \subfloat{\label{fig:emClTrkDt_Data_All}\grinp[width=0.32\tw]{Figs/em_cl_trk_dT_Data_All.pdf}}
+ \subfloat{\label{fig:emClTrkDt_Data_AllBut}\grinp[width=0.32\tw]{Figs/em_cl_trk_dT_Data_AllBut.pdf}}
+ \subfloat{\label{fig:emClTrkDt_Data_CutEffect}\grinp[width=0.32\tw]{Figs/em_cl_trk_dT_Data_CutEffect.pdf}} 
+ \caption{Electrons Data: Cluster track time difference as a function of Momentum. }
+\end{figure}
+
+\begin{figure}[!htb]
+ \centering
+ \subfloat{\label{fig:emClTrkDt_Tri_All}\grinp[width=0.32\tw]{Figs/em_cl_trk_dT_Tri_All.pdf}}
+ \subfloat{\label{fig:emClTrkDt_Tri_AllBut}\grinp[width=0.32\tw]{Figs/em_cl_trk_dT_Tri_AllBut.pdf}}
+ \subfloat{\label{fig:emClTrkDt_Tri_CutEffect}\grinp[width=0.32\tw]{Figs/em_cl_trk_dT_Tri_CutEffect.pdf}} 
+ \caption{Electrons Tridents: Cluster track time difference as a function of Momentum. } 
+\end{figure}
+
+\begin{figure}[!htb]
+ \centering
+ \subfloat{\label{fig:emClTrkDt_Rad_All}\grinp[width=0.32\tw]{Figs/em_cl_trk_dT_Rad_All.pdf}}
+ \subfloat{\label{fig:emClTrkDt_Rad_AllBut}\grinp[width=0.32\tw]{Figs/em_cl_trk_dT_Rad_AllBut.pdf}}
+ \subfloat{\label{fig:emClTrkDt_Rad_CutEffect}\grinp[width=0.32\tw]{Figs/em_cl_trk_dT_Rad_CutEffect.pdf}}  
+ \caption{Electrons Rad Tridents: Cluster track time difference as a function of Momentum. } 
+\end{figure}
+ 
+ \begin{figure}[!htb]
+ \centering
+ \subfloat{\label{fig:emClTrkDt_WAB_All}\grinp[width=0.32\tw]{Figs/em_cl_trk_dT_WAB_All.pdf}}
+ \subfloat{\label{fig:emClTrkDt_WAB_AllBut}\grinp[width=0.32\tw]{Figs/em_cl_trk_dT_WAB_AllBut.pdf}}
+ \subfloat{\label{fig:emClTrkDt_WAB_CutEffect}\grinp[width=0.32\tw]{Figs/em_cl_trk_dT_WAB_CutEffect.pdf}} 
+ \caption{Electrons WABs: Cluster track time difference as a function of Momentum. } 
+\end{figure}
+
+
+%%%%%%%%%%%%%%%%%%% Positron cl - trk dt cuts %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+ \begin{figure}[!htb]
+ \centering
+ \subfloat{\label{fig:epClTrkDt_Data_All}\grinp[width=0.32\tw]{Figs/ep_cl_trk_dT_Data_All.pdf}}
+ \subfloat{\label{fig:epClTrkDt_Data_AllBut}\grinp[width=0.32\tw]{Figs/ep_cl_trk_dT_Data_AllBut.pdf}}
+ \subfloat{\label{fig:epClTrkDt_Data_CutEffect}\grinp[width=0.32\tw]{Figs/ep_cl_trk_dT_Data_CutEffect.pdf}} 
+ \caption{Positrons Data: Cluster track time difference as a function of Momentum. }
+\end{figure}
+
+\begin{figure}[!htb]
+ \centering
+ \subfloat{\label{fig:epClTrkDt_Tri_All}\grinp[width=0.32\tw]{Figs/ep_cl_trk_dT_Tri_All.pdf}}
+ \subfloat{\label{fig:epClTrkDt_Tri_AllBut}\grinp[width=0.32\tw]{Figs/ep_cl_trk_dT_Tri_AllBut.pdf}}
+ \subfloat{\label{fig:epClTrkDt_Tri_CutEffect}\grinp[width=0.32\tw]{Figs/ep_cl_trk_dT_Tri_CutEffect.pdf}} 
+ \caption{Positrons Tridents: Cluster track time difference as a function of Momentum. } 
+\end{figure}
+
+\begin{figure}[!htb]
+ \centering
+ \subfloat{\label{fig:epClTrkDt_Rad_All}\grinp[width=0.32\tw]{Figs/ep_cl_trk_dT_Rad_All.pdf}}
+ \subfloat{\label{fig:epClTrkDt_Rad_AllBut}\grinp[width=0.32\tw]{Figs/ep_cl_trk_dT_Rad_AllBut.pdf}}
+ \subfloat{\label{fig:epClTrkDt_Rad_CutEffect}\grinp[width=0.32\tw]{Figs/ep_cl_trk_dT_Rad_CutEffect.pdf}}  
+ \caption{Positrons Rad Tridents: Cluster track time difference as a function of Momentum. } 
+\end{figure}
+ 
+ \begin{figure}[!htb]
+ \centering
+ \subfloat{\label{fig:epClTrkDt_WAB_All}\grinp[width=0.32\tw]{Figs/ep_cl_trk_dT_WAB_All.pdf}}
+ \subfloat{\label{fig:epClTrkDt_WAB_AllBut}\grinp[width=0.32\tw]{Figs/ep_cl_trk_dT_WAB_AllBut.pdf}}
+ \subfloat{\label{fig:epClTrkDt_WAB_CutEffect}\grinp[width=0.32\tw]{Figs/ep_cl_trk_dT_WAB_CutEffect.pdf}} 
+ \caption{Positrons WABs: Cluster track time difference as a function of Momentum. } 
+\end{figure}
+
+
+%%%%%%%%%%%%%%%%%%% Electrons dX Cuts %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+ \begin{figure}[!htb]
+ \centering
+ \subfloat{\label{fig:emdX_Data_All}\grinp[width=0.32\tw]{Figs/dX_em_Data_All.pdf}}
+ \subfloat{\label{fig:emdX_Data_AllBut}\grinp[width=0.32\tw]{Figs/dX_em_Data_AllBut.pdf}}
+ \subfloat{\label{fig:emdX_Data_CutEffect}\grinp[width=0.32\tw]{Figs/dX_em_Data_CutEffect.pdf}} 
+ \caption{Electrons Data: Cluster track X coordinate difference as a function of momentum. }
+\end{figure}
+
+ \begin{figure}[!htb]
+ \centering
+ \subfloat{\label{fig:emdX_Tri_All}\grinp[width=0.32\tw]{Figs/dX_em_Tri_All.pdf}}
+ \subfloat{\label{fig:emdX_Tri_AllBut}\grinp[width=0.32\tw]{Figs/dX_em_Tri_AllBut.pdf}}
+ \subfloat{\label{fig:emdX_Tri_CutEffect}\grinp[width=0.32\tw]{Figs/dX_em_Tri_CutEffect.pdf}} 
+ \caption{Electrons Tridents: Cluster track X coordinate difference as a function of momentum. }
+\end{figure}
+
+ \begin{figure}[!htb]
+ \centering
+ \subfloat{\label{fig:emdX_Rad_All}\grinp[width=0.32\tw]{Figs/dX_em_Rad_All.pdf}}
+ \subfloat{\label{fig:emdX_Rad_AllBut}\grinp[width=0.32\tw]{Figs/dX_em_Rad_AllBut.pdf}}
+ \subfloat{\label{fig:emdX_Rad_CutEffect}\grinp[width=0.32\tw]{Figs/dX_em_Rad_CutEffect.pdf}} 
+ \caption{Electrons Rad Tridents: Cluster track X coordinate difference as a function of momentum. }
+\end{figure}
+
+ \begin{figure}[!htb]
+ \centering
+ \subfloat{\label{fig:emdX_WAB_All}\grinp[width=0.32\tw]{Figs/dX_em_WAB_All.pdf}}
+ \subfloat{\label{fig:emdX_WAB_AllBut}\grinp[width=0.32\tw]{Figs/dX_em_WAB_AllBut.pdf}}
+ \subfloat{\label{fig:emdX_WAB_CutEffect}\grinp[width=0.32\tw]{Figs/dX_em_WAB_CutEffect.pdf}} 
+ \caption{Positrons Rad Tridents: Cluster track X coordinate difference as a function of momentum. }
+\end{figure}
+
+%%%%%%%%%%%%%%%%%%% Positrons dX Cuts %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+ \begin{figure}[!htb]
+ \centering
+ \subfloat{\label{fig:epdX_Data_All}\grinp[width=0.32\tw]{Figs/dX_ep_Data_All.pdf}}
+ \subfloat{\label{fig:epdX_Data_AllBut}\grinp[width=0.32\tw]{Figs/dX_ep_Data_AllBut.pdf}}
+ \subfloat{\label{fig:epdX_Data_CutEffect}\grinp[width=0.32\tw]{Figs/dX_ep_Data_CutEffect.pdf}} 
+ \caption{Positrons Data: Cluster track X coordinate difference as a function of momentum. }
+\end{figure}
+
+ \begin{figure}[!htb]
+ \centering
+ \subfloat{\label{fig:epdX_Tri_All}\grinp[width=0.32\tw]{Figs/dX_ep_Tri_All.pdf}}
+ \subfloat{\label{fig:epdX_Tri_AllBut}\grinp[width=0.32\tw]{Figs/dX_ep_Tri_AllBut.pdf}}
+ \subfloat{\label{fig:epdX_Tri_CutEffect}\grinp[width=0.32\tw]{Figs/dX_ep_Tri_CutEffect.pdf}} 
+ \caption{Positrons Tridents: Cluster track X coordinate difference as a function of momentum. }
+\end{figure}
+
+ \begin{figure}[!htb]
+ \centering
+ \subfloat{\label{fig:epdX_Rad_All}\grinp[width=0.32\tw]{Figs/dX_ep_Rad_All.pdf}}
+ \subfloat{\label{fig:epdX_Rad_AllBut}\grinp[width=0.32\tw]{Figs/dX_ep_Rad_AllBut.pdf}}
+ \subfloat{\label{fig:epdX_Rad_CutEffect}\grinp[width=0.32\tw]{Figs/dX_ep_Rad_CutEffect.pdf}} 
+ \caption{Positrons Rad Tridents: Cluster track X coordinate difference as a function of momentum. }
+\end{figure}
+
+ \begin{figure}[!htb]
+ \centering
+ \subfloat{\label{fig:epdX_WAB_All}\grinp[width=0.32\tw]{Figs/dX_ep_WAB_All.pdf}}
+ \subfloat{\label{fig:epdX_WAB_AllBut}\grinp[width=0.32\tw]{Figs/dX_ep_WAB_AllBut.pdf}}
+ \subfloat{\label{fig:epdX_WAB_CutEffect}\grinp[width=0.32\tw]{Figs/dX_ep_WAB_CutEffect.pdf}} 
+ \caption{Positrons Rad Tridents: Cluster track X coordinate difference as a function of momentum. }
+\end{figure}
+
+\end{document}
+
