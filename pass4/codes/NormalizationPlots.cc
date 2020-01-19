@@ -8,6 +8,7 @@
 #include <TH1D.h>
 #include <TFile.h>
 #include <cstdlib>
+#include <fstream>
 #include <TLatex.h>
 //#include "setting_2016_pass1.h"
 
@@ -29,6 +30,8 @@ const double Wab_SigmError = 0.01973;
 const double NGen_Wab = 9965. * 100000.;
 
 const double Lumin8099 = 237.e9; // inverse barn
+
+ofstream CutFractions;
 
 /*
  * 
@@ -122,14 +125,24 @@ void NormalizationPlots() {
 
     TFile * files_EvSelection[5] = {file_EvSelection_Data, file_EvSelection_Tri, file_EvSelection_Rad, file_EvSelection_Wab};
 
+    CutFractions.open("CutPowers.dat", ios::out);
+
     DrawDatMCComparison(files_EvSelection, "PsumMax", "; P_{Sum} [GeV]; d#sigma/dP_{Sum} [bn/GeV] ", 1);
     DrawDatMCComparison(files_EvSelection, "PsumMin", "; P_{Sum} [GeV]; d#sigma/dP_{Sum} [bn/GeV] ", 1);
     DrawDatMCComparison(files_EvSelection, "clDt", "; Cluster #Delta t [ns]; d#sigma/d #Delta t [bn/ns] ", 1);
     DrawDatMCComparison(files_EvSelection, "Pem", "; P_{e^{-}} [GeV]; d#sigma/d P_{e^{-}} [bn/GeV] ", 1);
-    DrawDatMCComparison(files_EvSelection, "d0_ep", "; d_{0}(e^{+}) [m]; d#sigma/d d_{0}(e^{+}) [bn/mm] ", 1);
+    DrawDatMCComparison(files_EvSelection, "d0_ep", "; d_{0}(e^{+}) [mm]; d#sigma/d d_{0}(e^{+}) [bn/mm] ", 1);
     DrawDatMCComparison(files_EvSelection, "em_cl_trk_dT", "; P_{e^{-}} [GeV]; t_{cl} - t_{trk} [ns]", 2);
     DrawDatMCComparison(files_EvSelection, "ep_cl_trk_dT", "; P_{e^{+}} [GeV]; t_{cl} - t_{trk} [ns]", 2);
     DrawDatMCComparison(files_EvSelection, "dX_em", "; P_{e^{-}} [GeV]; X_{cl} - X_{trk} [mm]", 2);
+    DrawDatMCComparison(files_EvSelection, "dX_ep", "; P_{e^{+}} [GeV]; X_{cl} - X_{trk} [mm]", 2);
+
+    const int nMinvBins = 12;
+    double MinvBins[nMinvBins + 1] = {0., 0.02, 0.04, 0.06, 0.08, 0.1, 0.12, 0.14, 0.16, 0.18, 0.2, 0.22, 0.24};
+    for (int i = 0; i < nMinvBins; i++) {
+        DrawDatMCComparison(files_EvSelection, Form("PSumMin_MinvBin_%d", i),
+                Form("%1.3f GeV < M(ee) < %1.3f GeV; P_{Sum} [GeV]; d#sigma/dP_{Sum} [bn/GeV]", MinvBins[i], MinvBins[i + 1]), 1);
+    }
 
 }
 
@@ -170,6 +183,9 @@ void DrawDatMCComparison(TFile** files, std::string histNameBase, std::string Ti
         h_Data_CutEffect->SetTitle(Title.c_str());
         h_Data_CutEffect->Scale(1 / Lumin8099);
 
+        double dataFraction = h_Data_CutEffect->Integral() / h_Data_AllBut->Integral();
+
+
         TH1D *h_Tri_All = (TH1D*) file_Tri->Get(Form("h_%s_All", histNameBase.c_str()));
         h_Tri_All->Sumw2();
         h_Tri_All->SetLineColor(4);
@@ -188,6 +204,8 @@ void DrawDatMCComparison(TFile** files, std::string histNameBase, std::string Ti
         h_Tri_CutEffect->SetTitle(Title.c_str());
         h_Tri_CutEffect->Scale(tritrig_SigmaGen / NGen_tritrig);
         AddErrorAllBins(h_Tri_CutEffect, tritrig_SigmError / tritrig_SigmaGen);
+
+        double triFraction = h_Tri_CutEffect->Integral() / h_Tri_AllBut->Integral();
 
         TH1D *h_Rad_All = (TH1D*) file_Rad->Get(Form("h_%s_All", histNameBase.c_str()));
         h_Rad_All->SetLineColor(2);
@@ -208,6 +226,8 @@ void DrawDatMCComparison(TFile** files, std::string histNameBase, std::string Ti
         h_Rad_CutEffect->Scale(Rad_SigmaGen / NGen_Rad);
         AddErrorAllBins(h_Rad_CutEffect, Rad_SigmError / Rad_SigmaGen);
 
+        double radFraction = h_Rad_CutEffect->Integral() / h_Rad_AllBut->Integral();
+
         TH1D *h_WAB_All = (TH1D*) file_WAB->Get(Form("h_%s_All", histNameBase.c_str()));
         h_WAB_All->SetLineColor(45);
         h_WAB_All->Sumw2();
@@ -227,6 +247,8 @@ void DrawDatMCComparison(TFile** files, std::string histNameBase, std::string Ti
         h_WAB_CutEffect->Scale(Wab_SigmaGen / NGen_Wab);
         AddErrorAllBins(h_WAB_CutEffect, Wab_SigmError / Wab_SigmaGen);
 
+        double wabFraction = h_WAB_CutEffect->Integral() / h_WAB_AllBut->Integral();
+
         TH1D *hTriPlusWab_All = (TH1D*) h_Tri_All->Clone("hTriPlusWab_All");
         hTriPlusWab_All->Add(h_WAB_All);
         hTriPlusWab_All->SetLineColor(95);
@@ -236,6 +258,8 @@ void DrawDatMCComparison(TFile** files, std::string histNameBase, std::string Ti
         TH1D *hTriPlusWab_CutEffect = (TH1D*) h_Tri_CutEffect->Clone("hTriPlusWab_CutEffect");
         hTriPlusWab_CutEffect->Add(h_WAB_CutEffect);
         hTriPlusWab_CutEffect->SetLineColor(95);
+
+        double wabTriFraction = hTriPlusWab_CutEffect->Integral() / hTriPlusWab_AllBut->Integral();
 
         double MaxArray_All[5] = {h_Data_All->GetMaximum(), h_Tri_All->GetMaximum(), h_Rad_All->GetMaximum(), h_WAB_All->GetMaximum(), hTriPlusWab_All->GetMaximum()};
         double Max_All = TMath::MaxElement<double>(5, MaxArray_All);
@@ -279,11 +303,14 @@ void DrawDatMCComparison(TFile** files, std::string histNameBase, std::string Ti
         c1D->Print(Form("Figs/%s_CutEffect.pdf", histNameBase.c_str()));
         c1D->Print(Form("Figs/%s_CutEffect.png", histNameBase.c_str()));
 
+        CutFractions << setw(25) << histNameBase << setw(12) << " & " << dataFraction << setw(12) << " & " << triFraction << setw(12) << " & " << radFraction << setw(12) << " & " << wabFraction
+                << setw(12) << " & " << wabTriFraction << " \\\\ \\hline" << endl;
 
     } else if (nDim == 2) {
 
         TCanvas *c2D = new TCanvas("c1D", "", 950, 950);
         c2D->SetLeftMargin(0.15);
+        c2D->SetLogz();
 
         TH2D *h_Data_All = (TH2D*) file_Data->Get(Form("h_%s_All", histNameBase.c_str()));
         h_Data_All->Sumw2();
@@ -312,6 +339,8 @@ void DrawDatMCComparison(TFile** files, std::string histNameBase, std::string Ti
         c2D->Print(Form("Figs/%s_Data_CutEffect.pdf", histNameBase.c_str()));
         c2D->Print(Form("Figs/%s_Data_CutEffect.png", histNameBase.c_str()));
 
+        double dataFraction = h_Data_CutEffect->Integral() / h_Data_AllBut->Integral();
+
         TH2D *h_Tri_All = (TH2D*) file_Tri->Get(Form("h_%s_All", histNameBase.c_str()));
         h_Tri_All->Sumw2();
         h_Tri_All->SetTitle(Title.c_str());
@@ -338,6 +367,8 @@ void DrawDatMCComparison(TFile** files, std::string histNameBase, std::string Ti
         c2D->Print(Form("Figs/%s_Tri_CutEffect.eps", histNameBase.c_str()));
         c2D->Print(Form("Figs/%s_Tri_CutEffect.pdf", histNameBase.c_str()));
         c2D->Print(Form("Figs/%s_Tri_CutEffect.png", histNameBase.c_str()));
+
+        double triFraction = h_Tri_CutEffect->Integral() / h_Tri_AllBut->Integral();
 
         TH2D *h_Rad_All = (TH2D*) file_Rad->Get(Form("h_%s_All", histNameBase.c_str()));
         h_Rad_All->Sumw2();
@@ -366,6 +397,8 @@ void DrawDatMCComparison(TFile** files, std::string histNameBase, std::string Ti
         c2D->Print(Form("Figs/%s_Rad_CutEffect.pdf", histNameBase.c_str()));
         c2D->Print(Form("Figs/%s_Rad_CutEffect.png", histNameBase.c_str()));
 
+        double radFraction = h_Rad_CutEffect->Integral() / h_Rad_AllBut->Integral();
+
         TH2D *h_WAB_All = (TH2D*) file_WAB->Get(Form("h_%s_All", histNameBase.c_str()));
         h_WAB_All->Sumw2();
         h_WAB_All->SetTitle(Title.c_str());
@@ -393,6 +426,19 @@ void DrawDatMCComparison(TFile** files, std::string histNameBase, std::string Ti
         c2D->Print(Form("Figs/%s_WAB_CutEffect.pdf", histNameBase.c_str()));
         c2D->Print(Form("Figs/%s_WAB_CutEffect.png", histNameBase.c_str()));
 
+        double wabFraction = h_WAB_CutEffect->Integral() / h_WAB_AllBut->Integral();
+
+        TH2D *hTriPlusWab_All = (TH2D*) h_Tri_All->Clone("hTriPlusWab_All");
+        hTriPlusWab_All->Add(h_WAB_All);
+        TH2D *hTriPlusWab_AllBut = (TH2D*) h_Tri_AllBut->Clone("hTriPlusWab_AllBut");
+        hTriPlusWab_AllBut->Add(h_WAB_AllBut);
+        TH2D *hTriPlusWab_CutEffect = (TH2D*) h_Tri_CutEffect->Clone("hTriPlusWab_CutEffect");
+        hTriPlusWab_CutEffect->Add(h_WAB_CutEffect);
+
+        double wabTriFraction = hTriPlusWab_CutEffect->Integral() / hTriPlusWab_AllBut->Integral();
+
+        CutFractions << setw(25) << histNameBase << setw(12) << " & " << dataFraction << setw(12) << " & " << triFraction << setw(12) << " & " << radFraction << setw(12) << " & " << wabFraction
+                << setw(12) << " & " << wabTriFraction << " \\\\ \\hline" << endl;
     }
 
 }
