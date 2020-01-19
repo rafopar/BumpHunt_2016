@@ -14,8 +14,14 @@
 
 using namespace std;
 
+
 void DrawDatMCComparison(TFile** files, std::string histNameBase, std::string Title, int nDim);
 void AddErrorAllBins(TH1D* h, double RelErr);
+
+// ===== This function should return the Radiative fraction /
+// ===== It should take the "CutEffect" histograms, and calculate the 
+// ===== Rad Fraction as the Rad_Hist/(Wab+Tri)
+double GetfRad(TFile** files, std::string histNameBase, double &fRad_Err);
 
 const double tritrig_SigmaGen = 1.416e-3;
 const double tritrig_SigmError = 0.00431e-3;
@@ -30,6 +36,9 @@ const double Wab_SigmError = 0.01973;
 const double NGen_Wab = 9965. * 100000.;
 
 const double Lumin8099 = 237.e9; // inverse barn
+
+const int nMinvBins = 12;       // # of Minv bins, We want to study Psum for different Minv Bins
+double MinvBins[nMinvBins + 1] = {0., 0.02, 0.04, 0.06, 0.08, 0.1, 0.12, 0.14, 0.16, 0.18, 0.2, 0.22, 0.24};
 
 ofstream CutFractions;
 
@@ -127,22 +136,49 @@ void NormalizationPlots() {
 
     CutFractions.open("CutPowers.dat", ios::out);
 
-    DrawDatMCComparison(files_EvSelection, "PsumMax", "; P_{Sum} [GeV]; d#sigma/dP_{Sum} [bn/GeV] ", 1);
-    DrawDatMCComparison(files_EvSelection, "PsumMin", "; P_{Sum} [GeV]; d#sigma/dP_{Sum} [bn/GeV] ", 1);
-    DrawDatMCComparison(files_EvSelection, "clDt", "; Cluster #Delta t [ns]; d#sigma/d #Delta t [bn/ns] ", 1);
-    DrawDatMCComparison(files_EvSelection, "Pem", "; P_{e^{-}} [GeV]; d#sigma/d P_{e^{-}} [bn/GeV] ", 1);
-    DrawDatMCComparison(files_EvSelection, "d0_ep", "; d_{0}(e^{+}) [mm]; d#sigma/d d_{0}(e^{+}) [bn/mm] ", 1);
-    DrawDatMCComparison(files_EvSelection, "em_cl_trk_dT", "; P_{e^{-}} [GeV]; t_{cl} - t_{trk} [ns]", 2);
-    DrawDatMCComparison(files_EvSelection, "ep_cl_trk_dT", "; P_{e^{+}} [GeV]; t_{cl} - t_{trk} [ns]", 2);
-    DrawDatMCComparison(files_EvSelection, "dX_em", "; P_{e^{-}} [GeV]; X_{cl} - X_{trk} [mm]", 2);
-    DrawDatMCComparison(files_EvSelection, "dX_ep", "; P_{e^{+}} [GeV]; X_{cl} - X_{trk} [mm]", 2);
-
     const int nMinvBins = 12;
-    double MinvBins[nMinvBins + 1] = {0., 0.02, 0.04, 0.06, 0.08, 0.1, 0.12, 0.14, 0.16, 0.18, 0.2, 0.22, 0.24};
+    /*
+        DrawDatMCComparison(files_EvSelection, "PsumMax", "; P_{Sum} [GeV]; d#sigma/dP_{Sum} [bn/GeV] ", 1);
+        DrawDatMCComparison(files_EvSelection, "PsumMin", "; P_{Sum} [GeV]; d#sigma/dP_{Sum} [bn/GeV] ", 1);
+        DrawDatMCComparison(files_EvSelection, "clDt", "; Cluster #Delta t [ns]; d#sigma/d #Delta t [bn/ns] ", 1);
+        DrawDatMCComparison(files_EvSelection, "Pem", "; P_{e^{-}} [GeV]; d#sigma/d P_{e^{-}} [bn/GeV] ", 1);
+        DrawDatMCComparison(files_EvSelection, "d0_ep", "; d_{0}(e^{+}) [mm]; d#sigma/d d_{0}(e^{+}) [bn/mm] ", 1);
+        DrawDatMCComparison(files_EvSelection, "em_cl_trk_dT", "; P_{e^{-}} [GeV]; t_{cl} - t_{trk} [ns]", 2);
+        DrawDatMCComparison(files_EvSelection, "ep_cl_trk_dT", "; P_{e^{+}} [GeV]; t_{cl} - t_{trk} [ns]", 2);
+        DrawDatMCComparison(files_EvSelection, "dX_em", "; P_{e^{-}} [GeV]; X_{cl} - X_{trk} [mm]", 2);
+        DrawDatMCComparison(files_EvSelection, "dX_ep", "; P_{e^{+}} [GeV]; X_{cl} - X_{trk} [mm]", 2);
+
+        double MinvBins[nMinvBins + 1] = {0., 0.02, 0.04, 0.06, 0.08, 0.1, 0.12, 0.14, 0.16, 0.18, 0.2, 0.22, 0.24};
+        for (int i = 0; i < nMinvBins; i++) {
+            DrawDatMCComparison(files_EvSelection, Form("PSumMin_MinvBin_%d", i),
+                    Form("%1.3f GeV < M(ee) < %1.3f GeV; P_{Sum} [GeV]; d#sigma/dP_{Sum} [bn/GeV]", MinvBins[i], MinvBins[i + 1]), 1);
+        }
+     */
+
+
+    // ========== Getting the Rad Fraction ===========
+
+    TGraphErrors *gr_fRad = new TGraphErrors();
+    gr_fRad->SetTitle("; M(e^{-}e^{+}) [GeV]; f_{Rad}");
+
     for (int i = 0; i < nMinvBins; i++) {
-        DrawDatMCComparison(files_EvSelection, Form("PSumMin_MinvBin_%d", i),
-                Form("%1.3f GeV < M(ee) < %1.3f GeV; P_{Sum} [GeV]; d#sigma/dP_{Sum} [bn/GeV]", MinvBins[i], MinvBins[i + 1]), 1);
+        double fRadErr;
+        double fRad = GetfRad(files_EvSelection, Form("PSumMin_MinvBin_%d", i), fRadErr);
+
+        double MinvVal = (MinvBins[i] + MinvBins[i+1])/2.;
+        gr_fRad->SetPoint(i, MinvVal, fRad);
+        gr_fRad->SetPointError(i, 0., fRadErr);
     }
+
+    c1->cd()->SetLeftMargin(0.12);
+    c1->SetTopMargin(0.02);
+    c1->SetRightMargin(0.03);
+    gr_fRad->SetMarkerColor(4);
+    gr_fRad->SetMarkerStyle(29);
+    gr_fRad->Draw("AP");
+    c1->Print("Figs/fRad_MassBins.eps");
+    c1->Print("Figs/fRad_MassBins.pdf");
+    c1->Print("Figs/fRad_MassBins.png");
 
 }
 
@@ -306,6 +342,23 @@ void DrawDatMCComparison(TFile** files, std::string histNameBase, std::string Ti
         CutFractions << setw(25) << histNameBase << setw(12) << " & " << dataFraction << setw(12) << " & " << triFraction << setw(12) << " & " << radFraction << setw(12) << " & " << wabFraction
                 << setw(12) << " & " << wabTriFraction << " \\\\ \\hline" << endl;
 
+
+        delete h_Data_All;
+        delete h_Data_AllBut;
+        delete h_Data_CutEffect;
+        delete h_Tri_All;
+        delete h_Tri_AllBut;
+        delete h_Tri_CutEffect;
+        delete h_Rad_All;
+        delete h_Rad_AllBut;
+        delete h_Rad_CutEffect;
+        delete h_WAB_All;
+        delete h_WAB_AllBut;
+        delete h_WAB_CutEffect;
+        delete hTriPlusWab_All;
+        delete hTriPlusWab_AllBut;
+        delete hTriPlusWab_CutEffect;
+
     } else if (nDim == 2) {
 
         TCanvas *c2D = new TCanvas("c1D", "", 950, 950);
@@ -439,7 +492,26 @@ void DrawDatMCComparison(TFile** files, std::string histNameBase, std::string Ti
 
         CutFractions << setw(25) << histNameBase << setw(12) << " & " << dataFraction << setw(12) << " & " << triFraction << setw(12) << " & " << radFraction << setw(12) << " & " << wabFraction
                 << setw(12) << " & " << wabTriFraction << " \\\\ \\hline" << endl;
+
+
+        delete h_Data_All;
+        delete h_Data_AllBut;
+        delete h_Data_CutEffect;
+        delete h_Tri_All;
+        delete h_Tri_AllBut;
+        delete h_Tri_CutEffect;
+        delete h_Rad_All;
+        delete h_Rad_AllBut;
+        delete h_Rad_CutEffect;
+        delete h_WAB_All;
+        delete h_WAB_AllBut;
+        delete h_WAB_CutEffect;
+        delete hTriPlusWab_All;
+        delete hTriPlusWab_AllBut;
+        delete hTriPlusWab_CutEffect;
     }
+
+
 
 }
 
@@ -451,5 +523,64 @@ void AddErrorAllBins(TH1D* h, double RelErr) {
         double binCont = h->GetBinContent(i + 1);
         h->SetBinError(i + 1, sqrt(cur_err * cur_err + binCont * binCont * RelErr * RelErr));
     }
+
+}
+
+double GetfRad(TFile** files, std::string histNameBase, double &fRad_Err) {
+
+    //==========================================================
+    //===== Order of files in the pointer "files" is the following
+    //===== 1-st: Data
+    //===== 2-nd: TriTrig
+    //===== 3-3d: Radiatives
+    //===== 4-th: Converted Wabs
+    //==========================================================
+
+    TFile *file_Data = files[0];
+    TFile *file_Tri = files[1];
+    TFile *file_Rad = files[2];
+    TFile *file_WAB = files[3];
+
+
+    TH1D *h_Data_CutEffect = (TH1D*) file_Data->Get(Form("h_%s_CutEffect", histNameBase.c_str()));
+    h_Data_CutEffect->Sumw2();
+    h_Data_CutEffect->Scale(1 / Lumin8099);
+
+    TH1D *h_Tri_CutEffect = (TH1D*) file_Tri->Get(Form("h_%s_CutEffect", histNameBase.c_str()));
+    h_Tri_CutEffect->Sumw2();
+    h_Tri_CutEffect->Scale(tritrig_SigmaGen / NGen_tritrig);
+    AddErrorAllBins(h_Tri_CutEffect, tritrig_SigmError / tritrig_SigmaGen);
+
+    TH1D *h_Rad_CutEffect = (TH1D*) file_Rad->Get(Form("h_%s_CutEffect", histNameBase.c_str()));
+    h_Rad_CutEffect->Sumw2();
+    h_Rad_CutEffect->Scale(Rad_SigmaGen / NGen_Rad);
+    AddErrorAllBins(h_Rad_CutEffect, Rad_SigmError / Rad_SigmaGen);
+
+    TH1D *h_WAB_CutEffect = (TH1D*) file_WAB->Get(Form("h_%s_CutEffect", histNameBase.c_str()));
+    h_WAB_CutEffect->Sumw2();
+    h_WAB_CutEffect->Scale(Wab_SigmaGen / NGen_Wab);
+    AddErrorAllBins(h_WAB_CutEffect, Wab_SigmError / Wab_SigmaGen);
+
+    TH1D *hTriPlusWab_CutEffect = (TH1D*) h_Tri_CutEffect->Clone("hTriPlusWab_CutEffect");
+    hTriPlusWab_CutEffect->Add(h_WAB_CutEffect);
+
+    double err_Rad;
+    double err_TriWAB;
+
+    double Integr_Rad = h_Rad_CutEffect->IntegralAndError(1, h_Rad_CutEffect->GetNbinsX(), err_Rad);
+    double Integr_TriWAB = hTriPlusWab_CutEffect->IntegralAndError(1, hTriPlusWab_CutEffect->GetNbinsX(), err_TriWAB);
+
+    double fRad = Integr_Rad / Integr_TriWAB;
+
+    fRad_Err = fRad * sqrt((err_Rad / Integr_Rad)*(err_Rad / Integr_Rad) + (err_TriWAB / Integr_TriWAB)*(err_TriWAB / Integr_TriWAB));
+
+
+    if (isnan(fRad)) {
+        fRad = 0.;
+        fRad_Err = 0.;
+    }
+
+
+    return fRad;
 
 }
