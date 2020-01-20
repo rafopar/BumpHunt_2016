@@ -6,10 +6,17 @@
  */
 
 #include <TH1D.h>
+#include <TH2D.h>
+#include <TLine.h>
 #include <TFile.h>
 #include <cstdlib>
 #include <fstream>
+#include <TMath.h>
+#include <iostream>
 #include <TLatex.h>
+#include <TCanvas.h>
+#include <TRatioPlot.h>
+#include <TGraphErrors.h>
 //#include "setting_2016_pass1.h"
 
 using namespace std;
@@ -37,7 +44,7 @@ const double NGen_Wab = 9965. * 100000.;
 
 const double Lumin8099 = 237.e9; // inverse barn
 
-const int nMinvBins = 12;       // # of Minv bins, We want to study Psum for different Minv Bins
+const int nMinvBins = 12; // # of Minv bins, We want to study Psum for different Minv Bins
 double MinvBins[nMinvBins + 1] = {0., 0.02, 0.04, 0.06, 0.08, 0.1, 0.12, 0.14, 0.16, 0.18, 0.2, 0.22, 0.24};
 
 ofstream CutFractions;
@@ -137,23 +144,23 @@ void NormalizationPlots() {
     CutFractions.open("CutPowers.dat", ios::out);
 
     const int nMinvBins = 12;
-    /*
-        DrawDatMCComparison(files_EvSelection, "PsumMax", "; P_{Sum} [GeV]; d#sigma/dP_{Sum} [bn/GeV] ", 1);
-        DrawDatMCComparison(files_EvSelection, "PsumMin", "; P_{Sum} [GeV]; d#sigma/dP_{Sum} [bn/GeV] ", 1);
-        DrawDatMCComparison(files_EvSelection, "clDt", "; Cluster #Delta t [ns]; d#sigma/d #Delta t [bn/ns] ", 1);
-        DrawDatMCComparison(files_EvSelection, "Pem", "; P_{e^{-}} [GeV]; d#sigma/d P_{e^{-}} [bn/GeV] ", 1);
-        DrawDatMCComparison(files_EvSelection, "d0_ep", "; d_{0}(e^{+}) [mm]; d#sigma/d d_{0}(e^{+}) [bn/mm] ", 1);
-        DrawDatMCComparison(files_EvSelection, "em_cl_trk_dT", "; P_{e^{-}} [GeV]; t_{cl} - t_{trk} [ns]", 2);
-        DrawDatMCComparison(files_EvSelection, "ep_cl_trk_dT", "; P_{e^{+}} [GeV]; t_{cl} - t_{trk} [ns]", 2);
-        DrawDatMCComparison(files_EvSelection, "dX_em", "; P_{e^{-}} [GeV]; X_{cl} - X_{trk} [mm]", 2);
-        DrawDatMCComparison(files_EvSelection, "dX_ep", "; P_{e^{+}} [GeV]; X_{cl} - X_{trk} [mm]", 2);
 
-        double MinvBins[nMinvBins + 1] = {0., 0.02, 0.04, 0.06, 0.08, 0.1, 0.12, 0.14, 0.16, 0.18, 0.2, 0.22, 0.24};
-        for (int i = 0; i < nMinvBins; i++) {
-            DrawDatMCComparison(files_EvSelection, Form("PSumMin_MinvBin_%d", i),
-                    Form("%1.3f GeV < M(ee) < %1.3f GeV; P_{Sum} [GeV]; d#sigma/dP_{Sum} [bn/GeV]", MinvBins[i], MinvBins[i + 1]), 1);
-        }
-     */
+    DrawDatMCComparison(files_EvSelection, "PsumMax", "; P_{Sum} [GeV]; d#sigma/dP_{Sum} [bn/GeV] ", 1);
+    DrawDatMCComparison(files_EvSelection, "PsumMin", "; P_{Sum} [GeV]; d#sigma/dP_{Sum} [bn/GeV] ", 1);
+    DrawDatMCComparison(files_EvSelection, "clDt", "; Cluster #Delta t [ns]; d#sigma/d #Delta t [bn/ns] ", 1);
+    DrawDatMCComparison(files_EvSelection, "Pem", "; P_{e^{-}} [GeV]; d#sigma/d P_{e^{-}} [bn/GeV] ", 1);
+    DrawDatMCComparison(files_EvSelection, "d0_ep", "; d_{0}(e^{+}) [mm]; d#sigma/d d_{0}(e^{+}) [bn/mm] ", 1);
+    DrawDatMCComparison(files_EvSelection, "em_cl_trk_dT", "; P_{e^{-}} [GeV]; t_{cl} - t_{trk} [ns]", 2);
+    DrawDatMCComparison(files_EvSelection, "ep_cl_trk_dT", "; P_{e^{+}} [GeV]; t_{cl} - t_{trk} [ns]", 2);
+    DrawDatMCComparison(files_EvSelection, "dX_em", "; P_{e^{-}} [GeV]; X_{cl} - X_{trk} [mm]", 2);
+    DrawDatMCComparison(files_EvSelection, "dX_ep", "; P_{e^{+}} [GeV]; X_{cl} - X_{trk} [mm]", 2);
+
+    double MinvBins[nMinvBins + 1] = {0., 0.02, 0.04, 0.06, 0.08, 0.1, 0.12, 0.14, 0.16, 0.18, 0.2, 0.22, 0.24};
+    for (int i = 0; i < nMinvBins; i++) {
+        DrawDatMCComparison(files_EvSelection, Form("PSumMin_MinvBin_%d", i),
+                Form("%1.3f GeV < M(ee) < %1.3f GeV; P_{Sum} [GeV]; d#sigma/dP_{Sum} [bn/GeV]", MinvBins[i], MinvBins[i + 1]), 1);
+    }
+
 
 
     // ========== Getting the Rad Fraction ===========
@@ -165,7 +172,7 @@ void NormalizationPlots() {
         double fRadErr;
         double fRad = GetfRad(files_EvSelection, Form("PSumMin_MinvBin_%d", i), fRadErr);
 
-        double MinvVal = (MinvBins[i] + MinvBins[i+1])/2.;
+        double MinvVal = (MinvBins[i] + MinvBins[i + 1]) / 2.;
         gr_fRad->SetPoint(i, MinvVal, fRad);
         gr_fRad->SetPointError(i, 0., fRadErr);
     }
@@ -207,17 +214,17 @@ void DrawDatMCComparison(TFile** files, std::string histNameBase, std::string Ti
         h_Data_All->Sumw2();
         h_Data_All->SetLineColor(1);
         h_Data_All->SetTitle(Title.c_str());
-        h_Data_All->Scale(1 / Lumin8099);
+        h_Data_All->Scale(1. / Lumin8099);
         TH1D *h_Data_AllBut = (TH1D*) file_Data->Get(Form("h_%s_AllBut", histNameBase.c_str()));
         h_Data_AllBut->Sumw2();
         h_Data_AllBut->SetLineColor(1);
         h_Data_AllBut->SetTitle(Title.c_str());
-        h_Data_AllBut->Scale(1 / Lumin8099);
+        h_Data_AllBut->Scale(1. / Lumin8099);
         TH1D *h_Data_CutEffect = (TH1D*) file_Data->Get(Form("h_%s_CutEffect", histNameBase.c_str()));
         h_Data_CutEffect->Sumw2();
         h_Data_CutEffect->SetLineColor(1);
         h_Data_CutEffect->SetTitle(Title.c_str());
-        h_Data_CutEffect->Scale(1 / Lumin8099);
+        h_Data_CutEffect->Scale(1. / Lumin8099);
 
         double dataFraction = h_Data_CutEffect->Integral() / h_Data_AllBut->Integral();
 
@@ -310,34 +317,62 @@ void DrawDatMCComparison(TFile** files, std::string histNameBase, std::string Ti
 
 
         h_Data_All->SetMaximum(1.05 * Max_All);
-        h_Data_All->Draw();
+
+        TRatioPlot *rp = new TRatioPlot(h_Data_All, hTriPlusWab_All, "divsym");
+        rp->GetUpperPad()->SetBottomMargin(0);
+        rp->GetLowerPad()->SetTopMargin(0);
+        rp->Draw();
+        rp->GetUpperPad()->cd();
         h_Tri_All->Draw("Same");
         h_Rad_All->Draw("Same");
         h_WAB_All->Draw("Same");
-        hTriPlusWab_All->Draw("Same");
+        rp->GetLowerRefGraph()->SetMaximum(1.6);
+        rp->GetLowerRefGraph()->SetMinimum(0.4);
+        c1D->Update();
         c1D->Print(Form("Figs/%s_All.eps", histNameBase.c_str()));
         c1D->Print(Form("Figs/%s_All.pdf", histNameBase.c_str()));
         c1D->Print(Form("Figs/%s_All.png", histNameBase.c_str()));
 
+        c1D->Clear();
+        delete rp;
+
         h_Data_AllBut->SetMaximum(1.05 * Max_AllBut);
-        h_Data_AllBut->Draw();
+        TRatioPlot *rp2 = new TRatioPlot(h_Data_AllBut, hTriPlusWab_AllBut, "divsym");
+        rp2->GetUpperPad()->SetBottomMargin(0);
+        rp2->GetLowerPad()->SetTopMargin(0);
+        rp2->Draw();
+        rp2->GetUpperPad()->cd();
         h_Tri_AllBut->Draw("Same");
         h_Rad_AllBut->Draw("Same");
         h_WAB_AllBut->Draw("Same");
-        hTriPlusWab_AllBut->Draw("Same");
+        rp2->GetLowerRefGraph()->SetMaximum(1.6);
+        rp2->GetLowerRefGraph()->SetMinimum(0.4);
+        c1D->Update();
         c1D->Print(Form("Figs/%s_AllBut.eps", histNameBase.c_str()));
         c1D->Print(Form("Figs/%s_AllBut.pdf", histNameBase.c_str()));
         c1D->Print(Form("Figs/%s_AllBut.png", histNameBase.c_str()));
 
+        c1D->Clear();
+        delete rp2;
+
         h_Data_CutEffect->SetMaximum(1.05 * Max_AllBut);
-        h_Data_CutEffect->Draw();
+        TRatioPlot *rp3 = new TRatioPlot(h_Data_CutEffect, hTriPlusWab_CutEffect, "divsym");
+        rp3->GetUpperPad()->SetBottomMargin(0);
+        rp3->GetLowerPad()->SetTopMargin(0);
+        rp3->Draw();
+        rp3->GetUpperPad()->cd();
         h_Tri_CutEffect->Draw("Same");
         h_Rad_CutEffect->Draw("Same");
         h_WAB_CutEffect->Draw("Same");
-        hTriPlusWab_CutEffect->Draw("Same");
+        rp2->GetLowerRefGraph()->SetMaximum(1.6);
+        rp2->GetLowerRefGraph()->SetMinimum(0.4);
+        c1D->Update();
         c1D->Print(Form("Figs/%s_CutEffect.eps", histNameBase.c_str()));
         c1D->Print(Form("Figs/%s_CutEffect.pdf", histNameBase.c_str()));
         c1D->Print(Form("Figs/%s_CutEffect.png", histNameBase.c_str()));
+
+        c1D->Clear();
+        delete rp3;
 
         CutFractions << setw(25) << histNameBase << setw(12) << " & " << dataFraction << setw(12) << " & " << triFraction << setw(12) << " & " << radFraction << setw(12) << " & " << wabFraction
                 << setw(12) << " & " << wabTriFraction << " \\\\ \\hline" << endl;
