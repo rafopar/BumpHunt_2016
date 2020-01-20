@@ -61,6 +61,10 @@ const double PsumCutMin_MC = 1.51; // GeV
 const double d0_cut_Data = 1.18; // From pass1 Data and MC, will be revised with new MC
 const double d0_cut_MC = 0.7; // Needs to be verified
 
+const int nMinvBins = 12;       // # of Minv bins, We want to study Psum for different Minv Bins
+const double MinvMin = 0.;
+const double MinvMax = 0.24;
+
 // =========================================================================
 // =====  Definition of Non-Const Variables
 // =========================================================================
@@ -144,6 +148,8 @@ double PsumCutMin;
 double d0_cut;
 
 double SVTLayerBinnings[nSVTLayers + 1] = {50., 150., 250., 400., 600., 800., 950.};
+
+int MinvBin;
 
 // ========= ================================ ============
 // ========= Normalizatin factors from Sebouh ============
@@ -308,6 +314,8 @@ TH2D *h_dX_Bot_NegNoL6_Cut;
 
 TH2D *h_trkCl_dt_P_Top_Cut;
 TH2D *h_trkCl_dt_P_Bot_Cut;
+
+TH1D *h_MinvBins1;
 
 // ========= ========================================================================= ========
 // ========= DST HPS type variables
