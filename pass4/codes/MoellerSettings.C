@@ -30,7 +30,8 @@ void InitSettings(std::string dataSet) {
         isMC = true;
 
         //inpFileName = "../Data/olv3_HPS-PhysicsRun2016-Nominal-v4-4-fieldmap_3.8-fix_noTrigger_All.root";
-        inpFileName = "../Data/skim_Moeller_ClTimeFixed.root";
+        //inpFileName = "../Data/skim_Moeller_ClTimeFixed.root";
+        inpFileName = "../Data/skim_Moeller_beam_All.root";
         //inpFileName = "../Data/skim_Moeller.root";
         outFileName = "MoellerAnalyze_MC.root";
     }
