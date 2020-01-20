@@ -9,6 +9,7 @@
 #include <TH2D.h>
 #include <TTree.h>
 #include <TFile.h>
+#include <TLorentzVector.h>
 
 #include <hps_event/HpsEvent.h>
 #include <hps_event/EcalCluster.h>
@@ -179,6 +180,7 @@ int main(int argc, char** argv) {
     TH1D *h_Minv_Pem_Final1 = new TH1D("h_Minv_Pem_Final1", "", 200, 0., 0.24);
     TH1D *h_Minv_d0ep_Final1 = new TH1D("h_Minv_d0ep_Final1", "", 200, 0., 0.24);
 
+    TH2D *h_PemPep1 = new TH2D("h_PemPep1", "", 200, 0., 1.05 * Eb, 200, 0., 1.05 * Eb);
 
     // =============== n-1 histograms, i.e. these histograms are filled when cuts on the rest of variables are applied
 
@@ -195,17 +197,36 @@ int main(int argc, char** argv) {
     // ==    when all cuts (including the given variable) are applied
     // ============================= Three stages of histograms ==================================
 
-    TH1D *h_PsumMax_All = new TH1D("h_PsumMax_All", "", 200, 0.7, 1.2 * Eb);
-    TH1D *h_PsumMax_AllBut = new TH1D("h_PsumMax_AllBut", "", 200, 0.7, 1.2 * Eb);
-    TH1D *h_PsumMax_CutEffect = new TH1D("h_PsumMax_CutEffect", "", 200, 0.7, 1.2 * Eb);
+    TH1D *h_PsumMax_All = new TH1D("h_PsumMax_All", "", 70, 0.7, 1.2 * Eb);
+    TH1D *h_PsumMax_AllBut = new TH1D("h_PsumMax_AllBut", "", 70, 0.7, 1.2 * Eb);
+    TH1D *h_PsumMax_CutEffect = new TH1D("h_PsumMax_CutEffect", "", 70, 0.7, 1.2 * Eb);
 
-    TH1D *h_PsumMin_All = new TH1D("h_PsumMin_All", "", 200, 0.7, 1.2 * Eb);
-    TH1D *h_PsumMin_AllBut = new TH1D("h_PsumMin_AllBut", "", 200, 0.7, 1.2 * Eb);
-    TH1D *h_PsumMin_CutEffect = new TH1D("h_PsumMin_CutEffect", "", 200, 0.7, 1.2 * Eb);
+    TH2D *h_Minv_PSumMax_All = new TH2D("h_Minv_PSumMax_All", "", 200, 0.7, 1.2 * Eb, 200, 0., 0.25);
+    TH2D *h_Minv_PSumMax_AllBut = new TH2D("h_Minv_PSumMax_AllBut", "", 200, 0.7, 1.2 * Eb, 200, 0., 0.25);
+    TH2D *h_Minv_PSumMax_CutEffect = new TH2D("h_Minv_PSumMax_CutEffect", "", 200, 0.7, 1.2 * Eb, 200, 0., 0.25);
 
-    TH1D *h_clDt_All = new TH1D("h_clDt_All", "", 200, -3., 3.);
-    TH1D *h_clDt_AllBut = new TH1D("h_clDt_AllBut", "", 200, -3., 3.);
-    TH1D *h_clDt_CutEffect = new TH1D("h_clDt_CutEffect", "", 200, -3., 3.);
+
+    TH1D *h_PsumMin_All = new TH1D("h_PsumMin_All", "", 70, 0.7, 1.2 * Eb);
+    TH1D *h_PsumMin_AllBut = new TH1D("h_PsumMin_AllBut", "", 70, 0.7, 1.2 * Eb);
+    TH1D *h_PsumMin_CutEffect = new TH1D("h_PsumMin_CutEffect", "", 70, 0.7, 1.2 * Eb);
+
+    TH2D *h_Minv_PSumMin_All = new TH2D("h_Minv_PSumMin_All", "", 200, 0.7, 1.2 * Eb, 200, 0., 0.25);
+    TH2D *h_Minv_PSumMin_AllBut = new TH2D("h_Minv_PSumMin_AllBut", "", 200, 0.7, 1.2 * Eb, 200, 0., 0.25);
+    TH2D *h_Minv_PSumMin_CutEffect = new TH2D("h_Minv_PSumMin_CutEffect", "", 200, 0.7, 1.2 * Eb, 200, 0., 0.25);
+
+    TH1D * h_PSumMin_MinvBin_All[nMinvBins + 1];
+    TH1D * h_PSumMin_MinvBin_AllBut[nMinvBins + 1];
+    TH1D * h_PSumMin_MinvBin_CutEffect[nMinvBins + 1];
+
+    for (int i = 0; i < nMinvBins + 1; i++) {
+        h_PSumMin_MinvBin_All[i] = new TH1D(Form("h_PSumMin_MinvBin_%d_All", i), "", 70, 0.7, 1.2 * Eb);
+        h_PSumMin_MinvBin_AllBut[i] = new TH1D(Form("h_PSumMin_MinvBin_%d_AllBut", i), "", 70, 0.7, 1.2 * Eb);
+        h_PSumMin_MinvBin_CutEffect[i] = new TH1D(Form("h_PSumMin_MinvBin_%d_CutEffect", i), "", 70, 0.7, 1.2 * Eb);
+    }
+
+    TH1D *h_clDt_All = new TH1D("h_clDt_All", "", 70, -3., 3.);
+    TH1D *h_clDt_AllBut = new TH1D("h_clDt_AllBut", "", 70, -3., 3.);
+    TH1D *h_clDt_CutEffect = new TH1D("h_clDt_CutEffect", "", 70, -3., 3.);
 
     TH2D *h_em_cl_trk_dT_All = new TH2D("h_em_cl_trk_dT_All", "", 200, 0., 2.5, 200, -15., 15.);
     TH2D *h_em_cl_trk_dT_AllBut = new TH2D("h_em_cl_trk_dT_AllBut", "", 200, 0., 2.5, 200, -15., 15.);
@@ -219,17 +240,23 @@ int main(int argc, char** argv) {
     TH2D *h_dX_em_AllBut = new TH2D("h_dX_em_AllBut", "", 200, 0., Eb, 200, -50., 50.);
     TH2D *h_dX_em_CutEffect = new TH2D("h_dX_em_CutEffect", "", 200, 0., Eb, 200, -50., 50.);
 
-    TH2D *h_dX_ep_All = new TH2D("h_h_dX_ep_All", "", 200, 0., Eb, 200, -50., 50.);
-    TH2D *h_dX_ep_AllBut = new TH2D("h_h_dX_ep_AllBut", "", 200, 0., Eb, 200, -50., 50.);
-    TH2D *h_dX_ep_CutEffect = new TH2D("h_h_dX_ep_CutEffect", "", 200, 0., Eb, 200, -50., 50.);
+    TH2D *h_dX_ep_All = new TH2D("h_dX_ep_All", "", 200, 0., Eb, 200, -50., 50.);
+    TH2D *h_dX_ep_AllBut = new TH2D("h_dX_ep_AllBut", "", 200, 0., Eb, 200, -50., 50.);
+    TH2D *h_dX_ep_CutEffect = new TH2D("h_dX_ep_CutEffect", "", 200, 0., Eb, 200, -50., 50.);
 
-    TH1D *h_Pem_All = new TH1D("h_Pem_All", "", 200, 0., 2.2);
-    TH1D *h_Pem_AllBut = new TH1D("h_Pem_AllBut", "", 200, 0., 2.2);
-    TH1D *h_Pem_CutEffect = new TH1D("h_Pem_CutEffect", "", 200, 0., 2.2);
+    TH1D *h_Pem_All = new TH1D("h_Pem_All", "", 70, 0., 2.2);
+    TH1D *h_Pem_AllBut = new TH1D("h_Pem_AllBut", "", 70, 0., 2.2);
+    TH1D *h_Pem_CutEffect = new TH1D("h_Pem_CutEffect", "", 70, 0., 2.2);
 
-    TH1D *h_d0_ep_All = new TH1D("h_d0_ep_All", "", 200, -3.5, 3.5);
-    TH1D *h_d0_ep_AllBut = new TH1D("h_d0_ep_AllBut", "", 200, -3.5, 3.5);
-    TH1D *h_d0_ep_CutEffect = new TH1D("h_d0_ep_CutEffect", "", 200, -3.5, 3.5);
+    TH1D *h_d0_ep_All = new TH1D("h_d0_ep_All", "", 70, -3.5, 3.5);
+    TH1D *h_d0_ep_AllBut = new TH1D("h_d0_ep_AllBut", "", 70, -3.5, 3.5);
+    TH1D *h_d0_ep_CutEffect = new TH1D("h_d0_ep_CutEffect", "", 70, -3.5, 3.5);
+
+
+
+    TH2D *h_Minv_PSum_MCParticle = new TH2D("h_Minv_PSum_MCParticle", "", 200, 0.7, 1.2 * Eb, 200, 0., 0.25);
+    TH2D *h_Minv_P622_MCParticle = new TH2D("h_Minv_P622_MCParticle", "", 200, 0.7, 1.2 * Eb, 200, 0., 0.25);
+    TH1D *h_N_MCDaughters1 = new TH1D("h_N_MCDaughters1", "", 6, -0.5, 5.5);
 
     HpsEvent *ev = new HpsEvent();
     //tr1->SetBranchAddress("HPS_Event", ev);
@@ -269,7 +296,7 @@ int main(int argc, char** argv) {
 
     cout << "Number of events is " << nev << endl;
 
-    //nev = 500000;
+    //nev = 200000;
     for (int ientry = 0; ientry < nev; ientry++) {
 
         tr1->GetEntry(ientry);
@@ -779,6 +806,69 @@ int main(int argc, char** argv) {
             }
 
 
+            // ==========================
+            // Temporary studies with MCParticles
+
+            int nMCParticles = ev->getNumberOfMCParticles();
+
+            bool MCStat1 = false;
+            for (int iMC = 0; iMC < nMCParticles; iMC++) {
+                MCParticle *mcpart = ev->getMCParticle(iMC);
+
+                //                cout<<mcpart->getPdgID()<<"     "<<mcpart->getEnergy()<<"     "<<mcpart->getMass()<<"    "<<mcpart->getMomentum().at(0)<<"     "
+                //                        <<mcpart->getMomentum().at(1)<<"     "<<mcpart->getMomentum().at(2)<<"     "<<endl;
+
+                if (mcpart->getPdgID() == 622) {
+
+                    h_N_MCDaughters1->Fill(mcpart->getDaughterCount());
+
+                    if (mcpart->getDaughterCount() < 2) {
+                        continue;
+                    }
+                    //cout << mcpart->getDaughterCount() << endl;
+
+                    //                    if (mcpart->getDaughterCount() > 2) {
+                    //                        for (int iD = 0; iD < mcpart->getDaughterCount(); iD++) {
+                    //                            cout << "Daughter " << iD << "     Status is " << mcpart->getDaughter(iD)->getGenStatus() <<"    PID = "<<
+                    //                                    mcpart->getDaughter(iD)->getPdgID()<< endl;
+                    //                        }
+                    //                    }
+
+                    double P622 = GetMagnitude(mcpart->getMomentum());
+                    double P0 = GetMagnitude(mcpart->getDaughter(0)->getMomentum());
+                    double P1 = GetMagnitude(mcpart->getDaughter(1)->getMomentum());
+
+                    //                    cout << " = = = = = = = = = " << endl;
+                    //                    cout<<"Endpoint of 622         " << mcpart->getEndPoint().at(0) << "     " << mcpart->getEndPoint().at(1) << "    " << mcpart->getEndPoint().at(2) << endl;
+                    //                    for (int iD = 0; iD < mcpart->getDaughterCount(); iD++) {
+                    //                        cout<<"Vertex of particle #"<<iD<<"   " << mcpart->getDaughter(iD)->getVertex().at(0) << "     " << mcpart->getDaughter(iD)->getVertex().at(1) << "    " 
+                    //                                << mcpart->getDaughter(iD)->getVertex().at(2) << endl;
+                    //                    }
+
+                    TLorentzVector L0, L1;
+                    L0.SetPxPyPzE(mcpart->getDaughter(0)->getMomentum().at(0), mcpart->getDaughter(0)->getMomentum().at(1),
+                            mcpart->getDaughter(0)->getMomentum().at(2), P0);
+                    L1.SetPxPyPzE(mcpart->getDaughter(1)->getMomentum().at(0), mcpart->getDaughter(1)->getMomentum().at(1),
+                            mcpart->getDaughter(1)->getMomentum().at(2), P1);
+
+                    double Minv = TLorentzVector(L0 + L1).M();
+
+                    //cout<<mcpart->getDaughterCount()<<"        "<<P0 + P1<<"      "<<Minv<<endl;
+
+
+                    if (mcpart->getDaughterCount() == 2) {
+                        h_Minv_PSum_MCParticle->Fill(P0 + P1, Minv);
+                        h_Minv_P622_MCParticle->Fill(P622, Minv);
+                        if (Minv < 0.048 || Minv > 0.052) {
+                            MCStat1 = true;
+                        }
+                    }
+                }
+
+            }
+
+            // ==========================
+
 
             // ===============================================================================================
             // ====== Selecting Final V0 candidates
@@ -796,24 +886,38 @@ int main(int argc, char** argv) {
 
 
             h_PsumMax_All->Fill(Psum);
+            h_Minv_PSumMax_All->Fill(Psum, mV0);
             if (CheckAllOtherCuts("PsumMax")) {
                 h_Minv_PMax_Final1->Fill(mV0);
                 h_Psum_Test1->Fill(Psum);
                 h_PsumMax_AllBut->Fill(Psum);
+                h_Minv_PSumMax_AllBut->Fill(Psum, mV0);
 
                 if (IsPsumMax) {
                     h_PsumMax_CutEffect->Fill(Psum);
+                    h_Minv_PSumMax_CutEffect->Fill(Psum, mV0);
                 }
             }
 
+            MinvBin = h_MinvBins1->FindBin(mV0) - 1;
+            h_PSumMin_MinvBin_All[MinvBin]->Fill(Psum);
             h_PsumMin_All->Fill(Psum);
+            h_Minv_PSumMin_All->Fill(Psum, mV0);
             if (CheckAllOtherCuts("PsumMin")) {
                 h_Minv_PMin_Final1->Fill(mV0);
                 h_Psum3->Fill(Psum);
                 h_Psum_Test2->Fill(Psum);
                 h_PsumMin_AllBut->Fill(Psum);
+
+                h_Minv_PSumMin_AllBut->Fill(Psum, mV0);
+
+                h_PemPep1->Fill(P_em, P_ep);
+                h_PSumMin_MinvBin_AllBut[MinvBin]->Fill(Psum);
+
                 if (IsPsumMin) {
                     h_PsumMin_CutEffect->Fill(Psum);
+                    h_Minv_PSumMin_CutEffect->Fill(Psum, mV0);
+                    h_PSumMin_MinvBin_CutEffect[MinvBin]->Fill(Psum);
                 }
             }
 
