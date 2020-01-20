@@ -21,6 +21,10 @@ void InitVariables(std::string dataSet) {
     ApMassSet.insert(150);
     ApMassSet.insert(175);
 
+    // ======= We want to study PSum distributions for different Minv ranges, below are defined ranges for these bins
+    double MinvBins[nMinvBins + 1] = {0., 0.02, 0.04, 0.06, 0.08, 0.1, 0.12, 0.14, 0.16, 0.18, 0.2, 0.22, 0.24};
+    h_MinvBins1 = new TH1D("h_MinvBins1", "", nMinvBins, MinvBins);
+
     // ========================================================================
     // ========= Let's figure it out which data source will be analyzed Rad, Tri, Date etc
     // ========================================================================
@@ -112,7 +116,8 @@ void InitVariables(std::string dataSet) {
             isAp = true;
             if (ApMassSet.count(ApMass) > 0) {
 
-                inpFileName = Form("../Data/Ap_%dMeV.root", ApMass);
+                //inpFileName = Form("../Data/Ap_%dMeV.root", ApMass);
+                inpFileName = Form("../Data/Ap_%dMeV_Dec11_2019.root", ApMass);
                 outFileName = Form("EventSelection_Ap_%dMeV.root", ApMass);
 
 
@@ -455,7 +460,7 @@ void ResetV0Flags() {
     IsPsumMax = false;
     IsPsumMin = false;
 
-
+    MinvBin = 0;
     cl_ep = nullptr;
     cl_em = nullptr;
 }
