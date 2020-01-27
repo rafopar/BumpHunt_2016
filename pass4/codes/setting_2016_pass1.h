@@ -58,8 +58,8 @@ const double PsumCutMax_MC = 2.4;
 const double PsumCutMin_Data = 1.51; // GeV
 const double PsumCutMin_MC = 1.51; // GeV
 
-const double d0_cut_Data = 1.18; // From pass1 Data and MC, will be revised with new MC
-const double d0_cut_MC = 0.7; // Needs to be verified
+const double d0_cut_Data = 1.176; // From pass1 Data and MC, will be revised with new MC
+const double d0_cut_MC = 0.65; // Needs to be verified
 
 const int nMinvBins = 12;       // # of Minv bins, We want to study Psum for different Minv Bins
 const double MinvMin = 0.;
