@@ -25,6 +25,10 @@ using namespace std;
 void DrawDatMCComparison(TFile** files, std::string histNameBase, std::string Title, int nDim);
 void AddErrorAllBins(TH1D* h, double RelErr);
 
+void DrawAntiFEECut(TFile** files);
+
+void Drawd0Cut(TFile** files);
+
 // ===== This function should return the Radiative fraction /
 // ===== It should take the "CutEffect" histograms, and calculate the 
 // ===== Rad Fraction as the Rad_Hist/(Wab+Tri)
@@ -43,6 +47,8 @@ const double Wab_SigmError = 0.01973;
 const double NGen_Wab = 9965. * 100000.;
 
 const double Lumin8099 = 237.e9; // inverse barn
+
+const double Pem_MaxTight_Data = 1.75;
 
 const int nMinvBins = 12; // # of Minv bins, We want to study Psum for different Minv Bins
 double MinvBins[nMinvBins + 1] = {0., 0.02, 0.04, 0.06, 0.08, 0.1, 0.12, 0.14, 0.16, 0.18, 0.2, 0.22, 0.24};
@@ -64,28 +70,29 @@ void NormalizationPlots() {
 
     TFile *file_EvSelection_Data = new TFile("EventSelection_Data.root", "Read");
     TH1D *h_Psum3_Data = (TH1D*) file_EvSelection_Data->Get("h_Psum3");
+    double bwPSum3 = h_Psum3_Data->GetBinWidth(10);
     h_Psum3_Data->SetLineColor(1);
 
     TFile *file_EvSelection_Wab = new TFile("EventSelection_WAB.root", "Read");
 
     TH1D *h_Psum3_Wab = (TH1D*) file_EvSelection_Wab->Get("h_Psum3");
     h_Psum3_Wab->SetTitle("; P_{Sum} [GeV]");
-    h_Psum3_Wab->Scale(Wab_SigmaGen / NGen_Wab);
+    h_Psum3_Wab->Scale(Wab_SigmaGen / (bwPSum3 * NGen_Wab));
     h_Psum3_Wab->SetLineColor(45);
 
     TFile *file_EvSelection_Rad = new TFile("EventSelection_Rad.root", "Read");
 
     TH1D *h_Psum3_Rad = (TH1D*) file_EvSelection_Rad->Get("h_Psum3");
     h_Psum3_Rad->SetTitle("; P_{Sum} [GeV]");
-    h_Psum3_Rad->Scale(Rad_SigmaGen / NGen_Rad);
+    h_Psum3_Rad->Scale(Rad_SigmaGen / (bwPSum3 * NGen_Rad));
     h_Psum3_Rad->SetLineColor(2);
 
 
     TFile *file_EvSelection_Tri = new TFile("EventSelection_Tri.root", "Read");
 
     TH1D *h_Psum3_Tri = (TH1D*) file_EvSelection_Tri->Get("h_Psum3");
-    h_Psum3_Tri->SetTitle("; P_{Sum} [GeV]");
-    h_Psum3_Tri->Scale(tritrig_SigmaGen / NGen_tritrig);
+    h_Psum3_Tri->SetTitle("; P_{Sum} [GeV]; d#sigma/d P_{Sum} [bn/GeV]");
+    h_Psum3_Tri->Scale(tritrig_SigmaGen / (bwPSum3 * NGen_tritrig));
     h_Psum3_Tri->SetLineColor(4);
 
     h_Psum3_Tri->Draw();
@@ -100,10 +107,10 @@ void NormalizationPlots() {
     h_Psum3_Rad->Draw("Same");
     h_Psum3_Wab->Draw("Same");
     const double DataScale = 1.32;
-    h_Psum3_Data->Scale(1 / Lumin8099);
-    h_Psum3_Data->Draw("Same");
+    h_Psum3_Data->Scale(1 / (bwPSum3 * Lumin8099));
+    //h_Psum3_Data->Draw("Same");
     lat1->SetTextColor(1);
-    lat1->DrawLatex(0.3, 0.5, "Data");
+    //lat1->DrawLatex(0.3, 0.5, "Data");
     lat1->SetTextColor(95);
     lat1->DrawLatex(0.3, 0.45, "WAB + Tri");
     lat1->SetTextColor(4);
@@ -163,6 +170,8 @@ void NormalizationPlots() {
 
 
 
+    DrawAntiFEECut(files_EvSelection);
+    Drawd0Cut(files_EvSelection);
     // ========== Getting the Rad Fraction ===========
 
     TGraphErrors *gr_fRad = new TGraphErrors();
@@ -618,4 +627,191 @@ double GetfRad(TFile** files, std::string histNameBase, double &fRad_Err) {
 
     return fRad;
 
+}
+
+void DrawAntiFEECut(TFile** files) {
+
+    //==========================================================
+    //===== Order of files in the pointer "files" is the following
+    //===== 1-st: Data
+    //===== 2-nd: TriTrig
+    //===== 3-3d: Radiatives
+    //===== 4-th: Converted Wabs
+    //==========================================================
+
+    TCanvas *ctmp = new TCanvas("ctmp", "", 950, 950);
+
+    TFile *file_Data = files[0];
+    TFile *file_Tri = files[1];
+    TFile *file_Rad = files[2];
+    TFile *file_WAB = files[3];
+
+    TH1D *h_Pem_All_Data = (TH1D*) file_Data->Get("h_Pem_All");
+    TH1D *h_Pem_All_Tri = (TH1D*) file_Tri->Get("h_Pem_All");
+    TH1D *h_Pem_All_Rad = (TH1D*) file_Rad->Get("h_Pem_All");
+    TH1D *h_Pem_All_WAB = (TH1D*) file_WAB->Get("h_Pem_All");
+
+    double bw = h_Pem_All_Data->GetBinWidth(10);
+
+    h_Pem_All_Data->Scale(1 / (bw * Lumin8099));
+    h_Pem_All_Data->SetLineColor(1);
+    h_Pem_All_Tri->Scale(tritrig_SigmaGen / (bw * NGen_tritrig));
+    h_Pem_All_Rad->Scale(Rad_SigmaGen / (bw * NGen_Rad));
+
+    TLine *line1 = new TLine();
+    line1->SetLineColor(2);
+
+    TLatex *lat1 = new TLatex();
+    lat1->SetNDC();
+    lat1->SetTextFont(42);
+
+    h_Pem_All_Tri->SetTitle("; P_{e^{-}} [GeV]; d#sigma/d P_{e^{-}} [bn/GeV] ");
+    h_Pem_All_Tri->SetLineColor(2);
+    h_Pem_All_Tri->Draw();
+    h_Pem_All_Data->Draw("Same");
+    h_Pem_All_Rad->Draw("Same");
+    TLine *tmpLine = line1->DrawLine(Pem_MaxTight_Data, 0., Pem_MaxTight_Data, 0.25 * h_Pem_All_Tri->GetMaximum());
+    int binCut = h_Pem_All_Tri->FindBin(Pem_MaxTight_Data);
+    double TotData = h_Pem_All_Data->Integral();
+    double CutData = h_Pem_All_Data->Integral(binCut, h_Pem_All_Data->GetNbinsX());
+    double TotTri = h_Pem_All_Tri->Integral();
+    double CutTri = h_Pem_All_Tri->Integral(binCut, h_Pem_All_Tri->GetNbinsX());
+    double TotRad = h_Pem_All_Rad->Integral();
+    double CutRad = h_Pem_All_Rad->Integral(binCut, h_Pem_All_Rad->GetNbinsX());
+    lat1->SetTextColor(1);
+    TLatex *tmpLat1 = lat1->DrawLatex(0.5, 0.72, Form("Data Cut = %1.2f %%", 100. * CutData / TotData));
+    lat1->SetTextColor(2);
+    TLatex *tmpLat2 = lat1->DrawLatex(0.5, 0.67, Form("Tri Cut = %1.2f %%", 100. * CutTri / TotTri));
+    lat1->SetTextColor(4);
+    TLatex *tmpLat3 = lat1->DrawLatex(0.5, 0.62, Form("Rad Cut = %1.2f %%", 100. * CutRad / TotRad));
+    ctmp->Print("Figs/FEE_Cut.eps");
+    ctmp->Print("Figs/FEE_Cut.pdf");
+    ctmp->Print("Figs/FEE_Cut.png");
+
+    delete tmpLine;
+    delete tmpLat1;
+    delete tmpLat2;
+    delete tmpLat3;
+
+    h_Pem_All_Tri->SetAxisRange(0., 0.02 * h_Pem_All_Tri->GetMaximum(), "Y");
+    ctmp->Update();
+    TLine *tmpLine2 = line1->DrawLine(Pem_MaxTight_Data, 0., Pem_MaxTight_Data, 0.95 * h_Pem_All_Tri->GetMaximum());
+    ctmp->Print("Figs/FEE_CutZoom.eps");
+    ctmp->Print("Figs/FEE_CutZoom.pdf");
+    ctmp->Print("Figs/FEE_CutZoom.png");
+
+
+    delete ctmp;
+}
+
+void Drawd0Cut(TFile** files) {
+
+    //==========================================================
+    //===== Order of files in the pointer "files" is the following
+    //===== 1-st: Data
+    //===== 2-nd: TriTrig
+    //===== 3-3d: Radiatives
+    //===== 4-th: Converted Wabs
+    //==========================================================
+
+    TFile *file_Data = files[0];
+    TFile *file_Tri = files[1];
+    TFile *file_Rad = files[2];
+    TFile *file_WAB = files[3];
+
+    TLatex *lat1 = new TLatex();
+    lat1->SetTextFont(42);
+    lat1->SetNDC();
+    lat1->SetTextSize(0.03);
+
+    TLine *line1 = new TLine();
+    line1->SetLineColor(2);
+
+    TCanvas *ctmp = new TCanvas("ctmp", "", 950, 950);
+
+    TH1D *h_d0_AllBut_Data = (TH1D*) file_Data->Get("h_d0_ep_AllBut");
+    double bw = h_d0_AllBut_Data->GetBinWidth(10);
+    h_d0_AllBut_Data->SetTitle("; d_{0} [mm]; d#sigma/d d_{0} [bn/mm]");
+    h_d0_AllBut_Data->Scale(1 / (bw * Lumin8099));
+    h_d0_AllBut_Data->SetLineColor(1);
+
+    TH1D *h_d0_AllBut_Tri = (TH1D*) file_Tri->Get("h_d0_ep_AllBut");
+    h_d0_AllBut_Tri->Scale(tritrig_SigmaGen / (bw * NGen_tritrig));
+    h_d0_AllBut_Tri->SetTitle("; d_{0} [mm]; d#sigma/d d_{0} [bn/mm]");
+    h_d0_AllBut_Tri->SetLineColor(4);
+
+    TH1D *h_d0_AllBut_Rad = (TH1D*) file_Rad->Get("h_d0_ep_AllBut");
+    h_d0_AllBut_Rad->Scale(Rad_SigmaGen / (bw * NGen_Rad));
+    h_d0_AllBut_Rad->SetTitle("; d_{0} [mm]; d#sigma/d d_{0} [bn/mm]");
+    h_d0_AllBut_Rad->SetLineColor(2);
+
+    TH1D *h_d0_AllBut_WAB = (TH1D*) file_WAB->Get("h_d0_ep_AllBut");
+    h_d0_AllBut_WAB->Scale(Wab_SigmaGen / (bw * NGen_Wab));
+    h_d0_AllBut_WAB->SetTitle("; d_{0} [mm]; d#sigma/d d_{0} [bn/mm]");
+    h_d0_AllBut_WAB->SetLineColor(45);
+
+    TH1D *h_d0_AllBut_TriPlusWAB = (TH1D*) h_d0_AllBut_Tri->Clone("h_d0_AllBut_TriPlusWAB");
+    h_d0_AllBut_TriPlusWAB->SetLineColor(95);
+    h_d0_AllBut_TriPlusWAB->Add(h_d0_AllBut_WAB);
+
+    h_d0_AllBut_TriPlusWAB->Draw();
+    h_d0_AllBut_Data->Draw("Same");
+    h_d0_AllBut_Tri->Draw("Same");
+    h_d0_AllBut_Rad->Draw("Same");
+    h_d0_AllBut_WAB->Draw("Same");
+    ctmp->Print("Figs/d0_MC_Components.eps");
+    ctmp->Print("Figs/d0_MC_Components.pdf");
+    ctmp->Print("Figs/d0_MC_Components.png");
+
+    TH1D *h_cum_d0_AllBut_TriPlusWAB = (TH1D*) h_d0_AllBut_TriPlusWAB->GetCumulative(true, "cum");
+    TH1D *h_cum_d0_AllBut_Rad = (TH1D*) h_d0_AllBut_Rad->GetCumulative(true, "cum");
+
+    for (int i = 0; i < h_cum_d0_AllBut_TriPlusWAB->GetNbinsX(); i++) {
+        double tmp = h_cum_d0_AllBut_TriPlusWAB->GetBinContent(i + 1);
+        h_cum_d0_AllBut_TriPlusWAB->SetBinContent(i + 1, sqrt(tmp));
+    }
+
+
+    TH1D *h_d0_FOM = (TH1D*) h_cum_d0_AllBut_Rad->Clone("h_d0_FOM");
+    h_d0_FOM->Divide(h_cum_d0_AllBut_TriPlusWAB);
+
+    h_d0_FOM->SetStats(false);
+    h_d0_FOM->Draw();
+    double d0_FOM_MC = h_d0_FOM->GetBinCenter(h_d0_FOM->GetMaximumBin());
+    ctmp->Print("Figs/d0_FOM_MC.eps");
+    ctmp->Print("Figs/d0_FOM_MC.pdf");
+    ctmp->Print("Figs/d0_FOM_MC.png");
+
+    TF1 *f_Gaus = new TF1("f_Gaus", "[0]*TMath::Gaus(x, [1], [2])", -3., 3.);
+    f_Gaus->SetNpx(4500);
+    f_Gaus->SetParameters(h_d0_AllBut_TriPlusWAB->GetMaximum(), 0, h_d0_AllBut_TriPlusWAB->GetRMS());
+    f_Gaus->SetParLimits(2, 0., 2.);
+
+    h_d0_AllBut_TriPlusWAB->Draw();
+    h_d0_AllBut_TriPlusWAB->Fit(f_Gaus, "MeV", "", -0.7, 0.5);
+    double mean_MC = f_Gaus->GetParameter(1);
+    double sigm_MC = f_Gaus->GetParameter(2);
+    lat1->DrawLatex(0.12, 0.7, Form("#mu = %1.3f mm", mean_MC));
+    lat1->DrawLatex(0.12, 0.65, Form("#sigma = %1.3f mm", sigm_MC));
+    lat1->DrawLatex(0.12, 0.45, Form("d_{0}(MC) < %1.3f mm", d0_FOM_MC));
+    line1->DrawLine(d0_FOM_MC, 0., d0_FOM_MC, 0.9 * h_d0_AllBut_TriPlusWAB->GetMaximum());
+    ctmp->Print("Figs/d0_MC_Fit.eps");
+    ctmp->Print("Figs/d0_MC_Fit.pdf");
+    ctmp->Print("Figs/d0_MC_Fit.png");
+
+    h_d0_AllBut_Data->Draw();
+    f_Gaus->SetParameters(h_d0_AllBut_Data->GetMaximum(), 0, h_d0_AllBut_Data->GetRMS());
+    h_d0_AllBut_Data->Fit(f_Gaus, "MeV", "", -0.7, 0.7);
+    double mean_Data = f_Gaus->GetParameter(1);
+    double sigm_Data = f_Gaus->GetParameter(2);
+    double d0_FOM_Data = mean_Data + sigm_Data * (d0_FOM_MC - mean_MC) / sigm_MC;
+    lat1->DrawLatex(0.12, 0.7, Form("#mu = %1.3f mm", mean_Data));
+    lat1->DrawLatex(0.12, 0.65, Form("#sigma = %1.3f mm", sigm_Data));
+    lat1->DrawLatex(0.12, 0.45, Form("d_{0}(Data) < %1.3f mm", d0_FOM_Data));
+    line1->DrawLine(d0_FOM_Data, 0., d0_FOM_Data, 0.9 * h_d0_AllBut_Data->GetMaximum());
+    ctmp->Print("Figs/d0_Data_Fit.eps");
+    ctmp->Print("Figs/d0_Data_Fit.pdf");
+    ctmp->Print("Figs/d0_Data_Fit.png");
+
+    delete ctmp;
 }
