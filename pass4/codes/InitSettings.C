@@ -21,6 +21,19 @@ void InitVariables(std::string dataSet) {
     ApMassSet.insert(150);
     ApMassSet.insert(175);
 
+
+    // =================== Initialize map of vectors of invariant mass
+    m_v_ee[0] = {};
+    m_v_ee[1] = {};
+    m_v_ee[2] = {};
+    m_v_ee[3] = {};
+
+    m_v_PSum[0] = {};
+    m_v_PSum[1] = {};
+    m_v_PSum[2] = {};
+    m_v_PSum[3] = {};
+
+
     // ======= We want to study PSum distributions for different Minv ranges, below are defined ranges for these bins
     double MinvBins[nMinvBins + 1] = {0., 0.02, 0.04, 0.06, 0.08, 0.1, 0.12, 0.14, 0.16, 0.18, 0.2, 0.22, 0.24};
     h_MinvBins1 = new TH1D("h_MinvBins1", "", nMinvBins, MinvBins);
@@ -429,6 +442,13 @@ void InitVariables(std::string dataSet) {
 
     // ==== We want to open it at the end, that gDirectory->Write will try to save histos in this file ===
     file_out = new TFile(outFileName.c_str(), "Recreate");
+
+    // =================== Initialize map of histograms with differ Cut conditions
+
+    for (int ii = 0; ii < TMath::Power(2, NCutInQuestion); ii++) {
+        m_h_Minv[ii] = new TH1D(Form("h_Minv_Final_%d", ii), "", 6000, 0., 0.3);
+        m_h_Psum[ii] = new TH1D(Form("h_PSum_Final_%d", ii), "", 600, 0.7, 1.2 * Eb);
+    }
 }
 
 void ResetEventFlags() {
@@ -463,6 +483,8 @@ void ResetV0Flags() {
     MinvBin = 0;
     cl_ep = nullptr;
     cl_em = nullptr;
+
+    CutsKey = 0;
 }
 
 void CorrectClusterTime(EcalCluster* cl) {
@@ -478,6 +500,19 @@ void CorrectClusterTime(EcalCluster* cl) {
     }
 }
 
+int GetCutsKey() {
+
+    if (IsD0ep) {
+        CutsKey = CutsKey | 1;
+    }
+
+    if (hasepL1) {
+        CutsKey = CutsKey | 2;
+    }
+
+    return CutsKey;
+}
+
 std::set<int> GetVerticalCrystalls(EcalCluster* cl) {
     std::set<int> vert_crystals;
     for (int i = 0; i < cl->getEcalHits()->GetSize(); i++) {
@@ -488,6 +523,11 @@ std::set<int> GetVerticalCrystalls(EcalCluster* cl) {
 
 bool CheckAllOtherCuts(std::string astr) {
     bool Stat = false;
+
+    // ======= In the analysis workshop it was decided to drop the d0 cut
+    // ======= So here we will manually set the "IsD0ep" as true;
+    IsD0ep = true;
+    //===============================
 
     if (astr.compare("cldT") == 0) {
         Stat = IsemClTrkdT && IsepClTrkdT && IsemTrkClMatch && IsepTrkClMatch && IsPem && IsD0ep && IsPsumMin && IsPsumMax;

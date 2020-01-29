@@ -112,6 +112,7 @@ bool IsD0ep;
 bool IsD0em;
 bool IsPsumMax;
 bool IsPsumMin;
+bool hasepL1;
 
 
 // ========================================================================
@@ -126,6 +127,16 @@ bool isECalTimeStudies = false;
 // ==== ============================
 
 int ApMass = 0;
+
+// ==================================
+// =====     The Cut Keyword
+// =====             |-- L1 requirement for e+ (1: required, 0: Not required)
+// =====             |
+// =====             | - d0 cut (1: applied, 0: Not applied)
+// =====             | | 
+// ===== - - - - - - - - 
+// ==================================
+int CutsKey;  // This should be determined for each V0 candidate
 
 std::set<int> ApMassSet;
 
@@ -194,6 +205,43 @@ std::string cutHistFileName;
 std::string cutHistFileName2;
 
 
+// =========================================================================
+// ===== Map of vectors for Minv, Different Keys will represent
+// ===== different set of cuts that the v0 candidate passed
+// ===== This map will contain vector of Minv that pass the set of cuts
+// ===== determined by the Key
+// =========================================================================
+
+map<int, vector<double> > m_v_ee;
+map<int, vector<double> > m_v_PSum;
+
+// =========================================================================
+// ===== Map of histograms for for
+// ===== different set of cuts that the v0 candidate passed
+// =========================================================================
+
+const int NCutInQuestion= 3;
+
+// Events with one or more V0 candidates
+// Require L1 hit from positron
+// Place cut on d0?
+
+
+// ==================================
+// =====     The Cut Keyword
+// =====             |------ L1 requirement for e+ (1: required, 0: Not required)
+// =====             |
+// =====             | ----- d0 cut (1: applied, 0: Not applied)
+// =====             | | 
+// =====             | | --- # of V0 candidates: (1: if # of V0s with a given conditions is one, 0: otherwise)
+// =====             | | |
+// =====             | | |
+// ===== - - - - - - - - -
+
+map<int, TH1D*> m_h_Minv;
+map<int, TH1D*> m_h_Psum;
+
+// ==================================
 
 // =========================================================================
 // ===== Root standard type variables, e.g. TH1, TF1, TFile etc...
@@ -351,6 +399,10 @@ bool IsIntimeClusterCandidate(EcalCluster*);
 
 // ======= This function should implement cluster time corrections
 void CorrectClusterTime(EcalCluster*);
+
+// ======= This function returns the CutsKey for a given V0 candidate =======
+int GetCutsKey();
+
 
 // ======= This function returns number of rows the given crystal cover.
 std::set<int> GetVerticalCrystalls(EcalCluster*);

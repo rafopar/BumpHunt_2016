@@ -17,6 +17,7 @@
 #include "setting_2016_pass1.h"
 #include "InitSettings.C"
 
+#include <fstream>
 #include <iostream>
 
 #include <cstdlib>
@@ -119,6 +120,10 @@ int main(int argc, char** argv) {
     TH1D *h_d0_ep_topNoL1 = new TH1D("h_d0_ep_topNoL1", "", 200, -3.5, 3.5);
     TH1D *h_d0_ep_botWithL1 = new TH1D("h_d0_ep_botWithL1", "", 200, -3.5, 3.5);
     TH1D *h_d0_ep_botNoL1 = new TH1D("h_d0_ep_botNoL1", "", 200, -3.5, 3.5);
+
+    TH1D *h_pos_Chi2PID1 = new TH1D("h_pos_Chi2PID1", "", 200, 0., 10);
+    TH1D *h_pos_Chi2PID2 = new TH1D("h_pos_Chi2PID2", "", 200, 0., 10);
+    TH1D *h_pos_Chi2PID3 = new TH1D("h_pos_Chi2PID3", "", 200, 0., 10);
 
     TH1D *h_Psum1 = new TH1D("h_Psum1", "", 200, 0.7, 1.2 * Eb);
     TH1D *h_Psum2 = new TH1D("h_Psum2", "", 200, 0.7, 1.2 * Eb);
@@ -236,6 +241,14 @@ int main(int argc, char** argv) {
     TH2D *h_ep_cl_trk_dT_AllBut = new TH2D("h_ep_cl_trk_dT_AllBut", "", 200, 0., 2.5, 200, -15., 15.);
     TH2D *h_ep_cl_trk_dT_CutEffect = new TH2D("h_ep_cl_trk_dT_CutEffect", "", 200, 0., 2.5, 200, -15., 15.);
 
+    TH2D *h_ep_cl_trk_dT_Top_All = new TH2D("h_ep_cl_trk_dT_Top_All", "", 200, 0., 2.5, 200, -15., 15.);
+    TH2D *h_ep_cl_trk_dT_Top_AllBut = new TH2D("h_ep_cl_trk_dT_Top_AllBut", "", 200, 0., 2.5, 200, -15., 15.);
+    TH2D *h_ep_cl_trk_dT_Top_CutEffect = new TH2D("h_ep_cl_trk_dT_Top_CutEffect", "", 200, 0., 2.5, 200, -15., 15.);
+
+    TH2D *h_ep_cl_trk_dT_Bot_All = new TH2D("h_ep_cl_trk_dT_Bot_All", "", 200, 0., 2.5, 200, -15., 15.);
+    TH2D *h_ep_cl_trk_dT_Bot_AllBut = new TH2D("h_ep_cl_trk_dT_Bot_AllBut", "", 200, 0., 2.5, 200, -15., 15.);
+    TH2D *h_ep_cl_trk_dT_Bot_CutEffect = new TH2D("h_ep_cl_trk_dT_Bot_CutEffect", "", 200, 0., 2.5, 200, -15., 15.);
+
     TH2D *h_dX_em_All = new TH2D("h_dX_em_All", "", 200, 0., Eb, 200, -50., 50.);
     TH2D *h_dX_em_AllBut = new TH2D("h_dX_em_AllBut", "", 200, 0., Eb, 200, -50., 50.);
     TH2D *h_dX_em_CutEffect = new TH2D("h_dX_em_CutEffect", "", 200, 0., Eb, 200, -50., 50.);
@@ -248,9 +261,9 @@ int main(int argc, char** argv) {
     TH1D *h_Pem_AllBut = new TH1D("h_Pem_AllBut", "", 70, 0., 2.2);
     TH1D *h_Pem_CutEffect = new TH1D("h_Pem_CutEffect", "", 70, 0., 2.2);
 
-    TH1D *h_d0_ep_All = new TH1D("h_d0_ep_All", "", 70, -3.5, 3.5);
-    TH1D *h_d0_ep_AllBut = new TH1D("h_d0_ep_AllBut", "", 70, -3.5, 3.5);
-    TH1D *h_d0_ep_CutEffect = new TH1D("h_d0_ep_CutEffect", "", 70, -3.5, 3.5);
+    TH1D *h_d0_ep_All = new TH1D("h_d0_ep_All", "", 70, -3.5, 9.);
+    TH1D *h_d0_ep_AllBut = new TH1D("h_d0_ep_AllBut", "", 70, -3.5, 9.);
+    TH1D *h_d0_ep_CutEffect = new TH1D("h_d0_ep_CutEffect", "", 70, -3.5, 9.);
 
 
 
@@ -593,14 +606,20 @@ int main(int argc, char** argv) {
                 E_cl_ep = cl_ep->getEnergy();
                 is_pos_ClustIntime = IsIntimeClusterCandidate(cl_ep);
 
+                double posChi2 = ep->getGoodnessOfPID();
+
+                h_pos_Chi2PID1->Fill(posChi2);
+
                 if (pos_cl_ep.at(1) > 0) {
                     h_ep_cl_EvsT_top1->Fill(cl_ep->getEnergy(), t_cl_ep);
                     if (is_pos_ClustIntime) {
                         h_ep_cl_EvsT_top2->Fill(cl_ep->getEnergy(), t_cl_ep);
+                        h_pos_Chi2PID2->Fill(posChi2);
                     }
                 } else {
                     h_ep_cl_EvsT_bot1->Fill(cl_ep->getEnergy(), t_cl_ep);
                     if (is_pos_ClustIntime) {
+                        h_pos_Chi2PID3->Fill(posChi2);
                         h_ep_cl_EvsT_bot2->Fill(cl_ep->getEnergy(), t_cl_ep);
                     }
                 }
@@ -629,7 +648,7 @@ int main(int argc, char** argv) {
             vector<double> pos_trk_ep = trk_ep->getPositionAtEcal();
             vector<double> P_trk_ep = trk_ep->getMomentum();
             double P_ep = sqrt(P_trk_ep.at(0) * P_trk_ep.at(0) + P_trk_ep.at(1) * P_trk_ep.at(1) + P_trk_ep.at(2) * P_trk_ep.at(2));
-            bool hasepL1 = HasL1Hit(trk_ep);
+            hasepL1 = HasL1Hit(trk_ep);
             bool hasepL6 = HasL6Hit(trk_ep);
 
 
@@ -723,9 +742,12 @@ int main(int argc, char** argv) {
             // =========================================================
 
             //if (!(hasemL1 && hasepL1)) {
-            if (!hasepL1) {
-                continue;
-            }
+            // ===================== At the Analysis Workshop in Jan 2020, it was decided to drop the L1 requirement
+            // ===================== It requires significant studies in order the data and MC track efficiencies to agree
+            // ===================== Without it the Data-MC agreement is better
+            //            if (!hasepL1) {
+            //                continue;
+            //            }
 
             if (IsTightcldT && IsTightPem && IsTightemtrkChi2 && IsTighteptrkChi2 && IsTightepTrkClMatch && IsTightemTrkClMatch && IsTightemClTrkdT && IsTightepClTrkdT
                     && IsTightcldT) {
@@ -936,15 +958,30 @@ int main(int argc, char** argv) {
             }
 
 
+            if (pos_cl_ep.at(1) > 1) {
+                h_ep_cl_trk_dT_Top_All->Fill(P_ep, ClTrkDt_ep);
+            } else {
+                h_ep_cl_trk_dT_Bot_All->Fill(P_ep, ClTrkDt_ep);
+            }
             h_ep_cl_trk_dT_All->Fill(P_ep, ClTrkDt_ep);
             if (CheckAllOtherCuts("epClTrkdT")) {
                 h_Minv_epClTrkdT_Final1->Fill(mV0);
                 h_Psum_Test4->Fill(Psum);
 
                 h_ep_cl_trk_dT_AllBut->Fill(P_ep, ClTrkDt_ep);
+                if (pos_cl_ep.at(1) > 1) {
+                    h_ep_cl_trk_dT_Top_AllBut->Fill(P_ep, ClTrkDt_ep);
+                } else {
+                    h_ep_cl_trk_dT_Bot_AllBut->Fill(P_ep, ClTrkDt_ep);
+                }
 
                 if (IsepClTrkdT) {
                     h_ep_cl_trk_dT_CutEffect->Fill(P_ep, ClTrkDt_ep);
+                    if (pos_cl_ep.at(1) > 1) {
+                        h_ep_cl_trk_dT_Top_CutEffect->Fill(P_ep, ClTrkDt_ep);
+                    } else {
+                        h_ep_cl_trk_dT_Bot_CutEffect->Fill(P_ep, ClTrkDt_ep);
+                    }
                 }
 
             }
@@ -1008,13 +1045,52 @@ int main(int argc, char** argv) {
                     h_Psum4->Fill(Psum);
                     h_d0_ep_CutEffect->Fill(d0_ep);
 
+
                     n_realV0 = n_realV0 + 1;
                 }
             }
 
 
+
+            // =============================== Do Not Remove the following line ============================            
+            IsD0ep = IsD0Cut(d0_ep);
+            // =============================== Do Not Remove the   above line   ============================ 
+
+            if (IsPsumMax && IsPsumMin && IscldT && IsemClTrkdT && IsepClTrkdT && IsemTrkClMatch && IsepTrkClMatch && IsPem) {
+                CutsKey = GetCutsKey();
+                m_v_ee[CutsKey].push_back(mV0);
+                m_v_PSum[CutsKey].push_back(Psum);
+            }
+
+
         }
         h_nV0_2->Fill(n_realV0);
+
+        for (map<int, vector<double> >::iterator it = m_v_ee.begin(); it != m_v_ee.end(); it++) {
+
+            int CurCutKey = it->first;
+            int nCurV0 = it->second.size();
+            bool SingleV0 = (nCurV0 == 1);
+
+            int HistKey = SingleV0 | CurCutKey << 1;
+            //            cout << nCurV0 << endl;
+            //            cout<<SingleV0<<"    "<<CurCutKey<<"    "<<HistKey<<endl;
+
+            for (int iV0 = 0; iV0 < nCurV0; iV0++) {
+                m_h_Minv[HistKey]->Fill( (it->second).at(iV0) );
+                m_h_Psum[HistKey]->Fill( (m_v_PSum[CurCutKey]).at(iV0) );
+            }
+
+            // ============= When everything is done with the vector masses, we can rest it again
+            it->second.clear();
+            it->second.shrink_to_fit();
+            
+            m_v_PSum[CurCutKey].clear();
+            m_v_PSum[CurCutKey].shrink_to_fit();
+        }
+
+        //cout<<m_v_ee[0].size()<<"    "<<m_v_ee[1].size()<<endl;
+
 
     }
 
