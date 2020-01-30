@@ -1058,14 +1058,24 @@ int main(int argc, char** argv) {
 
             if (IsPsumMax && IsPsumMin && IscldT && IsemClTrkdT && IsepClTrkdT && IsemTrkClMatch && IsepTrkClMatch && IsPem) {
                 CutsKey = GetCutsKey();
+
                 m_v_ee[CutsKey].push_back(mV0);
                 m_v_PSum[CutsKey].push_back(Psum);
+
+                FillVectorOfCutsKeys();
+
+                for (int iCut = 0; iCut < v_CutsKeys.size(); iCut++) {
+                    m_v_Minv_General[v_CutsKeys.at(iCut)].push_back(mV0);
+                    m_v_PSum_General[v_CutsKeys.at(iCut)].push_back(Psum);
+                }
+
             }
 
 
         }
         h_nV0_2->Fill(n_realV0);
 
+                
         for (map<int, vector<double> >::iterator it = m_v_ee.begin(); it != m_v_ee.end(); it++) {
 
             int CurCutKey = it->first;
@@ -1073,21 +1083,44 @@ int main(int argc, char** argv) {
             bool SingleV0 = (nCurV0 == 1);
 
             int HistKey = SingleV0 | CurCutKey << 1;
-            //            cout << nCurV0 << endl;
-            //            cout<<SingleV0<<"    "<<CurCutKey<<"    "<<HistKey<<endl;
+//            cout << nCurV0 << endl;
+//            cout << SingleV0 << "    " << CurCutKey << "    " << HistKey << endl;
 
             for (int iV0 = 0; iV0 < nCurV0; iV0++) {
-                m_h_Minv[HistKey]->Fill( (it->second).at(iV0) );
-                m_h_Psum[HistKey]->Fill( (m_v_PSum[CurCutKey]).at(iV0) );
+                m_h_Minv[HistKey]->Fill((it->second).at(iV0));
+                m_h_Psum[HistKey]->Fill((m_v_PSum[CurCutKey]).at(iV0));
             }
 
-            // ============= When everything is done with the vector masses, we can rest it again
-            it->second.clear();
-            it->second.shrink_to_fit();
-            
-            m_v_PSum[CurCutKey].clear();
-            m_v_PSum[CurCutKey].shrink_to_fit();
         }
+        // ============= When everything is done with the vector masses and PSum, we can rest it again
+        m_v_ee.clear();
+        m_v_PSum.clear();
+
+
+        for (map<int, vector<double> >::iterator it = m_v_Minv_General.begin(); it != m_v_Minv_General.end(); it++) {
+            int CurCutKey = it->first;
+            int nCurV0 = it->second.size();
+            bool SingleV0 = (nCurV0 == 1);
+
+            int HistKey = SingleV0 | CurCutKey << 1;
+
+//            cout << nCurV0 << endl;
+//            cout << SingleV0 << "    " << CurCutKey << "    " << HistKey << endl;
+
+            for (int iV0 = 0; iV0 < nCurV0; iV0++) {
+                m_h_Minv_General[HistKey]->Fill((it->second).at(iV0));
+                m_h_Psum_General[HistKey]->Fill(m_v_PSum_General[CurCutKey].at(iV0));
+            }
+
+//            it->second.clear();
+//            it->second.shrink_to_fit();
+//
+//            m_v_PSum_General[CurCutKey].clear();
+//            m_v_PSum_General[CurCutKey].shrink_to_fit();
+        }
+        
+        m_v_Minv_General.clear();
+        m_v_PSum_General.clear();
 
         //cout<<m_v_ee[0].size()<<"    "<<m_v_ee[1].size()<<endl;
 

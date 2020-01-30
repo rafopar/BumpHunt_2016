@@ -138,6 +138,9 @@ int ApMass = 0;
 // ==================================
 int CutsKey;  // This should be determined for each V0 candidate
 
+// ===== This vector will contain vector of CutsKeys, that the given V0 will satisfy
+vector<int> v_CutsKeys;
+
 std::set<int> ApMassSet;
 
 double Pem_MaxTight;
@@ -215,6 +218,12 @@ std::string cutHistFileName2;
 map<int, vector<double> > m_v_ee;
 map<int, vector<double> > m_v_PSum;
 
+
+map<int, vector<double> > m_v_Minv_General;
+map<int, vector<double> > m_v_PSum_General;
+
+
+
 // =========================================================================
 // ===== Map of histograms for for
 // ===== different set of cuts that the v0 candidate passed
@@ -240,6 +249,12 @@ const int NCutInQuestion= 3;
 
 map<int, TH1D*> m_h_Minv;
 map<int, TH1D*> m_h_Psum;
+
+// ========== Here the extension general refers to histograms that can be filled more often,
+// ========== i.e. if the the V0 has ep_d0 cut passed, then both with/ and without d0 histograms will be filled
+
+map<int, TH1D*> m_h_Minv_General;
+map<int, TH1D*> m_h_Psum_General;
 
 // ==================================
 
@@ -402,6 +417,10 @@ void CorrectClusterTime(EcalCluster*);
 
 // ======= This function returns the CutsKey for a given V0 candidate =======
 int GetCutsKey();
+
+// ======= This function Fills the vector of CutsKey for a given V0 candidate,  =======
+// ======= that the current V0 will satisfy =======
+void FillVectorOfCutsKeys();
 
 
 // ======= This function returns number of rows the given crystal cover.

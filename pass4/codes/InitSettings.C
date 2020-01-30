@@ -1,6 +1,7 @@
 #include "setting_2016_pass1.h"
 #include <TF1.h>
 #include <set>
+#include <vector>
 
 void InitVariables(std::string dataSet) {
 
@@ -33,6 +34,18 @@ void InitVariables(std::string dataSet) {
     m_v_PSum[2] = {};
     m_v_PSum[3] = {};
 
+    m_v_Minv_General[0] = {};
+    m_v_Minv_General[1] = {};
+    m_v_Minv_General[2] = {};
+    m_v_Minv_General[3] = {};
+
+    m_v_PSum_General[0] = {};
+    m_v_PSum_General[1] = {};
+    m_v_PSum_General[2] = {};
+    m_v_PSum_General[3] = {};
+
+    // ========== Initialize the vector of CutKeys
+    v_CutsKeys = {};
 
     // ======= We want to study PSum distributions for different Minv ranges, below are defined ranges for these bins
     double MinvBins[nMinvBins + 1] = {0., 0.02, 0.04, 0.06, 0.08, 0.1, 0.12, 0.14, 0.16, 0.18, 0.2, 0.22, 0.24};
@@ -52,6 +65,7 @@ void InitVariables(std::string dataSet) {
         isData = true;
         //inpFileName = "../Data/hps_008099.All_dst_4.2.root";
         inpFileName = "../Data/hps_008099_All_v0_4.2.root";
+        //inpFileName = "../Data/V0_Blinded_7803.root";
 
         if (isEventSelection) {
             outFileName = "EventSelection_Data.root";
@@ -448,6 +462,9 @@ void InitVariables(std::string dataSet) {
     for (int ii = 0; ii < TMath::Power(2, NCutInQuestion); ii++) {
         m_h_Minv[ii] = new TH1D(Form("h_Minv_Final_%d", ii), "", 6000, 0., 0.3);
         m_h_Psum[ii] = new TH1D(Form("h_PSum_Final_%d", ii), "", 600, 0.7, 1.2 * Eb);
+
+        m_h_Minv_General[ii] = new TH1D(Form("h_Minv_General_Final_%d", ii), "", 6000, 0., 0.3);
+        m_h_Psum_General[ii] = new TH1D(Form("h_PSum_General_Final_%d", ii), "", 600, 0.7, 1.2 * Eb);
     }
 }
 
@@ -485,6 +502,9 @@ void ResetV0Flags() {
     cl_em = nullptr;
 
     CutsKey = 0;
+
+    v_CutsKeys.clear();
+    v_CutsKeys.shrink_to_fit();
 }
 
 void CorrectClusterTime(EcalCluster* cl) {
@@ -511,6 +531,30 @@ int GetCutsKey() {
     }
 
     return CutsKey;
+}
+
+void FillVectorOfCutsKeys() {
+
+    // make sure the v_CutsKeys is empty
+    if (v_CutsKeys.size() > 0) {
+        v_CutsKeys.clear();
+        v_CutsKeys.shrink_to_fit();
+    }
+
+    if (hasepL1 && IsD0ep) {
+        v_CutsKeys.push_back(3); // 1 1
+        v_CutsKeys.push_back(2); // 1 0
+        v_CutsKeys.push_back(1); // 0 1
+        v_CutsKeys.push_back(0); // 0 0
+    } else if (!hasepL1 && IsD0ep) {
+        v_CutsKeys.push_back(1); // 0 1
+        v_CutsKeys.push_back(0); // 0 0
+    } else if (hasepL1 && !IsD0ep) {
+        v_CutsKeys.push_back(2); // 1 0
+        v_CutsKeys.push_back(0); // 0 0
+    } else {
+        v_CutsKeys.push_back(0); // 0 0
+    }
 }
 
 std::set<int> GetVerticalCrystalls(EcalCluster* cl) {
@@ -1247,7 +1291,5 @@ void InitCutHistograms() {
 
     file_CutHists2->Write();
     //file_CutHists2->Close();
-
-
 
 }
