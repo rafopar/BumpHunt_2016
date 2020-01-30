@@ -128,6 +128,10 @@ bool isECalTimeStudies = false;
 
 int ApMass = 0;
 
+// =====================
+int frun = 0;
+//
+
 // ==================================
 // =====     The Cut Keyword
 // =====             |-- L1 requirement for e+ (1: required, 0: Not required)

@@ -64,11 +64,14 @@ void InitVariables(std::string dataSet) {
     if (dataSet.compare("Data") == 0) {
         isData = true;
         //inpFileName = "../Data/hps_008099.All_dst_4.2.root";
-        inpFileName = "../Data/hps_008099_All_v0_4.2.root";
+        //
+        //This is a trick, A bad way, but DOn't have time need to make this to run
+        frun = ApMass;
+        inpFileName = Form("../Data/V0_Blinded_%d.root", frun);
         //inpFileName = "../Data/V0_Blinded_7803.root";
 
         if (isEventSelection) {
-            outFileName = "EventSelection_Data.root";
+            outFileName = Form("EventSelection_Data_%d.root", frun);
         } else if (isTrkClusterMatching) {
             outFileName = "TrkClustMatching_Data.root";
         } else if (isECalTimeStudies) {

@@ -1,1 +1,1 @@
-g++ EventSelection.cc -o EventSelection.exe -L/Work/apps/hps-dst/hps-dst/build/lib -lHpsEvent -I/Work/apps/hps-dst/hps-dst/include `root-config --cflags --libs`
+g++ EventSelection.cc -o EventSelection.exe -L/net/home/rafopar/soft/hps-dst/hps-dst/hps-dst/build/lib -lHpsEvent -I/net/home/rafopar/soft/hps-dst/hps-dst/hps-dst/include `root-config --cflags --libs`
