@@ -619,13 +619,13 @@ bool CheckTightCuts(std::string astr) {
         //cout<<IsTightemClTrkdT<<"   "<<IsTightepClTrkdT<<"   "<<IsTightemTrkClMatch<<"   "<<IsTightepTrkClMatch<<"   "<<IsTightemtrkChi2
         //        <<"   "<<IsTighteptrkChi2<<"   "<<IsTightPem<<endl;
     } else if (astr.compare("emClTrkdT") == 0) {
-        CheckStatus = IsTightcldT && IsTightepClTrkdT && IsTightemTrkClMatch && IsTightepTrkClMatch && IsTightemtrkChi2 && IsTighteptrkChi2 && IsTightPem;
+        CheckStatus = IsTightcldT && IsTightepClTrkdT && IsTightemTrkClMatch && IsTightepTrkClMatch && IsTightemtrkChi2 && IsTighteptrkChi2;
     } else if (astr.compare("epClTrkdT") == 0) {
-        CheckStatus = IsTightcldT && IsTightemClTrkdT && IsTightemTrkClMatch && IsTightepTrkClMatch && IsTightemtrkChi2 && IsTighteptrkChi2 && IsTightPem;
+        CheckStatus = IsTightcldT && IsTightemClTrkdT && IsTightemTrkClMatch && IsTightepTrkClMatch && IsTightemtrkChi2 && IsTighteptrkChi2;
     } else if (astr.compare("emClTrkMatch") == 0) {
-        CheckStatus = IsTightcldT && IsTightemClTrkdT && IsTightepClTrkdT && IsTightepTrkClMatch && IsTightemtrkChi2 && IsTighteptrkChi2 && IsTightPem;
+        CheckStatus = IsTightcldT && IsTightemClTrkdT && IsTightepClTrkdT && IsTightepTrkClMatch && IsTightemtrkChi2 && IsTighteptrkChi2;
     } else if (astr.compare("epClTrkMatch") == 0) {
-        CheckStatus = IsTightcldT && IsTightemClTrkdT && IsTightepClTrkdT && IsTightemTrkClMatch && IsTightemtrkChi2 && IsTighteptrkChi2 && IsTightPem;
+        CheckStatus = IsTightcldT && IsTightemClTrkdT && IsTightepClTrkdT && IsTightemTrkClMatch && IsTightemtrkChi2 && IsTighteptrkChi2;
     } else if (astr.compare("emTrkChi2") == 0) {
         CheckStatus = IsTightcldT && IsTightemClTrkdT && IsTightepClTrkdT && IsTightemTrkClMatch && IsTightepTrkClMatch && IsTighteptrkChi2 && IsTightPem;
     } else if (astr.compare("epTrkChi2") == 0) {
@@ -1102,12 +1102,20 @@ void DefineCutGeneral(TH2D *h_inp, TH2D *h_cut, double acutFraction) {
 
         // ===== We would like to have not very poor statistics, otherwise
         // ===== We will skip all bins that that column
-        if (N_All < 45) {
-            continue;
-        }
+        
+        // *** Seems it will be better if we don't skip any momentum value
+//        if (N_All < 45) {
+//            continue;
+//        }
 
 
-        if (N_All < 100) {
+        if (N_All < 10) {
+            cutFraction = 30. * acutFraction;
+        } else if (N_All < 30) {
+            cutFraction = 15. * acutFraction;
+        } else if (N_All < 60) {
+            cutFraction = 10. * acutFraction;
+        } else if (N_All < 100) {
             cutFraction = 5. * acutFraction;
         } else if (N_All < 200) {
             cutFraction = 4. * acutFraction;
