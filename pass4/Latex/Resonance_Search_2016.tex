@@ -39,6 +39,7 @@
 \def\dfrac#1#2{\displaystyle{{#1}\over{#2}}}
 \def \dstl {\displaystyle}
 \def \Mlr {M\o ller }
+\def \Ap {$A^{\prime}$ }
 \definecolor{GREEN}{rgb}{0.,0.8,0}
 \definecolor{RED}{rgb}{1,0,0}
 \definecolor{ORANGE}{rgb}{1,0.5,0}
@@ -53,9 +54,12 @@
 \tableofcontents
 \newpage
 
-\section*{Introduction}
+\section{Introduction}
 
-The Heavy Photon Search (HPS) experiment has capability to search for a so called heavy photon ($A^{\prime}$) with two complementary methods.
+The Heavy Photon Search (HPS) experiment has capability to search for a so called heavy photon \Ap (aka dark photon, U boson) with two complementary methods. 
+
+\section{The final state of interest} \label{sec:FinalState}
+Describe the Rad. Trident, BH, and converted WABs.
 
 
 \section{Data set}
@@ -138,9 +142,106 @@ Then in order to determine the optimal cut on the cluster time difference, we wi
 \end{figure}
 %%%%%%%%%%%%%%%%%%%%%%%%%% F I G U R E %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 The $\mathrm{\frac{\displaystyle S}{\displaystyle \sqrt{S + Bgr}}} $ ratio as a function of cluster time difference cut is shown in Fig.\ref{fig:cl_dtOptimumCut}, where the maximum value at $\mathrm{\Delta t < 1.43\;ns}$ is indicated by a vertical dashed line.
+\clearpage
+\subsection{Anti-FEE cut}
+The purpose of this cut is to eliminate elastically scattered electrons.
+In principle if we don't put any cut, then an elastically scattered electron (aka FEE) can be in accidental  coincidence with a positron in the opposite half, and that electron-positron pair would look like a trident candidate.
+%%%%%%%%%%%%%%%%%%%%%%%%%% F I G U R E %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{figure}[!htb]
+ \centering
+\subfloat{\label{fig:FEECutLeft}\grinp[width=0.45\tw]{Figs/FEE_Cut_AllBut.pdf} } 
+\subfloat{\label{fig:FEECutZoom}\grinp[width=0.45\tw]{Figs/FEE_CutAllButZoom.pdf} }
+\caption{Electron momentum distributions obtained representing Data (Black points), 
+Trident (Red points), and Raditative tridents (blue points). The vertical red line represents the cut.
+The right plot is the same distribution but zoomed that the tail of FEEs can be visible.}
+\label{fig:FEECut}
+\end{figure}
+%%%%%%%%%%%%%%%%%%%%%%%%%% F I G U R E %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+In Fig.\ref{fig:FEECut} shown electron momentum distributions representing Data (Black points), 
+Trident (Red points), and Raditative tridents (blue points). All these distributions passed all event selection cuts except the electron maximum momentum cut. Left and right figures are the same,
+the only difference is that in the right figure the vertical axis spans only small values region,
+where one can see the behavior of the high energy tail of the distribution. As one can see, when the rest of event selection cuts are applied, then there is no hint of the FEE that potentially could be misidentified as a trident electron. The cut is chosen such to keep 99.9\% electrons from the given sample.
+The vertical red line represents the cut for MC samples, while the black line represents the cut value for data.
+\clearpage
+\subsection{\texorpdfstring{$\mathrm{P_{Sum}}$}{Lg} Min cut} 
+As it is explained in the introduction and in \cite{AprimeFixedTargetTheory}, \Ap and Radiative tridents have identical kinematics, while they are quite different from BH. We need to chose a phase space, where radiative tridents (signal) are maximized while Bgr (BH and converted WABs) are minimal.
+Unlike BH, radiative tridents are peaked at higher $\mathrm{P_{Sum}}$, so we should chose a high $\mathrm{P_{Sum}}$ region.
+The Figure of Merit (FOM) is chosen as $\frac{\dstl \mathrm{S}}{\dstl \sqrt{\mathrm{Tot}}}$, where $\mathrm{S}$ is the number of radiative trident events, while ``$\mathrm{Tot}$'' is the total number of observed events. In the data we of course don't have a way to know whether the given event is radtiative trident, BH or converted WAB event, and that is why we have to relay on MC in order to chose the $\mathrm{P_{Sum}}$ minimum momentum cut that maximize the FOM.
+%%%%%%%%%%%%%%%%%%%%%%%%%% F I G U R E %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{figure}[!htb]
+ \centering
+ \subfloat{\label{fig:PSUMCComponents}\grinp[width=0.45\tw]{Figs/PSum3_MC_Components.pdf}}
+\subfloat{\label{fig:PSUMFOM}\grinp[width=0.45\tw]{Figs/PSum3_FOM.pdf}}
+\caption{Left plot represents $\mathrm{P_{Sum}}$ distribution for different MC components, while the right plot represents the FOM as a function of the $\mathrm{P_{Sum}}$ Min cut. The vertical line on the right plot shows the cut value, whre the FOM is maximum.}
+\label{fig:PSUMMINFOM}
+\end{figure}
+%%%%%%%%%%%%%%%%%%%%%%%%%% F I G U R E %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+In the left plot of Fig.\ref{fig:PSUMMINFOM} shown difference MC components: Wab (brown), Rad (red), Tri (blue) and Wab + Tri (orange), when the rest of event selection cuts are applied. The right plot shows the FOM as a function of the $\mathrm{P_{Sum}}$ cut. The $\mathrm{P_{Sum}}$ value that maximizes the FOM is chosen for the $\mathrm{P_{Sum}}$ Min cut.
+\clearpage
+\subsection{WAB Suppression cuts}
+In the section \ref{sec:FinalState} it is described that, the two step process cWAB $eA\rarr eA\gamma(\rarr e^{-}e^{+})$ can mimic the trident final sate. As the photon conversion can occur in the target, it also can occur in any layer of SVT too. While the photon conversion in layers 3, 4, 5 and 6 will not yield to reconstructed trucks (since tracking requires at least 5 3D hits), conversion in the first and second layer (if conversion occur in the axial sensor of layer 2) could cause both or either $e^{-}$ or $e^{+}$ to be reconstructed. One of handles to suppress cWABs, is to require a presence of a hit in L1 from $e^{+}$ tracks. This should suppress cWABs significantly (photon conversions in L2 and in L1 stereo sensor), while should not significantly impact tridents that produced in the target. In this particular analysis, however, we will not require the presence of a hit in L1, and the reason is that at this moment we have significant discrepancy in the Data and MC L1 hit efficiency, which in turn translates to more discrepancy between data and MC rates.
 
-\subsection{Two dimensinal cuts}
-Some of event selections cuts described below are two dimensinal cuts, i.e. the cut value depends on the value of another variable. In most of cases two dimensional cuts are implemented as a function of particle's momentum.
+\subsubsection{\texorpdfstring{$\mathrm{d_{0} }$}{Lg} cut}
+Another strong cut that allows to suppress cWABs is the cut on the distance of closest approach ($\mathrm{d_{0}}$). The reason is that, if the photon conversion occurs not in the target, but in 
+%%%%%%%%%%%%%%%%%%%%%%%%%% F I G U R E %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{figure}[!htb]
+ \centering
+ \grinp[width=0.65\tw]{Figs/cWABDiagram.png}
+ \caption{A sketch diagram representing a photon conversion in the 2nd layer of SVT. It also demonstrates that the reconstructed trajectory will be displaced from the photon production point.}
+\end{figure}
+%%%%%%%%%%%%%%%%%%%%%%%%%% F I G U R E %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+any layer of SVT, then the reconstructed trajectory will not pass through the beam-target interaction point, but rather will be systematically displaced from the interaction point in the target. This signature is one of important differences between the $eA\rarr A e^{-}e^{+}e^{-}$ process and the two step process 1st: $eA\rarr A e \gamma$ then 2nd $\gamma \rarr e^{-}e^{+}$. The cut value is determined using both, the data and MC simulations. The objective is to chose a cut value, that will maximize the reach of the experiment. Similarly to several of other cuts, the FOM is chosen as
+\begin{equation}
+ \mathrm{FOM = \frac{S}{Tot}}
+ \label{eq:FOM_D0}
+\end{equation}
+where ``$\mathrm{S}$'' is the number of Radiative events, and ``Tot'' is the total number of events, which is the sum of Rad. tridents, BH (including interference term between them) and cWABs. In data we don't know which of the abovementioned processes is responsible for the given event. Instead we will use the MC simulations for all abovementioned components.
+%%%%%%%%%%%%%%%%%%%%%%%%%% F I G U R E %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{figure}[!htb]
+ \centering
+ \subfloat[]{\label{fig:d0MCComponents}\grinp[width=0.45\tw]{Figs/d0_MC_Components.pdf}}
+ \subfloat[]{\label{fig:d0FOM}\grinp[width=0.45\tw]{Figs/d0_FOM_MC.pdf}}
+ \caption{Left: Observed cross differential cross section as a function of
+ $\mathrm{d_{0}}$ for different MC components (described in the text and in the figure). 
+ Right FOM as a function of $\mathrm{d_{0}}$ cut value.}
+ \label{fig:d0MC_ANDFOM}
+\end{figure}
+%%%%%%%%%%%%%%%%%%%%%%%%%% F I G U R E %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+In Fig.\ref{fig:d0MCComponents} shown differential cross section $\mathrm{\dfrac{\dstl d\sigma}{\dstl dd_{0}}}$ for all MC components as a function of $\mathrm{d_{0}}$. As one can note from the Fig.\ref{fig:d0MCComponents}, $\mathrm{d_{0}}$ is peaked at 0 for Rad and Tridents, but for cWABs the peak is shifted, and has a quite long tail on the positive $\mathrm{d_{0}}$ side. The Fig.\ref{fig:d0FOM} shows the FOM defined by eq.\ref{eq:FOM_D0} as a function of $\mathrm{d_{0}}$ cut value.
+%%%%%%%%%%%%%%%%%%%%%%%%%% F I G U R E %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{figure}[!htb]
+ \centering
+ \subfloat[]{\label{fig:d0FitMC}\grinp[width=0.45\tw]{Figs/d0_MC_Fit.pdf}}
+ \subfloat[]{\label{fig:d0FitData}\grinp[width=0.45\tw]{Figs/d0_Data_Fit.pdf}}
+ \caption{differential cross section as a function of $\mathrm{d_{0}}$. Left figure represents MC data (Tritrig + cWAB), while right figure represents the data.}
+ \label{fig:d0Fits}
+\end{figure}
+%%%%%%%%%%%%%%%%%%%%%%%%%% F I G U R E %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+ This value obtained by maximizing the FOM using only the MC will not represent the FOM for the data sample, because the $\mathrm{d_{0}}$ resolution in Data and MC are significantly different. As one
+ can see from the Fig.\ref{fig:d0Fits}, the $\mathrm{d_{0}}$ resolution in data is about 1.6 times wider than the one for MC. Instead for the data sample, the $\mathrm{d_{0}}$ cut is chosen in a way,
+ that the distance between the cut value and the main peak is the same in the units of the $\mathrm{d_{0}}$ resolution ($\mathrm{\sigma_{d_{0}}}$). So in data the $\mathrm{d_{0}}$ cut value is
+ defined as:
+ \begin{equation}
+  \mathrm{\displaystyle {d_{0}}^{cut}(Data) = \mu_{d_{0}}(Data) + \sigma_{d_{0}}(Data)\frac{\displaystyle {d_{0}}^{cut}(MC) - \mu_{d_{0}}(MC) }{\displaystyle \sigma_{d_{0}}(MC)} }
+ \end{equation}
+Mean, $\sigma$ and cut value on $d_{0}$ for data and MC are shown in the table.\ref{tb:d0Values}.
+ 
+ \begin{table}[!htb]
+ \centering
+  \begin{tabular}{|l|c|c|}
+   \hline
+                                    & MC            & Data              \\ \hline
+ mean of $\mathrm{d_{0}}$ [mm]      & -0.021        & 0.141             \\ \hline
+ $\sigma$ of $\mathrm{d_{0}}$ [mm]  & 0.296         & 0.484             \\ \hline
+ $\mathrm{d_{0}}$ cut value [mm]    & 0.51          & 1.011             \\ \hline
+  \end{tabular}
+  \caption{Mean, $\sigma$ and cut value on $\mathrm{d_{0}}$ for data and MC.}
+\label{tb:d0Values}
+ \end{table}
+
+ 
+\subsection{Two dimensional cuts}
+Some of event selections cuts described below are two dimensional cuts, i.e. the cut value depends on the value of another variable. In most of cases two dimensional cuts are implemented as a function of particle's momentum.
 
 In general, to study the distribution of a given variable for a ''signal like`` particle, the rest of event selection cuts are applied, to make as clean as possible signal.  
 The only exception is the two cluster time difference cut, which is described in section \ref{sec:cldTcuts} ).
@@ -154,7 +255,7 @@ accidental background is minimal (negligible), and the resulting distribution wi
  \label{fig:CutLimitIllustration}
 \end{figure}
 %%%%%%%%%%%%%%%%%%%%%%%%%% F I G U R E %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-In such cases, the conventional $\pm 3\sigma$ cuts will not be will not keep $99.7\%$ but rather might cut more events. As an example in Fig.\ref{fig:CutLimitIllustration} shown a toy distribution which is not a pure Gaussian, but rather has a tail on the left side. The Gaussian fit is shown on top if the histogram and $\pm 3\sigma$ limits are shown by vertical red lines. One can see that $-3\sigma$ limit will cut several $\%$ of events rather than $0.3\%$. Instead it was decided to choose left and right cuts limits such that will keep $99\%$ of the signal and will throw $0.5\%$ of signal events from each side. In this particular case $99\%$ cut limits are shown by blue vertical lines. \newline \indent
+In such cases, the conventional $\pm 3\sigma$ cuts will not keep $99.7\%$ but rather  might cut more events. As an example in Fig.\ref{fig:CutLimitIllustration} shown a toy distribution which is not a pure Gaussian, but rather has a tail on the left side. The Gaussian fit is shown on top if the histogram and $\pm 3\sigma$ limits are shown by vertical red lines. One can see that $-3\sigma$ limit will cut several $\%$ of events rather than $0.3\%$. Instead it was decided to choose left and right cuts limits such that will keep $99\%$ of the signal and will throw $0.5\%$ of signal events from each side. In this particular case $99\%$ cut limits are shown by blue vertical lines. \newline \indent
 There are some special cases in this algorithm, which are explained below. 
 \vskip 1cm
 1. The number of events in the one dimensional projected histogram is too low. In this case, when then number of events is below 45, then the entire momentum bin is considered as out of acceptance. Note: the data sample that we use, has such statistics, that two dimensional original histograms that we use have about 200K or more events, and binning is chosen such, that the total number of events that are in the ''$N < 45$`` category one dimensional histograms are significantly less than $1\%$ of the original two dimensional histogram.
@@ -262,17 +363,11 @@ In Fig.\ref{fig:Mlr_dT_and_PSumPDif} shown Time difference between top and botto
  \centering
  \subfloat[]{\label{fig:chi2VsMassMlr}\grinp[width=0.32\tw]{Figs/Chi2NDF_Mass_Moeller_Data.pdf}}
  \subfloat[]{\label{fig:MlrSigmChi2Cut}\grinp[width=0.32\tw]{Figs/MassSigmaChi2Cut_Data.pdf}}
-  \subfloat[]{\label{fig:chi2VsMassMlr}\grinp[width=0.32\tw]{Figs/MoellerFigOfMerit_Data.pdf}}
+  \subfloat[]{\label{fig:MlrChi2FOM}\grinp[width=0.32\tw]{Figs/MoellerFigOfMerit_Data.pdf}}
 
 \end{figure}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%% F I G U R E %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
-\subsection{WAB Suppression cuts}
-Describe L1 and $\mathrm{d_{0}}$ cuts. \\
-Mention why L1 is important, addition of suppressing WABs, it also significantly
-improves the mass resolution.
 
 
 \section{Parametrization of Mass resolution.}
