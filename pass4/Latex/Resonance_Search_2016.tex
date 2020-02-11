@@ -239,7 +239,7 @@ Mean, $\sigma$ and cut value on $d_{0}$ for data and MC are shown in the table.\
 \label{tb:d0Values}
  \end{table}
 
- 
+\clearpage
 \subsection{Two dimensional cuts}
 Some of event selections cuts described below are two dimensional cuts, i.e. the cut value depends on the value of another variable. In most of cases two dimensional cuts are implemented as a function of particle's momentum.
 
@@ -282,7 +282,7 @@ in table \ref{tb:2DCutLimits}.
 
 \subsection{Track-Cluster Matching}
 The offline reconstruction code forms particles by matching tracks and clusters to each other, by utilizing spatial coordinate and time differences between tracks and clusters.
-In the offline reconstruction the matching is quite loose (''Better to keep junk, rather than throwing a good particle``). In this section spatial and time matching cuts are described. Both, time and position resolution of $e^{-}$ and $e^{+}$ clusters depend on particle momentum. The precision of the track projected coordinate at the ECal face does depend on the track momentum too. Because of these reasons we studied track-cluster matching as a function of momentum.
+In the offline reconstruction the matching is quite loose (``Better to keep junk, rather than throwing a good particle''). In this section spatial and time matching cuts are described. Both, time and position resolution of $e^{-}$ and $e^{+}$ clusters depend on particle momentum. The precision of the track projected coordinate at the ECal face does depend on the track momentum too. Because of these reasons we studied track-cluster matching as a function of momentum.
 
 \subsubsection{time matching}
 In addition to the momentum dependence we noticed also slight difference between top and bottom sectors, therefore two separate cuts are developed for each detector half.
@@ -297,6 +297,16 @@ In addition to the momentum dependence we noticed also slight difference between
 %%%%%%%%%%%%%%%%%%%%%%%%%% F I G U R E %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 In Fig.\ref{fig:ClTrkTimeMatch} shown Cluster-Track time difference as a function of particle momentum. Left plot represents particles in the bottom half, and the right plot represents particles in the top half of the detector. 
 {\color{Red} The Cl-Trk time difference plot should be replaced, i.e. The original 2D distribution here doesn't correspond to the ''n-1`` cut. }
+
+\subsection{Coordinate matching}
+Coordinate matching cuts are a little bit more complicated than time matching cuts.
+Initial studies showed that in addition to top/bottom difference, there is also significant
+difference depending on the track's charge, and whether the track has a hit in L6 or not. 
+We will use only the horizontal  ``X'' coordinate matching, not requiring anything on ``Y''.
+We haven't required ``Y'' coordinate matching, because there is significant edge effects,
+which requires significant amount of efforts to properly take into account, while the cut itself,
+will not improve the track-cluster matching noticeably.
+
 
 
 \subsection{Track quality cuts}
