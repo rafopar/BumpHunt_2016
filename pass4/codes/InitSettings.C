@@ -51,6 +51,7 @@ void InitVariables(std::string dataSet) {
     double MinvBins[nMinvBins + 1] = {0., 0.02, 0.04, 0.06, 0.08, 0.1, 0.12, 0.14, 0.16, 0.18, 0.2, 0.22, 0.24};
     h_MinvBins1 = new TH1D("h_MinvBins1", "", nMinvBins, MinvBins);
 
+
     // ========================================================================
     // ========= Let's figure it out which data source will be analyzed Rad, Tri, Date etc
     // ========================================================================
@@ -466,6 +467,11 @@ void InitVariables(std::string dataSet) {
         m_h_Minv_General[ii] = new TH1D(Form("h_Minv_General_Final_%d", ii), "", 6000, 0., 0.3);
         m_h_Psum_General[ii] = new TH1D(Form("h_PSum_General_Final_%d", ii), "", 600, 0.7, 1.2 * Eb);
     }
+
+    if (isEventSelection) {
+        InitGeneralHistograms();
+
+    }
 }
 
 void ResetEventFlags() {
@@ -570,19 +576,22 @@ bool CheckAllOtherCuts(std::string astr) {
 
     // ======= In the analysis workshop it was decided to drop the d0 cut
     // ======= So here we will manually set the "IsD0ep" as true;
-    IsD0ep = true;
+    // ======= CORRECTION!!  Now it is not quite clear whether we should not cut on d0
+    // ======= So we might want to put this cut again
+
+    //IsD0ep = true;
     //===============================
 
     if (astr.compare("cldT") == 0) {
         Stat = IsemClTrkdT && IsepClTrkdT && IsemTrkClMatch && IsepTrkClMatch && IsPem && IsD0ep && IsPsumMin && IsPsumMax;
     } else if (astr.compare("emClTrkdT") == 0) {
-        Stat = IscldT && IsepClTrkdT && IsemTrkClMatch && IsepTrkClMatch && IsPem && IsD0ep && IsPsumMin && IsPsumMax;
+        Stat = IscldT && IsepClTrkdT && IsemTrkClMatch && IsepTrkClMatch && IsD0ep && IsPsumMin && IsPsumMax;
     } else if (astr.compare("epClTrkdT") == 0) {
-        Stat = IscldT && IsemClTrkdT && IsemTrkClMatch && IsepTrkClMatch && IsPem && IsD0ep && IsPsumMin && IsPsumMax;
+        Stat = IscldT && IsemClTrkdT && IsemTrkClMatch && IsepTrkClMatch && IsD0ep && IsPsumMin && IsPsumMax;
     } else if (astr.compare("emClTrkMatch") == 0) {
-        Stat = IscldT && IsemClTrkdT && IsepClTrkdT && IsepTrkClMatch && IsPem && IsD0ep && IsPsumMin && IsPsumMax;
+        Stat = IscldT && IsemClTrkdT && IsepClTrkdT && IsepTrkClMatch && IsD0ep && IsPsumMin && IsPsumMax;
     } else if (astr.compare("epClTrkMatch") == 0) {
-        Stat = IscldT && IsemClTrkdT && IsepClTrkdT && IsemTrkClMatch && IsPem && IsD0ep && IsPsumMin && IsPsumMax;
+        Stat = IscldT && IsemClTrkdT && IsepClTrkdT && IsemTrkClMatch && IsD0ep && IsPsumMin && IsPsumMax;
     } else if (astr.compare("Pem") == 0) {
         Stat = IscldT && IsemClTrkdT && IsepClTrkdT && IsemTrkClMatch && IsepTrkClMatch && IsD0ep && IsPsumMin && IsPsumMax;
     } else if (astr.compare("d0ep") == 0) {
@@ -1102,11 +1111,11 @@ void DefineCutGeneral(TH2D *h_inp, TH2D *h_cut, double acutFraction) {
 
         // ===== We would like to have not very poor statistics, otherwise
         // ===== We will skip all bins that that column
-        
+
         // *** Seems it will be better if we don't skip any momentum value
-//        if (N_All < 45) {
-//            continue;
-//        }
+        //        if (N_All < 45) {
+        //            continue;
+        //        }
 
 
         if (N_All < 10) {
@@ -1143,11 +1152,233 @@ void DefineCutGeneral(TH2D *h_inp, TH2D *h_cut, double acutFraction) {
     }
 }
 
+void FilldXP_ep(HpsParticle *V0, HpsParticle *ep, double P, double dX) {
+
+    bool top = (((GblTrack*) (ep->getTracks()->At(0)))->getMomentum().at(1) > 0);
+
+    bool hasL6 = HasL6Hit((GblTrack*) ep->getTracks()->At(0));
+
+    bool isAllButCuts = CheckAllOtherCuts("epClTrkMatch");
+
+    h_dX_ep_All->Fill(P, dX);
+
+    if (top) {
+
+        if (hasL6) {
+            h_dX_epTopWithL6_All->Fill(P, dX);
+        } else {
+            h_dX_epTopNoL6_All->Fill(P, dX);
+        }
+    } else {
+        if (hasL6) {
+            h_dX_epBotWithL6_All->Fill(P, dX);
+        } else {
+            h_dX_epBotNoL6_All->Fill(P, dX);
+        }
+    }
+
+    if (isAllButCuts) {
+        h_dX_ep_AllBut->Fill(P, dX);
+        h_Minv_epClTrkMatch_Final1->Fill(V0->getMass());
+
+        if (top) {
+
+            if (hasL6) {
+                h_dX_epTopWithL6_AllBut->Fill(P, dX);
+            } else {
+                h_dX_epTopNoL6_AllBut->Fill(P, dX);
+            }
+        } else {
+            if (hasL6) {
+                h_dX_epBotWithL6_AllBut->Fill(P, dX);
+            } else {
+                h_dX_epBotNoL6_AllBut->Fill(P, dX);
+            }
+        }
+
+        if (IsepTrkClMatch) {
+            h_dX_ep_CutEffect->Fill(P, dX);
+
+            if (top) {
+
+                if (hasL6) {
+                    h_dX_epTopWithL6_CutEffect->Fill(P, dX);
+                } else {
+                    h_dX_epTopNoL6_CutEffect->Fill(P, dX);
+                }
+            } else {
+                if (hasL6) {
+                    h_dX_epBotWithL6_CutEffect->Fill(P, dX);
+                } else {
+                    h_dX_epBotNoL6_CutEffect->Fill(P, dX);
+                }
+            }
+        }
+
+    }
+
+}
+
+void FilldXP_em(HpsParticle *V0, HpsParticle *em, double P, double dX) {
+
+    bool top = (((GblTrack*) (em->getTracks()->At(0)))->getMomentum().at(1) > 0);
+
+    bool hasL6 = HasL6Hit((GblTrack*) em->getTracks()->At(0));
+
+    bool isAllButCuts = CheckAllOtherCuts("emClTrkMatch");
+
+    h_dX_em_All->Fill(P, dX);
+
+    if (top) {
+
+        if (hasL6) {
+            h_dX_emTopWithL6_All->Fill(P, dX);
+        } else {
+            h_dX_emTopNoL6_All->Fill(P, dX);
+        }
+    } else {
+        if (hasL6) {
+            h_dX_emBotWithL6_All->Fill(P, dX);
+        } else {
+            h_dX_emBotNoL6_All->Fill(P, dX);
+        }
+    }
+
+    if (isAllButCuts) {
+        h_dX_em_AllBut->Fill(P, dX);
+        h_Minv_emClTrkMatch_Final1->Fill(V0->getMass());
+
+        if (top) {
+
+            if (hasL6) {
+                h_dX_emTopWithL6_AllBut->Fill(P, dX);
+            } else {
+                h_dX_emTopNoL6_AllBut->Fill(P, dX);
+            }
+        } else {
+            if (hasL6) {
+                h_dX_emBotWithL6_AllBut->Fill(P, dX);
+            } else {
+                h_dX_emBotNoL6_AllBut->Fill(P, dX);
+            }
+        }
+
+        if (IsemTrkClMatch) {
+            h_dX_em_CutEffect->Fill(P, dX);
+
+            if (top) {
+
+                if (hasL6) {
+                    h_dX_emTopWithL6_CutEffect->Fill(P, dX);
+                } else {
+                    h_dX_emTopNoL6_CutEffect->Fill(P, dX);
+                }
+            } else {
+                if (hasL6) {
+                    h_dX_emBotWithL6_CutEffect->Fill(P, dX);
+                } else {
+                    h_dX_emBotNoL6_CutEffect->Fill(P, dX);
+                }
+            }
+        }
+
+    }
+
+}
+
+void FilldtP_ep(HpsParticle *V0, HpsParticle *ep, double P, double dt) {
+
+    bool top = (((GblTrack*) (ep->getTracks()->At(0)))->getMomentum().at(1) > 0);
+
+    bool isAllButCuts = CheckAllOtherCuts("epClTrkdT");
+
+    h_ep_cl_trk_dT_All->Fill(P, dt);
+
+    if (top) {
+        h_ep_cl_trk_dT_Top_All->Fill(P, dt);
+        h_cl_trk_dT_Top_All->Fill(P, dt);
+    } else {
+        h_ep_cl_trk_dT_Bot_All->Fill(P, dt);
+        h_cl_trk_dT_Bot_All->Fill(P, dt);
+    }
+
+    if (isAllButCuts) {
+        h_Minv_epClTrkdT_Final1->Fill(V0->getMass());
+        h_ep_cl_trk_dT_AllBut->Fill(P, dt);
+
+        if (top) {
+            h_ep_cl_trk_dT_Top_AllBut->Fill(P, dt);
+            h_cl_trk_dT_Top_AllBut->Fill(P, dt);
+        } else {
+            h_ep_cl_trk_dT_Bot_AllBut->Fill(P, dt);
+            h_cl_trk_dT_Bot_AllBut->Fill(P, dt);
+        }
+
+        if (IsepClTrkdT) {
+
+            h_ep_cl_trk_dT_CutEffect->Fill(P, dt);
+
+            if (top) {
+                h_ep_cl_trk_dT_Top_CutEffect->Fill(P, dt);
+                h_cl_trk_dT_Top_CutEffect->Fill(P, dt);
+            } else {
+                h_ep_cl_trk_dT_Bot_CutEffect->Fill(P, dt);
+                h_cl_trk_dT_Bot_CutEffect->Fill(P, dt);
+            }
+        }
+
+    }
+}
+
+void FilldtP_em(HpsParticle *V0, HpsParticle *em, double P, double dt) {
+
+    bool top = (((GblTrack*) (em->getTracks()->At(0)))->getMomentum().at(1) > 0);
+
+    bool isAllButCuts = CheckAllOtherCuts("emClTrkdT");
+
+    h_em_cl_trk_dT_All->Fill(P, dt);
+
+    if (top) {
+        h_em_cl_trk_dT_Top_All->Fill(P, dt);
+        h_cl_trk_dT_Top_All->Fill(P, dt);
+    } else {
+        h_em_cl_trk_dT_Bot_All->Fill(P, dt);
+        h_cl_trk_dT_Bot_All->Fill(P, dt);
+    }
+
+    if (isAllButCuts) {
+        h_Minv_emClTrkdT_Final1->Fill(V0->getMass());
+        h_em_cl_trk_dT_AllBut->Fill(P, dt);
+
+        if (top) {
+            h_em_cl_trk_dT_Top_AllBut->Fill(P, dt);
+            h_cl_trk_dT_Top_AllBut->Fill(P, dt);
+        } else {
+            h_em_cl_trk_dT_Bot_AllBut->Fill(P, dt);
+            h_cl_trk_dT_Bot_AllBut->Fill(P, dt);
+        }
+
+        if (IsemClTrkdT) {
+
+            h_em_cl_trk_dT_CutEffect->Fill(P, dt);
+
+            if (top) {
+                h_em_cl_trk_dT_Top_CutEffect->Fill(P, dt);
+                h_cl_trk_dT_Top_CutEffect->Fill(P, dt);
+            } else {
+                h_em_cl_trk_dT_Bot_CutEffect->Fill(P, dt);
+                h_cl_trk_dT_Bot_CutEffect->Fill(P, dt);
+            }
+        }
+
+    }
+}
+
 void InitCutHistograms() {
 
     TH2D *h_dX_Top_PosWithL6 = (TH2D*) file_CutHists->Get("h_dX_Top_PosWithL6");
     h_dX_Top_PosWithL6_Cut = (TH2D*) h_dX_Top_PosWithL6->Clone("h_dX_Top_PosWithL6_Cut");
-    for (int ix = 0; ix < h_dX_Top_PosWithL6->GetNbinsX(); ix++) {
+    for (int ix = 0; ix < h_dX_Top_PosWithL6->GetNbinsY(); ix++) {
         for (int iy = 0; iy < h_dX_Top_PosWithL6->GetNbinsX(); iy++) {
             double x = h_dX_Top_PosWithL6_Cut->GetXaxis()->GetBinCenter(ix + 1);
             double y = h_dX_Top_PosWithL6_Cut->GetYaxis()->GetBinCenter(iy + 1);
@@ -1165,7 +1396,7 @@ void InitCutHistograms() {
     h_dX_Top_PosNoL6_Cut = (TH2D*) h_dX_Top_PosNoL6->Clone("h_dX_Top_PosNoL6_Cut");
 
     for (int ix = 0; ix < h_dX_Top_PosNoL6->GetNbinsX(); ix++) {
-        for (int iy = 0; iy < h_dX_Top_PosNoL6->GetNbinsX(); iy++) {
+        for (int iy = 0; iy < h_dX_Top_PosNoL6->GetNbinsY(); iy++) {
             double x = h_dX_Top_PosNoL6_Cut->GetXaxis()->GetBinCenter(ix + 1);
             double y = h_dX_Top_PosNoL6_Cut->GetYaxis()->GetBinCenter(iy + 1);
             if (y < f_TrashLow_dX_Top_PosNoL6->Eval(x) || y > f_TrashUp_dX_Top_PosNoL6->Eval(x)) {
@@ -1182,7 +1413,7 @@ void InitCutHistograms() {
 
     TH2D *h_dX_Bot_PosWithL6 = (TH2D*) file_CutHists->Get("h_dX_Bot_PosWithL6");
     h_dX_Bot_PosWithL6_Cut = (TH2D*) h_dX_Bot_PosWithL6->Clone("h_dX_Bot_PosWithL6_Cut");
-    for (int ix = 0; ix < h_dX_Bot_PosWithL6->GetNbinsX(); ix++) {
+    for (int ix = 0; ix < h_dX_Bot_PosWithL6->GetNbinsY(); ix++) {
         for (int iy = 0; iy < h_dX_Bot_PosWithL6->GetNbinsX(); iy++) {
             double x = h_dX_Bot_PosWithL6_Cut->GetXaxis()->GetBinCenter(ix + 1);
             double y = h_dX_Bot_PosWithL6_Cut->GetYaxis()->GetBinCenter(iy + 1);
@@ -1200,7 +1431,7 @@ void InitCutHistograms() {
     h_dX_Bot_PosNoL6_Cut = (TH2D*) h_dX_Bot_PosNoL6->Clone("h_dX_Bot_PosNoL6_Cut");
 
     for (int ix = 0; ix < h_dX_Bot_PosNoL6->GetNbinsX(); ix++) {
-        for (int iy = 0; iy < h_dX_Bot_PosNoL6->GetNbinsX(); iy++) {
+        for (int iy = 0; iy < h_dX_Bot_PosNoL6->GetNbinsY(); iy++) {
             double x = h_dX_Bot_PosNoL6_Cut->GetXaxis()->GetBinCenter(ix + 1);
             double y = h_dX_Bot_PosNoL6_Cut->GetYaxis()->GetBinCenter(iy + 1);
             if (y < f_TrashLow_dX_Bot_PosNoL6->Eval(x) || y > f_TrashUp_dX_Bot_PosNoL6->Eval(x)) {
@@ -1219,7 +1450,7 @@ void InitCutHistograms() {
     TH2D *h_dX_Top_NegWithL6 = (TH2D*) file_CutHists->Get("h_dX_Top_NegWithL6");
     h_dX_Top_NegWithL6_Cut = (TH2D*) h_dX_Top_NegWithL6->Clone("h_dX_Top_NegWithL6_Cut");
     for (int ix = 0; ix < h_dX_Top_NegWithL6->GetNbinsX(); ix++) {
-        for (int iy = 0; iy < h_dX_Top_NegWithL6->GetNbinsX(); iy++) {
+        for (int iy = 0; iy < h_dX_Top_NegWithL6->GetNbinsY(); iy++) {
             double x = h_dX_Top_NegWithL6_Cut->GetXaxis()->GetBinCenter(ix + 1);
             double y = h_dX_Top_NegWithL6_Cut->GetYaxis()->GetBinCenter(iy + 1);
             if (y > f_TrashUp_dX_Top_NegWithL6->Eval(x) || y < f_TrashLow_dX_Top_NegWithL6->Eval(x)) {
@@ -1236,7 +1467,7 @@ void InitCutHistograms() {
     h_dX_Top_NegNoL6_Cut = (TH2D*) h_dX_Top_NegNoL6->Clone("h_dX_Top_NegNoL6_Cut");
 
     for (int ix = 0; ix < h_dX_Top_NegNoL6->GetNbinsX(); ix++) {
-        for (int iy = 0; iy < h_dX_Top_NegNoL6->GetNbinsX(); iy++) {
+        for (int iy = 0; iy < h_dX_Top_NegNoL6->GetNbinsY(); iy++) {
             double x = h_dX_Top_NegNoL6_Cut->GetXaxis()->GetBinCenter(ix + 1);
             double y = h_dX_Top_NegNoL6_Cut->GetYaxis()->GetBinCenter(iy + 1);
             if (y > f_TrashUp_dX_Top_NegNoL6->Eval(x) || y < f_TrashLow_dX_Top_NegNoL6->Eval(x)) {
@@ -1253,7 +1484,7 @@ void InitCutHistograms() {
 
     TH2D *h_dX_Bot_NegWithL6 = (TH2D*) file_CutHists->Get("h_dX_Bot_NegWithL6");
     h_dX_Bot_NegWithL6_Cut = (TH2D*) h_dX_Bot_NegWithL6->Clone("h_dX_Bot_NegWithL6_Cut");
-    for (int ix = 0; ix < h_dX_Bot_NegWithL6->GetNbinsX(); ix++) {
+    for (int ix = 0; ix < h_dX_Bot_NegWithL6->GetNbinsY(); ix++) {
         for (int iy = 0; iy < h_dX_Bot_NegWithL6->GetNbinsX(); iy++) {
             double x = h_dX_Bot_NegWithL6_Cut->GetXaxis()->GetBinCenter(ix + 1);
             double y = h_dX_Bot_NegWithL6_Cut->GetYaxis()->GetBinCenter(iy + 1);
@@ -1271,7 +1502,7 @@ void InitCutHistograms() {
     h_dX_Bot_NegNoL6_Cut = (TH2D*) h_dX_Bot_NegNoL6->Clone("h_dX_Bot_NegNoL6_Cut");
 
     for (int ix = 0; ix < h_dX_Bot_NegNoL6->GetNbinsX(); ix++) {
-        for (int iy = 0; iy < h_dX_Bot_NegNoL6->GetNbinsX(); iy++) {
+        for (int iy = 0; iy < h_dX_Bot_NegNoL6->GetNbinsY(); iy++) {
             double x = h_dX_Bot_NegNoL6_Cut->GetXaxis()->GetBinCenter(ix + 1);
             double y = h_dX_Bot_NegNoL6_Cut->GetYaxis()->GetBinCenter(iy + 1);
             if (y > f_TrashUp_dX_Bot_NegNoL6->Eval(x) || y < f_TrashLow_dX_Bot_NegNoL6->Eval(x)) {
@@ -1284,13 +1515,17 @@ void InitCutHistograms() {
     file_CutHists2->Add(h_dX_Bot_NegNoL6);
     file_CutHists2->Add(h_dX_Bot_NegNoL6_Cut);
 
-    TH2D *h_trkCl_dt_P_Top = (TH2D*) file_trkClustMatch->Get("h_trkCl_dt_P_Top");
+    //TH2D *h_trkCl_dt_P_Top = (TH2D*) file_trkClustMatch->Get("h_trkCl_dt_P_Top");
+    TH2D *h_trkCl_dt_P_Top = (TH2D*) file_CutHists->Get("h_cl_trk_dT_Top_AllBut");
+    h_trkCl_dt_P_Top->SetName("h_trkCl_dt_P_Top");
     h_trkCl_dt_P_Top_Cut = (TH2D*) h_trkCl_dt_P_Top->Clone("h_trkCl_dt_P_Top_Cut");
     DefineCutGeneral(h_trkCl_dt_P_Top, h_trkCl_dt_P_Top_Cut, 0.01);
     file_CutHists2->Add(h_trkCl_dt_P_Top);
     file_CutHists2->Add(h_trkCl_dt_P_Top_Cut);
 
-    TH2D *h_trkCl_dt_P_Bot = (TH2D*) file_trkClustMatch->Get("h_trkCl_dt_P_Bot");
+//    TH2D *h_trkCl_dt_P_Bot = (TH2D*) file_trkClustMatch->Get("h_trkCl_dt_P_Bot");
+    TH2D *h_trkCl_dt_P_Bot = (TH2D*) file_CutHists->Get("h_cl_trk_dT_Bot_AllBut");
+    h_trkCl_dt_P_Bot->SetName("h_trkCl_dt_P_Bot");
     h_trkCl_dt_P_Bot_Cut = (TH2D*) h_trkCl_dt_P_Bot->Clone("h_trkCl_dt_P_Bot_Cut");
     DefineCutGeneral(h_trkCl_dt_P_Bot, h_trkCl_dt_P_Bot_Cut, 0.01);
     file_CutHists2->Add(h_trkCl_dt_P_Bot);
@@ -1300,4 +1535,97 @@ void InitCutHistograms() {
     file_CutHists2->Write();
     //file_CutHists2->Close();
 
+}
+
+void InitGeneralHistograms() {
+
+    h_clDt_All = new TH1D("h_clDt_All", "", 70, -3., 3.);
+    h_clDt_AllBut = new TH1D("h_clDt_AllBut", "", 70, -3., 3.);
+    h_clDt_CutEffect = new TH1D("h_clDt_CutEffect", "", 70, -3., 3.);
+
+    h_cl_trk_dT_All = new TH2D("h_cl_trk_dT_All", "", 200, 0., 2.5, 200, -8., 8.);
+    h_cl_trk_dT_AllBut = new TH2D("h_cl_trk_dT_AllBut", "", 200, 0., 2.5, 200, -8., 8. );
+    h_cl_trk_dT_CutEffect = new TH2D("h_cl_trk_dT_CutEffect", "", 200, 0., 2.5, 200, -8., 8. );
+
+    h_cl_trk_dT_Top_All = new TH2D("h_cl_trk_dT_Top_All", "", 40, 0., 2.5, 200, -8., 8. );
+    h_cl_trk_dT_Top_AllBut = new TH2D("h_cl_trk_dT_Top_AllBut", "", 40, 0., 2.5, 200, -8., 8. );
+    h_cl_trk_dT_Top_CutEffect = new TH2D("h_cl_trk_dT_Top_CutEffect", "", 40, 0., 2.5, 200, -8., 8. );
+
+    h_cl_trk_dT_Bot_All = new TH2D("h_cl_trk_dT_Bot_All", "", 40, 0., 2.5, 200, -8., 8. );
+    h_cl_trk_dT_Bot_AllBut = new TH2D("h_cl_trk_dT_Bot_AllBut", "", 40, 0., 2.5, 200, -8., 8. );
+    h_cl_trk_dT_Bot_CutEffect = new TH2D("h_cl_trk_dT_Bot_CutEffect", "", 40, 0., 2.5, 200, -8., 8. );
+
+
+    h_em_cl_trk_dT_All = new TH2D("h_em_cl_trk_dT_All", "", 200, 0., 2.5, 200, -8., 8. );
+    h_em_cl_trk_dT_AllBut = new TH2D("h_em_cl_trk_dT_AllBut", "", 200, 0., 2.5, 200, -8., 8. );
+    h_em_cl_trk_dT_CutEffect = new TH2D("h_em_cl_trk_dT_CutEffect", "", 200, 0., 2.5, 200, -8., 8. );
+
+    h_em_cl_trk_dT_Top_All = new TH2D("h_em_cl_trk_dT_Top_All", "", 200, 0., 2.5, 200, -8., 8. );
+    h_em_cl_trk_dT_Top_AllBut = new TH2D("h_em_cl_trk_dT_Top_AllBut", "", 200, 0., 2.5, 200, -8., 8. );
+    h_em_cl_trk_dT_Top_CutEffect = new TH2D("h_em_cl_trk_dT_Top_CutEffect", "", 200, 0., 2.5, 200, -8., 8. );
+
+    h_em_cl_trk_dT_Bot_All = new TH2D("h_em_cl_trk_dT_Bot_All", "", 200, 0., 2.5, 200, -8., 8. );
+    h_em_cl_trk_dT_Bot_AllBut = new TH2D("h_em_cl_trk_dT_Bot_AllBut", "", 200, 0., 2.5, 200, -8., 8. );
+    h_em_cl_trk_dT_Bot_CutEffect = new TH2D("h_em_cl_trk_dT_Bot_CutEffect", "", 200, 0., 2.5, 200, -8., 8. );
+
+
+    h_ep_cl_trk_dT_All = new TH2D("h_ep_cl_trk_dT_All", "", 200, 0., 2.5, 200, -8., 8. );
+    h_ep_cl_trk_dT_AllBut = new TH2D("h_ep_cl_trk_dT_AllBut", "", 200, 0., 2.5, 200, -8., 8. );
+    h_ep_cl_trk_dT_CutEffect = new TH2D("h_ep_cl_trk_dT_CutEffect", "", 200, 0., 2.5, 200, -8., 8. );
+
+    h_ep_cl_trk_dT_Top_All = new TH2D("h_ep_cl_trk_dT_Top_All", "", 200, 0., 2.5, 200, -8., 8. );
+    h_ep_cl_trk_dT_Top_AllBut = new TH2D("h_ep_cl_trk_dT_Top_AllBut", "", 200, 0., 2.5, 200, -8., 8. );
+    h_ep_cl_trk_dT_Top_CutEffect = new TH2D("h_ep_cl_trk_dT_Top_CutEffect", "", 200, 0., 2.5, 200, -8., 8. );
+
+    h_ep_cl_trk_dT_Bot_All = new TH2D("h_ep_cl_trk_dT_Bot_All", "", 200, 0., 2.5, 200, -8., 8. );
+    h_ep_cl_trk_dT_Bot_AllBut = new TH2D("h_ep_cl_trk_dT_Bot_AllBut", "", 200, 0., 2.5, 200, -8., 8. );
+    h_ep_cl_trk_dT_Bot_CutEffect = new TH2D("h_ep_cl_trk_dT_Bot_CutEffect", "", 200, 0., 2.5, 200, -8., 8. );
+
+
+    h_dX_em_All = new TH2D("h_dX_em_All", "", 200, 0., Eb, 200, -50., 50.);
+    h_dX_em_AllBut = new TH2D("h_dX_em_AllBut", "", 200, 0., Eb, 200, -50., 50.);
+    h_dX_em_CutEffect = new TH2D("h_dX_em_CutEffect", "", 200, 0., Eb, 200, -50., 50.);
+
+    h_dX_emTopWithL6_All = new TH2D("h_dX_emTopWithL6_All", "", 200, 0., Eb, 200, -50., 50.);
+    h_dX_emTopWithL6_AllBut = new TH2D("h_dX_emTopWithL6_AllBut", "", 200, 0., Eb, 200, -50., 50.);
+    h_dX_emTopWithL6_CutEffect = new TH2D("h_dX_emTopWithL6_CutEffect", "", 200, 0., Eb, 200, -50., 50.);
+    h_dX_emTopNoL6_All = new TH2D("h_dX_emTopNoL6_All", "", 200, 0., Eb, 200, -50., 50.);
+    h_dX_emTopNoL6_AllBut = new TH2D("h_dX_emTopNoL6_AllBut", "", 200, 0., Eb, 200, -50., 50.);
+    h_dX_emTopNoL6_CutEffect = new TH2D("h_dX_emTopNoL6_CutEffect", "", 200, 0., Eb, 200, -50., 50.);
+    h_dX_emBotWithL6_All = new TH2D("h_dX_emBotWithL6_All", "", 200, 0., Eb, 200, -50., 50.);
+    h_dX_emBotWithL6_AllBut = new TH2D("h_dX_emBotWithL6_AllBut", "", 200, 0., Eb, 200, -50., 50.);
+    h_dX_emBotWithL6_CutEffect = new TH2D("h_dX_emBotWithL6_CutEffect", "", 200, 0., Eb, 200, -50., 50.);
+    h_dX_emBotNoL6_All = new TH2D("h_dX_emBotNoL6_All", "", 200, 0., Eb, 200, -50., 50.);
+    h_dX_emBotNoL6_AllBut = new TH2D("h_dX_emBotNoL6_AllBut", "", 200, 0., Eb, 200, -50., 50.);
+    h_dX_emBotNoL6_CutEffect = new TH2D("h_dX_emBotNoL6_CutEffect", "", 200, 0., Eb, 200, -50., 50.);
+
+    h_dX_ep_All = new TH2D("h_dX_ep_All", "", 200, 0., Eb, 200, -50., 50.);
+    h_dX_ep_AllBut = new TH2D("h_dX_ep_AllBut", "", 200, 0., Eb, 200, -50., 50.);
+    h_dX_ep_CutEffect = new TH2D("h_dX_ep_CutEffect", "", 200, 0., Eb, 200, -50., 50.);
+
+
+    h_dX_epTopWithL6_All = new TH2D("h_dX_epTopWithL6_All", "", 200, 0., Eb, 200, -50., 50.);
+    h_dX_epTopWithL6_AllBut = new TH2D("h_dX_epTopWithL6_AllBut", "", 200, 0., Eb, 200, -50., 50.);
+    h_dX_epTopWithL6_CutEffect = new TH2D("h_dX_epTopWithL6_CutEffect", "", 200, 0., Eb, 200, -50., 50.);
+    h_dX_epTopNoL6_All = new TH2D("h_dX_epTopNoL6_All", "", 200, 0., Eb, 200, -50., 50.);
+    h_dX_epTopNoL6_AllBut = new TH2D("h_dX_epTopNoL6_AllBut", "", 200, 0., Eb, 200, -50., 50.);
+    h_dX_epTopNoL6_CutEffect = new TH2D("h_dX_epTopNoL6_CutEffect", "", 200, 0., Eb, 200, -50., 50.);
+    h_dX_epBotWithL6_All = new TH2D("h_dX_epBotWithL6_All", "", 200, 0., Eb, 200, -50., 50.);
+    h_dX_epBotWithL6_AllBut = new TH2D("h_dX_epBotWithL6_AllBut", "", 200, 0., Eb, 200, -50., 50.);
+    h_dX_epBotWithL6_CutEffect = new TH2D("h_dX_epBotWithL6_CutEffect", "", 200, 0., Eb, 200, -50., 50.);
+    h_dX_epBotNoL6_All = new TH2D("h_dX_epBotNoL6_All", "", 200, 0., Eb, 200, -50., 50.);
+    h_dX_epBotNoL6_AllBut = new TH2D("h_dX_epBotNoL6_AllBut", "", 200, 0., Eb, 200, -50., 50.);
+    h_dX_epBotNoL6_CutEffect = new TH2D("h_dX_epBotNoL6_CutEffect", "", 200, 0., Eb, 200, -50., 50.);
+
+    // =============== Final Event Selection Cuts Cuts ==========
+    h_Minv_Final1 = new TH1D("h_Minv_Final1", "", 200, 0., 0.24);
+    h_Minv_PMax_Final1 = new TH1D("h_Minv_PMax_Final1", "", 200, 0., 0.24);
+    h_Minv_PMin_Final1 = new TH1D("h_Minv_PMin_Final1", "", 200, 0., 0.24);
+    h_Minv_cldT_Final1 = new TH1D("h_Minv_cldT_Final1", "", 200, 0., 0.24);
+    h_Minv_epClTrkdT_Final1 = new TH1D("h_Minv_epClTrkdT_Final1", "", 200, 0., 0.24);
+    h_Minv_emClTrkdT_Final1 = new TH1D("h_Minv_emClTrkdT_Final1", "", 200, 0., 0.24);
+    h_Minv_epClTrkMatch_Final1 = new TH1D("h_Minv_epClTrkMatch_Final1", "", 200, 0., 0.24);
+    h_Minv_emClTrkMatch_Final1 = new TH1D("h_Minv_emClTrkMatch_Final1", "", 200, 0., 0.24);
+    h_Minv_Pem_Final1 = new TH1D("h_Minv_Pem_Final1", "", 200, 0., 0.24);
+    h_Minv_d0ep_Final1 = new TH1D("h_Minv_d0ep_Final1", "", 200, 0., 0.24);
 }

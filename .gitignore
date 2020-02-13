@@ -50,3 +50,905 @@ pass4/Latex/Resonance_Search_2016.aux
 pass4/Latex/Resonance_Search_2016.log
 pass4/Latex/Resonance_Search_2016.synctex.gz
 pass4/Latex/Resonance_Search_2016.toc
+
+
+
+# Some figures mostly eps and png
+pass4/codes/Figs/Ap_Pem_DifferentMasses.eps
+pass4/codes/Figs/Ap_Pem_DifferentMasses.png
+pass4/codes/Figs/Chi2NDF_Mass_Moeller_Data.eps
+pass4/codes/Figs/Chi2NDF_Mass_Moeller_Data.png
+pass4/codes/Figs/Chi2NDF_Mass_Moeller_MC.eps
+pass4/codes/Figs/Chi2NDF_Mass_Moeller_MC.png
+pass4/codes/Figs/ClTrk_yxc1_Data.eps
+pass4/codes/Figs/ClTrk_yxc1_Data.png
+pass4/codes/Figs/ClTrk_yxc1_MC.eps
+pass4/codes/Figs/ClTrk_yxc1_MC.png
+pass4/codes/Figs/L5_YXc_pos1_Data.eps
+pass4/codes/Figs/L5_YXc_pos1_Data.png
+pass4/codes/Figs/MassSigmaChi2Cut.eps
+pass4/codes/Figs/MassSigmaChi2Cut.png
+pass4/codes/Figs/MassSigmaChi2Cut_Data.eps
+pass4/codes/Figs/MassSigmaChi2Cut_Data.png
+pass4/codes/Figs/MassSigmaChi2Cut_MC.eps
+pass4/codes/Figs/MassSigmaChi2Cut_MC.png
+pass4/codes/Figs/MinvPsum_WitmPSumMinCut.eps
+pass4/codes/Figs/MinvPsum_WitmPSumMinCut.png
+pass4/codes/Figs/MinvPsum_WitmPSumMinCut_Data.eps
+pass4/codes/Figs/MinvPsum_WitmPSumMinCut_Data.png
+pass4/codes/Figs/MinvPsum_WitmPSumMinCut_WABTri.eps
+pass4/codes/Figs/MinvPsum_WitmPSumMinCut_WABTri.png
+pass4/codes/Figs/Minv_FinalLog_Data.eps
+pass4/codes/Figs/Minv_FinalLog_Data.png
+pass4/codes/Figs/Minv_Final_Data.eps
+pass4/codes/Figs/Minv_Final_Data.png
+pass4/codes/Figs/Minv_PemLog_Data.eps
+pass4/codes/Figs/Minv_PemLog_Data.png
+pass4/codes/Figs/Minv_Pem_Data.eps
+pass4/codes/Figs/Minv_Pem_Data.png
+pass4/codes/Figs/Minv_PsumMaxLog_Data.eps
+pass4/codes/Figs/Minv_PsumMaxLog_Data.png
+pass4/codes/Figs/Minv_PsumMax_Data.eps
+pass4/codes/Figs/Minv_PsumMax_Data.png
+pass4/codes/Figs/Minv_PsumMinLog_Data.eps
+pass4/codes/Figs/Minv_PsumMinLog_Data.png
+pass4/codes/Figs/Minv_PsumMin_Data.eps
+pass4/codes/Figs/Minv_PsumMin_Data.png
+pass4/codes/Figs/Minv_Psum_Ap_100_Mev.eps
+pass4/codes/Figs/Minv_Psum_Ap_100_Mev.png
+pass4/codes/Figs/Minv_Psum_Ap_175_Mev.eps
+pass4/codes/Figs/Minv_Psum_Ap_175_Mev.png
+pass4/codes/Figs/Minv_Psum_Ap_50_Mev.eps
+pass4/codes/Figs/Minv_Psum_Ap_50_Mev.png
+pass4/codes/Figs/Minv_Psum_Rad.eps
+pass4/codes/Figs/Minv_Psum_Rad.png
+pass4/codes/Figs/Minv_cldTLog_Data.eps
+pass4/codes/Figs/Minv_cldTLog_Data.png
+pass4/codes/Figs/Minv_cldT_Data.eps
+pass4/codes/Figs/Minv_cldT_Data.png
+pass4/codes/Figs/Minv_d0epLog_Data.eps
+pass4/codes/Figs/Minv_d0epLog_Data.png
+pass4/codes/Figs/Minv_d0ep_Data.eps
+pass4/codes/Figs/Minv_d0ep_Data.png
+pass4/codes/Figs/Minv_emClTrkMatchLog_Data.eps
+pass4/codes/Figs/Minv_emClTrkMatchLog_Data.png
+pass4/codes/Figs/Minv_emClTrkMatch_Data.eps
+pass4/codes/Figs/Minv_emClTrkMatch_Data.png
+pass4/codes/Figs/Minv_emClTrkdTLog_Data.eps
+pass4/codes/Figs/Minv_emClTrkdTLog_Data.png
+pass4/codes/Figs/Minv_emClTrkdT_Data.eps
+pass4/codes/Figs/Minv_emClTrkdT_Data.png
+pass4/codes/Figs/Minv_epClTrkMatchLog_Data.eps
+pass4/codes/Figs/Minv_epClTrkMatchLog_Data.png
+pass4/codes/Figs/Minv_epClTrkMatch_Data.eps
+pass4/codes/Figs/Minv_epClTrkMatch_Data.png
+pass4/codes/Figs/Minv_epClTrkdTLog_Data.eps
+pass4/codes/Figs/Minv_epClTrkdTLog_Data.png
+pass4/codes/Figs/Minv_epClTrkdT_Data.eps
+pass4/codes/Figs/Minv_epClTrkdT_Data.png
+pass4/codes/Figs/MoellerFigOfMerit_Data.eps
+pass4/codes/Figs/MoellerFigOfMerit_Data.png
+pass4/codes/Figs/MoellerFigOfMerit_MC.eps
+pass4/codes/Figs/MoellerFigOfMerit_MC.png
+pass4/codes/Figs/PSum3_FOM.eps
+pass4/codes/Figs/PSum3_FOM.png
+pass4/codes/Figs/PSum3_MC_Components.eps
+pass4/codes/Figs/PSum3_MC_Components.png
+pass4/codes/Figs/PSumDiff3_Data.eps
+pass4/codes/Figs/PSumDiff3_Data.png
+pass4/codes/Figs/PSumDiff3_MC.eps
+pass4/codes/Figs/PSumDiff3_MC.png
+pass4/codes/Figs/PSumMin_MinvBin_0_All.eps
+pass4/codes/Figs/PSumMin_MinvBin_0_All.png
+pass4/codes/Figs/PSumMin_MinvBin_0_AllBut.eps
+pass4/codes/Figs/PSumMin_MinvBin_0_AllBut.png
+pass4/codes/Figs/PSumMin_MinvBin_0_CutEffect.eps
+pass4/codes/Figs/PSumMin_MinvBin_0_CutEffect.png
+pass4/codes/Figs/PSumMin_MinvBin_10_All.eps
+pass4/codes/Figs/PSumMin_MinvBin_10_All.png
+pass4/codes/Figs/PSumMin_MinvBin_10_AllBut.eps
+pass4/codes/Figs/PSumMin_MinvBin_10_AllBut.png
+pass4/codes/Figs/PSumMin_MinvBin_10_CutEffect.eps
+pass4/codes/Figs/PSumMin_MinvBin_10_CutEffect.png
+pass4/codes/Figs/PSumMin_MinvBin_11_All.eps
+pass4/codes/Figs/PSumMin_MinvBin_11_All.png
+pass4/codes/Figs/PSumMin_MinvBin_11_AllBut.eps
+pass4/codes/Figs/PSumMin_MinvBin_11_AllBut.png
+pass4/codes/Figs/PSumMin_MinvBin_11_CutEffect.eps
+pass4/codes/Figs/PSumMin_MinvBin_11_CutEffect.png
+pass4/codes/Figs/PSumMin_MinvBin_1_All.eps
+pass4/codes/Figs/PSumMin_MinvBin_1_All.png
+pass4/codes/Figs/PSumMin_MinvBin_1_AllBut.eps
+pass4/codes/Figs/PSumMin_MinvBin_1_AllBut.png
+pass4/codes/Figs/PSumMin_MinvBin_1_CutEffect.eps
+pass4/codes/Figs/PSumMin_MinvBin_1_CutEffect.png
+pass4/codes/Figs/PSumMin_MinvBin_2_All.eps
+pass4/codes/Figs/PSumMin_MinvBin_2_All.png
+pass4/codes/Figs/PSumMin_MinvBin_2_AllBut.eps
+pass4/codes/Figs/PSumMin_MinvBin_2_AllBut.png
+pass4/codes/Figs/PSumMin_MinvBin_2_CutEffect.eps
+pass4/codes/Figs/PSumMin_MinvBin_2_CutEffect.png
+pass4/codes/Figs/PSumMin_MinvBin_3_All.eps
+pass4/codes/Figs/PSumMin_MinvBin_3_All.png
+pass4/codes/Figs/PSumMin_MinvBin_3_AllBut.eps
+pass4/codes/Figs/PSumMin_MinvBin_3_AllBut.png
+pass4/codes/Figs/PSumMin_MinvBin_3_CutEffect.eps
+pass4/codes/Figs/PSumMin_MinvBin_3_CutEffect.png
+pass4/codes/Figs/PSumMin_MinvBin_4_All.eps
+pass4/codes/Figs/PSumMin_MinvBin_4_All.png
+pass4/codes/Figs/PSumMin_MinvBin_4_AllBut.eps
+pass4/codes/Figs/PSumMin_MinvBin_4_AllBut.png
+pass4/codes/Figs/PSumMin_MinvBin_4_CutEffect.eps
+pass4/codes/Figs/PSumMin_MinvBin_4_CutEffect.png
+pass4/codes/Figs/PSumMin_MinvBin_5_All.eps
+pass4/codes/Figs/PSumMin_MinvBin_5_All.png
+pass4/codes/Figs/PSumMin_MinvBin_5_AllBut.eps
+pass4/codes/Figs/PSumMin_MinvBin_5_AllBut.png
+pass4/codes/Figs/PSumMin_MinvBin_5_CutEffect.eps
+pass4/codes/Figs/PSumMin_MinvBin_5_CutEffect.png
+pass4/codes/Figs/PSumMin_MinvBin_6_All.eps
+pass4/codes/Figs/PSumMin_MinvBin_6_All.png
+pass4/codes/Figs/PSumMin_MinvBin_6_AllBut.eps
+pass4/codes/Figs/PSumMin_MinvBin_6_AllBut.png
+pass4/codes/Figs/PSumMin_MinvBin_6_CutEffect.eps
+pass4/codes/Figs/PSumMin_MinvBin_6_CutEffect.png
+pass4/codes/Figs/PSumMin_MinvBin_7_All.eps
+pass4/codes/Figs/PSumMin_MinvBin_7_All.png
+pass4/codes/Figs/PSumMin_MinvBin_7_AllBut.eps
+pass4/codes/Figs/PSumMin_MinvBin_7_AllBut.png
+pass4/codes/Figs/PSumMin_MinvBin_7_CutEffect.eps
+pass4/codes/Figs/PSumMin_MinvBin_7_CutEffect.png
+pass4/codes/Figs/PSumMin_MinvBin_8_All.eps
+pass4/codes/Figs/PSumMin_MinvBin_8_All.png
+pass4/codes/Figs/PSumMin_MinvBin_8_AllBut.eps
+pass4/codes/Figs/PSumMin_MinvBin_8_AllBut.png
+pass4/codes/Figs/PSumMin_MinvBin_8_CutEffect.eps
+pass4/codes/Figs/PSumMin_MinvBin_8_CutEffect.png
+pass4/codes/Figs/PSumMin_MinvBin_9_All.eps
+pass4/codes/Figs/PSumMin_MinvBin_9_All.png
+pass4/codes/Figs/PSumMin_MinvBin_9_AllBut.eps
+pass4/codes/Figs/PSumMin_MinvBin_9_AllBut.png
+pass4/codes/Figs/PSumMin_MinvBin_9_CutEffect.eps
+pass4/codes/Figs/PSumMin_MinvBin_9_CutEffect.png
+pass4/codes/Figs/PSum_Rad_Ap_Compare_100_MeV.eps
+pass4/codes/Figs/PSum_Rad_Ap_Compare_100_MeV.png
+pass4/codes/Figs/PSum_Rad_Ap_Compare_175_MeV.eps
+pass4/codes/Figs/PSum_Rad_Ap_Compare_175_MeV.png
+pass4/codes/Figs/PSum_Rad_Ap_Compare_50_MeV.eps
+pass4/codes/Figs/PSum_Rad_Ap_Compare_50_MeV.png
+pass4/codes/Figs/P_emAfterTighCuts_Data.eps
+pass4/codes/Figs/P_emAfterTighCuts_Data.png
+pass4/codes/Figs/Pem_All.eps
+pass4/codes/Figs/Pem_All.png
+pass4/codes/Figs/Pem_AllBut.eps
+pass4/codes/Figs/Pem_AllBut.png
+pass4/codes/Figs/Pem_CutEffect.eps
+pass4/codes/Figs/Pem_CutEffect.png
+pass4/codes/Figs/Pem_TightCuts.eps
+pass4/codes/Figs/Pem_TightCuts.png
+pass4/codes/Figs/Pem_TightCutsZoom.eps
+pass4/codes/Figs/Pem_TightCutsZoom.png
+pass4/codes/Figs/Pemep_Tri_Ap100MeV.C
+pass4/codes/Figs/Pemep_Tri_Ap100MeV.eps
+pass4/codes/Figs/Pemep_Tri_Ap100MeV.png
+pass4/codes/Figs/Pemep_Tri_Ap100MeV.root
+pass4/codes/Figs/PsumMax_All.eps
+pass4/codes/Figs/PsumMax_All.png
+pass4/codes/Figs/PsumMax_AllBut.eps
+pass4/codes/Figs/PsumMax_AllBut.png
+pass4/codes/Figs/PsumMax_CutEffect.eps
+pass4/codes/Figs/PsumMax_CutEffect.png
+pass4/codes/Figs/PsumMin_All.eps
+pass4/codes/Figs/PsumMin_All.png
+pass4/codes/Figs/PsumMin_AllBut.eps
+pass4/codes/Figs/PsumMin_AllBut.png
+pass4/codes/Figs/PsumMin_CutEffect.eps
+pass4/codes/Figs/PsumMin_CutEffect.png
+pass4/codes/Figs/Sqrt_NMoeller_Data.eps
+pass4/codes/Figs/Sqrt_NMoeller_Data.png
+pass4/codes/Figs/Sqrt_NMoeller_MC.eps
+pass4/codes/Figs/Sqrt_NMoeller_MC.png
+pass4/codes/Figs/Trk_dT_Psum5_Data.eps
+pass4/codes/Figs/Trk_dT_Psum5_Data.png
+pass4/codes/Figs/Trk_dT_Psum5_MC.eps
+pass4/codes/Figs/Trk_dT_Psum5_MC.png
+pass4/codes/Figs/clDt_All.eps
+pass4/codes/Figs/clDt_All.png
+pass4/codes/Figs/clDt_AllBut.eps
+pass4/codes/Figs/clDt_AllBut.png
+pass4/codes/Figs/clDt_CutEffect.eps
+pass4/codes/Figs/clDt_CutEffect.png
+pass4/codes/Figs/cl_trk_dt_Bot_Data.eps
+pass4/codes/Figs/cl_trk_dt_Bot_Data.png
+pass4/codes/Figs/cl_trk_dt_Top_Data.eps
+pass4/codes/Figs/cl_trk_dt_Top_Data.png
+pass4/codes/Figs/cl_yxc_1_Data.eps
+pass4/codes/Figs/cl_yxc_1_Data.png
+pass4/codes/Figs/cl_yxc_1_MC.eps
+pass4/codes/Figs/cl_yxc_1_MC.png
+pass4/codes/Figs/cl_yxc_OutsidedTrkClMatching.eps
+pass4/codes/Figs/cl_yxc_OutsidedTrkClMatching.png
+pass4/codes/Figs/d0_cuts_Negatives_Data.eps
+pass4/codes/Figs/d0_cuts_Negatives_Data.png
+pass4/codes/Figs/d0_cuts_Positives_Data.eps
+pass4/codes/Figs/d0_cuts_Positives_Data.png
+pass4/codes/Figs/d0_em_WIthAndWithL1.eps
+pass4/codes/Figs/d0_em_WIthAndWithL1.png
+pass4/codes/Figs/d0_ep_All.eps
+pass4/codes/Figs/d0_ep_All.png
+pass4/codes/Figs/d0_ep_AllBut.eps
+pass4/codes/Figs/d0_ep_AllBut.png
+pass4/codes/Figs/d0_ep_CutEffect.eps
+pass4/codes/Figs/d0_ep_CutEffect.png
+pass4/codes/Figs/dT_tr5_Data.eps
+pass4/codes/Figs/dT_tr5_Data.png
+pass4/codes/Figs/dT_tr5_MC.eps
+pass4/codes/Figs/dT_tr5_MC.png
+pass4/codes/Figs/dX_Bot_NegNoL6_Cut.eps
+pass4/codes/Figs/dX_Bot_NegNoL6_Cut.png
+pass4/codes/Figs/dX_Bot_NegNoL6_Data.eps
+pass4/codes/Figs/dX_Bot_NegNoL6_Data.png
+pass4/codes/Figs/dX_Bot_NegNoL6_Data_TEST.eps
+pass4/codes/Figs/dX_Bot_NegNoL6_Data_TEST.png
+pass4/codes/Figs/dX_Bot_NegWithL6_Cut.eps
+pass4/codes/Figs/dX_Bot_NegWithL6_Cut.png
+pass4/codes/Figs/dX_Bot_PosNoL6_Cut.eps
+pass4/codes/Figs/dX_Bot_PosNoL6_Cut.png
+pass4/codes/Figs/dX_Bot_PosWithL6_Cut.eps
+pass4/codes/Figs/dX_Bot_PosWithL6_Cut.png
+pass4/codes/Figs/dX_P_cuts_neg1_Data.eps
+pass4/codes/Figs/dX_P_cuts_neg1_Data.png
+pass4/codes/Figs/dX_P_cuts_pos1_Data.eps
+pass4/codes/Figs/dX_P_cuts_pos1_Data.png
+pass4/codes/Figs/dX_P_neg_AfterTightCuts_Data.eps
+pass4/codes/Figs/dX_P_neg_AfterTightCuts_Data.png
+pass4/codes/Figs/dX_P_pos_AfterTightCuts_Data.eps
+pass4/codes/Figs/dX_P_pos_AfterTightCuts_Data.png
+pass4/codes/Figs/dX_Top_NegNoL6_Cut.eps
+pass4/codes/Figs/dX_Top_NegNoL6_Cut.png
+pass4/codes/Figs/dX_Top_NegWithL6_Cut.eps
+pass4/codes/Figs/dX_Top_NegWithL6_Cut.png
+pass4/codes/Figs/dX_Top_PosNoL6_Cut.eps
+pass4/codes/Figs/dX_Top_PosNoL6_Cut.png
+pass4/codes/Figs/dX_Top_PosNoL6_Data.eps
+pass4/codes/Figs/dX_Top_PosNoL6_Data.png
+pass4/codes/Figs/dX_Top_PosWithL6_Cut.eps
+pass4/codes/Figs/dX_Top_PosWithL6_Cut.png
+pass4/codes/Figs/dX_em_Data_All.eps
+pass4/codes/Figs/dX_em_Data_All.png
+pass4/codes/Figs/dX_em_Data_AllBut.eps
+pass4/codes/Figs/dX_em_Data_AllBut.png
+pass4/codes/Figs/dX_em_Data_CutEffect.eps
+pass4/codes/Figs/dX_em_Data_CutEffect.png
+pass4/codes/Figs/dX_em_Rad_All.eps
+pass4/codes/Figs/dX_em_Rad_All.png
+pass4/codes/Figs/dX_em_Rad_AllBut.eps
+pass4/codes/Figs/dX_em_Rad_AllBut.png
+pass4/codes/Figs/dX_em_Rad_CutEffect.eps
+pass4/codes/Figs/dX_em_Rad_CutEffect.png
+pass4/codes/Figs/dX_em_Tri_All.eps
+pass4/codes/Figs/dX_em_Tri_All.png
+pass4/codes/Figs/dX_em_Tri_AllBut.eps
+pass4/codes/Figs/dX_em_Tri_AllBut.png
+pass4/codes/Figs/dX_em_Tri_CutEffect.eps
+pass4/codes/Figs/dX_em_Tri_CutEffect.png
+pass4/codes/Figs/dX_em_WAB_All.eps
+pass4/codes/Figs/dX_em_WAB_All.png
+pass4/codes/Figs/dX_em_WAB_AllBut.eps
+pass4/codes/Figs/dX_em_WAB_AllBut.png
+pass4/codes/Figs/dX_em_WAB_CutEffect.eps
+pass4/codes/Figs/dX_em_WAB_CutEffect.png
+pass4/codes/Figs/dX_ep_Data_All.eps
+pass4/codes/Figs/dX_ep_Data_All.png
+pass4/codes/Figs/dX_ep_Data_AllBut.eps
+pass4/codes/Figs/dX_ep_Data_AllBut.png
+pass4/codes/Figs/dX_ep_Data_CutEffect.eps
+pass4/codes/Figs/dX_ep_Data_CutEffect.png
+pass4/codes/Figs/dX_ep_Rad_All.eps
+pass4/codes/Figs/dX_ep_Rad_All.png
+pass4/codes/Figs/dX_ep_Rad_AllBut.eps
+pass4/codes/Figs/dX_ep_Rad_AllBut.png
+pass4/codes/Figs/dX_ep_Rad_CutEffect.eps
+pass4/codes/Figs/dX_ep_Rad_CutEffect.png
+pass4/codes/Figs/dX_ep_Tri_All.eps
+pass4/codes/Figs/dX_ep_Tri_All.png
+pass4/codes/Figs/dX_ep_Tri_AllBut.eps
+pass4/codes/Figs/dX_ep_Tri_AllBut.png
+pass4/codes/Figs/dX_ep_Tri_CutEffect.eps
+pass4/codes/Figs/dX_ep_Tri_CutEffect.png
+pass4/codes/Figs/dX_ep_WAB_All.eps
+pass4/codes/Figs/dX_ep_WAB_All.png
+pass4/codes/Figs/dX_ep_WAB_AllBut.eps
+pass4/codes/Figs/dX_ep_WAB_AllBut.png
+pass4/codes/Figs/dX_ep_WAB_CutEffect.eps
+pass4/codes/Figs/dX_ep_WAB_CutEffect.png
+pass4/codes/Figs/dY_P_cuts_neg1_Data.eps
+pass4/codes/Figs/dY_P_cuts_neg1_Data.png
+pass4/codes/Figs/dY_P_cuts_pos1_Data.eps
+pass4/codes/Figs/dY_P_cuts_pos1_Data.png
+pass4/codes/Figs/dY_P_neg_AfterTightCuts_Data.eps
+pass4/codes/Figs/dY_P_neg_AfterTightCuts_Data.png
+pass4/codes/Figs/dY_P_pos_AfterTightCuts_Data.eps
+pass4/codes/Figs/dY_P_pos_AfterTightCuts_Data.png
+pass4/codes/Figs/em_cl_trk_dT_Data_All.eps
+pass4/codes/Figs/em_cl_trk_dT_Data_All.png
+pass4/codes/Figs/em_cl_trk_dT_Data_AllBut.eps
+pass4/codes/Figs/em_cl_trk_dT_Data_AllBut.png
+pass4/codes/Figs/em_cl_trk_dT_Data_CutEffect.eps
+pass4/codes/Figs/em_cl_trk_dT_Data_CutEffect.png
+pass4/codes/Figs/em_cl_trk_dT_Rad_All.eps
+pass4/codes/Figs/em_cl_trk_dT_Rad_All.png
+pass4/codes/Figs/em_cl_trk_dT_Rad_AllBut.eps
+pass4/codes/Figs/em_cl_trk_dT_Rad_AllBut.png
+pass4/codes/Figs/em_cl_trk_dT_Rad_CutEffect.eps
+pass4/codes/Figs/em_cl_trk_dT_Rad_CutEffect.png
+pass4/codes/Figs/em_cl_trk_dT_Tri_All.eps
+pass4/codes/Figs/em_cl_trk_dT_Tri_All.png
+pass4/codes/Figs/em_cl_trk_dT_Tri_AllBut.eps
+pass4/codes/Figs/em_cl_trk_dT_Tri_AllBut.png
+pass4/codes/Figs/em_cl_trk_dT_Tri_CutEffect.eps
+pass4/codes/Figs/em_cl_trk_dT_Tri_CutEffect.png
+pass4/codes/Figs/em_cl_trk_dT_WAB_All.eps
+pass4/codes/Figs/em_cl_trk_dT_WAB_All.png
+pass4/codes/Figs/em_cl_trk_dT_WAB_AllBut.eps
+pass4/codes/Figs/em_cl_trk_dT_WAB_AllBut.png
+pass4/codes/Figs/em_cl_trk_dT_WAB_CutEffect.eps
+pass4/codes/Figs/em_cl_trk_dT_WAB_CutEffect.png
+pass4/codes/Figs/ep_cl_trk_dT_Data_All.eps
+pass4/codes/Figs/ep_cl_trk_dT_Data_All.png
+pass4/codes/Figs/ep_cl_trk_dT_Data_AllBut.eps
+pass4/codes/Figs/ep_cl_trk_dT_Data_AllBut.png
+pass4/codes/Figs/ep_cl_trk_dT_Data_CutEffect.eps
+pass4/codes/Figs/ep_cl_trk_dT_Data_CutEffect.png
+pass4/codes/Figs/ep_cl_trk_dT_Rad_All.eps
+pass4/codes/Figs/ep_cl_trk_dT_Rad_All.png
+pass4/codes/Figs/ep_cl_trk_dT_Rad_AllBut.eps
+pass4/codes/Figs/ep_cl_trk_dT_Rad_AllBut.png
+pass4/codes/Figs/ep_cl_trk_dT_Rad_CutEffect.eps
+pass4/codes/Figs/ep_cl_trk_dT_Rad_CutEffect.png
+pass4/codes/Figs/ep_cl_trk_dT_Tri_All.eps
+pass4/codes/Figs/ep_cl_trk_dT_Tri_All.png
+pass4/codes/Figs/ep_cl_trk_dT_Tri_AllBut.eps
+pass4/codes/Figs/ep_cl_trk_dT_Tri_AllBut.png
+pass4/codes/Figs/ep_cl_trk_dT_Tri_CutEffect.eps
+pass4/codes/Figs/ep_cl_trk_dT_Tri_CutEffect.png
+pass4/codes/Figs/ep_cl_trk_dT_WAB_All.eps
+pass4/codes/Figs/ep_cl_trk_dT_WAB_All.png
+pass4/codes/Figs/ep_cl_trk_dT_WAB_AllBut.eps
+pass4/codes/Figs/ep_cl_trk_dT_WAB_AllBut.png
+pass4/codes/Figs/ep_cl_trk_dT_WAB_CutEffect.eps
+pass4/codes/Figs/ep_cl_trk_dT_WAB_CutEffect.png
+pass4/codes/Figs/fRad_MassBins.eps
+pass4/codes/Figs/fRad_MassBins.png
+pass4/codes/Figs/tr_yxc_1_Data.eps
+pass4/codes/Figs/tr_yxc_1_Data.png
+pass4/codes/Figs/tr_yxc_1_MC.eps
+pass4/codes/Figs/tr_yxc_1_MC.png
+pass4/codes/Figs/trk_cl_timeDiffCut_Bot.eps
+pass4/codes/Figs/trk_cl_timeDiffCut_Bot.png
+pass4/codes/Figs/trk_cl_timeDiffCut_Bot_Data.eps
+pass4/codes/Figs/trk_cl_timeDiffCut_Bot_Data.png
+pass4/codes/Figs/trk_cl_timeDiffCut_Top.eps
+pass4/codes/Figs/trk_cl_timeDiffCut_Top.png
+pass4/codes/Figs/trk_cl_timeDiffCut_Top_Data.eps
+pass4/codes/Figs/trk_cl_timeDiffCut_Top_Data.png
+
+
+
+
+
+pass4/codes/EvSelectionCutHists_Ap_100_MeV.root
+pass4/codes/EvSelectionCutHists_Ap_175_MeV.root
+pass4/codes/EvSelectionCutHists_Ap_50_MeV.root
+pass4/codes/EvSelectionCutHists_Data.root
+pass4/codes/EvSelectionCutHists_Rad.root
+pass4/codes/EvSelectionCutHists_Tri.root
+pass4/codes/EvSelectionCutHists_WAB.root
+pass4/codes/EvSelectionCuts_Ap_100_MeV.root
+pass4/codes/EvSelectionCuts_Ap_175_MeV.root
+pass4/codes/EvSelectionCuts_Ap_50_MeV.root
+pass4/codes/EvSelectionCuts_Rad.root
+pass4/codes/EvSelectionCuts_Tri.root
+pass4/codes/EvSelectionCuts_WAB.root
+pass4/codes/EventSelection_Ap_100_MeV.root
+pass4/codes/EventSelection_Ap_175_MeV.root
+pass4/codes/EventSelection_Ap_50_MeV.root
+pass4/codes/EventSelection_Data_All.root
+pass4/codes/EventSelection_Rad_OldMC.root
+pass4/codes/EventSelection_Tri.root
+pass4/codes/EventSelection_Tri_OldMC.root
+pass4/codes/EventSelection_Tri_bak.root
+pass4/codes/EventSelection_WAB_OldMC.root
+
+pass4/codes/MoellerAnalyze_Data_All.root
+pass4/codes/MoellerAnalyze_Data_Unconstrained.root
+pass4/codes/MoellerAnalyze_Data_bak.root
+pass4/codes/MoellerAnalyze_Data_tmp.root
+pass4/codes/MoellerAnalyze_MC.root
+pass4/codes/MoellerAnalyze_MC_All.root
+pass4/codes/MoellerAnalyze_MC_NoBeam_All.root
+pass4/codes/MoellerAnalyze_MC_Unconstrained.root
+pass4/codes/TrkClustMatching_Ap_100_MeV.root
+pass4/codes/TrkClustMatching_Ap_175_MeV.root
+pass4/codes/TrkClustMatching_Ap_50_MeV.root
+pass4/codes/TrkClustMatching_Rad.root
+pass4/codes/TrkClustMatching_Tri.root
+pass4/codes/TrkClustMatching_Tri_bak.root
+pass4/codes/TrkClustMatching_WAB.root
+pass4/codes/compile_testMoellers.sh
+pass4/codes/testMoellers.cc
+pass4/codes/testMoellers.root
+pass4/codes/tmp.C
+
+
+pass4/Cuts.ods
+pass4/Docs/
+pass4/Latex/EvSelectionPlots.aux
+pass4/Latex/EvSelectionPlots.log
+pass4/Latex/EvSelectionPlots.out
+pass4/Latex/EvSelectionPlots.synctex.gz
+pass4/Latex/Resonance_Search_2016.out
+
+
+pass4/codes/Figs
+
+pass4/codes/Figs/Cuts2D_dX_emBotNoL6_Data.eps
+pass4/codes/Figs/Cuts2D_dX_emBotNoL6_Data.pdf
+pass4/codes/Figs/Cuts2D_dX_emBotNoL6_Data.png
+pass4/codes/Figs/Cuts2D_dX_emBotNoL6_Rad.eps
+pass4/codes/Figs/Cuts2D_dX_emBotNoL6_Rad.pdf
+pass4/codes/Figs/Cuts2D_dX_emBotNoL6_Rad.png
+pass4/codes/Figs/Cuts2D_dX_emBotNoL6_Tri.eps
+pass4/codes/Figs/Cuts2D_dX_emBotNoL6_Tri.pdf
+pass4/codes/Figs/Cuts2D_dX_emBotNoL6_Tri.png
+pass4/codes/Figs/Cuts2D_dX_emBotNoL6_WAB.eps
+pass4/codes/Figs/Cuts2D_dX_emBotNoL6_WAB.pdf
+pass4/codes/Figs/Cuts2D_dX_emBotNoL6_WAB.png
+pass4/codes/Figs/Cuts2D_dX_emBotWithL6_Data.eps
+pass4/codes/Figs/Cuts2D_dX_emBotWithL6_Data.pdf
+pass4/codes/Figs/Cuts2D_dX_emBotWithL6_Data.png
+pass4/codes/Figs/Cuts2D_dX_emBotWithL6_Rad.eps
+pass4/codes/Figs/Cuts2D_dX_emBotWithL6_Rad.pdf
+pass4/codes/Figs/Cuts2D_dX_emBotWithL6_Rad.png
+pass4/codes/Figs/Cuts2D_dX_emBotWithL6_Tri.eps
+pass4/codes/Figs/Cuts2D_dX_emBotWithL6_Tri.pdf
+pass4/codes/Figs/Cuts2D_dX_emBotWithL6_Tri.png
+pass4/codes/Figs/Cuts2D_dX_emBotWithL6_WAB.eps
+pass4/codes/Figs/Cuts2D_dX_emBotWithL6_WAB.pdf
+pass4/codes/Figs/Cuts2D_dX_emBotWithL6_WAB.png
+pass4/codes/Figs/Cuts2D_dX_emTopNoL6_Data.eps
+pass4/codes/Figs/Cuts2D_dX_emTopNoL6_Data.pdf
+pass4/codes/Figs/Cuts2D_dX_emTopNoL6_Data.png
+pass4/codes/Figs/Cuts2D_dX_emTopNoL6_Rad.eps
+pass4/codes/Figs/Cuts2D_dX_emTopNoL6_Rad.pdf
+pass4/codes/Figs/Cuts2D_dX_emTopNoL6_Rad.png
+pass4/codes/Figs/Cuts2D_dX_emTopNoL6_Tri.eps
+pass4/codes/Figs/Cuts2D_dX_emTopNoL6_Tri.pdf
+pass4/codes/Figs/Cuts2D_dX_emTopNoL6_Tri.png
+pass4/codes/Figs/Cuts2D_dX_emTopNoL6_WAB.eps
+pass4/codes/Figs/Cuts2D_dX_emTopNoL6_WAB.pdf
+pass4/codes/Figs/Cuts2D_dX_emTopNoL6_WAB.png
+pass4/codes/Figs/Cuts2D_dX_emTopWithL6_Data.eps
+pass4/codes/Figs/Cuts2D_dX_emTopWithL6_Data.pdf
+pass4/codes/Figs/Cuts2D_dX_emTopWithL6_Data.png
+pass4/codes/Figs/Cuts2D_dX_emTopWithL6_Rad.eps
+pass4/codes/Figs/Cuts2D_dX_emTopWithL6_Rad.pdf
+pass4/codes/Figs/Cuts2D_dX_emTopWithL6_Rad.png
+pass4/codes/Figs/Cuts2D_dX_emTopWithL6_Tri.eps
+pass4/codes/Figs/Cuts2D_dX_emTopWithL6_Tri.pdf
+pass4/codes/Figs/Cuts2D_dX_emTopWithL6_Tri.png
+pass4/codes/Figs/Cuts2D_dX_emTopWithL6_WAB.eps
+pass4/codes/Figs/Cuts2D_dX_emTopWithL6_WAB.pdf
+pass4/codes/Figs/Cuts2D_dX_emTopWithL6_WAB.png
+pass4/codes/Figs/Cuts2D_dX_epBotNoL6_Data.eps
+pass4/codes/Figs/Cuts2D_dX_epBotNoL6_Data.pdf
+pass4/codes/Figs/Cuts2D_dX_epBotNoL6_Data.png
+pass4/codes/Figs/Cuts2D_dX_epBotNoL6_Rad.eps
+pass4/codes/Figs/Cuts2D_dX_epBotNoL6_Rad.pdf
+pass4/codes/Figs/Cuts2D_dX_epBotNoL6_Rad.png
+pass4/codes/Figs/Cuts2D_dX_epBotNoL6_Tri.eps
+pass4/codes/Figs/Cuts2D_dX_epBotNoL6_Tri.pdf
+pass4/codes/Figs/Cuts2D_dX_epBotNoL6_Tri.png
+pass4/codes/Figs/Cuts2D_dX_epBotNoL6_WAB.eps
+pass4/codes/Figs/Cuts2D_dX_epBotNoL6_WAB.pdf
+pass4/codes/Figs/Cuts2D_dX_epBotNoL6_WAB.png
+pass4/codes/Figs/Cuts2D_dX_epBotWithL6_Data.eps
+pass4/codes/Figs/Cuts2D_dX_epBotWithL6_Data.pdf
+pass4/codes/Figs/Cuts2D_dX_epBotWithL6_Data.png
+pass4/codes/Figs/Cuts2D_dX_epBotWithL6_Rad.eps
+pass4/codes/Figs/Cuts2D_dX_epBotWithL6_Rad.pdf
+pass4/codes/Figs/Cuts2D_dX_epBotWithL6_Rad.png
+pass4/codes/Figs/Cuts2D_dX_epBotWithL6_Tri.eps
+pass4/codes/Figs/Cuts2D_dX_epBotWithL6_Tri.pdf
+pass4/codes/Figs/Cuts2D_dX_epBotWithL6_Tri.png
+pass4/codes/Figs/Cuts2D_dX_epBotWithL6_WAB.eps
+pass4/codes/Figs/Cuts2D_dX_epBotWithL6_WAB.pdf
+pass4/codes/Figs/Cuts2D_dX_epBotWithL6_WAB.png
+pass4/codes/Figs/Cuts2D_dX_epTopNoL6_Data.eps
+pass4/codes/Figs/Cuts2D_dX_epTopNoL6_Data.pdf
+pass4/codes/Figs/Cuts2D_dX_epTopNoL6_Data.png
+pass4/codes/Figs/Cuts2D_dX_epTopNoL6_Rad.eps
+pass4/codes/Figs/Cuts2D_dX_epTopNoL6_Rad.pdf
+pass4/codes/Figs/Cuts2D_dX_epTopNoL6_Rad.png
+pass4/codes/Figs/Cuts2D_dX_epTopNoL6_Tri.eps
+pass4/codes/Figs/Cuts2D_dX_epTopNoL6_Tri.pdf
+pass4/codes/Figs/Cuts2D_dX_epTopNoL6_Tri.png
+pass4/codes/Figs/Cuts2D_dX_epTopNoL6_WAB.eps
+pass4/codes/Figs/Cuts2D_dX_epTopNoL6_WAB.pdf
+pass4/codes/Figs/Cuts2D_dX_epTopNoL6_WAB.png
+pass4/codes/Figs/Cuts2D_dX_epTopWithL6_Data.eps
+pass4/codes/Figs/Cuts2D_dX_epTopWithL6_Data.pdf
+pass4/codes/Figs/Cuts2D_dX_epTopWithL6_Data.png
+pass4/codes/Figs/Cuts2D_dX_epTopWithL6_Rad.eps
+pass4/codes/Figs/Cuts2D_dX_epTopWithL6_Rad.pdf
+pass4/codes/Figs/Cuts2D_dX_epTopWithL6_Rad.png
+pass4/codes/Figs/Cuts2D_dX_epTopWithL6_Tri.eps
+pass4/codes/Figs/Cuts2D_dX_epTopWithL6_Tri.pdf
+pass4/codes/Figs/Cuts2D_dX_epTopWithL6_Tri.png
+pass4/codes/Figs/Cuts2D_dX_epTopWithL6_WAB.eps
+pass4/codes/Figs/Cuts2D_dX_epTopWithL6_WAB.pdf
+pass4/codes/Figs/Cuts2D_dX_epTopWithL6_WAB.png
+pass4/codes/Figs/Cuts2D_em_cl_trk_dT_Bot.eps
+pass4/codes/Figs/Cuts2D_em_cl_trk_dT_Bot.png
+pass4/codes/Figs/Cuts2D_em_cl_trk_dT_Bot_Data.eps
+pass4/codes/Figs/Cuts2D_em_cl_trk_dT_Bot_Data.pdf
+pass4/codes/Figs/Cuts2D_em_cl_trk_dT_Bot_Data.png
+pass4/codes/Figs/Cuts2D_em_cl_trk_dT_Bot_Rad.eps
+pass4/codes/Figs/Cuts2D_em_cl_trk_dT_Bot_Rad.pdf
+pass4/codes/Figs/Cuts2D_em_cl_trk_dT_Bot_Rad.png
+pass4/codes/Figs/Cuts2D_em_cl_trk_dT_Bot_Tri.eps
+pass4/codes/Figs/Cuts2D_em_cl_trk_dT_Bot_Tri.pdf
+pass4/codes/Figs/Cuts2D_em_cl_trk_dT_Bot_Tri.png
+pass4/codes/Figs/Cuts2D_em_cl_trk_dT_Bot_WAB.eps
+pass4/codes/Figs/Cuts2D_em_cl_trk_dT_Bot_WAB.pdf
+pass4/codes/Figs/Cuts2D_em_cl_trk_dT_Bot_WAB.png
+pass4/codes/Figs/Cuts2D_em_cl_trk_dT_Top.eps
+pass4/codes/Figs/Cuts2D_em_cl_trk_dT_Top.png
+pass4/codes/Figs/Cuts2D_em_cl_trk_dT_Top_Data.eps
+pass4/codes/Figs/Cuts2D_em_cl_trk_dT_Top_Data.pdf
+pass4/codes/Figs/Cuts2D_em_cl_trk_dT_Top_Data.png
+pass4/codes/Figs/Cuts2D_em_cl_trk_dT_Top_Rad.eps
+pass4/codes/Figs/Cuts2D_em_cl_trk_dT_Top_Rad.pdf
+pass4/codes/Figs/Cuts2D_em_cl_trk_dT_Top_Rad.png
+pass4/codes/Figs/Cuts2D_em_cl_trk_dT_Top_Tri.eps
+pass4/codes/Figs/Cuts2D_em_cl_trk_dT_Top_Tri.pdf
+pass4/codes/Figs/Cuts2D_em_cl_trk_dT_Top_Tri.png
+pass4/codes/Figs/Cuts2D_em_cl_trk_dT_Top_WAB.eps
+pass4/codes/Figs/Cuts2D_em_cl_trk_dT_Top_WAB.pdf
+pass4/codes/Figs/Cuts2D_em_cl_trk_dT_Top_WAB.png
+pass4/codes/Figs/FEE_Cut.eps
+pass4/codes/Figs/FEE_Cut.png
+pass4/codes/Figs/FEE_CutAllButZoom.eps
+pass4/codes/Figs/FEE_CutAllButZoom.png
+pass4/codes/Figs/FEE_CutZoom.eps
+pass4/codes/Figs/FEE_CutZoom.png
+pass4/codes/Figs/FEE_Cut_AllBut.eps
+pass4/codes/Figs/FEE_Cut_AllBut.png
+pass4/codes/Figs/Minv_General_Final_Cut_0.eps
+pass4/codes/Figs/Minv_General_Final_Cut_0.png
+pass4/codes/Figs/Minv_General_Final_Cut_1.eps
+pass4/codes/Figs/Minv_General_Final_Cut_1.png
+pass4/codes/Figs/Minv_General_Final_Cut_2.eps
+pass4/codes/Figs/Minv_General_Final_Cut_2.png
+pass4/codes/Figs/Minv_General_Final_Cut_3.eps
+pass4/codes/Figs/Minv_General_Final_Cut_3.png
+pass4/codes/Figs/Minv_General_Final_Cut_4.eps
+pass4/codes/Figs/Minv_General_Final_Cut_4.png
+pass4/codes/Figs/Minv_General_Final_Cut_5.eps
+pass4/codes/Figs/Minv_General_Final_Cut_5.png
+pass4/codes/Figs/Minv_General_Final_Cut_6.eps
+pass4/codes/Figs/Minv_General_Final_Cut_6.png
+pass4/codes/Figs/Minv_General_Final_Cut_7.eps
+pass4/codes/Figs/Minv_General_Final_Cut_7.png
+pass4/codes/Figs/RuntoRumMinvIntegral_Category_0.eps
+pass4/codes/Figs/RuntoRumMinvIntegral_Category_0.png
+pass4/codes/Figs/RuntoRumMinvIntegral_Category_1.eps
+pass4/codes/Figs/RuntoRumMinvIntegral_Category_1.png
+pass4/codes/Figs/RuntoRumMinvIntegral_Category_2.eps
+pass4/codes/Figs/RuntoRumMinvIntegral_Category_2.png
+pass4/codes/Figs/RuntoRumMinvIntegral_Category_3.eps
+pass4/codes/Figs/RuntoRumMinvIntegral_Category_3.png
+pass4/codes/Figs/RuntoRumMinvIntegral_Category_4.eps
+pass4/codes/Figs/RuntoRumMinvIntegral_Category_4.png
+pass4/codes/Figs/RuntoRumMinvIntegral_Category_5.eps
+pass4/codes/Figs/RuntoRumMinvIntegral_Category_5.png
+pass4/codes/Figs/RuntoRumMinvIntegral_Category_6.eps
+pass4/codes/Figs/RuntoRumMinvIntegral_Category_6.png
+pass4/codes/Figs/RuntoRumMinvIntegral_Category_7.eps
+pass4/codes/Figs/RuntoRumMinvIntegral_Category_7.png
+pass4/codes/Figs/d0_Data_Fit.eps
+pass4/codes/Figs/d0_Data_Fit.png
+pass4/codes/Figs/d0_FOM_MC.eps
+pass4/codes/Figs/d0_FOM_MC.png
+pass4/codes/Figs/d0_MC_Components.eps
+pass4/codes/Figs/d0_MC_Components.png
+pass4/codes/Figs/d0_MC_Fit.eps
+pass4/codes/Figs/d0_MC_Fit.png
+pass4/codes/Figs/dX_emBotNoL6_Data_All.eps
+pass4/codes/Figs/dX_emBotNoL6_Data_All.png
+pass4/codes/Figs/dX_emBotNoL6_Data_AllBut.eps
+pass4/codes/Figs/dX_emBotNoL6_Data_AllBut.png
+pass4/codes/Figs/dX_emBotNoL6_Data_CutEffect.eps
+pass4/codes/Figs/dX_emBotNoL6_Data_CutEffect.png
+pass4/codes/Figs/dX_emBotNoL6_Rad_All.eps
+pass4/codes/Figs/dX_emBotNoL6_Rad_All.png
+pass4/codes/Figs/dX_emBotNoL6_Rad_AllBut.eps
+pass4/codes/Figs/dX_emBotNoL6_Rad_AllBut.png
+pass4/codes/Figs/dX_emBotNoL6_Rad_CutEffect.eps
+pass4/codes/Figs/dX_emBotNoL6_Rad_CutEffect.png
+pass4/codes/Figs/dX_emBotNoL6_Tri_All.eps
+pass4/codes/Figs/dX_emBotNoL6_Tri_All.png
+pass4/codes/Figs/dX_emBotNoL6_Tri_AllBut.eps
+pass4/codes/Figs/dX_emBotNoL6_Tri_AllBut.png
+pass4/codes/Figs/dX_emBotNoL6_Tri_CutEffect.eps
+pass4/codes/Figs/dX_emBotNoL6_Tri_CutEffect.png
+pass4/codes/Figs/dX_emBotNoL6_WAB_All.eps
+pass4/codes/Figs/dX_emBotNoL6_WAB_All.png
+pass4/codes/Figs/dX_emBotNoL6_WAB_AllBut.eps
+pass4/codes/Figs/dX_emBotNoL6_WAB_AllBut.png
+pass4/codes/Figs/dX_emBotNoL6_WAB_CutEffect.eps
+pass4/codes/Figs/dX_emBotNoL6_WAB_CutEffect.png
+pass4/codes/Figs/dX_emBotWithL6_Data_All.eps
+pass4/codes/Figs/dX_emBotWithL6_Data_All.png
+pass4/codes/Figs/dX_emBotWithL6_Data_AllBut.eps
+pass4/codes/Figs/dX_emBotWithL6_Data_AllBut.png
+pass4/codes/Figs/dX_emBotWithL6_Data_CutEffect.eps
+pass4/codes/Figs/dX_emBotWithL6_Data_CutEffect.png
+pass4/codes/Figs/dX_emBotWithL6_Rad_All.eps
+pass4/codes/Figs/dX_emBotWithL6_Rad_All.png
+pass4/codes/Figs/dX_emBotWithL6_Rad_AllBut.eps
+pass4/codes/Figs/dX_emBotWithL6_Rad_AllBut.png
+pass4/codes/Figs/dX_emBotWithL6_Rad_CutEffect.eps
+pass4/codes/Figs/dX_emBotWithL6_Rad_CutEffect.png
+pass4/codes/Figs/dX_emBotWithL6_Tri_All.eps
+pass4/codes/Figs/dX_emBotWithL6_Tri_All.png
+pass4/codes/Figs/dX_emBotWithL6_Tri_AllBut.eps
+pass4/codes/Figs/dX_emBotWithL6_Tri_AllBut.png
+pass4/codes/Figs/dX_emBotWithL6_Tri_CutEffect.eps
+pass4/codes/Figs/dX_emBotWithL6_Tri_CutEffect.png
+pass4/codes/Figs/dX_emBotWithL6_WAB_All.eps
+pass4/codes/Figs/dX_emBotWithL6_WAB_All.png
+pass4/codes/Figs/dX_emBotWithL6_WAB_AllBut.eps
+pass4/codes/Figs/dX_emBotWithL6_WAB_AllBut.png
+pass4/codes/Figs/dX_emBotWithL6_WAB_CutEffect.eps
+pass4/codes/Figs/dX_emBotWithL6_WAB_CutEffect.png
+pass4/codes/Figs/dX_emTopNoL6_Data_All.eps
+pass4/codes/Figs/dX_emTopNoL6_Data_All.png
+pass4/codes/Figs/dX_emTopNoL6_Data_AllBut.eps
+pass4/codes/Figs/dX_emTopNoL6_Data_AllBut.png
+pass4/codes/Figs/dX_emTopNoL6_Data_CutEffect.eps
+pass4/codes/Figs/dX_emTopNoL6_Data_CutEffect.png
+pass4/codes/Figs/dX_emTopNoL6_Rad_All.eps
+pass4/codes/Figs/dX_emTopNoL6_Rad_All.png
+pass4/codes/Figs/dX_emTopNoL6_Rad_AllBut.eps
+pass4/codes/Figs/dX_emTopNoL6_Rad_AllBut.png
+pass4/codes/Figs/dX_emTopNoL6_Rad_CutEffect.eps
+pass4/codes/Figs/dX_emTopNoL6_Rad_CutEffect.png
+pass4/codes/Figs/dX_emTopNoL6_Tri_All.eps
+pass4/codes/Figs/dX_emTopNoL6_Tri_All.png
+pass4/codes/Figs/dX_emTopNoL6_Tri_AllBut.eps
+pass4/codes/Figs/dX_emTopNoL6_Tri_AllBut.png
+pass4/codes/Figs/dX_emTopNoL6_Tri_CutEffect.eps
+pass4/codes/Figs/dX_emTopNoL6_Tri_CutEffect.png
+pass4/codes/Figs/dX_emTopNoL6_WAB_All.eps
+pass4/codes/Figs/dX_emTopNoL6_WAB_All.png
+pass4/codes/Figs/dX_emTopNoL6_WAB_AllBut.eps
+pass4/codes/Figs/dX_emTopNoL6_WAB_AllBut.png
+pass4/codes/Figs/dX_emTopNoL6_WAB_CutEffect.eps
+pass4/codes/Figs/dX_emTopNoL6_WAB_CutEffect.png
+pass4/codes/Figs/dX_emTopWithL6_Data_All.eps
+pass4/codes/Figs/dX_emTopWithL6_Data_All.png
+pass4/codes/Figs/dX_emTopWithL6_Data_AllBut.eps
+pass4/codes/Figs/dX_emTopWithL6_Data_AllBut.png
+pass4/codes/Figs/dX_emTopWithL6_Data_CutEffect.eps
+pass4/codes/Figs/dX_emTopWithL6_Data_CutEffect.png
+pass4/codes/Figs/dX_emTopWithL6_Rad_All.eps
+pass4/codes/Figs/dX_emTopWithL6_Rad_All.png
+pass4/codes/Figs/dX_emTopWithL6_Rad_AllBut.eps
+pass4/codes/Figs/dX_emTopWithL6_Rad_AllBut.png
+pass4/codes/Figs/dX_emTopWithL6_Rad_CutEffect.eps
+pass4/codes/Figs/dX_emTopWithL6_Rad_CutEffect.png
+pass4/codes/Figs/dX_emTopWithL6_Tri_All.eps
+pass4/codes/Figs/dX_emTopWithL6_Tri_All.png
+pass4/codes/Figs/dX_emTopWithL6_Tri_AllBut.eps
+pass4/codes/Figs/dX_emTopWithL6_Tri_AllBut.png
+pass4/codes/Figs/dX_emTopWithL6_Tri_CutEffect.eps
+pass4/codes/Figs/dX_emTopWithL6_Tri_CutEffect.png
+pass4/codes/Figs/dX_emTopWithL6_WAB_All.eps
+pass4/codes/Figs/dX_emTopWithL6_WAB_All.png
+pass4/codes/Figs/dX_emTopWithL6_WAB_AllBut.eps
+pass4/codes/Figs/dX_emTopWithL6_WAB_AllBut.png
+pass4/codes/Figs/dX_emTopWithL6_WAB_CutEffect.eps
+pass4/codes/Figs/dX_emTopWithL6_WAB_CutEffect.png
+pass4/codes/Figs/dX_epBotNoL6_Data_All.eps
+pass4/codes/Figs/dX_epBotNoL6_Data_All.png
+pass4/codes/Figs/dX_epBotNoL6_Data_AllBut.eps
+pass4/codes/Figs/dX_epBotNoL6_Data_AllBut.png
+pass4/codes/Figs/dX_epBotNoL6_Data_CutEffect.eps
+pass4/codes/Figs/dX_epBotNoL6_Data_CutEffect.png
+pass4/codes/Figs/dX_epBotNoL6_Rad_All.eps
+pass4/codes/Figs/dX_epBotNoL6_Rad_All.png
+pass4/codes/Figs/dX_epBotNoL6_Rad_AllBut.eps
+pass4/codes/Figs/dX_epBotNoL6_Rad_AllBut.png
+        pass4/codes/Figs/dX_epBotNoL6_Rad_CutEffect.eps
+        pass4/codes/Figs/dX_epBotNoL6_Rad_CutEffect.png
+        pass4/codes/Figs/dX_epBotNoL6_Tri_All.eps
+        pass4/codes/Figs/dX_epBotNoL6_Tri_All.png
+        pass4/codes/Figs/dX_epBotNoL6_Tri_AllBut.eps
+        pass4/codes/Figs/dX_epBotNoL6_Tri_AllBut.png
+        pass4/codes/Figs/dX_epBotNoL6_Tri_CutEffect.eps
+        pass4/codes/Figs/dX_epBotNoL6_Tri_CutEffect.png
+        pass4/codes/Figs/dX_epBotNoL6_WAB_All.eps
+        pass4/codes/Figs/dX_epBotNoL6_WAB_All.png
+        pass4/codes/Figs/dX_epBotNoL6_WAB_AllBut.eps
+        pass4/codes/Figs/dX_epBotNoL6_WAB_AllBut.png
+        pass4/codes/Figs/dX_epBotNoL6_WAB_CutEffect.eps
+        pass4/codes/Figs/dX_epBotNoL6_WAB_CutEffect.png
+        pass4/codes/Figs/dX_epBotWithL6_Data_All.eps
+        pass4/codes/Figs/dX_epBotWithL6_Data_All.png
+        pass4/codes/Figs/dX_epBotWithL6_Data_AllBut.eps
+        pass4/codes/Figs/dX_epBotWithL6_Data_AllBut.png
+        pass4/codes/Figs/dX_epBotWithL6_Data_CutEffect.eps
+        pass4/codes/Figs/dX_epBotWithL6_Data_CutEffect.png
+        pass4/codes/Figs/dX_epBotWithL6_Rad_All.eps
+        pass4/codes/Figs/dX_epBotWithL6_Rad_All.png
+        pass4/codes/Figs/dX_epBotWithL6_Rad_AllBut.eps
+        pass4/codes/Figs/dX_epBotWithL6_Rad_AllBut.png
+        pass4/codes/Figs/dX_epBotWithL6_Rad_CutEffect.eps
+        pass4/codes/Figs/dX_epBotWithL6_Rad_CutEffect.png
+        pass4/codes/Figs/dX_epBotWithL6_Tri_All.eps
+        pass4/codes/Figs/dX_epBotWithL6_Tri_All.png
+        pass4/codes/Figs/dX_epBotWithL6_Tri_AllBut.eps
+        pass4/codes/Figs/dX_epBotWithL6_Tri_AllBut.png
+        pass4/codes/Figs/dX_epBotWithL6_Tri_CutEffect.eps
+        pass4/codes/Figs/dX_epBotWithL6_Tri_CutEffect.png
+        pass4/codes/Figs/dX_epBotWithL6_WAB_All.eps
+        pass4/codes/Figs/dX_epBotWithL6_WAB_All.png
+        pass4/codes/Figs/dX_epBotWithL6_WAB_AllBut.eps
+        pass4/codes/Figs/dX_epBotWithL6_WAB_AllBut.png
+        pass4/codes/Figs/dX_epBotWithL6_WAB_CutEffect.eps
+        pass4/codes/Figs/dX_epBotWithL6_WAB_CutEffect.png
+        pass4/codes/Figs/dX_epTopNoL6_Data_All.eps
+        pass4/codes/Figs/dX_epTopNoL6_Data_All.png
+        pass4/codes/Figs/dX_epTopNoL6_Data_AllBut.eps
+        pass4/codes/Figs/dX_epTopNoL6_Data_AllBut.png
+        pass4/codes/Figs/dX_epTopNoL6_Data_CutEffect.eps
+        pass4/codes/Figs/dX_epTopNoL6_Data_CutEffect.png
+        pass4/codes/Figs/dX_epTopNoL6_Rad_All.eps
+        pass4/codes/Figs/dX_epTopNoL6_Rad_All.png
+        pass4/codes/Figs/dX_epTopNoL6_Rad_AllBut.eps
+        pass4/codes/Figs/dX_epTopNoL6_Rad_AllBut.png
+        pass4/codes/Figs/dX_epTopNoL6_Rad_CutEffect.eps
+        pass4/codes/Figs/dX_epTopNoL6_Rad_CutEffect.png
+        pass4/codes/Figs/dX_epTopNoL6_Tri_All.eps
+        pass4/codes/Figs/dX_epTopNoL6_Tri_All.png
+        pass4/codes/Figs/dX_epTopNoL6_Tri_AllBut.eps
+        pass4/codes/Figs/dX_epTopNoL6_Tri_AllBut.png
+        pass4/codes/Figs/dX_epTopNoL6_Tri_CutEffect.eps
+        pass4/codes/Figs/dX_epTopNoL6_Tri_CutEffect.png
+        pass4/codes/Figs/dX_epTopNoL6_WAB_All.eps
+        pass4/codes/Figs/dX_epTopNoL6_WAB_All.png
+        pass4/codes/Figs/dX_epTopNoL6_WAB_AllBut.eps
+        pass4/codes/Figs/dX_epTopNoL6_WAB_AllBut.png
+        pass4/codes/Figs/dX_epTopNoL6_WAB_CutEffect.eps
+        pass4/codes/Figs/dX_epTopNoL6_WAB_CutEffect.png
+        pass4/codes/Figs/dX_epTopWithL6_Data_All.eps
+        pass4/codes/Figs/dX_epTopWithL6_Data_All.png
+        pass4/codes/Figs/dX_epTopWithL6_Data_AllBut.eps
+        pass4/codes/Figs/dX_epTopWithL6_Data_AllBut.png
+        pass4/codes/Figs/dX_epTopWithL6_Data_CutEffect.eps
+        pass4/codes/Figs/dX_epTopWithL6_Data_CutEffect.png
+        pass4/codes/Figs/dX_epTopWithL6_Rad_All.eps
+        pass4/codes/Figs/dX_epTopWithL6_Rad_All.png
+        pass4/codes/Figs/dX_epTopWithL6_Rad_AllBut.eps
+        pass4/codes/Figs/dX_epTopWithL6_Rad_AllBut.png
+        pass4/codes/Figs/dX_epTopWithL6_Rad_CutEffect.eps
+        pass4/codes/Figs/dX_epTopWithL6_Rad_CutEffect.png
+        pass4/codes/Figs/dX_epTopWithL6_Tri_All.eps
+        pass4/codes/Figs/dX_epTopWithL6_Tri_All.png
+        pass4/codes/Figs/dX_epTopWithL6_Tri_AllBut.eps
+        pass4/codes/Figs/dX_epTopWithL6_Tri_AllBut.png
+        pass4/codes/Figs/dX_epTopWithL6_Tri_CutEffect.eps
+        pass4/codes/Figs/dX_epTopWithL6_Tri_CutEffect.png
+        pass4/codes/Figs/dX_epTopWithL6_WAB_All.eps
+        pass4/codes/Figs/dX_epTopWithL6_WAB_All.png
+        pass4/codes/Figs/dX_epTopWithL6_WAB_AllBut.eps
+        pass4/codes/Figs/dX_epTopWithL6_WAB_AllBut.png
+        pass4/codes/Figs/dX_epTopWithL6_WAB_CutEffect.eps
+        pass4/codes/Figs/dX_epTopWithL6_WAB_CutEffect.png
+        pass4/codes/Figs/em_cl_trk_dT_Bot_Data_All.eps
+        pass4/codes/Figs/em_cl_trk_dT_Bot_Data_All.png
+        pass4/codes/Figs/em_cl_trk_dT_Bot_Data_AllBut.eps
+        pass4/codes/Figs/em_cl_trk_dT_Bot_Data_AllBut.png
+        pass4/codes/Figs/em_cl_trk_dT_Bot_Data_CutEffect.eps
+        pass4/codes/Figs/em_cl_trk_dT_Bot_Data_CutEffect.png
+        pass4/codes/Figs/em_cl_trk_dT_Bot_Rad_All.eps
+        pass4/codes/Figs/em_cl_trk_dT_Bot_Rad_All.png
+        pass4/codes/Figs/em_cl_trk_dT_Bot_Rad_AllBut.eps
+        pass4/codes/Figs/em_cl_trk_dT_Bot_Rad_AllBut.png
+        pass4/codes/Figs/em_cl_trk_dT_Bot_Rad_CutEffect.eps
+        pass4/codes/Figs/em_cl_trk_dT_Bot_Rad_CutEffect.png
+        pass4/codes/Figs/em_cl_trk_dT_Bot_Tri_All.eps
+        pass4/codes/Figs/em_cl_trk_dT_Bot_Tri_All.png
+        pass4/codes/Figs/em_cl_trk_dT_Bot_Tri_AllBut.eps
+        pass4/codes/Figs/em_cl_trk_dT_Bot_Tri_AllBut.png
+        pass4/codes/Figs/em_cl_trk_dT_Bot_Tri_CutEffect.eps
+        pass4/codes/Figs/em_cl_trk_dT_Bot_Tri_CutEffect.png
+        pass4/codes/Figs/em_cl_trk_dT_Bot_WAB_All.eps
+        pass4/codes/Figs/em_cl_trk_dT_Bot_WAB_All.png
+        pass4/codes/Figs/em_cl_trk_dT_Bot_WAB_AllBut.eps
+        pass4/codes/Figs/em_cl_trk_dT_Bot_WAB_AllBut.png
+        pass4/codes/Figs/em_cl_trk_dT_Bot_WAB_CutEffect.eps
+        pass4/codes/Figs/em_cl_trk_dT_Bot_WAB_CutEffect.png
+        pass4/codes/Figs/em_cl_trk_dT_Top_Data_All.eps
+        pass4/codes/Figs/em_cl_trk_dT_Top_Data_All.png
+        pass4/codes/Figs/em_cl_trk_dT_Top_Data_AllBut.eps
+        pass4/codes/Figs/em_cl_trk_dT_Top_Data_AllBut.png
+        pass4/codes/Figs/em_cl_trk_dT_Top_Data_CutEffect.eps
+        pass4/codes/Figs/em_cl_trk_dT_Top_Data_CutEffect.png
+        pass4/codes/Figs/em_cl_trk_dT_Top_Rad_All.eps
+        pass4/codes/Figs/em_cl_trk_dT_Top_Rad_All.png
+        pass4/codes/Figs/em_cl_trk_dT_Top_Rad_AllBut.eps
+        pass4/codes/Figs/em_cl_trk_dT_Top_Rad_AllBut.png
+        pass4/codes/Figs/em_cl_trk_dT_Top_Rad_CutEffect.eps
+        pass4/codes/Figs/em_cl_trk_dT_Top_Rad_CutEffect.png
+        pass4/codes/Figs/em_cl_trk_dT_Top_Tri_All.eps
+        pass4/codes/Figs/em_cl_trk_dT_Top_Tri_All.png
+        pass4/codes/Figs/em_cl_trk_dT_Top_Tri_AllBut.eps
+        pass4/codes/Figs/em_cl_trk_dT_Top_Tri_AllBut.png
+        pass4/codes/Figs/em_cl_trk_dT_Top_Tri_CutEffect.eps
+        pass4/codes/Figs/em_cl_trk_dT_Top_Tri_CutEffect.png
+        pass4/codes/Figs/em_cl_trk_dT_Top_WAB_All.eps
+        pass4/codes/Figs/em_cl_trk_dT_Top_WAB_All.png
+        pass4/codes/Figs/em_cl_trk_dT_Top_WAB_AllBut.eps
+        pass4/codes/Figs/em_cl_trk_dT_Top_WAB_AllBut.png
+        pass4/codes/Figs/em_cl_trk_dT_Top_WAB_CutEffect.eps
+        pass4/codes/Figs/em_cl_trk_dT_Top_WAB_CutEffect.png
+        pass4/codes/Figs/ep_cl_trk_dT_Bot_Data_All.eps
+        pass4/codes/Figs/ep_cl_trk_dT_Bot_Data_All.png
+        pass4/codes/Figs/ep_cl_trk_dT_Bot_Data_AllBut.eps
+        pass4/codes/Figs/ep_cl_trk_dT_Bot_Data_AllBut.png
+        pass4/codes/Figs/ep_cl_trk_dT_Bot_Data_CutEffect.eps
+        pass4/codes/Figs/ep_cl_trk_dT_Bot_Data_CutEffect.png
+        pass4/codes/Figs/ep_cl_trk_dT_Bot_Rad_All.eps
+        pass4/codes/Figs/ep_cl_trk_dT_Bot_Rad_All.png
+        pass4/codes/Figs/ep_cl_trk_dT_Bot_Rad_AllBut.eps
+        pass4/codes/Figs/ep_cl_trk_dT_Bot_Rad_AllBut.png
+        pass4/codes/Figs/ep_cl_trk_dT_Bot_Rad_CutEffect.eps
+        pass4/codes/Figs/ep_cl_trk_dT_Bot_Rad_CutEffect.png
+        pass4/codes/Figs/ep_cl_trk_dT_Bot_Tri_All.eps
+        pass4/codes/Figs/ep_cl_trk_dT_Bot_Tri_All.png
+        pass4/codes/Figs/ep_cl_trk_dT_Bot_Tri_AllBut.eps
+        pass4/codes/Figs/ep_cl_trk_dT_Bot_Tri_AllBut.png
+        pass4/codes/Figs/ep_cl_trk_dT_Bot_Tri_CutEffect.eps
+        pass4/codes/Figs/ep_cl_trk_dT_Bot_Tri_CutEffect.png
+        pass4/codes/Figs/ep_cl_trk_dT_Bot_WAB_All.eps
+        pass4/codes/Figs/ep_cl_trk_dT_Bot_WAB_All.png
+        pass4/codes/Figs/ep_cl_trk_dT_Bot_WAB_AllBut.eps
+        pass4/codes/Figs/ep_cl_trk_dT_Bot_WAB_AllBut.png
+        pass4/codes/Figs/ep_cl_trk_dT_Bot_WAB_CutEffect.eps
+        pass4/codes/Figs/ep_cl_trk_dT_Bot_WAB_CutEffect.png
+        pass4/codes/Figs/ep_cl_trk_dT_Top_Data_All.eps
+        pass4/codes/Figs/ep_cl_trk_dT_Top_Data_All.png
+        pass4/codes/Figs/ep_cl_trk_dT_Top_Data_AllBut.eps
+        pass4/codes/Figs/ep_cl_trk_dT_Top_Data_AllBut.png
+        pass4/codes/Figs/ep_cl_trk_dT_Top_Data_CutEffect.eps
+        pass4/codes/Figs/ep_cl_trk_dT_Top_Data_CutEffect.png
+        pass4/codes/Figs/ep_cl_trk_dT_Top_Rad_All.eps
+        pass4/codes/Figs/ep_cl_trk_dT_Top_Rad_All.png
+        pass4/codes/Figs/ep_cl_trk_dT_Top_Rad_AllBut.eps
+        pass4/codes/Figs/ep_cl_trk_dT_Top_Rad_AllBut.png
+        pass4/codes/Figs/ep_cl_trk_dT_Top_Rad_CutEffect.eps
+        pass4/codes/Figs/ep_cl_trk_dT_Top_Rad_CutEffect.png
+        pass4/codes/Figs/ep_cl_trk_dT_Top_Tri_All.eps
+        pass4/codes/Figs/ep_cl_trk_dT_Top_Tri_All.png
+        pass4/codes/Figs/ep_cl_trk_dT_Top_Tri_AllBut.eps
+        pass4/codes/Figs/ep_cl_trk_dT_Top_Tri_AllBut.png
+        pass4/codes/Figs/ep_cl_trk_dT_Top_Tri_CutEffect.eps
+        pass4/codes/Figs/ep_cl_trk_dT_Top_Tri_CutEffect.png
+        pass4/codes/Figs/ep_cl_trk_dT_Top_WAB_All.eps
+        pass4/codes/Figs/ep_cl_trk_dT_Top_WAB_All.png
+        pass4/codes/Figs/ep_cl_trk_dT_Top_WAB_AllBut.eps
+        pass4/codes/Figs/ep_cl_trk_dT_Top_WAB_AllBut.png
+        pass4/codes/Figs/ep_cl_trk_dT_Top_WAB_CutEffect.eps
+        pass4/codes/Figs/ep_cl_trk_dT_Top_WAB_CutEffect.png
