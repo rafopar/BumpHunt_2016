@@ -47,10 +47,10 @@ const double cl_dTCut_Tight_MC = 0.4;
 
 const int nSVTLayers = 6;
 
-const double Pem_MaxTight_Data = 1.75;
+const double Pem_MaxTight_Data = 1.8;
 const double Pem_MaxTight_MC = 1.75;
 const double Pem_MaxCut_Data = 1.75;
-const double Pem_MaxCut_MC = 1.75;
+const double Pem_MaxCut_MC = 1.72;
 
 const double cl_dTcut_Data = 1.43;
 const double PsumCutMax_Data = 2.4;
@@ -61,7 +61,7 @@ const double PsumCutMin_MC = 1.51; // GeV
 const double d0_cut_Data = 1.176; // From pass1 Data and MC, will be revised with new MC
 const double d0_cut_MC = 0.65; // Needs to be verified
 
-const int nMinvBins = 12;       // # of Minv bins, We want to study Psum for different Minv Bins
+const int nMinvBins = 12; // # of Minv bins, We want to study Psum for different Minv Bins
 const double MinvMin = 0.;
 const double MinvMax = 0.24;
 
@@ -136,7 +136,7 @@ int ApMass = 0;
 // =====             | | 
 // ===== - - - - - - - - 
 // ==================================
-int CutsKey;  // This should be determined for each V0 candidate
+int CutsKey; // This should be determined for each V0 candidate
 
 // ===== This vector will contain vector of CutsKeys, that the given V0 will satisfy
 vector<int> v_CutsKeys;
@@ -170,13 +170,13 @@ int MinvBin;
 // ========= ================================ ============
 
 const double tritrig_SigmaGen = 1.416e-3;
-const double NGen_tritrig = 985.*50000.; /* 200 recon files, and each recon has 50K Gen events*/
+const double NGen_tritrig = 985. * 50000.; /* 985 recon files, and each recon has 50K Gen events*/
 
 const double Rad_SigmaGen = 81.61e-6;
-const double NGen_Rad = 4989*10000.;
+const double NGen_Rad = 4989 * 10000.;
 
 const double Wab_SigmaGen = 0.1985;
-const double NGen_Wab = 9965.*100000.;
+const double NGen_Wab = 9965. * 100000.;
 
 const double Lumin8099 = 237.e9;
 
@@ -229,7 +229,7 @@ map<int, vector<double> > m_v_PSum_General;
 // ===== different set of cuts that the v0 candidate passed
 // =========================================================================
 
-const int NCutInQuestion= 3;
+const int NCutInQuestion = 3;
 
 // Events with one or more V0 candidates
 // Require L1 hit from positron
@@ -245,7 +245,7 @@ const int NCutInQuestion= 3;
 // =====             | | --- # of V0 candidates: (1: if # of V0s with a given conditions is one, 0: otherwise)
 // =====             | | |
 // =====             | | |
-// ===== - - - - - - - - -
+// = bit - - 6 5 4 3 2 1 0
 
 map<int, TH1D*> m_h_Minv;
 map<int, TH1D*> m_h_Psum;
@@ -379,6 +379,100 @@ TH2D *h_trkCl_dt_P_Top_Cut;
 TH2D *h_trkCl_dt_P_Bot_Cut;
 
 TH1D *h_MinvBins1;
+
+
+// =================== Trk Cluster Matching histograms ============
+// =================== These include All, AllBut, CutEffect =======
+
+TH1D *h_clDt_All;
+TH1D *h_clDt_AllBut;
+TH1D *h_clDt_CutEffect;
+
+TH2D *h_cl_trk_dT_All;
+TH2D *h_cl_trk_dT_AllBut;
+TH2D *h_cl_trk_dT_CutEffect;
+
+TH2D *h_cl_trk_dT_Top_All;
+TH2D *h_cl_trk_dT_Top_AllBut;
+TH2D *h_cl_trk_dT_Top_CutEffect;
+
+TH2D *h_cl_trk_dT_Bot_All;
+TH2D *h_cl_trk_dT_Bot_AllBut;
+TH2D *h_cl_trk_dT_Bot_CutEffect;
+
+TH2D *h_em_cl_trk_dT_All;
+TH2D *h_em_cl_trk_dT_AllBut;
+TH2D *h_em_cl_trk_dT_CutEffect;
+
+TH2D *h_em_cl_trk_dT_Top_All;
+TH2D *h_em_cl_trk_dT_Top_AllBut;
+TH2D *h_em_cl_trk_dT_Top_CutEffect;
+
+TH2D *h_em_cl_trk_dT_Bot_All;
+TH2D *h_em_cl_trk_dT_Bot_AllBut;
+TH2D *h_em_cl_trk_dT_Bot_CutEffect;
+
+
+TH2D *h_ep_cl_trk_dT_All;
+TH2D *h_ep_cl_trk_dT_AllBut;
+TH2D *h_ep_cl_trk_dT_CutEffect;
+
+TH2D *h_ep_cl_trk_dT_Top_All;
+TH2D *h_ep_cl_trk_dT_Top_AllBut;
+TH2D *h_ep_cl_trk_dT_Top_CutEffect;
+
+TH2D *h_ep_cl_trk_dT_Bot_All;
+TH2D *h_ep_cl_trk_dT_Bot_AllBut;
+TH2D *h_ep_cl_trk_dT_Bot_CutEffect;
+
+
+TH2D *h_dX_em_All;
+TH2D *h_dX_em_AllBut;
+TH2D *h_dX_em_CutEffect;
+
+TH2D *h_dX_emTopWithL6_All;
+TH2D *h_dX_emTopWithL6_AllBut;
+TH2D *h_dX_emTopWithL6_CutEffect;
+TH2D *h_dX_emTopNoL6_All;
+TH2D *h_dX_emTopNoL6_AllBut;
+TH2D *h_dX_emTopNoL6_CutEffect;
+TH2D *h_dX_emBotWithL6_All;
+TH2D *h_dX_emBotWithL6_AllBut;
+TH2D *h_dX_emBotWithL6_CutEffect;
+TH2D *h_dX_emBotNoL6_All;
+TH2D *h_dX_emBotNoL6_AllBut;
+TH2D *h_dX_emBotNoL6_CutEffect;
+
+TH2D *h_dX_ep_All;
+TH2D *h_dX_ep_AllBut;
+TH2D *h_dX_ep_CutEffect;
+
+TH2D *h_dX_epTopWithL6_All;
+TH2D *h_dX_epTopWithL6_AllBut;
+TH2D *h_dX_epTopWithL6_CutEffect;
+TH2D *h_dX_epTopNoL6_All;
+TH2D *h_dX_epTopNoL6_AllBut;
+TH2D *h_dX_epTopNoL6_CutEffect;
+TH2D *h_dX_epBotWithL6_All;
+TH2D *h_dX_epBotWithL6_AllBut;
+TH2D *h_dX_epBotWithL6_CutEffect;
+TH2D *h_dX_epBotNoL6_All;
+TH2D *h_dX_epBotNoL6_AllBut;
+TH2D *h_dX_epBotNoL6_CutEffect;
+
+
+// =============== Final Event Selection Cuts Cuts ==========
+TH1D *h_Minv_Final1;
+TH1D *h_Minv_PMax_Final1;
+TH1D *h_Minv_PMin_Final1;
+TH1D *h_Minv_cldT_Final1;
+TH1D *h_Minv_epClTrkdT_Final1;
+TH1D *h_Minv_emClTrkdT_Final1;
+TH1D *h_Minv_epClTrkMatch_Final1;
+TH1D *h_Minv_emClTrkMatch_Final1;
+TH1D *h_Minv_Pem_Final1;
+TH1D *h_Minv_d0ep_Final1;
+
 
 // ========= ========================================================================= ========
 // ========= DST HPS type variables
@@ -558,6 +652,23 @@ vector<double> GetHitCoordAtLayer(GblTrack*, int);
 double GetMagnitude(vector<double>);
 
 // ===== ==============================================     ======
+// ===== Fill "dx VS P" histograms, it will figure out
+// ===== which category it is, whether it is top/bot or
+// ===== has L6 or has no L6 hit
+// ===== ==============================================     ======
+void FilldXP_ep(HpsParticle *V0, HpsParticle *Part, double P, double dX);
+void FilldXP_em(HpsParticle *V0, HpsParticle *Part, double P, double dX);
+
+
+// ===== ==============================================     ======
+// ===== Fill "dt VS P" histograms, it will figure out
+// ===== which category it is, whether it is top or bot
+// ===== ==============================================     ======
+void FilldtP_ep(HpsParticle *V0, HpsParticle *Part, double P, double dp);
+void FilldtP_em(HpsParticle *V0, HpsParticle *Part, double P, double dp);
+
+
+// ===== ==============================================     ======
 // ===== A function that you give as a 1st argument the     ======
 // ===== input histogram, and for each xbin, it determines  ======
 // ===== lbin, rbin, that events below lbin are less than   ======
@@ -578,5 +689,10 @@ void DefineCutGeneral(TH2D*, TH2D*, double);
 void InitCutHistograms();
 
 
+// ===== This function will go over  histograms   ======
+// ===== and for each histo, will create and Initialize cut ======
+// ===== histograms.                                        ======
+// ===== ==============================================     ======
+void InitGeneralHistograms();
 
 #endif
