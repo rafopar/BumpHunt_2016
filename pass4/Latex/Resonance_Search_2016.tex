@@ -279,12 +279,11 @@ In addition to the momentum dependence we noticed also slight difference between
 In Fig.\ref{fig:ClTrkTimeMatch} shown Cluster-Track time difference as a function of particle momentum for electrons. Left hand plots represents electrons in the bottom half, the right hand plots represents electrons in the top half of the detector. Plots in the top row represents the data, and 
 plots in the bottom represent MC (more specifically tri-trig sample).
 These distributions are constructed, when the rest of event selection cuts are applied, except the cluster-track time difference. On same figures, one can see 
-regions marked by red ``Boxes'', which represent 99\% limits described in section \ref{sec:2Dcuts}
-One can notice the MC is time resolution is significantly narrow. Because of this instead of a
-fix cut, for all data samples (Data, MC), we chose different cuts for Data and MC respectively, in other words these 99\% cut limits for data is obtained using events data events, while for MC 99\% 
-limits limits were obtained from MC sample. Broadening at very low momenta is because of the way, how cuts are defined. As described in \ref{sec:2Dcuts}, when the number of events in the given momentum
-bin gets smaller and smaller (less than 100, 60, 30, 10) cuts gets looser and looser, and that
-caused very few event at lower momenta to make cuts so large, however in the final data sample, practically there are no such events. No difference is observed for positrons, and we have didn't put these plots in this document (although can be found in \cite{evSelectionPlots}).
+regions marked by red ``Boxes'', which represent 99\% limits described in section \ref{sec:2Dcuts}.
+One can notice the MC time resolution is significantly narrow. Because of this, instead of a
+fix cut, for all data samples (Data, MC), we chose different cuts for Data and MC respectively, in other words these 99\% cut limits for data is obtained using data events, while for MC 99\% 
+limits were obtained from MC sample.
+ No difference is observed for positrons, and we didn't put these plots in this document (although can be found in \cite{evSelectionPlots}).
 
 
 \subsubsection{Coordinate matching}
@@ -319,7 +318,7 @@ will not improve the track-cluster matching noticeably.
  and consequently figures in the  bottom row represents bottom half of the detector.
  Figures a,b,e and f represent negative particles, and figures c, d, g and h represent positive
  particles. Figures a, c, e and g are tracks that have a 3D hit in L6, while b, d, f and h
- corresponds to tracks that don't don't have 3D hit in L6.
+ corresponds to tracks that don't have 3D hit in L6.
   Note: Each histogram is filled when the rest of event selection cuts are satisfied.}
 \label{fig:dXPDistributionsAllData}
 \end{figure}
@@ -376,7 +375,7 @@ outliers are cut, but can be done during, or after the review}).
  bottom row represents bottom half of the detector. Figures a,b,e and f represent
  negative particles,  and figures c, d, g and h represent positive particles. 
  Figures a, c, e and g are tracks that have a 3D hit in L6, while b, d, f and h
- corresponds to tracks that don't don't have 3D hit in L6. Note: Each histogram is
+ corresponds to tracks that don't have 3D hit in L6. Note: Each histogram is
  filled when the rest of event selection cuts are satisfied.}
 \label{fig:dXPDistributionsAllTri}
 \end{figure}
@@ -470,11 +469,11 @@ i.e. when the rest of cuts are applied before applying the given cut.
                   PsumMin          & 0.687376          & 0.601244          & 0.865508          & 0.913744          & 0.664391 \\ \hline
                      clDt          & 0.97363          & 0.995125          & 0.997946          & 0.9949          & 0.995062 \\ \hline
                       Pem          & 0.997601          & 0.999063          & 0.999102          & 0.99763          & 0.998665 \\ \hline
-                   d0\_ep          & 1          & 1          & 1          & 1          & 1 \\ \hline
-          em\_cl\_trk\_dT          & 0.989403          & 0.988463          & 1.61588e-12          & 0.98833          & 0.988456 \\ \hline
-          ep\_cl\_trk\_dT          & 0.989087          & 0.989022          & 1.61552e-12          & 0.964045          & 0.987673 \\ \hline
-                   dX\_em          & 0.985935          & 0.982492          & 1.59815e-12          & 0.981353          & 0.982432 \\ \hline
-                   dX\_ep          & 0.984304          & 0.982944          & 1.59722e-12          & 0.97479          & 0.982511 \\ \hline
+          em\_cl\_trk\_dT          & 0.989403          & 0.988463          & 0.995261          & 0.98833          & 0.988456 \\ \hline
+          ep\_cl\_trk\_dT          & 0.989087          & 0.989022          & 0.99504          & 0.964045          & 0.987673 \\ \hline
+                   dX\_em          & 0.985935          & 0.982492          & 0.984343          & 0.981353          & 0.982432 \\ \hline
+                   dX\_ep          & 0.984304          & 0.982944          & 0.983771          & 0.97479          & 0.982511 \\ \hline
+
 
  \end{tabular}
  \caption{The relative amount of events surviving each cut. The first column is the 
@@ -500,7 +499,7 @@ condition ({\color{Red} Refer to MC samples section. }) while in data there is n
 on ``PsumMin''.
 
 \vskip 1 cm
-{\color{Red} Add descriptions to the following pictures}
+{\color{Red} Add descriptions to the following pictures, and some more discussion}
 
 \begin{figure}[!htb]
   \centering
