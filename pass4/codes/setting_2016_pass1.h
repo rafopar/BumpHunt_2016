@@ -53,10 +53,12 @@ const double Pem_MaxCut_Data = 1.75;
 const double Pem_MaxCut_MC = 1.72;
 
 const double cl_dTcut_Data = 1.43;
-const double PsumCutMax_Data = 2.4;
-const double PsumCutMax_MC = 2.4;
-const double PsumCutMin_Data = 1.51; // GeV
-const double PsumCutMin_MC = 1.51; // GeV
+//const double PsumCutMax_Data = 2.4;
+//const double PsumCutMax_MC = 2.4;
+const double PsumCutMax_Data = 2.7;
+const double PsumCutMax_MC = 2.7;
+const double PsumCutMin_Data = 1.44; // GeV
+const double PsumCutMin_MC = 1.44; // GeV
 
 const double d0_cut_Data = 1.176; // From pass1 Data and MC, will be revised with new MC
 const double d0_cut_MC = 0.65; // Needs to be verified

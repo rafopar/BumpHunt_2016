@@ -314,24 +314,41 @@ void InitVariables(std::string dataSet) {
         f_trkCl_dt_Bot_TightLowerLim->SetParameters(-3.33916, -0.537733, 2.06764, -0.629115);
 
 
-        f_TrashUp_dX_Top_PosWithL6->SetParameters(7., 20., -0.5);
-        f_TrashLow_dX_Top_PosWithL6->SetParameters(7., -25., 0.);
-        f_TrashUp_dX_Top_PosNoL6->SetParameters(0., 16., 0.24);
-        f_TrashLow_dX_Top_PosNoL6->SetParameters(5., -15., 0.24);
-        f_TrashUp_dX_Bot_PosWithL6->SetParameters(-1., 25., -0.25);
-        f_TrashLow_dX_Bot_PosWithL6->SetParameters(1., -25., -0.25);
-        f_TrashUp_dX_Bot_PosNoL6->SetParameters(0., 16., 0.24);
-        f_TrashLow_dX_Bot_PosNoL6->SetParameters(5., -18., 0.18);
-        f_TrashUp_dX_Top_NegWithL6->SetParameters(4., 25., -0.45);
-        f_TrashLow_dX_Top_NegWithL6->SetParameters(-4., -25., -0.45);
-        f_TrashUp_dX_Top_NegNoL6->SetParameters(2., 15., 0.24);
-        f_TrashLow_dX_Top_NegNoL6->SetParameters(0., -16., 0.24);
-        f_TrashUp_dX_Bot_NegWithL6->SetParameters(11., 25., -1.95);
-        f_TrashLow_dX_Bot_NegWithL6->SetParameters(-11., -25., -1.95);
-        f_TrashUp_dX_Bot_NegNoL6->SetParameters(3., 10., 0.25);
-        f_TrashLow_dX_Bot_NegNoL6->SetParameters(0., -16., 0.24);
+//        f_TrashUp_dX_Top_PosWithL6->SetParameters(7., 20., -0.5);
+//        f_TrashLow_dX_Top_PosWithL6->SetParameters(7., -25., 0.);
+//        f_TrashUp_dX_Top_PosNoL6->SetParameters(0., 16., 0.24);
+//        f_TrashLow_dX_Top_PosNoL6->SetParameters(5., -15., 0.24);
+//        f_TrashUp_dX_Bot_PosWithL6->SetParameters(-1., 25., -0.25);
+//        f_TrashLow_dX_Bot_PosWithL6->SetParameters(1., -25., -0.25);
+//        f_TrashUp_dX_Bot_PosNoL6->SetParameters(0., 16., 0.24);
+//        f_TrashLow_dX_Bot_PosNoL6->SetParameters(5., -18., 0.18);
+//        f_TrashUp_dX_Top_NegWithL6->SetParameters(4., 25., -0.45);
+//        f_TrashLow_dX_Top_NegWithL6->SetParameters(-4., -25., -0.45);
+//        f_TrashUp_dX_Top_NegNoL6->SetParameters(2., 15., 0.24);
+//        f_TrashLow_dX_Top_NegNoL6->SetParameters(0., -16., 0.24);
+//        f_TrashUp_dX_Bot_NegWithL6->SetParameters(11., 25., -1.95);
+//        f_TrashLow_dX_Bot_NegWithL6->SetParameters(-11., -25., -1.95);
+//        f_TrashUp_dX_Bot_NegNoL6->SetParameters(3., 10., 0.25);
+//        f_TrashLow_dX_Bot_NegNoL6->SetParameters(0., -16., 0.24);
 
-
+        f_TrashUp_dX_Top_PosWithL6->SetParameters(7., 25., 0.);
+        f_TrashLow_dX_Top_PosWithL6->SetParameters(4., -25., 0.);
+        f_TrashUp_dX_Top_PosNoL6->SetParameters(-5., 45., -0.4);
+        f_TrashLow_dX_Top_PosNoL6->SetParameters(7., -22., 0.1);
+        f_TrashUp_dX_Bot_PosWithL6->SetParameters(5., 25., -0.25);
+        f_TrashLow_dX_Bot_PosWithL6->SetParameters(-4., -25., -0.25);
+        f_TrashUp_dX_Bot_PosNoL6->SetParameters(-10., 46., -0.2);
+        f_TrashLow_dX_Bot_PosNoL6->SetParameters(5., -25., 0.01);
+        
+        f_TrashLow_dX_Top_NegWithL6->SetParameters(10., -50., -0.4);
+        f_TrashUp_dX_Top_NegWithL6->SetParameters(5., 35., -0.65);
+        f_TrashUp_dX_Top_NegNoL6->SetParameters(-10., 37., -0.1);        
+        f_TrashLow_dX_Top_NegNoL6->SetParameters(12., -40., -0.1);
+        f_TrashUp_dX_Bot_NegWithL6->SetParameters(0., 65., -1.95);
+        f_TrashLow_dX_Bot_NegWithL6->SetParameters(10., -105., -1.95);
+        f_TrashUp_dX_Bot_NegNoL6->SetParameters(-15., 40., -0.2);
+        f_TrashLow_dX_Bot_NegNoL6->SetParameters(-3., -25., -0.01);
+        
         if (isEventSelection) {
             InitCutHistograms();
         }
@@ -413,22 +430,22 @@ void InitVariables(std::string dataSet) {
         f_trkCl_dt_Bot_TightLowerLim->SetParameters(-3.33916, -0.537733, 2.06764, -0.629115);
 
 
-        f_TrashUp_dX_Top_PosWithL6->SetParameters(7., 20., -0.5);
-        f_TrashLow_dX_Top_PosWithL6->SetParameters(7., -25., 0.);
-        f_TrashUp_dX_Top_PosNoL6->SetParameters(0., 16., 0.24);
-        f_TrashLow_dX_Top_PosNoL6->SetParameters(5., -15., 0.24);
+        f_TrashUp_dX_Top_PosWithL6->SetParameters(4., 20., -0.5);
+        f_TrashLow_dX_Top_PosWithL6->SetParameters(-2., -25., -0.75);
+        f_TrashUp_dX_Top_PosNoL6->SetParameters(2., 16., 0.);
+        f_TrashLow_dX_Top_PosNoL6->SetParameters(1., -15., 0.);
         f_TrashUp_dX_Bot_PosWithL6->SetParameters(-1., 25., -0.25);
         f_TrashLow_dX_Bot_PosWithL6->SetParameters(1., -25., -0.25);
-        f_TrashUp_dX_Bot_PosNoL6->SetParameters(0., 16., 0.24);
-        f_TrashLow_dX_Bot_PosNoL6->SetParameters(5., -18., 0.18);
-        f_TrashUp_dX_Top_NegWithL6->SetParameters(4., 25., -0.45);
-        f_TrashLow_dX_Top_NegWithL6->SetParameters(-4., -25., -0.45);
-        f_TrashUp_dX_Top_NegNoL6->SetParameters(2., 15., 0.24);
-        f_TrashLow_dX_Top_NegNoL6->SetParameters(0., -16., 0.24);
-        f_TrashUp_dX_Bot_NegWithL6->SetParameters(11., 25., -1.95);
-        f_TrashLow_dX_Bot_NegWithL6->SetParameters(-11., -25., -1.95);
-        f_TrashUp_dX_Bot_NegNoL6->SetParameters(3., 10., 0.25);
-        f_TrashLow_dX_Bot_NegNoL6->SetParameters(0., -16., 0.24);
+        f_TrashUp_dX_Bot_PosNoL6->SetParameters(0., 16., 0.04);
+        f_TrashLow_dX_Bot_PosNoL6->SetParameters(5., -18., 0.);
+        f_TrashUp_dX_Top_NegWithL6->SetParameters(4., 25., -0.75);
+        f_TrashLow_dX_Top_NegWithL6->SetParameters(-3., -25., -1.);
+        f_TrashUp_dX_Top_NegNoL6->SetParameters(2., 15., -0.05);
+        f_TrashLow_dX_Top_NegNoL6->SetParameters(4., -16., 0.24);
+        f_TrashUp_dX_Bot_NegWithL6->SetParameters(8., 25., -1.95);
+        f_TrashLow_dX_Bot_NegWithL6->SetParameters(0., -25., -0.5);        
+        f_TrashUp_dX_Bot_NegNoL6->SetParameters(0., 20., -0.12);
+        f_TrashLow_dX_Bot_NegNoL6->SetParameters(12., -46., -0.54);
 
         if (isEventSelection) {
             InitCutHistograms();
@@ -1022,7 +1039,8 @@ bool IsPsumMinCut(double P) {
 
 bool IsD0Cut(double d0) {
 
-    return (d0 < d0_cut);
+    return (d0 > 2.25);
+    //return (d0 < d0_cut);
 }
 
 vector<double> GetHitCoordAtLayer(GblTrack* trk, int layer) {
@@ -1376,7 +1394,8 @@ void FilldtP_em(HpsParticle *V0, HpsParticle *em, double P, double dt) {
 
 void InitCutHistograms() {
 
-    TH2D *h_dX_Top_PosWithL6 = (TH2D*) file_CutHists->Get("h_dX_Top_PosWithL6");
+    TH2D *h_dX_Top_PosWithL6 = (TH2D*) file_CutHists->Get("h_dX_epTopWithL6_AllBut");
+    h_dX_Top_PosWithL6->SetName("h_dX_Top_PosWithL6");
     h_dX_Top_PosWithL6_Cut = (TH2D*) h_dX_Top_PosWithL6->Clone("h_dX_Top_PosWithL6_Cut");
     for (int ix = 0; ix < h_dX_Top_PosWithL6->GetNbinsY(); ix++) {
         for (int iy = 0; iy < h_dX_Top_PosWithL6->GetNbinsX(); iy++) {
@@ -1392,7 +1411,8 @@ void InitCutHistograms() {
     file_CutHists2->Add(h_dX_Top_PosWithL6);
     file_CutHists2->Add(h_dX_Top_PosWithL6_Cut);
 
-    TH2D *h_dX_Top_PosNoL6 = (TH2D*) file_CutHists->Get("h_dX_Top_PosNoL6");
+    TH2D *h_dX_Top_PosNoL6 = (TH2D*) file_CutHists->Get("h_dX_epTopNoL6_AllBut");
+    h_dX_Top_PosNoL6->SetName("h_dX_Top_PosNoL6");
     h_dX_Top_PosNoL6_Cut = (TH2D*) h_dX_Top_PosNoL6->Clone("h_dX_Top_PosNoL6_Cut");
 
     for (int ix = 0; ix < h_dX_Top_PosNoL6->GetNbinsX(); ix++) {
@@ -1411,7 +1431,8 @@ void InitCutHistograms() {
 
 
 
-    TH2D *h_dX_Bot_PosWithL6 = (TH2D*) file_CutHists->Get("h_dX_Bot_PosWithL6");
+    TH2D *h_dX_Bot_PosWithL6 = (TH2D*) file_CutHists->Get("h_dX_epBotWithL6_AllBut");
+    h_dX_Bot_PosWithL6->SetName("h_dX_Bot_PosWithL6");
     h_dX_Bot_PosWithL6_Cut = (TH2D*) h_dX_Bot_PosWithL6->Clone("h_dX_Bot_PosWithL6_Cut");
     for (int ix = 0; ix < h_dX_Bot_PosWithL6->GetNbinsY(); ix++) {
         for (int iy = 0; iy < h_dX_Bot_PosWithL6->GetNbinsX(); iy++) {
@@ -1427,7 +1448,8 @@ void InitCutHistograms() {
     file_CutHists2->Add(h_dX_Bot_PosWithL6);
     file_CutHists2->Add(h_dX_Bot_PosWithL6_Cut);
 
-    TH2D *h_dX_Bot_PosNoL6 = (TH2D*) file_CutHists->Get("h_dX_Bot_PosNoL6");
+    TH2D *h_dX_Bot_PosNoL6 = (TH2D*) file_CutHists->Get("h_dX_epBotNoL6_AllBut");
+    h_dX_Bot_PosNoL6->SetName("h_dX_Bot_PosNoL6");
     h_dX_Bot_PosNoL6_Cut = (TH2D*) h_dX_Bot_PosNoL6->Clone("h_dX_Bot_PosNoL6_Cut");
 
     for (int ix = 0; ix < h_dX_Bot_PosNoL6->GetNbinsX(); ix++) {
@@ -1447,7 +1469,8 @@ void InitCutHistograms() {
 
 
 
-    TH2D *h_dX_Top_NegWithL6 = (TH2D*) file_CutHists->Get("h_dX_Top_NegWithL6");
+    TH2D *h_dX_Top_NegWithL6 = (TH2D*) file_CutHists->Get("h_dX_emTopWithL6_AllBut");
+    h_dX_Top_NegWithL6->SetName("h_dX_Top_NegWithL6");
     h_dX_Top_NegWithL6_Cut = (TH2D*) h_dX_Top_NegWithL6->Clone("h_dX_Top_NegWithL6_Cut");
     for (int ix = 0; ix < h_dX_Top_NegWithL6->GetNbinsX(); ix++) {
         for (int iy = 0; iy < h_dX_Top_NegWithL6->GetNbinsY(); iy++) {
@@ -1463,7 +1486,8 @@ void InitCutHistograms() {
     file_CutHists2->Add(h_dX_Top_NegWithL6);
     file_CutHists2->Add(h_dX_Top_NegWithL6_Cut);
 
-    TH2D *h_dX_Top_NegNoL6 = (TH2D*) file_CutHists->Get("h_dX_Top_NegNoL6");
+    TH2D *h_dX_Top_NegNoL6 = (TH2D*) file_CutHists->Get("h_dX_emTopNoL6_AllBut");
+    h_dX_Top_NegNoL6->SetName("h_dX_Top_NegNoL6");
     h_dX_Top_NegNoL6_Cut = (TH2D*) h_dX_Top_NegNoL6->Clone("h_dX_Top_NegNoL6_Cut");
 
     for (int ix = 0; ix < h_dX_Top_NegNoL6->GetNbinsX(); ix++) {
@@ -1482,7 +1506,8 @@ void InitCutHistograms() {
 
 
 
-    TH2D *h_dX_Bot_NegWithL6 = (TH2D*) file_CutHists->Get("h_dX_Bot_NegWithL6");
+    TH2D *h_dX_Bot_NegWithL6 = (TH2D*) file_CutHists->Get("h_dX_emBotWithL6_AllBut");
+    h_dX_Bot_NegWithL6->SetName("h_dX_Bot_NegWithL6");
     h_dX_Bot_NegWithL6_Cut = (TH2D*) h_dX_Bot_NegWithL6->Clone("h_dX_Bot_NegWithL6_Cut");
     for (int ix = 0; ix < h_dX_Bot_NegWithL6->GetNbinsY(); ix++) {
         for (int iy = 0; iy < h_dX_Bot_NegWithL6->GetNbinsX(); iy++) {
@@ -1498,7 +1523,8 @@ void InitCutHistograms() {
     file_CutHists2->Add(h_dX_Bot_NegWithL6);
     file_CutHists2->Add(h_dX_Bot_NegWithL6_Cut);
 
-    TH2D *h_dX_Bot_NegNoL6 = (TH2D*) file_CutHists->Get("h_dX_Bot_NegNoL6");
+    TH2D *h_dX_Bot_NegNoL6 = (TH2D*) file_CutHists->Get("h_dX_emBotNoL6_AllBut");
+    h_dX_Bot_NegNoL6->SetName("h_dX_Bot_NegNoL6");
     h_dX_Bot_NegNoL6_Cut = (TH2D*) h_dX_Bot_NegNoL6->Clone("h_dX_Bot_NegNoL6_Cut");
 
     for (int ix = 0; ix < h_dX_Bot_NegNoL6->GetNbinsX(); ix++) {
@@ -1582,40 +1608,40 @@ void InitGeneralHistograms() {
     h_ep_cl_trk_dT_Bot_CutEffect = new TH2D("h_ep_cl_trk_dT_Bot_CutEffect", "", 200, 0., 2.5, 200, -8., 8. );
 
 
-    h_dX_em_All = new TH2D("h_dX_em_All", "", 200, 0., Eb, 200, -50., 50.);
-    h_dX_em_AllBut = new TH2D("h_dX_em_AllBut", "", 200, 0., Eb, 200, -50., 50.);
-    h_dX_em_CutEffect = new TH2D("h_dX_em_CutEffect", "", 200, 0., Eb, 200, -50., 50.);
+    h_dX_em_All = new TH2D("h_dX_em_All", "", 60, 0., 2.5   , 200, -50., 50.);
+    h_dX_em_AllBut = new TH2D("h_dX_em_AllBut", "", 60, 0., 2.5   , 200, -50., 50.);
+    h_dX_em_CutEffect = new TH2D("h_dX_em_CutEffect", "", 60, 0., 2.5   , 200, -50., 50.);
 
-    h_dX_emTopWithL6_All = new TH2D("h_dX_emTopWithL6_All", "", 200, 0., Eb, 200, -50., 50.);
-    h_dX_emTopWithL6_AllBut = new TH2D("h_dX_emTopWithL6_AllBut", "", 200, 0., Eb, 200, -50., 50.);
-    h_dX_emTopWithL6_CutEffect = new TH2D("h_dX_emTopWithL6_CutEffect", "", 200, 0., Eb, 200, -50., 50.);
-    h_dX_emTopNoL6_All = new TH2D("h_dX_emTopNoL6_All", "", 200, 0., Eb, 200, -50., 50.);
-    h_dX_emTopNoL6_AllBut = new TH2D("h_dX_emTopNoL6_AllBut", "", 200, 0., Eb, 200, -50., 50.);
-    h_dX_emTopNoL6_CutEffect = new TH2D("h_dX_emTopNoL6_CutEffect", "", 200, 0., Eb, 200, -50., 50.);
-    h_dX_emBotWithL6_All = new TH2D("h_dX_emBotWithL6_All", "", 200, 0., Eb, 200, -50., 50.);
-    h_dX_emBotWithL6_AllBut = new TH2D("h_dX_emBotWithL6_AllBut", "", 200, 0., Eb, 200, -50., 50.);
-    h_dX_emBotWithL6_CutEffect = new TH2D("h_dX_emBotWithL6_CutEffect", "", 200, 0., Eb, 200, -50., 50.);
-    h_dX_emBotNoL6_All = new TH2D("h_dX_emBotNoL6_All", "", 200, 0., Eb, 200, -50., 50.);
-    h_dX_emBotNoL6_AllBut = new TH2D("h_dX_emBotNoL6_AllBut", "", 200, 0., Eb, 200, -50., 50.);
-    h_dX_emBotNoL6_CutEffect = new TH2D("h_dX_emBotNoL6_CutEffect", "", 200, 0., Eb, 200, -50., 50.);
+    h_dX_emTopWithL6_All = new TH2D("h_dX_emTopWithL6_All", "", 60, 0., 2.5   , 200, -50., 50.);
+    h_dX_emTopWithL6_AllBut = new TH2D("h_dX_emTopWithL6_AllBut", "", 60, 0., 2.5   , 200, -50., 50.);
+    h_dX_emTopWithL6_CutEffect = new TH2D("h_dX_emTopWithL6_CutEffect", "", 60, 0., 2.5   , 200, -50., 50.);
+    h_dX_emTopNoL6_All = new TH2D("h_dX_emTopNoL6_All", "", 60, 0., 2.5   , 200, -50., 50.);
+    h_dX_emTopNoL6_AllBut = new TH2D("h_dX_emTopNoL6_AllBut", "", 60, 0., 2.5   , 200, -50., 50.);
+    h_dX_emTopNoL6_CutEffect = new TH2D("h_dX_emTopNoL6_CutEffect", "", 60, 0., 2.5   , 200, -50., 50.);
+    h_dX_emBotWithL6_All = new TH2D("h_dX_emBotWithL6_All", "", 60, 0., 2.5   , 200, -50., 50.);
+    h_dX_emBotWithL6_AllBut = new TH2D("h_dX_emBotWithL6_AllBut", "", 60, 0., 2.5   , 200, -50., 50.);
+    h_dX_emBotWithL6_CutEffect = new TH2D("h_dX_emBotWithL6_CutEffect", "", 60, 0., 2.5   , 200, -50., 50.);
+    h_dX_emBotNoL6_All = new TH2D("h_dX_emBotNoL6_All", "", 60, 0., 2.5   , 200, -50., 50.);
+    h_dX_emBotNoL6_AllBut = new TH2D("h_dX_emBotNoL6_AllBut", "", 60, 0., 2.5   , 200, -50., 50.);
+    h_dX_emBotNoL6_CutEffect = new TH2D("h_dX_emBotNoL6_CutEffect", "", 60, 0., 2.5   , 200, -50., 50.);
 
-    h_dX_ep_All = new TH2D("h_dX_ep_All", "", 200, 0., Eb, 200, -50., 50.);
-    h_dX_ep_AllBut = new TH2D("h_dX_ep_AllBut", "", 200, 0., Eb, 200, -50., 50.);
-    h_dX_ep_CutEffect = new TH2D("h_dX_ep_CutEffect", "", 200, 0., Eb, 200, -50., 50.);
+    h_dX_ep_All = new TH2D("h_dX_ep_All", "", 60, 0., 2.5   , 200, -50., 50.);
+    h_dX_ep_AllBut = new TH2D("h_dX_ep_AllBut", "", 60, 0., 2.5   , 200, -50., 50.);
+    h_dX_ep_CutEffect = new TH2D("h_dX_ep_CutEffect", "", 60, 0., 2.5   , 200, -50., 50.);
 
 
-    h_dX_epTopWithL6_All = new TH2D("h_dX_epTopWithL6_All", "", 200, 0., Eb, 200, -50., 50.);
-    h_dX_epTopWithL6_AllBut = new TH2D("h_dX_epTopWithL6_AllBut", "", 200, 0., Eb, 200, -50., 50.);
-    h_dX_epTopWithL6_CutEffect = new TH2D("h_dX_epTopWithL6_CutEffect", "", 200, 0., Eb, 200, -50., 50.);
-    h_dX_epTopNoL6_All = new TH2D("h_dX_epTopNoL6_All", "", 200, 0., Eb, 200, -50., 50.);
-    h_dX_epTopNoL6_AllBut = new TH2D("h_dX_epTopNoL6_AllBut", "", 200, 0., Eb, 200, -50., 50.);
-    h_dX_epTopNoL6_CutEffect = new TH2D("h_dX_epTopNoL6_CutEffect", "", 200, 0., Eb, 200, -50., 50.);
-    h_dX_epBotWithL6_All = new TH2D("h_dX_epBotWithL6_All", "", 200, 0., Eb, 200, -50., 50.);
-    h_dX_epBotWithL6_AllBut = new TH2D("h_dX_epBotWithL6_AllBut", "", 200, 0., Eb, 200, -50., 50.);
-    h_dX_epBotWithL6_CutEffect = new TH2D("h_dX_epBotWithL6_CutEffect", "", 200, 0., Eb, 200, -50., 50.);
-    h_dX_epBotNoL6_All = new TH2D("h_dX_epBotNoL6_All", "", 200, 0., Eb, 200, -50., 50.);
-    h_dX_epBotNoL6_AllBut = new TH2D("h_dX_epBotNoL6_AllBut", "", 200, 0., Eb, 200, -50., 50.);
-    h_dX_epBotNoL6_CutEffect = new TH2D("h_dX_epBotNoL6_CutEffect", "", 200, 0., Eb, 200, -50., 50.);
+    h_dX_epTopWithL6_All = new TH2D("h_dX_epTopWithL6_All", "", 60, 0., 2.5   , 200, -50., 50.);
+    h_dX_epTopWithL6_AllBut = new TH2D("h_dX_epTopWithL6_AllBut", "", 60, 0., 2.5   , 200, -50., 50.);
+    h_dX_epTopWithL6_CutEffect = new TH2D("h_dX_epTopWithL6_CutEffect", "", 60, 0., 2.5   , 200, -50., 50.);
+    h_dX_epTopNoL6_All = new TH2D("h_dX_epTopNoL6_All", "", 60, 0., 2.5   , 200, -50., 50.);
+    h_dX_epTopNoL6_AllBut = new TH2D("h_dX_epTopNoL6_AllBut", "", 60, 0., 2.5   , 200, -50., 50.);
+    h_dX_epTopNoL6_CutEffect = new TH2D("h_dX_epTopNoL6_CutEffect", "", 60, 0., 2.5   , 200, -50., 50.);
+    h_dX_epBotWithL6_All = new TH2D("h_dX_epBotWithL6_All", "", 60, 0., 2.5   , 200, -50., 50.);
+    h_dX_epBotWithL6_AllBut = new TH2D("h_dX_epBotWithL6_AllBut", "", 60, 0., 2.5   , 200, -50., 50.);
+    h_dX_epBotWithL6_CutEffect = new TH2D("h_dX_epBotWithL6_CutEffect", "", 60, 0., 2.5   , 200, -50., 50.);
+    h_dX_epBotNoL6_All = new TH2D("h_dX_epBotNoL6_All", "", 60, 0., 2.5   , 200, -50., 50.);
+    h_dX_epBotNoL6_AllBut = new TH2D("h_dX_epBotNoL6_AllBut", "", 60, 0., 2.5   , 200, -50., 50.);
+    h_dX_epBotNoL6_CutEffect = new TH2D("h_dX_epBotNoL6_CutEffect", "", 60, 0., 2.5   , 200, -50., 50.);
 
     // =============== Final Event Selection Cuts Cuts ==========
     h_Minv_Final1 = new TH1D("h_Minv_Final1", "", 200, 0., 0.24);
