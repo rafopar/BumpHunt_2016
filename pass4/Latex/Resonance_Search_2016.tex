@@ -15,6 +15,8 @@
 \usepackage{subfig}
 \usepackage{authblk}
 \usepackage{hyperref}
+\usepackage{diagbox}   % for the table to have a diagonal line in the cell 
+
 \hypersetup{
     colorlinks=true,
     linkcolor=blue,
@@ -172,11 +174,403 @@ The Figure of Merit (FOM) is chosen as $\frac{\dstl \mathrm{S}}{\dstl \sqrt{\mat
  \centering
  \subfloat{\label{fig:PSUMCComponents}\grinp[width=0.45\tw]{Figs/PSum3_MC_Components.pdf}}
 \subfloat{\label{fig:PSUMFOM}\grinp[width=0.45\tw]{Figs/PSum3_FOM.pdf}}
-\caption{Left plot represents $\mathrm{P_{Sum}}$ distribution for different MC components, while the right plot represents the FOM as a function of the $\mathrm{P_{Sum}}$ Min cut. The vertical line on the right plot shows the cut value, whre the FOM is maximum.}
+\caption{Left plot represents differential cross sections  $\mathrm{\displaystyle \frac{d\sigma}{\displaystyle d P_{Sum}}}$ as a function of $\mathrm{P_{Sum}}$ for different MC components, while the right plot represents the FOM as a function of the $\mathrm{P_{Sum}}$ Min cut. The vertical line on the right plot shows the cut value, 
+where the FOM is maximum. Error bars in the left plot are square root of the square
+sums of statistical uncertainties and the generator cross section uncertainty.
+}
 \label{fig:PSUMMINFOM}
 \end{figure}
 %%%%%%%%%%%%%%%%%%%%%%%%%% F I G U R E %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 In the left plot of Fig.\ref{fig:PSUMMINFOM} shown difference MC components: Wab (brown), Rad (red), Tri (blue) and Wab + Tri (orange), when the rest of event selection cuts are applied. The right plot shows the FOM as a function of the $\mathrm{P_{Sum}}$ cut. The $\mathrm{P_{Sum}}$ value that maximizes the FOM is chosen for the $\mathrm{P_{Sum}}$ Min cut.
+
+\subsection{\texorpdfstring{$\mathrm{P_{Sum}}$}{Lg} Max cut}
+The purpose of putting a maximum limit on $\mathrm{P_{Sum}}$, is to help to cut 
+accidentals more, that could potentially pass the rest of event selection cuts.
+%%%%%%%%%%%%%%%%%%%%%%%%%% F I G U R E %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{figure}[!htb]
+ \centering
+ \grinp[width=0.45\tw]{Figs/PSumMuxCut_AllBut.pdf}
+ \caption{Observed cross section $\mathrm{ \dfrac{d\sigma}{d P_{Sum}} }$ as a function of $\mathrm{P_{Sum}}$, for Data and different MC components. }
+ \label{fig:PSumMaxCutJustify}
+\end{figure}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%% F I G U R E %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\clearpage
+\subsection{Two dimensional cuts}
+\label{sec:2Dcuts}
+Some of event selections cuts described below are two dimensional cuts, i.e. the cut value depends on the value of another variable. 
+In this analysis, these cuts are track-cluster matching cuts 
+(time and coordinate matching), and for both time and coordinate matching cut 
+limits are defined as function of particle's momentum.
+
+In general, to study the distribution of a given variable for a ''signal like`` particle, the rest of event selection cuts are applied, to make as clean as possible signal.  
+The only exception is the two cluster time difference cut, which is described in section \ref{sec:cldTcuts} ).
+Applying the rest of cuts except the one under the investigation, will ensure the 
+accidental background is minimal (negligible), and the resulting distribution will represent actuall signal (the $e^{-}$, $e^{+}$, ($X$) final state). In most of cases the distribution is not Gaussian, even when it represent a small momentum bin.
+%%%%%%%%%%%%%%%%%%%%%%%%%% F I G U R E %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{figure}[!htb]
+ \centering
+ \grinp[width=0.75\tw]{Figs/CutLimitTests.pdf}
+ \caption{Illustration of  $3\sigma$ cut limits vs $99\%$ cut limits on a toy distribution.}
+ \label{fig:CutLimitIllustration}
+\end{figure}
+%%%%%%%%%%%%%%%%%%%%%%%%%% F I G U R E %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+In such cases, the conventional $\pm 3\sigma$ cuts will not keep $99.7\%$ but rather  might cut more events. As an example in Fig.\ref{fig:CutLimitIllustration} shown a toy distribution which is not a pure Gaussian, but rather has a tail on the left side. The Gaussian fit is shown on top of the histogram and $\pm 3\sigma$ limits are shown by vertical red lines. One can see that $-3\sigma$ limit will cut several $\%$ of events rather than $0.3\%$. Instead it was decided to choose left and right cuts limits such that will keep $99\%$ of the signal and will throw $0.5\%$ of signal events from each side. In this particular case $99\%$ cut limits are shown by blue vertical lines. \newline \indent
+There are some special cases in this algorithm, which are explained below. 
+
+% \vskip 1cm
+% 1. The number of events in the one dimensional projected histogram is too low. In this case, when then number of events is below 45, then the entire momentum bin is considered as out of acceptance. Note: the data sample that we use, has such statistics, that two dimensional original histograms that we use have about 200K or more events, and binning is chosen such, that the total number of events that are in the ''$N < 45$`` category one dimensional histograms are significantly less than $1\%$ of the original two dimensional histogram.
+
+\vskip 1cm
+The number of events in the one dimensional histogram is not high, let say below 
+500. In this the number of events in each side of the tail will be 2 or less, and 
+moreover, when the number of events in the histogram is less than 200 then 99\%
+limit would correspond to less than 1 event to be in the tail. If we keep the 99\%
+limits for all momentum bins, then for bins with small statistics 
+(order of 500 events and less then), then the cut limits will have large
+fluctuations from bin to bin (momentum bin). For this reason the cut limits
+were tightened for momentum bins with less than 500 events. The purpose of this
+modifications is to make event selection cuts smoother as a function of momentum.
+Momentum bins with small number of events have either very low momentum 
+(less than 400 MeV), or very high momentum (above 1.8 GeV), and they comprise
+less than 0.1\% of events that pass all event selection cuts.
+Cut limits for different statistic cases are summarized
+%%%%%%%%%%%%%%%%%%%%%%%%%% T A B L E %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{table}[!htb]
+ \centering
+ \begin{tabular}{|l|r|}
+  \hline
+ \textbf{ $\#$ of events} & \textbf{Cut limit} \\ \hline
+  $\mathrm{ N > 500}$ & $99\%$ \\ \hline
+  $\mathrm{200 < N < 500}$ & $98\%$ \\ \hline
+  $\mathrm{100 < N < 200}$ & $96\%$ \\ \hline
+  $\mathrm{60 < N < 100}$ & $95\%$ \\ \hline
+  $\mathrm{30 < N < 60}$ & $90\%$ \\ \hline
+  $\mathrm{10 < N < 30}$ & $75\%$ \\ \hline
+  $\mathrm{0  < N < 10}$ & $60\%$ \\ \hline
+ \end{tabular}
+\caption{Cut limits for different statistic scenarios.}
+\label{tb:2DCutLimits}
+\end{table}
+%%%%%%%%%%%%%%%%%%%%%%%%%% T A B L E %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+in table \ref{tb:2DCutLimits}.
+
+\subsection{Track-Cluster Matching}
+The offline reconstruction code forms particles by matching tracks and clusters to each other, by utilizing spatial coordinate and time differences between tracks and clusters.
+In the offline reconstruction the matching is quite loose (``Better to keep junk, rather than throwing a good particle''). In this section spatial and time matching cuts are described. Both, time and position resolution of $e^{-}$ and $e^{+}$ clusters depend on particle momentum. The precision of the track projected coordinate at the ECal face does depend on the track momentum too. Because of these reasons we studied track-cluster matching as a function of momentum.
+
+\subsubsection{time matching}
+In addition to the momentum dependence we noticed also slight difference between top and bottom sectors, therefore two separate cuts are developed for each detector half.
+% %%%%%%%%%%%%%%%%%%%%%%%%%% F I G U R E %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{figure}[!htb]
+ \centering
+ \subfloat[]{\label{fig:emClTrkDtBotData}\grinp[width=0.45\tw]{Figs/Cuts2D_em_cl_trk_dT_Bot_Data.pdf}}
+ \subfloat[]{\label{fig:emClTrkDtTopData}\grinp[width=0.45\tw]{Figs/Cuts2D_em_cl_trk_dT_Top_Data.pdf}}\\
+ \subfloat[]{\label{fig:emClTrkDtBotTri}\grinp[width=0.45\tw]{Figs/Cuts2D_em_cl_trk_dT_Bot_Tri.pdf}}
+ \subfloat[]{\label{fig:emClTrkDtTopTri}\grinp[width=0.45\tw]{Figs/Cuts2D_em_cl_trk_dT_Top_Tri.pdf}}
+ \caption{Cluster-Track time difference as a function of particle momentum. Left hand plots represent
+ electrons in the bottom half, and right hand plot represents electrons in the top half of the detector. 
+ Plots in the top row represents the data, and plots in the bottom represent MC
+ (more specifically tri-trig sample). The area marked by red ``Boxes'' represents the acceptance region. }
+ \label{fig:ClTrkTimeMatch}
+\end{figure}
+%%%%%%%%%%%%%%%%%%%%%%%%%% F I G U R E %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+In Fig.\ref{fig:ClTrkTimeMatch} shown Cluster-Track time difference as a function of particle momentum for electrons. Left hand plots represents electrons in the bottom half, the right hand plots represents electrons in the top half of the detector. Plots in the top row represents the data, and 
+plots in the bottom represent MC (more specifically tri-trig sample).
+These distributions are constructed, when the rest of event selection cuts are applied, except the cluster-track time difference. On same figures, one can see 
+regions marked by red ``Boxes'', which represent 99\% limits described in section \ref{sec:2Dcuts}
+One can notice the MC is time resolution is significantly narrow. Because of this instead of a
+fix cut, for all data samples (Data, MC), we chose different cuts for Data and MC respectively, in other words these 99\% cut limits for data is obtained using events data events, while for MC 99\% 
+limits limits were obtained from MC sample. Broadening at very low momenta is because of the way, how cuts are defined. As described in \ref{sec:2Dcuts}, when the number of events in the given momentum
+bin gets smaller and smaller (less than 100, 60, 30, 10) cuts gets looser and looser, and that
+caused very few event at lower momenta to make cuts so large, however in the final data sample, practically there are no such events. No difference is observed for positrons, and we have didn't put these plots in this document (although can be found in \cite{evSelectionPlots}).
+
+
+\subsubsection{Coordinate matching}
+Coordinate matching cuts are a little bit more complicated than time matching cuts.
+Initial studies showed that in addition to top/bottom difference, there is also significant
+difference depending on the track's charge, and whether the track has a hit in L6 or not. 
+We will use only the horizontal  ``X'' coordinate matching, not requiring anything on ``Y''.
+We haven't required ``Y'' coordinate matching, because there is non-negligible edge effects,
+which requires significant amount of efforts to properly take into account, while the cut itself,
+will not improve the track-cluster matching noticeably.
+%%%%%%%%%%%%%%%%%%%%%%%%%% F I G U R E %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{figure}[!htb]
+ \centering
+ \subfloat[]{\grinp[width=0.25\tw]{Figs/Cuts2D_dX_emTopWithL6_Data.pdf}}
+ \subfloat[]{\grinp[width=0.25\tw]{Figs/Cuts2D_dX_emTopNoL6_Data.pdf}}
+ \subfloat[]{\grinp[width=0.25\tw]{Figs/Cuts2D_dX_epTopWithL6_Data.pdf}}
+ \subfloat[]{\grinp[width=0.25\tw]{Figs/Cuts2D_dX_epTopNoL6_Data.pdf}} \\ 
+ \subfloat[]{\grinp[width=0.25\tw]{Figs/Cuts2D_dX_emBotWithL6_Data.pdf}}
+ \subfloat[]{\grinp[width=0.25\tw]{Figs/Cuts2D_dX_emBotNoL6_Data.pdf}}
+ \subfloat[]{\grinp[width=0.25\tw]{Figs/Cuts2D_dX_epBotWithL6_Data.pdf}}
+ \subfloat[]{\grinp[width=0.25\tw]{Figs/Cuts2D_dX_epBotNoL6_Data.pdf}}
+% \subfloat[]{\grinp[width=0.25\tw]{Figs/dX_emTopWithL6_Data_AllBut.pdf}}
+% \subfloat[]{\grinp[width=0.25\tw]{Figs/dX_emTopNoL6_Data_AllBut.pdf}}
+%  \subfloat[]{\grinp[width=0.25\tw]{Figs/dX_epTopWithL6_Data_AllBut.pdf}}
+%  \subfloat[]{\grinp[width=0.25\tw]{Figs/dX_epTopNoL6_Data_AllBut.pdf}} \\
+%  \subfloat[]{\grinp[width=0.25\tw]{Figs/dX_emBotWithL6_Data_AllBut.pdf}}
+%  \subfloat[]{\grinp[width=0.25\tw]{Figs/dX_emBotNoL6_Data_AllBut.pdf}}
+%  \subfloat[]{\grinp[width=0.25\tw]{Figs/dX_epBotWithL6_Data_AllBut.pdf}}
+%  \subfloat[]{\grinp[width=0.25\tw]{Figs/dX_epBotNoL6_Data_AllBut.pdf}}
+  \caption{Cluster-track ``X'' coordinate difference as a function of momentum. This data represents
+ the run 8099. Figures in the top row represent particles that are in the top half of the detector,
+ and consequently figures in the  bottom row represents bottom half of the detector.
+ Figures a,b,e and f represent negative particles, and figures c, d, g and h represent positive
+ particles. Figures a, c, e and g are tracks that have a 3D hit in L6, while b, d, f and h
+ corresponds to tracks that don't don't have 3D hit in L6.
+  Note: Each histogram is filled when the rest of event selection cuts are satisfied.}
+\label{fig:dXPDistributionsAllData}
+\end{figure}
+%%%%%%%%%%%%%%%%%%%%%%%%%% F I G U R E %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+In Fig.\ref{fig:dXPDistributionsAllData} shown cluster-track ``X'' coordinate difference as a function of the particle momentum. These matching plots are categorized depending on the charge of the track, presence of a 3D hit in L6 and whether the track is in the bottom or top half of the detector.
+Caption of the figure describes the category of each plot. As one can easily see, distribution shapes significantly differ depending on the presence of a 3D hit in L6. 
+They differ (not so strongly) also for negative and positive particles, 
+and for bottom and top tracks as well. One also can notice that especially for 
+``No L6'' tracks, there is an outlier band. This fact is counterintuitive, since for a
+given momentum bin, one would expect a core (close to Gaussian), with some 
+continuously decreasing tails for the ``$\mathrm{\Delta X}$ distribution. The number
+of these events is of the order of 1\% for the given category. We have performed 
+initial study, to find out the cause of these events. No definite answer was obtained,
+however we observed that these events are not located in any specific part of the
+calorimeter, but rather they are distributed over all the calorimeter face. As an 
+example in Fig.\ref{fig:outlier_clYXNegBot} shown cluster ``Y sv X'' coordinate
+distribution of negatively charged outliers in the bottom half.
+Given the fact that this events comprise only order of 1\% for ``No L6'' category (and sub percent level of overall data), it was decided
+to not further investigate, but rather just cut these events out.
+%%%%%%%%%%%%%%%%%%%%%%%%%% F I G U R E %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{figure}[!htb]
+ \centering
+ \grinp[width=0.35\tw]{Figs/cl_yxc_OutsidedTrkClMatching.pdf}
+ \caption{cluster ``Y sv X'' coordinate distribution of negatively charged outliers in 
+ the bottom half.}
+ \label{fig:outlier_clYXNegBot}
+\end{figure}
+%%%%%%%%%%%%%%%%%%%%%%%%%% F I G U R E %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+As in the case or cluster-track time difference cut, here also in 
+Fig.\ref{fig:dXPDistributionsAllData} by red ``Boxes'' shown the 99\% cut region after
+cutting outliers ({\color{Red} need to add functions on the same plot, that shows how 
+outliers are cut, but can be done during, or after the review}).
+%%%%%%%%%%%%%%%%%%%%%%%%%% F I G U R E %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{figure}[!htb]
+ \centering
+ \subfloat[]{\grinp[width=0.25\tw]{Figs/Cuts2D_dX_emTopWithL6_Tri.pdf}}
+ \subfloat[]{\grinp[width=0.25\tw]{Figs/Cuts2D_dX_emTopNoL6_Tri.pdf}}
+ \subfloat[]{\grinp[width=0.25\tw]{Figs/Cuts2D_dX_epTopWithL6_Tri.pdf}}
+ \subfloat[]{\grinp[width=0.25\tw]{Figs/Cuts2D_dX_epTopNoL6_Tri.pdf}} \\
+ \subfloat[]{\grinp[width=0.25\tw]{Figs/Cuts2D_dX_emBotWithL6_Tri.pdf}}
+ \subfloat[]{\grinp[width=0.25\tw]{Figs/Cuts2D_dX_emBotNoL6_Tri.pdf}}
+ \subfloat[]{\grinp[width=0.25\tw]{Figs/Cuts2D_dX_epBotWithL6_Tri.pdf}}
+ \subfloat[]{\grinp[width=0.25\tw]{Figs/Cuts2D_dX_epBotNoL6_Tri.pdf}}
+%  \subfloat[]{\grinp[width=0.25\tw]{Figs/dX_emTopWithL6_Tri_AllBut.pdf}}
+%  \subfloat[]{\grinp[width=0.25\tw]{Figs/dX_emTopNoL6_Tri_AllBut.pdf}}
+%  \subfloat[]{\grinp[width=0.25\tw]{Figs/dX_epTopWithL6_Tri_AllBut.pdf}}
+%  \subfloat[]{\grinp[width=0.25\tw]{Figs/dX_epTopNoL6_Tri_AllBut.pdf}} \\
+%  \subfloat[]{\grinp[width=0.25\tw]{Figs/dX_emBotWithL6_Tri_AllBut.pdf}}
+%  \subfloat[]{\grinp[width=0.25\tw]{Figs/dX_emBotNoL6_Tri_AllBut.pdf}}
+%  \subfloat[]{\grinp[width=0.25\tw]{Figs/dX_epBotWithL6_Tri_AllBut.pdf}}
+%  \subfloat[]{\grinp[width=0.25\tw]{Figs/dX_epBotNoL6_Tri_AllBut.pdf}}
+ \caption{Cluster-track ``X'' coordinate difference as a function of momentum. This data represents
+ the tritrig MC sample. Figures in the top row represent particles that are in the top half of the detector, and consequently figures in the 
+ bottom row represents bottom half of the detector. Figures a,b,e and f represent
+ negative particles,  and figures c, d, g and h represent positive particles. 
+ Figures a, c, e and g are tracks that have a 3D hit in L6, while b, d, f and h
+ corresponds to tracks that don't don't have 3D hit in L6. Note: Each histogram is
+ filled when the rest of event selection cuts are satisfied.}
+\label{fig:dXPDistributionsAllTri}
+\end{figure}
+%%%%%%%%%%%%%%%%%%%%%%%%%% F I G U R E %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\clearpage
+\subsection{Track quality cuts}
+The point of track quality cuts is to maximize the Figure Of Merit (FOM). 
+It is natural to think, if the track quality (in terms of $\chi^{2}$ per degrees of freedom)
+is poor, then that could result in worse mass resolution, 
+and consequently will have a negative impact on the experiment reach. 
+
+To maximize the the reach, we should maximize the FOM, which is 
+\begin{equation}
+ \mathrm{FOM} \sim \frac{\dstl \sqrt{N_{Tot}}}{\dstl \sigma_{m}}
+ \label{eq:FOM_massres_Final}
+\end{equation}
+Where $\dstl \sqrt{N_{Tot}}$ is the number of events in the given mass bin, and 
+$\dstl \sigma_{m}$ is the mass resolution for the given mass (see appendix \ref{sec:AppendixFOM} for more details about eq. \ref{eq:FOM_massres_Final}).
+
+We have used the \Mlr process to estimate the impact of the track quality on the mass resolution. The square root of the center of mass energy in the \Mlr process, is fixed for a given beam energy, and is equal (neglecting electron mass square terms):
+\begin{equation}
+ \dstl M_{ee}^{\mathrm{c.m.}} = \sqrt{2\cdot m_{e}\cdot E_{b}}
+\end{equation}
+The square root of the center of mass energy is also equal to the invariant mass of final state electrons in the \Mlr process. Hence we will use the \Mlr process to estimate the effect of track quality on the mass resolution. As a measure of quality of track pairs, the  combined $\chi^{2}_{\mathrm{Sum}}/\mathrm{NDF_{Sum}}$ was used, which is defined as:
+\begin{equation}
+    \chi^{2}_{\mathrm{Sum}}/\mathrm{NDF_{Sum}} = \frac{\dstl \chi^{2}_{ \mathrm{Bot}} + \chi^{2}_{\mathrm{Top}} }{ \mathrm{\dstl 2\left(N_{Bot}^{hits} + N_{Top}^{hits}\right) - 10}}
+\end{equation}
+Here $\mathrm{\chi^{2}_{Bot(Top)}}$ is the $\chi^{2}$ for bottom (top) track, and 
+$\mathrm{ N^{hits}_{Bot(Top) } }$ is the number of 3d hits for the bottom (top) track.
+In the denominator $10$ is the total number of constraints (5 from each track).
+
+Using \Mlr events ({\color{Red} Reference to \Mlr section, but \Mlr selection is not complete yet.}) we have not observed a local peak as a function of 
+$\chi^{2}_{\mathrm{Sum}}/\mathrm{NDF_{Sum}}$, which suggests that we should not put
+any cut on this variable, and hence we have not applied any cut on it.
+
+\subsubsection{Selection of \Mlr events}
+{\color{Red} This section is not yet finished}
+
+As a starting point, we have used so called ''\Mlr candidate events`` defined by the so called ''MOUSE`` cuts \cite{MOUSE_Cuts}. Those are events which contain at least one negative track in each detector half. The magnitude of their momentum sum also should be within $\mathrm{20\%}$ of beam energy:
+%%%%%%%%%%%%%%%%%%%%%%%%%% E Q U A T I O N %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{equation}
+ 0.8E_{\mathrm{b}} < P_{\mathrm{M\text{\o} eller}} \equiv |\vec{P}_{\mathrm{Bot}} + \vec{P}_{\mathrm{Top}}| < 1.2E_{\mathrm{b}}
+\end{equation}
+%%%%%%%%%%%%%%%%%%%%%%%%%% E Q U A T I O N %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Note: here there is no requirement for a track to be associated with a cluster. In the \Mlr selection of 2015 run, it was required both electrons to have a cluster, however about $\times 2$ higher beam energy of 2016 run boosts electrons more, and it is almost impossible to get both electrons to hit the Calorimeter (The ECal hole significantly reduces \Mlr acceptance), however there is non zero acceptance in the tracker for \Mlr electrons.
+In \Mlr event selection, it is not critical to keep track on how much signal and background each cut throws, but rather it is important to have the final sample as clean as possible (event if some cuts might be tight). During the analysis the following cuts were used:
+\begin{itemize}
+ \item $\mathrm{P_{sum}}$ momentum sum of final state electrons. \Mlr kinematics requires this to be equal to the beam energy. In the analysis we will chose a region where the  $\mathrm{P_{sum}}$ is in the vicinity of beam energy.
+ \item $\Delta t_{\mathrm{tr}}$ time difference between top and bottom tracks. Cutting $\Delta t_{\mathrm{tr}}$ around 0, will suppress accidentals coming from different beam bunches.
+ \item Track-Cluster matching. In 2016 kinematics One of electrons misses the calorimeter, and, in the offline reconstruction, if both tracks are associated with a cluster, then it is very likely one of them is accidental or track and cluster are produced from different particles, and it will yield a bad matching $\chi^{2}$ value (large value). To suppress accidentals we will require one of tracks to have a good matching $\chi^{2}$ (small value), and the other to have a poor $\chi^{2}$ (large value).
+ \item Cut on $\mathrm{P_{diff}}$: Momentum difference between top and bottom electrons.
+ This cut is also based on the specific acceptance of \Mlr events. Only certain momentum configuration could potentially be inside the detector acceptance.
+ This also will help to suppress accidentals.
+ \item $\mathrm{d\phi}$: Azimuthal angular difference of two final state electrons wrt beam direction at the target. In the \Mlr kinematics $\mathrm{d\phi}$ should be $180^{\circ}$. This cut however is not used. It cuts almost nothing, when the rest of cuts is applied.
+\end{itemize}
+
+Similarly to the rest of event selection cuts for the trident final state, here for \Mlr event selection also, in order to understand where to put cuts on a given variable, cuts are applied to the rest of variables mentioned above, then the distribution of the given variable is studied.
+%%%%%%%%%%%%%%%%%%%%%%%%%% F I G U R E %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{figure}[!htb]
+ \centering
+ \subfloat[]{\label{fig:MlrTrDt}\grinp[width=0.45\tw]{Figs/dT_tr5_Data.pdf}}
+ \subfloat[]{\label{fig:MlrPsuPDiff}\grinp[width=0.45\tw]{Figs/PSumDiff3_Data.pdf}}
+ \caption{Left: Time difference between top and bottom tracks. Right: Momentum difference vs Momentum sum of Top and bottom tracks. Red lines represent cut limits. Each of this distributions are made when cuts were applied to the rest of \Mlr selection variables. }
+ \label{fig:Mlr_dT_and_PSumPDif}
+\end{figure}
+%%%%%%%%%%%%%%%%%%%%%%%%%% F I G U R E %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+In Fig.\ref{fig:Mlr_dT_and_PSumPDif} shown Time difference between top and bottom tracks (left) and Momentum difference ($\mathrm{P_{Diff}}$) vs Momentum sum ($\mathrm{P_{Sum}}$) of Top and bottom tracks (right). Red lines indicate cut region for corresponding variables {\color{Red}\textbf{ Again, we need proper MC justify these cuts }}.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%% F I G U R E %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{figure}[!htb]
+ \centering
+ \subfloat[]{\label{fig:chi2VsMassMlr}\grinp[width=0.32\tw]{Figs/Chi2NDF_Mass_Moeller_Data.pdf}}
+ \subfloat[]{\label{fig:MlrSigmChi2Cut}\grinp[width=0.32\tw]{Figs/MassSigmaChi2Cut_Data.pdf}}
+\subfloat[]{\label{fig:MlrChi2FOM}\grinp[width=0.32\tw]{Figs/MoellerFigOfMerit_Data.pdf}}
+\end{figure}
+%%%%%%%%%%%%%%%%%%%%%%%%%% F I G U R E %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Summary of Event selection cuts}
+This section summarizes the event selection cuts. The table  \ref{tb:CutPowers} describes
+how much of the data is survived when a given cut is applied at the end, 
+i.e. when the rest of cuts are applied before applying the given cut.
+%%%%%%%%%%%%%%%%%%%%%%%%%% T A B L E %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{table}[!htb]
+ \centering
+ \begin{tabular}{|l | c | c | c | c | c |}
+ \hline
+  \bf{\diagbox {Cut variable}{Data set} }   & \bf{Data} & \bf{Tri-beam} & \bf{Rad-beam} & \bf{Wab-beam} & \bf{Tri + Wab}  \\ \hline
+                  PsumMax          & 0.986362          & 0.998802          & 0.998741          & 0.955327          & 0.986328 \\ \hline
+                  PsumMin          & 0.687376          & 0.601244          & 0.865508          & 0.913744          & 0.664391 \\ \hline
+                     clDt          & 0.97363          & 0.995125          & 0.997946          & 0.9949          & 0.995062 \\ \hline
+                      Pem          & 0.997601          & 0.999063          & 0.999102          & 0.99763          & 0.998665 \\ \hline
+                   d0\_ep          & 1          & 1          & 1          & 1          & 1 \\ \hline
+          em\_cl\_trk\_dT          & 0.989403          & 0.988463          & 1.61588e-12          & 0.98833          & 0.988456 \\ \hline
+          ep\_cl\_trk\_dT          & 0.989087          & 0.989022          & 1.61552e-12          & 0.964045          & 0.987673 \\ \hline
+                   dX\_em          & 0.985935          & 0.982492          & 1.59815e-12          & 0.981353          & 0.982432 \\ \hline
+                   dX\_ep          & 0.984304          & 0.982944          & 1.59722e-12          & 0.97479          & 0.982511 \\ \hline
+
+ \end{tabular}
+ \caption{The relative amount of events surviving each cut. The first column is the 
+ variable name on which the cut is applied, and the first row describes the data sample.}
+ \label{tb:CutPowers}
+ \end{table}
+ %%%%%%%%%%%%%%%%%%%%%%%%%% T A B L E %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+As in the data we don't know the underlying process of the given event, we should focus
+on comparing the cut effects on ``Data'' and ``Tri + WAB'' sample which is our best known MC 
+sample for the description of the data. In general all cuts throw consistent amount of data
+from the ``Data'' and ``Tri + WAB'' sample. The largest relative cut difference in between
+``Data'' and ``Tri + WAB'' are from the cluster time difference cut ``clDt'' and the 
+``PsumMin'' cut. The discrepancy between this cuts is of the order of 2\%. The discrepancy 
+between the ``Data'' and ``Tri + WAB'' samples is in a sub percent level. 
+The reason of difference for for ``clDt'' cut is that in MC cluster time resolution is 
+significantly better than in data, and also non perfect time calibration of the data 
+produces longer tails in the data for the ``clDt'' distribution which is not present in MC 
+({\color{Red} I will put a plot similar to the \ref{fig:cldTFitZoom1} for data and MC
+but with n-1 cuts, demonstrating the statement above.}).
+There is also a significant difference in the data and MC, that could cause difference in 
+the ``PsumMin'' cut. In particular the tritrig sample is generated with a $\mathrm{PSum > 1 GeV}$ 
+condition ({\color{Red} Refer to MC samples section. }) while in data there is no sharp cut
+on ``PsumMin''.
+
+\vskip 1 cm
+{\color{Red} Add descriptions to the following pictures}
+
+\begin{figure}[!htb]
+  \centering
+  \subfloat{\label{fig:PSumMax_All}\grinp[width=0.32\tw]{Figs/PsumMax_All.pdf}}
+  \subfloat{\label{fig:PSumMax_AllBut}\grinp[width=0.32\tw]{Figs/PsumMax_AllBut.pdf}}
+  \subfloat{\label{fig:PSumMax_CutEffect}\grinp[width=0.32\tw]{Figs/PsumMax_CutEffect.pdf}}
+  \caption{Progress of $\mathrm{P_{Sum}}$ Max cut.}
+\end{figure}
+ 
+\begin{figure}[!htb]
+  \centering
+  \subfloat{\label{fig:PSumMin_All}\grinp[width=0.32\tw]{Figs/PsumMin_All.pdf}}
+  \subfloat{\label{fig:PSumMin_AllBut}\grinp[width=0.32\tw]{Figs/PsumMin_AllBut.pdf}}
+  \subfloat{\label{fig:PSumMin_CutEffect}\grinp[width=0.32\tw]{Figs/PsumMin_CutEffect.pdf}}
+  \caption{Progress of $\mathrm{P_{Sum}}$ Min cut.}
+\end{figure}
+
+\begin{figure}[!htb]
+  \centering
+  \subfloat{\label{fig:Pem_All}\grinp[width=0.32\tw]{Figs/Pem_All.pdf}}
+  \subfloat{\label{fig:Pem_AllBut}\grinp[width=0.32\tw]{Figs/Pem_AllBut.pdf}}
+  \subfloat{\label{fig:Pem_CutEffect}\grinp[width=0.32\tw]{Figs/Pem_CutEffect.pdf}}
+  \caption{Progress of $P_{e^{-}}$ cut.}
+\end{figure}
+
+\clearpage
+
+\section{Radiative fraction}
+
+\section{Parametrization of Mass resolution}
+
+\section{Run by run stability} 
+
+
+\section{Bump hunt analysis}
+
+
+\section{Study of systematics}
+Here goes studies on systematics.
+
+
+
+
+\appendix
+\appendixpage
+\addappheadtotoc
+\section{Figure of Merit in terms of Mass resolution}
+\label{sec:AppendixFOM}
+In general, the sensitivity for a signal (in our case a dark photon $A^{\prime}$) which is expressed in a form of a peak over a continuous background, is proportional to the number of signal events $\dstl N_{A^{\prime}}$, and inversely proportional to the statistical uncertainty $\sigma_{\mathrm{stat}}$ of the distribution under the peak.
+So the figure of merit is expressed as:
+\begin{equation}
+ \mathrm{FOM} = \frac{\dstl N_{A^{\prime}}}{\dstl \sigma_{\mathrm{stat}}}
+ \label{eq:FOM_massres}
+\end{equation}
+
+The $\sigma_{\mathrm{stat}} = \sqrt{N_{\mathrm{Tot}}}$, and $N_{\mathrm{Tot}}$ is the total measured number of events in the given mass bin.
+
+For a given $A^{\prime}$ mass, the expected number of dark photons, 
+$\dstl N_{A^{\prime}}$ events in the given mass bin  can be expressed in terms of number of expected Radiative trident events $N_{\mathrm{Rad}}$ using the eq.(19) of \cite{AprimeFixedTargetTheory}:
+\begin{equation}
+ N_{A^{\prime}} = \left(\frac{\dstl 3\pi \epsilon^{2}}{\dstl 2 N_{f} \alpha}\right) \left( \frac{\dstl m_{A^{\prime}}}{\delta m} \right)\cdot N_{\mathrm{Rad}} = \left(\frac{\dstl 3\pi \epsilon^{2}}{\dstl 2 N_{f} \alpha}\right) \left( \frac{\dstl m_{A^{\prime}}}{\delta m} \right) \cdot N_{\mathrm{Tot}}\cdot f_{\mathrm{Rad}}
+ \label{eq:NAprime}
+\end{equation}
+Here $f_{\mathrm{Rad}}$ is the radiative fraction, and $\delta m$ is the width of the mass bin which is proportional to the mass resolution $\sim \sigma_{m}$ (look \cite{AprimeFixedTargetTheory} for the description of the rest of variables). 
+Using eq.\ref{eq:NAprime} for $N_{A^{\prime}}$, $\dstl\sqrt{N_{\mathrm{Tot}}}$ for 
+$\sigma_{\mathrm{stat}}$, and $\dstl \sigma_{m}$ for $\delta m$, we can express FOM as
+\begin{equation}
+ \mathrm {FOM} \sim \frac{\dstl \sqrt{N_{\mathrm{Tot}}}}{\sigma_{mass}}
+\end{equation}
+
 \clearpage
 \subsection{WAB Suppression cuts}
 In the section \ref{sec:FinalState} it is described that, the two step process cWAB $eA\rarr eA\gamma(\rarr e^{-}e^{+})$ can mimic the trident final sate. As the photon conversion can occur in the target, it also can occur in any layer of SVT too. While the photon conversion in layers 3, 4, 5 and 6 will not yield to reconstructed trucks (since tracking requires at least 5 3D hits), conversion in the first and second layer (if conversion occur in the axial sensor of layer 2) could cause both or either $e^{-}$ or $e^{+}$ to be reconstructed. One of handles to suppress cWABs, is to require a presence of a hit in L1 from $e^{+}$ tracks. This should suppress cWABs significantly (photon conversions in L2 and in L1 stereo sensor), while should not significantly impact tridents that produced in the target. In this particular analysis, however, we will not require the presence of a hit in L1, and the reason is that at this moment we have significant discrepancy in the Data and MC L1 hit efficiency, which in turn translates to more discrepancy between data and MC rates.
@@ -240,185 +634,6 @@ Mean, $\sigma$ and cut value on $d_{0}$ for data and MC are shown in the table.\
  \end{table}
 
 \clearpage
-\subsection{Two dimensional cuts}
-Some of event selections cuts described below are two dimensional cuts, i.e. the cut value depends on the value of another variable. In most of cases two dimensional cuts are implemented as a function of particle's momentum.
-
-In general, to study the distribution of a given variable for a ''signal like`` particle, the rest of event selection cuts are applied, to make as clean as possible signal.  
-The only exception is the two cluster time difference cut, which is described in section \ref{sec:cldTcuts} ).
-Applying the rest of cuts except the one under the investigation, will ensure the 
-accidental background is minimal (negligible), and the resulting distribution will represent actuall signal (the $e^{-}$, $e^{+}$, ($X$) final state). In most of cases the distribution is not Gaussian, even when it represent a small momentum bin.
-%%%%%%%%%%%%%%%%%%%%%%%%%% F I G U R E %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{figure}[!htb]
- \centering
- \grinp[width=0.75\tw]{Figs/CutLimitTests.pdf}
- \caption{Illustration of  $3\sigma$ cut limits vs $99\%$ cut limits on a toy distribution.}
- \label{fig:CutLimitIllustration}
-\end{figure}
-%%%%%%%%%%%%%%%%%%%%%%%%%% F I G U R E %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-In such cases, the conventional $\pm 3\sigma$ cuts will not keep $99.7\%$ but rather  might cut more events. As an example in Fig.\ref{fig:CutLimitIllustration} shown a toy distribution which is not a pure Gaussian, but rather has a tail on the left side. The Gaussian fit is shown on top if the histogram and $\pm 3\sigma$ limits are shown by vertical red lines. One can see that $-3\sigma$ limit will cut several $\%$ of events rather than $0.3\%$. Instead it was decided to choose left and right cuts limits such that will keep $99\%$ of the signal and will throw $0.5\%$ of signal events from each side. In this particular case $99\%$ cut limits are shown by blue vertical lines. \newline \indent
-There are some special cases in this algorithm, which are explained below. 
-\vskip 1cm
-1. The number of events in the one dimensional projected histogram is too low. In this case, when then number of events is below 45, then the entire momentum bin is considered as out of acceptance. Note: the data sample that we use, has such statistics, that two dimensional original histograms that we use have about 200K or more events, and binning is chosen such, that the total number of events that are in the ''$N < 45$`` category one dimensional histograms are significantly less than $1\%$ of the original two dimensional histogram.
-\vskip 1cm
-2. The number of events in the one dimensional histogram is more than 45, however it is not high enough (order of thousands). In this case the $0.5\%$ events that should be cut out from each side of the distribution is very small number e.g. 1, 2, 3 or even 0, if the number of events is in between 45 and 200. So in order to apply some cuts rather than no-cut or very loose cut, the $99\%$ requirement is released for histograms having less than 500 events ($N < 500$).
-In general cut limits for different statistic cases are summarized
-%%%%%%%%%%%%%%%%%%%%%%%%%% T A B L E %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{table}[!htb]
- \centering
- \begin{tabular}{|l|r|}
-  \hline
- \textbf{ $\#$ of events} & \textbf{Cut limit} \\ \hline
-  $\mathrm{ N > 500}$ & $99\%$ \\ \hline
-  $\mathrm{200 < N < 500}$ & $98\%$ \\ \hline
-  $\mathrm{100 < N < 200}$ & $96\%$ \\ \hline
-  $\mathrm{45 < N < 100}$ & $95\%$ \\ \hline
-  $\mathrm{N < 45}$ & $0\%$ \\ \hline
- \end{tabular}
-\caption{Cut limits for different statistic scenarios.}
-\label{tb:2DCutLimits}
-\end{table}
-%%%%%%%%%%%%%%%%%%%%%%%%%% T A B L E %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-in table \ref{tb:2DCutLimits}.
-
-\subsection{Track-Cluster Matching}
-The offline reconstruction code forms particles by matching tracks and clusters to each other, by utilizing spatial coordinate and time differences between tracks and clusters.
-In the offline reconstruction the matching is quite loose (``Better to keep junk, rather than throwing a good particle''). In this section spatial and time matching cuts are described. Both, time and position resolution of $e^{-}$ and $e^{+}$ clusters depend on particle momentum. The precision of the track projected coordinate at the ECal face does depend on the track momentum too. Because of these reasons we studied track-cluster matching as a function of momentum.
-
-\subsubsection{time matching}
-In addition to the momentum dependence we noticed also slight difference between top and bottom sectors, therefore two separate cuts are developed for each detector half.
-% %%%%%%%%%%%%%%%%%%%%%%%%%% F I G U R E %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{figure}[!htb]
- \centering
- \subfloat[]{\label{fig:ClTrkDtBot}\grinp[width=0.45\tw]{Figs/trk_cl_timeDiffCut_Bot_Data.pdf}}
- \subfloat[]{\label{fig:ClTrkDtTop}\grinp[width=0.45\tw]{Figs/trk_cl_timeDiffCut_Top_Data.pdf}}
- \caption{Cluster-Track time difference as a function of particle momentum. Left plot represents particles in the bottom half, and the right plot represents particles in the top half of the detector. The area marked by Red dots represents the acceptance region. }
- \label{fig:ClTrkTimeMatch}
-\end{figure}
-%%%%%%%%%%%%%%%%%%%%%%%%%% F I G U R E %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-In Fig.\ref{fig:ClTrkTimeMatch} shown Cluster-Track time difference as a function of particle momentum. Left plot represents particles in the bottom half, and the right plot represents particles in the top half of the detector. 
-{\color{Red} The Cl-Trk time difference plot should be replaced, i.e. The original 2D distribution here doesn't correspond to the ''n-1`` cut. }
-
-\subsection{Coordinate matching}
-Coordinate matching cuts are a little bit more complicated than time matching cuts.
-Initial studies showed that in addition to top/bottom difference, there is also significant
-difference depending on the track's charge, and whether the track has a hit in L6 or not. 
-We will use only the horizontal  ``X'' coordinate matching, not requiring anything on ``Y''.
-We haven't required ``Y'' coordinate matching, because there is significant edge effects,
-which requires significant amount of efforts to properly take into account, while the cut itself,
-will not improve the track-cluster matching noticeably.
-
-
-
-\subsection{Track quality cuts}
-The point of track quality cuts is to maximize the Figure Of Merit (FOM). 
-It is natural to think, if the track quality (in terms of $\chi^{2}$ per degrees of freedom)
-is poor, then that could result in worse mass resolution, 
-and consequently will have a negative impact on the experiment reach. 
-
-To maximize the the reach, we should maximize the FOM, which is 
-\begin{equation}
- \mathrm{FOM} \sim \frac{\dstl \sqrt{N_{Tot}}}{\dstl \sigma_{m}}
- \label{eq:FOM_massres_Final}
-\end{equation}
-Where $\dstl \sqrt{N_{Tot}}$ is the number of events in the given mass bin, and 
-$\dstl \sigma_{m}$ is the mass resolution for the given mass (see appendix \ref{sec:AppendixFOM} for more details about eq. \ref{eq:FOM_massres_Final}).
-
-We have used the \Mlr process to estimate the impact of the track quality on the mass resolution. The square root of the center of mass energy in the \Mlr process, is fixed for a given beam energy, and is equal (neglecting electron mass square terms):
-\begin{equation}
- \dstl M_{ee}^{\mathrm{c.m.}} = \sqrt{2\cdot m_{e}\cdot E_{b}}
-\end{equation}
-The square root of the center of mass energy is also equal to the invariant mass of final state electrons in the \Mlr process. Hence we will use the \Mlr process to estimate the effect of track quality on the mass resolution. As a measure of quality of track pairs, the  combined $\chi^{2}_{\mathrm{Sum}}/\mathrm{NDF_{Sum}}$ was used, which is defined as:
-\begin{equation}
-    \chi^{2}_{\mathrm{Sum}}/\mathrm{NDF_{Sum}} = \frac{\dstl \chi^{2}_{ \mathrm{Bot}} + \chi^{2}_{\mathrm{Top}} }{ \mathrm{\dstl 2\left(N_{Bot}^{hits} + N_{Top}^{hits}\right) - 10}}
-\end{equation}
-Here $\mathrm{\chi^{2}_{Bot(Top)}}$ is the $\chi^{2}$ for bottom (top) track, and 
-$\mathrm{ N^{hits}_{Bot(Top) } }$ is the number of 3d hits for the bottom (top) track.
-In the denominator $10$ is the total number of constraints (5 from each track).
-
-\subsubsection{Selection of \Mlr events}
-{\color{Red} Important: We need MC data to justify some of cuts. Some of them are natural, however they should be confirmed by MC.}
-
-As a starting point, we have used so called ''\Mlr candidate events`` defined by the so called ''MOUSE`` cuts \cite{MOUSE_Cuts}. Those are events which contain at least one negative track in each detector half. The magnitude of their momentum sum also should be within $\mathrm{20\%}$ of beam energy:
-%%%%%%%%%%%%%%%%%%%%%%%%%% E Q U A T I O N %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{equation}
- 0.8E_{\mathrm{b}} < P_{\mathrm{M\text{\o} eller}} \equiv |\vec{P}_{\mathrm{Bot}} + \vec{P}_{\mathrm{Top}}| < 1.2E_{\mathrm{b}}
-\end{equation}
-%%%%%%%%%%%%%%%%%%%%%%%%%% E Q U A T I O N %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-Note: here there is no requirement for a track to be associated with a cluster. In the \Mlr selection of 2015 run, it was required both electrons to have a cluster, however about $\times 2$ higher beam energy of 2016 run boosts electrons more, and it is almost impossible to get both electrons to hit the Calorimeter (The ECal hole significantly reduces \Mlr acceptance), however there is non zero acceptance in the tracker for \Mlr electrons.
-In \Mlr event selection, it is not critical to keep track on how much signal and background each cut throws, but rather it is important to have the final sample as clean as possible (event if some cuts might be tight). During the analysis the following cuts were used:
-\begin{itemize}
- \item $\mathrm{P_{sum}}$ momentum sum of final state electrons. \Mlr kinematics requires this to be equal to the beam energy. In the analysis we will chose a region where the  $\mathrm{P_{sum}}$ is in the vicinity of beam energy.
- \item $\Delta t_{\mathrm{tr}}$ time difference between top and bottom tracks. Cutting $\Delta t_{\mathrm{tr}}$ around 0, will suppress accidentals coming from different beam bunches.
- \item Track-Cluster matching. In 2016 kinematics One of electrons misses the calorimeter, and, in the offline reconstruction, if both tracks are associated with a cluster, then it is very likely one of them is accidental or track and cluster are produced from different particles, and it will will yield a bad matching $\chi^{2}$ value (large value). To suppress accidentals we will require one of tracks to have a good matching $\chi^{2}$ (small value), and the other to have a poor $\chi^{2}$ (large value).
- \item Cut on $\mathrm{P_{diff}}$: Momentum difference between top and bottom electrons.
- This is cut is also based on the specific acceptance of \Mlr events. and certain momentum configuration enter into the detector acceptance. This also will help to suppress acceptance.
- \item $\mathrm{d\phi}$: Azimuthal angular difference of two final state electrons wrt beam direction at the target. In the \Mlr kinematics $\mathrm{d\phi}$ should be $180^{\circ}$. This cut however is not used. It cuts almost nothing, when the rest of cuts is applied.
-\end{itemize}
-
-Similarly to the rest of event selection cuts for the trident final state, here for \Mlr event selection also, in order to understand where to put cuts on a given variable, cuts are applied to the rest of variables mentioned above, then the distribution of the given variable is studied.
-%%%%%%%%%%%%%%%%%%%%%%%%%% F I G U R E %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{figure}[!htb]
- \centering
- \subfloat[]{\label{fig:MlrTrDt}\grinp[width=0.45\tw]{Figs/dT_tr5_Data.pdf}}
- \subfloat[]{\label{fig:MlrPsuPDiff}\grinp[width=0.45\tw]{Figs/PSumDiff3_Data.pdf}}
- \caption{Left: Time difference between top and bottom tracks. Right: Momentum difference vs Momentum sum of Top and bottom tracks. Red lines represent cut limits. Each of this distributions are made when cuts were applied to the rest of \Mlr selection variables. }
- \label{fig:Mlr_dT_and_PSumPDif}
-\end{figure}
-%%%%%%%%%%%%%%%%%%%%%%%%%% F I G U R E %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-In Fig.\ref{fig:Mlr_dT_and_PSumPDif} shown Time difference between top and bottom tracks (left) and Momentum difference ($\mathrm{P_{Diff}}$) vs Momentum sum ($\mathrm{P_{Sum}}$) of Top and bottom tracks (right). Red lines indicate cut region for corresponding variables {\color{Red}\textbf{ Again, we need proper MC justify these cuts }}.
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%% F I G U R E %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{figure}[!htb]
- \centering
- \subfloat[]{\label{fig:chi2VsMassMlr}\grinp[width=0.32\tw]{Figs/Chi2NDF_Mass_Moeller_Data.pdf}}
- \subfloat[]{\label{fig:MlrSigmChi2Cut}\grinp[width=0.32\tw]{Figs/MassSigmaChi2Cut_Data.pdf}}
-  \subfloat[]{\label{fig:MlrChi2FOM}\grinp[width=0.32\tw]{Figs/MoellerFigOfMerit_Data.pdf}}
-
-\end{figure}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%% F I G U R E %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
-\section{Parametrization of Mass resolution.}
-
-\section{Bump hunt analysis}
-
-
-\section{Study of systematics}
-Here goes studies on systematics.
-
-
-
-
-\appendix
-\appendixpage
-\addappheadtotoc
-\section{Figure of Merit in terms of Mass resolution}
-\label{sec:AppendixFOM}
-In general, the sensitivity for a signal (in our case a dark photon $A^{\prime}$) which is expressed in a form of a peak over a continuous background, is proportional to the number of signal events $\dstl N_{A^{\prime}}$, and inversely proportional to the statistical uncertainty $\sigma_{\mathrm{stat}}$ of the distribution under the peak.
-So the figure of merit is expressed as:
-\begin{equation}
- \mathrm{FOM} = \frac{\dstl N_{A^{\prime}}}{\dstl \sigma_{\mathrm{stat}}}
- \label{eq:FOM_massres}
-\end{equation}
-
-The $\sigma_{\mathrm{stat}} = \sqrt{N_{\mathrm{Tot}}}$, and $N_{\mathrm{Tot}}$ is the total measured number of events in the given mass bin.
-
-For a given $A^{\prime}$ mass, the expected number of dark photons, 
-$\dstl N_{A^{\prime}}$ events in the given mass bin  can be expressed in terms of number of expected Radiative trident events $N_{\mathrm{Rad}}$ using the eq.(19) of \cite{AprimeFixedTargetTheory}:
-\begin{equation}
- N_{A^{\prime}} = \left(\frac{\dstl 3\pi \epsilon^{2}}{\dstl 2 N_{f} \alpha}\right) \left( \frac{\dstl m_{A^{\prime}}}{\delta m} \right)\cdot N_{\mathrm{Rad}} = \left(\frac{\dstl 3\pi \epsilon^{2}}{\dstl 2 N_{f} \alpha}\right) \left( \frac{\dstl m_{A^{\prime}}}{\delta m} \right) \cdot N_{\mathrm{Tot}}\cdot f_{\mathrm{Rad}}
- \label{eq:NAprime}
-\end{equation}
-Here $f_{\mathrm{Rad}}$ is the radiative fraction, and $\delta m$ is the width of the mass bin which is proportional to the mass resolution $\sim \sigma_{m}$ (look \cite{AprimeFixedTargetTheory} for the description of the rest of variables). 
-Using eq.\ref{eq:NAprime} for $N_{A^{\prime}}$, $\dstl\sqrt{N_{\mathrm{Tot}}}$ for 
-$\sigma_{\mathrm{stat}}$, and $\dstl \sigma_{m}$ for $\delta m$, we can express FOM as
-\begin{equation}
- \mathrm {FOM} \sim \frac{\dstl \sqrt{N_{\mathrm{Tot}}}}{\sigma_{mass}}
-\end{equation}
-
-
 \begin{thebibliography}{55}
  \bibitem{TriggerNote} Kyle McCarty, Valery Kubarovsky and Benjamin Raydo, ``Description and Tuning of the HPS Trigger'', HPS Note 2018-002
  \bibitem{ECalTimeCorr} Holly Szumila-Vance, ``HPS Ecal Timing Calibration for the
@@ -427,6 +642,8 @@ Spring 2015 Engineering Run'', HPS Note 2015-011.
 \bibitem{AprimeFixedTargetTheory} J. D. Bjorken, R. Essig, P. Schuster and N. Toro,
 ``New Fixed-Target Experiments to Search for Dark Gauge Forces'', Phys.Rev. D80 (2009) 075018, \href{https://arxiv.org/abs/0906.0580}{arXiv:0906.0580}
 \bibitem{MOUSE_Cuts} Miriam Diamond's talk at analysis group meeting On 16-Oct-2018, (password protected) \href{https://confluence.slac.stanford.edu/display/hpsg/October+16%2C+2018}{https://confluence.slac.stanford.edu/display/hpsg/October+16\%2C+2018}
+\bibitem{evSelectionPlots} Additional materials/plots for event selection analysis.\\
+\href{https://github.com/rafopar/BumpHunt_2016/blob/master/pass4/Latex/EvSelectionPlots.pdf}{https://github.com/rafopar/BumpHunt\_2016/blob/master/pass4/Latex/EvSelectionPlots.pdf}
 \end{thebibliography}
 
 \end{document}
