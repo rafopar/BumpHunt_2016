@@ -33,6 +33,8 @@ void DrawPSumMaxCut(TFile** files);
 
 void Drawd0Cut(TFile** files);
 
+void DrawLarged0hists(TFile** files, std::string histNameBase, std::string Title);
+
 // ===== This function should return the Radiative fraction /
 // ===== It should take the "CutEffect" histograms, and calculate the 
 // ===== Rad Fraction as the Rad_Hist/(Wab+Tri)
@@ -157,9 +159,9 @@ void NormalizationPlots() {
     CutFractions.open("CutPowers.dat", ios::out);
 
     const int nMinvBins = 12;
-    
+/*
     DrawDatMCComparison(files_EvSelection, "PsumMax", "; P_{Sum} [GeV]; d#sigma/dP_{Sum} [bn/GeV] ", 1);
- 
+
     DrawDatMCComparison(files_EvSelection, "PsumMin", "; P_{Sum} [GeV]; d#sigma/dP_{Sum} [bn/GeV] ", 1);
     DrawDatMCComparison(files_EvSelection, "clDt", "; Cluster #Delta t [ns]; d#sigma/d #Delta t [bn/ns] ", 1);
     DrawDatMCComparison(files_EvSelection, "Pem", "; P_{e^{-}} [GeV]; d#sigma/d P_{e^{-}} [bn/GeV] ", 1);
@@ -186,30 +188,31 @@ void NormalizationPlots() {
     DrawDatMCComparison(files_EvSelection, "dX_epTopNoL6", "; P_{e^{+}} [GeV]; X_{cl} - X_{trk} [mm]", 2);
     DrawDatMCComparison(files_EvSelection, "dX_epBotWithL6", "; P_{e^{+}} [GeV]; X_{cl} - X_{trk} [mm]", 2);
     DrawDatMCComparison(files_EvSelection, "dX_epBotNoL6", "; P_{e^{+}} [GeV]; X_{cl} - X_{trk} [mm]", 2);
-     
+*/
     double MinvBins[nMinvBins + 1] = {0., 0.02, 0.04, 0.06, 0.08, 0.1, 0.12, 0.14, 0.16, 0.18, 0.2, 0.22, 0.24};
-    
+/*
     for (int i = 0; i < nMinvBins; i++) {
         DrawDatMCComparison(files_EvSelection, Form("PSumMin_MinvBin_%d", i),
                 Form("%1.3f GeV < M(ee) < %1.3f GeV; P_{Sum} [GeV]; d#sigma/dP_{Sum} [bn/GeV]", MinvBins[i], MinvBins[i + 1]), 1);
     }
- 
-    Draw2DCuts( "em_cl_trk_dT_Top", "h_trkCl_dt_P_Top_Cut", "; P_{e^{-}} [GeV]; t_{cl} - t_{trk} [ns]" );
-    Draw2DCuts( "em_cl_trk_dT_Bot", "h_trkCl_dt_P_Bot_Cut", "; P_{e^{-}} [GeV]; t_{cl} - t_{trk} [ns]" );
-    
-    Draw2DCuts( "dX_emTopWithL6", "h_dX_Top_NegWithL6_Cut", "; P_{e^{-}} [GeV]; X_{cl} - X_{trk} [mm]" );
-    Draw2DCuts( "dX_emTopNoL6", "h_dX_Top_NegNoL6_Cut", "; P_{e^{-}} [GeV]; X_{cl} - X_{trk} [mm]" );
-    Draw2DCuts( "dX_emBotWithL6", "h_dX_Bot_NegWithL6_Cut", "; P_{e^{-}} [GeV]; X_{cl} - X_{trk} [mm]" );
-    Draw2DCuts( "dX_emBotNoL6", "h_dX_Bot_NegNoL6_Cut", "; P_{e^{-}} [GeV]; X_{cl} - X_{trk} [mm]" );
 
-    Draw2DCuts( "dX_epTopWithL6", "h_dX_Top_PosWithL6_Cut", "; P_{e^{+}} [GeV]; X_{cl} - X_{trk} [mm]" );
-    Draw2DCuts( "dX_epTopNoL6", "h_dX_Top_PosNoL6_Cut", "; P_{e^{+}} [GeV]; X_{cl} - X_{trk} [mm]" );
-    Draw2DCuts( "dX_epBotWithL6", "h_dX_Bot_PosWithL6_Cut", "; P_{e^{+}} [GeV]; X_{cl} - X_{trk} [mm]" );
-    Draw2DCuts( "dX_epBotNoL6", "h_dX_Bot_PosNoL6_Cut", "; P_{e^{+}} [GeV]; X_{cl} - X_{trk} [mm]" );
-     
+    Draw2DCuts("em_cl_trk_dT_Top", "h_trkCl_dt_P_Top_Cut", "; P_{e^{-}} [GeV]; t_{cl} - t_{trk} [ns]");
+    Draw2DCuts("em_cl_trk_dT_Bot", "h_trkCl_dt_P_Bot_Cut", "; P_{e^{-}} [GeV]; t_{cl} - t_{trk} [ns]");
+
+    Draw2DCuts("dX_emTopWithL6", "h_dX_Top_NegWithL6_Cut", "; P_{e^{-}} [GeV]; X_{cl} - X_{trk} [mm]");
+    Draw2DCuts("dX_emTopNoL6", "h_dX_Top_NegNoL6_Cut", "; P_{e^{-}} [GeV]; X_{cl} - X_{trk} [mm]");
+    Draw2DCuts("dX_emBotWithL6", "h_dX_Bot_NegWithL6_Cut", "; P_{e^{-}} [GeV]; X_{cl} - X_{trk} [mm]");
+    Draw2DCuts("dX_emBotNoL6", "h_dX_Bot_NegNoL6_Cut", "; P_{e^{-}} [GeV]; X_{cl} - X_{trk} [mm]");
+
+    Draw2DCuts("dX_epTopWithL6", "h_dX_Top_PosWithL6_Cut", "; P_{e^{+}} [GeV]; X_{cl} - X_{trk} [mm]");
+    Draw2DCuts("dX_epTopNoL6", "h_dX_Top_PosNoL6_Cut", "; P_{e^{+}} [GeV]; X_{cl} - X_{trk} [mm]");
+    Draw2DCuts("dX_epBotWithL6", "h_dX_Bot_PosWithL6_Cut", "; P_{e^{+}} [GeV]; X_{cl} - X_{trk} [mm]");
+    Draw2DCuts("dX_epBotNoL6", "h_dX_Bot_PosNoL6_Cut", "; P_{e^{+}} [GeV]; X_{cl} - X_{trk} [mm]");
+
     DrawAntiFEECut(files_EvSelection);
     DrawPSumMaxCut(files_EvSelection);
     Drawd0Cut(files_EvSelection);
+    */
     // ========== Getting the Rad Fraction ===========
 
     TGraphErrors *gr_fRad = new TGraphErrors();
@@ -234,6 +237,14 @@ void NormalizationPlots() {
     c1->Print("Figs/fRad_MassBins.pdf");
     c1->Print("Figs/fRad_MassBins.png");
 
+    
+    DrawLarged0hists(files_EvSelection, "Pem_BigD0_1", ";P_{e^{-}} [GeV]; d#sigma/dP_{e^{-}} [bn/GeV]");
+    DrawLarged0hists(files_EvSelection, "Pem_BigD0_2", ";P_{e^{-}} [GeV]; d#sigma/dP_{e^{-}} [bn/GeV]");
+    DrawLarged0hists(files_EvSelection, "Pep_BigD0_1", ";P_{e^{+}} [GeV]; d#sigma/dP_{e^{+}} [bn/GeV]");
+    DrawLarged0hists(files_EvSelection, "Pep_BigD0_2", ";P_{e^{+}} [GeV]; d#sigma/dP_{e^{+}} [bn/GeV]");
+    DrawLarged0hists(files_EvSelection, "PSum_BigD0_1", ";P_{Sum} [GeV]; d#sigma/dP_{Sum} [bn/GeV]");
+    DrawLarged0hists(files_EvSelection, "PSum_BigD0_2", ";P_{Sum} [GeV]; d#sigma/dP_{Sum} [bn/GeV]");
+    DrawLarged0hists(files_EvSelection, "Minv_BidD0_1", ";M(e^{-}e^{+}) [GeV]; d#sigma/dM [bn/GeV]");
 }
 
 void Draw2DCuts(std::string histnminusbase, std::string histCut, std::string Title) {
@@ -388,19 +399,19 @@ void DrawDatMCComparison(TFile** files, std::string histNameBase, std::string Ti
         h_Rad_All->SetLineColor(2);
         h_Rad_All->Sumw2();
         h_Rad_All->SetTitle(Title.c_str());
-        h_Rad_All->Scale(Rad_SigmaGen /(bw*  NGen_Rad));
+        h_Rad_All->Scale(Rad_SigmaGen / (bw * NGen_Rad));
         AddErrorAllBins(h_Rad_All, Rad_SigmError / Rad_SigmaGen);
         TH1D *h_Rad_AllBut = (TH1D*) file_Rad->Get(Form("h_%s_AllBut", histNameBase.c_str()));
         h_Rad_AllBut->SetLineColor(2);
         h_Rad_AllBut->Sumw2();
         h_Rad_AllBut->SetTitle(Title.c_str());
-        h_Rad_AllBut->Scale(Rad_SigmaGen /(bw*  NGen_Rad));
+        h_Rad_AllBut->Scale(Rad_SigmaGen / (bw * NGen_Rad));
         AddErrorAllBins(h_Rad_AllBut, Rad_SigmError / Rad_SigmaGen);
         TH1D *h_Rad_CutEffect = (TH1D*) file_Rad->Get(Form("h_%s_CutEffect", histNameBase.c_str()));
         h_Rad_CutEffect->SetLineColor(2);
         h_Rad_CutEffect->Sumw2();
         h_Rad_CutEffect->SetTitle(Title.c_str());
-        h_Rad_CutEffect->Scale(Rad_SigmaGen /(bw*  NGen_Rad));
+        h_Rad_CutEffect->Scale(Rad_SigmaGen / (bw * NGen_Rad));
         AddErrorAllBins(h_Rad_CutEffect, Rad_SigmError / Rad_SigmaGen);
 
         double radFraction = h_Rad_CutEffect->Integral() / h_Rad_AllBut->Integral();
@@ -409,19 +420,19 @@ void DrawDatMCComparison(TFile** files, std::string histNameBase, std::string Ti
         h_WAB_All->SetLineColor(45);
         h_WAB_All->Sumw2();
         h_WAB_All->SetTitle(Title.c_str());
-        h_WAB_All->Scale(Wab_SigmaGen /(bw*  NGen_Wab));
+        h_WAB_All->Scale(Wab_SigmaGen / (bw * NGen_Wab));
         AddErrorAllBins(h_WAB_All, Wab_SigmError / Wab_SigmaGen);
         TH1D *h_WAB_AllBut = (TH1D*) file_WAB->Get(Form("h_%s_AllBut", histNameBase.c_str()));
         h_WAB_AllBut->SetLineColor(45);
         h_WAB_AllBut->Sumw2();
         h_WAB_AllBut->SetTitle(Title.c_str());
-        h_WAB_AllBut->Scale(Wab_SigmaGen /(bw*  NGen_Wab));
+        h_WAB_AllBut->Scale(Wab_SigmaGen / (bw * NGen_Wab));
         AddErrorAllBins(h_WAB_AllBut, Wab_SigmError / Wab_SigmaGen);
         TH1D *h_WAB_CutEffect = (TH1D*) file_WAB->Get(Form("h_%s_CutEffect", histNameBase.c_str()));
         h_WAB_CutEffect->SetLineColor(45);
         h_WAB_CutEffect->Sumw2();
         h_WAB_CutEffect->SetTitle(Title.c_str());
-        h_WAB_CutEffect->Scale(Wab_SigmaGen /(bw*  NGen_Wab));
+        h_WAB_CutEffect->Scale(Wab_SigmaGen / (bw * NGen_Wab));
         AddErrorAllBins(h_WAB_CutEffect, Wab_SigmError / Wab_SigmaGen);
 
         double wabFraction = h_WAB_CutEffect->Integral() / h_WAB_AllBut->Integral();
@@ -1079,4 +1090,82 @@ void Drawd0Cut(TFile** files) {
     ctmp->Print("Figs/d0_Data_Fit.png");
 
     delete ctmp;
+}
+
+void DrawLarged0hists(TFile** files, std::string histNameBase, std::string Title) {
+
+    TCanvas *c1D = new TCanvas("c1D", "", 950, 950);
+    
+    //==========================================================
+    //===== Order of files in the pointer "files" is the following
+    //===== 1-st: Data
+    //===== 2-nd: TriTrig
+    //===== 3-3d: Radiatives
+    //===== 4-th: Converted Wabs
+    //==========================================================
+
+    TFile *file_Data = files[0];
+    TFile *file_Tri = files[1];
+    TFile *file_Rad = files[2];
+    TFile *file_WAB = files[3];
+
+    double Max_All = 0;
+    TH1D *h_Data = (TH1D*) file_Data->Get(Form("h_%s", histNameBase.c_str()));
+    h_Data->SetTitle(Title.c_str());
+    double bw = h_Data->GetBinWidth(10);
+    h_Data->Sumw2();
+    h_Data->SetLineColor(1);
+    h_Data->Scale(1. / (bw * Lumin8099));
+    Max_All = TMath::Max(Max_All, h_Data->GetMaximum());
+
+    TH1D *h_Tri = (TH1D*) file_Tri->Get(Form("h_%s", histNameBase.c_str()));
+    h_Tri->SetTitle(Title.c_str());
+    h_Tri->Sumw2();
+    h_Tri->SetLineColor(4);
+    h_Tri->Scale(tritrig_SigmaGen / (bw * NGen_tritrig));
+
+    TH1D *h_Rad = (TH1D*) file_Rad->Get(Form("h_%s", histNameBase.c_str()));
+    h_Rad->SetTitle(Title.c_str());
+    h_Rad->Sumw2();
+    h_Rad->SetLineColor(2);
+    h_Rad->Scale(Rad_SigmaGen / (bw * NGen_Rad));
+
+    TH1D *h_WAB = (TH1D*) file_WAB->Get(Form("h_%s", histNameBase.c_str()));
+    h_WAB->SetTitle(Title.c_str());
+    h_WAB->Sumw2();
+    h_WAB->SetLineColor(42);
+    h_WAB->Scale(Wab_SigmaGen / (bw * NGen_Wab));
+
+
+    TH1D *h_TriPlusWab = (TH1D*) h_Tri->Clone("h_TriPlusWab");
+    h_TriPlusWab->Add(h_WAB);
+    h_TriPlusWab->SetLineColor(95);
+    Max_All = TMath::Max(Max_All, h_TriPlusWab->GetMaximum());
+
+
+    h_Data->SetMaximum(1.05 * Max_All);
+
+    TRatioPlot *rp = new TRatioPlot(h_Data, h_TriPlusWab, "divsym");
+    rp->GetUpperPad()->SetBottomMargin(0);
+    rp->GetLowerPad()->SetTopMargin(0);
+    rp->Draw();
+    rp->GetUpperPad()->cd();
+    h_Tri->Draw("Same");
+    h_Rad->Draw("Same");
+    h_WAB->Draw("Same");
+    rp->GetLowerRefGraph()->SetMaximum(1.35);
+    rp->GetLowerRefGraph()->SetMinimum(0.65);
+    c1D->Update();
+    c1D->Print(Form("Figs/%s_All.eps", histNameBase.c_str()));
+    c1D->Print(Form("Figs/%s_All.pdf", histNameBase.c_str()));
+    c1D->Print(Form("Figs/%s_All.png", histNameBase.c_str()));
+
+    c1D->Clear();
+    
+    c1D->Print(Form("WABStudy_%s.eps", histNameBase.c_str()));
+    c1D->Print(Form("WABStudy_%s.pdf", histNameBase.c_str()));
+    c1D->Print(Form("WABStudy_%s.png", histNameBase.c_str()));
+    
+    delete rp;
+
 }

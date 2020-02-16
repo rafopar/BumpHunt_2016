@@ -53,15 +53,18 @@ const double Pem_MaxCut_Data = 1.75;
 const double Pem_MaxCut_MC = 1.72;
 
 const double cl_dTcut_Data = 1.43;
-//const double PsumCutMax_Data = 2.4;
-//const double PsumCutMax_MC = 2.4;
-const double PsumCutMax_Data = 2.7;
-const double PsumCutMax_MC = 2.7;
+const double PsumCutMax_Data = 2.4;
+const double PsumCutMax_MC = 2.4;
+//const double PsumCutMax_Data = 2.7;
+//const double PsumCutMax_MC = 2.7;
 const double PsumCutMin_Data = 1.44; // GeV
 const double PsumCutMin_MC = 1.44; // GeV
 
 const double d0_cut_Data = 1.176; // From pass1 Data and MC, will be revised with new MC
 const double d0_cut_MC = 0.65; // Needs to be verified
+
+const double largeD0Cut_Data = 2.25;
+const double largeD0Cut_MC = 2.25;
 
 const int nMinvBins = 12; // # of Minv bins, We want to study Psum for different Minv Bins
 const double MinvMin = 0.;
@@ -115,7 +118,7 @@ bool IsD0em;
 bool IsPsumMax;
 bool IsPsumMin;
 bool hasepL1;
-
+bool isLarged0ep;
 
 // ========================================================================
 // === Bool variables defining which program is running
@@ -162,6 +165,7 @@ double cl_dTcut;
 double PsumCutMax;
 double PsumCutMin;
 double d0_cut;
+double largeD0Cut;
 
 double SVTLayerBinnings[nSVTLayers + 1] = {50., 150., 250., 400., 600., 800., 950.};
 
@@ -475,6 +479,16 @@ TH1D *h_Minv_emClTrkMatch_Final1;
 TH1D *h_Minv_Pem_Final1;
 TH1D *h_Minv_d0ep_Final1;
 
+// =============== Histograms with Large d0 ======================
+
+TH1D *h_Pem_BigD0_1;
+TH1D *h_Pep_BigD0_1;
+TH1D *h_PSum_BigD0_1;
+TH1D *h_Minv_BidD0_1;
+
+TH1D *h_Pem_BigD0_2;
+TH1D *h_Pep_BigD0_2;
+TH1D *h_PSum_BigD0_2;
 
 // ========= ========================================================================= ========
 // ========= DST HPS type variables
@@ -518,6 +532,9 @@ int GetCutsKey();
 // ======= that the current V0 will satisfy =======
 void FillVectorOfCutsKeys();
 
+
+// ======= Filling histograms for WABs with large d0 =========
+void FillLargeD0Hists(double mV0, double Pem, double Pep);
 
 // ======= This function returns number of rows the given crystal cover.
 std::set<int> GetVerticalCrystalls(EcalCluster*);
@@ -638,6 +655,12 @@ bool IsPsumMinCut(double);
 // ========= d0 cut ============
 // ========= ============================================================= ============
 bool IsD0Cut(double);
+
+
+// ========= ============================================================= ============
+// ========= Large d0 ============
+// ========= ============================================================= ============
+bool IsLargeD0(double);
 
 // ========= ============================================================= ============
 // ========= This function returns the position of the hit associated to the track
