@@ -216,8 +216,8 @@ int main(int argc, char** argv) {
         h_PSumMin_MinvBin_AllBut[i] = new TH1D(Form("h_PSumMin_MinvBin_%d_AllBut", i), "", 70, 0.7, 1.2 * Eb);
         h_PSumMin_MinvBin_CutEffect[i] = new TH1D(Form("h_PSumMin_MinvBin_%d_CutEffect", i), "", 70, 0.7, 1.2 * Eb);
     }
-    
-    
+
+
     TH1D *h_Pem_All = new TH1D("h_Pem_All", "", 70, 0., 2.2);
     TH1D *h_Pem_AllBut = new TH1D("h_Pem_AllBut", "", 70, 0., 2.2);
     TH1D *h_Pem_CutEffect = new TH1D("h_Pem_CutEffect", "", 70, 0., 2.2);
@@ -917,15 +917,15 @@ int main(int argc, char** argv) {
                 }
             }
 
-            
+
             FilldtP_ep(cur_v0, ep, P_ep, ClTrkDt_ep);
             FilldtP_em(cur_v0, em, P_em, ClTrkDt_em);
 
-            
+
             FilldXP_ep(cur_v0, ep, P_ep, dX_ep);
             FilldXP_em(cur_v0, em, P_em, dX_em);
-            
-            
+
+
             h_Pem_All->Fill(P_em);
             if (CheckAllOtherCuts("Pem")) {
                 h_Minv_Pem_Final1->Fill(mV0);
@@ -961,8 +961,11 @@ int main(int argc, char** argv) {
 
             // =============================== Do Not Remove the following line ============================            
             IsD0ep = IsD0Cut(d0_ep);
+            isLarged0ep = IsLargeD0(d0_ep);
             // =============================== Do Not Remove the   above line   ============================ 
 
+            FillLargeD0Hists(mV0, P_em, P_ep);
+            
             if (IsPsumMax && IsPsumMin && IscldT && IsemClTrkdT && IsepClTrkdT && IsemTrkClMatch && IsepTrkClMatch && IsPem) {
                 CutsKey = GetCutsKey();
 

@@ -193,8 +193,17 @@ accidentals more, that could potentially pass the rest of event selection cuts.
  \caption{Observed cross section $\mathrm{ \dfrac{d\sigma}{d P_{Sum}} }$ as a function of $\mathrm{P_{Sum}}$, for Data and different MC components. }
  \label{fig:PSumMaxCutJustify}
 \end{figure}
-
 %%%%%%%%%%%%%%%%%%%%%%%%%% F I G U R E %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+In Fig.\ref{fig:PSumMaxCutJustify} shown $\mathrm{P_{Sum}}$ distributions
+for data and different MC samples. One can notice that, ``Tri'' and ``Rad''
+are essentialy don't have tails, and more thean 99.9\% are below 
+$\mathrm{2.4\;GeV}$, while Data and WABs have significant tail extending
+up to $\mathrm{2.7\;GeV}$. This events above $\mathrm{2.4\;GeV}$ are
+from WABs. Please look the appendix \ref{app:highD0Comparison}, for some
+more details on this ({\color{Red} We still need to understand why cWABs
+have a longer tail, but other samples don't}). We can see that when the rest of event selection cuts
+are applied, ``Tri'' and ``Rad'' don't have any significant tail, so it was
+chosen to cut them at $\mathrm{2.4\;GeV}$.
 
 \clearpage
 \subsection{Two dimensional cuts}
@@ -495,35 +504,65 @@ produces longer tails in the data for the ``clDt'' distribution which is not pre
 but with n-1 cuts, demonstrating the statement above.}).
 There is also a significant difference in the data and MC, that could cause difference in 
 the ``PsumMin'' cut. In particular the tritrig sample is generated with a $\mathrm{PSum > 1 GeV}$ 
-condition ({\color{Red} Refer to MC samples section. }) while in data there is no sharp cut
-on ``PsumMin''.
+condition ({\color{Red} Refer to Tongtong's MC samples section.}) while in data there is no sharp cut on ``PsumMin''.
 
-\vskip 1 cm
-{\color{Red} Add descriptions to the following pictures, and some more discussion}
+Momentum sum distribution for the final selected trident samples is shown in 
+%%%%%%%%%%%%%%%%%%%%%%%%%% F I G U R E %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{figure}[!htb]
+ \centering
+\grinp[width=0.75\tw]{Figs/PsumMin_CutEffect.pdf}
+\caption{Differential cross section as a function of momentum sum.
+Data is presented by black curve, Blue markers represents ``Tridents'', Red markers 
+represent Radiative tridents, Brown represents converted WAB and the orange color 
+represents the sum of tridents and converted WABs (Tot). The ratio plot at the bottom is the ratio of data over the Tri + WAB.}
+\label{fig:PSumFinal}
+\end{figure}
+%%%%%%%%%%%%%%%%%%%%%%%%%% F I G U R E %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Fig.\ref{fig:PSumFinal}. Data is presented by black curve, Blue markers represents ``Tridents'', Red markers 
+represent Radiative tridents, Brown represents converted WAB and the orange color 
+represents the sum of tridents and converted WABs (Tot). The ratio plot at the bottom is the ratio of data over the Tri + WAB.
+In general the data is about 15\% - 20\% below the MC prediction. One of the reason of this
+much discrepancy between the data and MC that we haven't yet took into account is the 
+difference in the tracking efficiency between the data and MC. ({\color{Red} Will be good
+if Matt G. can write few sentences here describing reasons for Data and MC eff difference,
+and why it is not so trivial to properly account it.})
 
+With this event selection cuts, the 10\% of the full 2016 data was analyzed, and the
+%%%%%%%%%%%%%%%%%%%%%%%%%% F I G U R E %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{figure}[!htb]
-  \centering
-  \subfloat{\label{fig:PSumMax_All}\grinp[width=0.32\tw]{Figs/PsumMax_All.pdf}}
-  \subfloat{\label{fig:PSumMax_AllBut}\grinp[width=0.32\tw]{Figs/PsumMax_AllBut.pdf}}
-  \subfloat{\label{fig:PSumMax_CutEffect}\grinp[width=0.32\tw]{Figs/PsumMax_CutEffect.pdf}}
-  \caption{Progress of $\mathrm{P_{Sum}}$ Max cut.}
+ \centering
+ \grinp[width=0.95\tw]{Figs/Minv_General_Final_Cut_1.pdf}
+ \caption{The Final invariant mass distribution representing the full 10\% sample
+ of the 2016 run.}
+ \label{fig:MinvFInal}
 \end{figure}
- 
-\begin{figure}[!htb]
-  \centering
-  \subfloat{\label{fig:PSumMin_All}\grinp[width=0.32\tw]{Figs/PsumMin_All.pdf}}
-  \subfloat{\label{fig:PSumMin_AllBut}\grinp[width=0.32\tw]{Figs/PsumMin_AllBut.pdf}}
-  \subfloat{\label{fig:PSumMin_CutEffect}\grinp[width=0.32\tw]{Figs/PsumMin_CutEffect.pdf}}
-  \caption{Progress of $\mathrm{P_{Sum}}$ Min cut.}
-\end{figure}
+%%%%%%%%%%%%%%%%%%%%%%%%%% F I G U R E %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+final invariant mass distribution is shown in Fig.\ref{fig:MinvFInal}.
 
-\begin{figure}[!htb]
-  \centering
-  \subfloat{\label{fig:Pem_All}\grinp[width=0.32\tw]{Figs/Pem_All.pdf}}
-  \subfloat{\label{fig:Pem_AllBut}\grinp[width=0.32\tw]{Figs/Pem_AllBut.pdf}}
-  \subfloat{\label{fig:Pem_CutEffect}\grinp[width=0.32\tw]{Figs/Pem_CutEffect.pdf}}
-  \caption{Progress of $P_{e^{-}}$ cut.}
-\end{figure}
+
+% \begin{figure}[!htb]
+%   \centering
+%   \subfloat{\label{fig:PSumMax_All}\grinp[width=0.32\tw]{Figs/PsumMax_All.pdf}}
+%   \subfloat{\label{fig:PSumMax_AllBut}\grinp[width=0.32\tw]{Figs/PsumMax_AllBut.pdf}}
+%   \subfloat{\label{fig:PSumMax_CutEffect}\grinp[width=0.32\tw]{Figs/PsumMax_CutEffect.pdf}}
+%   \caption{Progress of $\mathrm{P_{Sum}}$ Max cut.}
+% \end{figure}
+%  
+% \begin{figure}[!htb]
+%   \centering
+%   \subfloat{\label{fig:PSumMin_All}\grinp[width=0.32\tw]{Figs/PsumMin_All.pdf}}
+%   \subfloat{\label{fig:PSumMin_AllBut}\grinp[width=0.32\tw]{Figs/PsumMin_AllBut.pdf}}
+%   \subfloat{\label{fig:PSumMin_CutEffect}\grinp[width=0.32\tw]{Figs/PsumMin_CutEffect.pdf}}
+%   \caption{Progress of $\mathrm{P_{Sum}}$ Min cut.}
+% \end{figure}
+% 
+% \begin{figure}[!htb]
+%   \centering
+%   \subfloat{\label{fig:Pem_All}\grinp[width=0.32\tw]{Figs/Pem_All.pdf}}
+%   \subfloat{\label{fig:Pem_AllBut}\grinp[width=0.32\tw]{Figs/Pem_AllBut.pdf}}
+%   \subfloat{\label{fig:Pem_CutEffect}\grinp[width=0.32\tw]{Figs/Pem_CutEffect.pdf}}
+%   \caption{Progress of $P_{e^{-}}$ cut.}
+% \end{figure}
 
 \clearpage
 
@@ -575,6 +614,7 @@ $\sigma_{\mathrm{stat}}$, and $\dstl \sigma_{m}$ for $\delta m$, we can express 
 In the section \ref{sec:FinalState} it is described that, the two step process cWAB $eA\rarr eA\gamma(\rarr e^{-}e^{+})$ can mimic the trident final sate. As the photon conversion can occur in the target, it also can occur in any layer of SVT too. While the photon conversion in layers 3, 4, 5 and 6 will not yield to reconstructed trucks (since tracking requires at least 5 3D hits), conversion in the first and second layer (if conversion occur in the axial sensor of layer 2) could cause both or either $e^{-}$ or $e^{+}$ to be reconstructed. One of handles to suppress cWABs, is to require a presence of a hit in L1 from $e^{+}$ tracks. This should suppress cWABs significantly (photon conversions in L2 and in L1 stereo sensor), while should not significantly impact tridents that produced in the target. In this particular analysis, however, we will not require the presence of a hit in L1, and the reason is that at this moment we have significant discrepancy in the Data and MC L1 hit efficiency, which in turn translates to more discrepancy between data and MC rates.
 
 \subsubsection{\texorpdfstring{$\mathrm{d_{0} }$}{Lg} cut}
+\label{app:d0Cut}
 Another strong cut that allows to suppress cWABs is the cut on the distance of closest approach ($\mathrm{d_{0}}$). The reason is that, if the photon conversion occurs not in the target, but in 
 %%%%%%%%%%%%%%%%%%%%%%%%%% F I G U R E %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{figure}[!htb]
@@ -632,6 +672,58 @@ Mean, $\sigma$ and cut value on $d_{0}$ for data and MC are shown in the table.\
 \label{tb:d0Values}
  \end{table}
 
+ \clearpage
+ \section{Data and MC comparison at high $\mathrm{d_{0}}$}
+ \label{app:highD0Comparison}
+ Although in this analysis we don't cut on $\mathrm{d_{0}}$, however
+ during the initial event selection studies, it was observed that, 
+ when we cut on $\mathrm{d_{0}}$ (see appendix \ref{app:d0Cut} for details
+ about the $\mathrm{d_{0}}$ cut), the tail in $\mathrm{P_{Sum}}$ 
+ distribution vanishes, while when there is no cut applied on 
+ $\mathrm{d_{0}}$, then ``Data'' and ``WAB'' tails are quite close to each
+ other (see fig.\ref{fig:PSumMaxCutJustify}).
+ To check, if at high $\mathrm{P_{Sum}}$ the data represents the WABs,
+ rather than something else, we have applied a reverse cut on 
+ $\mathrm{d_{0}}$, i.e. selected events with  $\mathrm{d_{0} > 2.25 mm}$,
+ and applied the rest of event selection cuts (exept cuts on $\mathrm{P_{Sum}}$).
+ As you can see from the Fig.\ref{fig:d0MCComponents} and Fig.\ref{fig:d0FitData},
+ this high $\mathrm{d_{0}}$, could have data and WABs (contributions from ``Tri'' and 
+ ``Rad'' are very small).
+ %%%%%%%%%%%%%%%%%%%%%%%%%% F I G U R E %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+ \begin{figure}[!htb]
+  \centering
+  \grinp[width=0.55\tw]{Figs/Minv_BidD0_1_All.pdf}
+  \caption{The differential cross sections as a function of the lepton pair masss, when
+  a reverse $\mathrm{d_{0}}$ cut is applied. Black is tata, Brown is WAB, and by Orange
+  color represented the `Tri'' + ``Rad'' component. Radiatives are represented by the 
+  Red color, however it has negligibly small contribution (almost unnoticeable).}
+  \label{fig:MinvCompareHighD0}
+ \end{figure}
+ %%%%%%%%%%%%%%%%%%%%%%%%%% F I G U R E %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+In Fig.\ref{fig:MinvCompareHighD0} shown data and MC comparison for such high
+$\mathrm{d_{0}}$ events. Above $\mathrm{M > 50\;MeV}$ Data and MC agree to each other
+reasonably well. The discrepancy at small mass cound be because of the small differences
+in the real and MC acceptances. 
+ %%%%%%%%%%%%%%%%%%%%%%%%%% F I G U R E %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+ \begin{figure}[!htb]
+  \centering
+  \subfloat[]{\grinp[width=0.32\tw]{Figs/Pem_BigD0_2_All.pdf}}
+  \subfloat[]{\grinp[width=0.32\tw]{Figs/Pep_BigD0_2_All.pdf}}
+  \subfloat[]{\grinp[width=0.32\tw]{Figs/PSum_BigD0_2_All.pdf}}
+  \caption{Comparison of Data and MC, for Electron Momentum (Left),
+  Positron momentum  (middle), and the momentum sum (right). These are events with 
+  $\mathrm{M > 50\;MeV}$.}
+  \label{fig:MomCompareHighD0}
+ \end{figure}
+ %%%%%%%%%%%%%%%%%%%%%%%%%% F I G U R E %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+In Fig.\ref{fig:MomCompareHighD0} shown data and MC comparisons of electron momentum (left),
+positron momentum (middle) and the momentum summ (right). For high masses $\mathrm{M > 50\;MeV}$, WAB mc describes data reasonably weel. It is not perfect, but it is better than
+the Data and MC comparison for the full trident sample.
+This is not a poof that in all kinematic region (even smaller $\mathrm{d_{0}}$ values)
+WAB will describe the data, however hit hints that the high end tail in the 
+$\mathrm{P_{Sum}}$ distribution is from the WAB sample.
+
+ 
 \clearpage
 \begin{thebibliography}{55}
  \bibitem{TriggerNote} Kyle McCarty, Valery Kubarovsky and Benjamin Raydo, ``Description and Tuning of the HPS Trigger'', HPS Note 2018-002
