@@ -6,6 +6,8 @@
 void InitVariables(std::string dataSet) {
 
 
+    rnd1 = new TRandom();
+
     // Defing available values for Ap simulation
     ApMassSet.insert(50);
     ApMassSet.insert(55);
@@ -38,6 +40,16 @@ void InitVariables(std::string dataSet) {
     m_v_Minv_General[1] = {};
     m_v_Minv_General[2] = {};
     m_v_Minv_General[3] = {};
+    
+    m_v_MinvScSm_General[0] = {};
+    m_v_MinvScSm_General[1] = {};
+    m_v_MinvScSm_General[2] = {};
+    m_v_MinvScSm_General[3] = {};
+
+    m_v_MinvTrue_General[0] = {};
+    m_v_MinvTrue_General[1] = {};
+    m_v_MinvTrue_General[2] = {};
+    m_v_MinvTrue_General[3] = {};
 
     m_v_PSum_General[0] = {};
     m_v_PSum_General[1] = {};
@@ -51,6 +63,7 @@ void InitVariables(std::string dataSet) {
     double MinvBins[nMinvBins + 1] = {0., 0.02, 0.04, 0.06, 0.08, 0.1, 0.12, 0.14, 0.16, 0.18, 0.2, 0.22, 0.24};
     h_MinvBins1 = new TH1D("h_MinvBins1", "", nMinvBins, MinvBins);
 
+    InitSmearPars();
 
     // ========================================================================
     // ========= Let's figure it out which data source will be analyzed Rad, Tri, Date etc
@@ -84,6 +97,8 @@ void InitVariables(std::string dataSet) {
 
         isMC = true;
 
+        InitTrkKillingHist();
+
         cutHistFileName = "EvSelectionCuts_Data.root";
 
         if (dataSet.compare("WAB") == 0) {
@@ -107,7 +122,8 @@ void InitVariables(std::string dataSet) {
         } else if (dataSet.compare("Rad") == 0) {
             isRad = true;
             //inpFileName = "../Data/RAD_Beam_pass4.root";
-            inpFileName = "../Data/Rad_Beam_pass4.root";
+            //inpFileName = "../Data/Rad_Beam_pass4.root";
+            inpFileName = "../Data/RadBeamWithTruth.root";
 
             if (isEventSelection) {
                 outFileName = "EventSelection_Rad.root";
@@ -145,7 +161,8 @@ void InitVariables(std::string dataSet) {
             if (ApMassSet.count(ApMass) > 0) {
 
                 //inpFileName = Form("../Data/Ap_%dMeV.root", ApMass);
-                inpFileName = Form("../Data/Ap_%dMeV_Dec11_2019.root", ApMass);
+                inpFileName = Form("../Data/AP_TargNominal_%d_MeV.root", ApMass);
+                //inpFileName = Form("../Data/Ap_%dMeV_Dec11_2019.root", ApMass);
                 outFileName = Form("EventSelection_Ap_%dMeV.root", ApMass);
 
 
@@ -188,6 +205,12 @@ void InitVariables(std::string dataSet) {
     f_clTBotLowLim = new TF1("f_clTBotLowLim", "[0] + x*( [1] + x*[2] )", 0., 2.5);
     f_clTTopUpLim = new TF1("f_clTTopUpLim", "[0] + x*( [1] + x*[2] )", 0., 2.5);
     f_clTTopLowLim = new TF1("f_clTTopLowLim", "[0] + x*( [1] + x*[2] )", 0., 2.5);
+
+
+    f_fRad_Mass = new TF1("f_fRad_Mass", "[0] + x*( [1] + x*([2] +  x*([3] + x*([4] + x*([5] + x*([6] + x*([7] + x*([8] + x*[9])))))) ) ) ", 0., 0.25);
+    f_fRad_Mass->SetParameters(-853094.35571679403074085712432861328125, 54359868.78713452816009521484375, -1289945815.2204229831695556640625,
+            15968338273.346767425537109375, -114890347220.0277557373046875, 486617910661.73077392578125, -1105011911726.684814453125, 762692693207.0887451171875,
+            1678645670596.710205078125, -2734109241360.267578125);
 
 
     // ============== =============================== ====================
@@ -485,6 +508,10 @@ void InitVariables(std::string dataSet) {
 
         m_h_Minv_General[ii] = new TH1D(Form("h_Minv_General_Final_%d", ii), "", 6000, 0., 0.3);
         m_h_Psum_General[ii] = new TH1D(Form("h_PSum_General_Final_%d", ii), "", 600, 0.7, 1.2 * Eb);
+        m_h_Minv_GeneralLargeBins[ii] = new TH1D(Form("h_Minv_GeneralLargeBins_Final_%d", ii), "", 400, 0., 0.25);
+        m_h_MinvTrue_GeneralLargeBins[ii] = new TH1D(Form("h_MinvTrue_GeneralLargeBins_Final_%d", ii), "", 400, 0., 0.25);
+        m_h_Psum_GeneralLargeBins[ii] = new TH1D(Form("h_Psum_GeneralLargeBins_Final_%d", ii), "", 40, 1.6, 1.2 * Eb);
+        m_h_MinvScSm_GeneralLargeBins[ii] = new TH1D(Form("h_MinvScSm_GeneralLargeBins_Final_%d", ii), "", 400, 0., 0.25);
     }
 
     if (isEventSelection) {
@@ -523,6 +550,8 @@ void ResetV0Flags() {
     IsPsumMin = false;
     isLarged0ep = false;
 
+    isRadAndRecoil = false;
+
     MinvBin = 0;
     cl_ep = nullptr;
     cl_em = nullptr;
@@ -531,6 +560,9 @@ void ResetV0Flags() {
 
     v_CutsKeys.clear();
     v_CutsKeys.shrink_to_fit();
+
+    true_em_match = false;
+    trueMass = 0.;
 }
 
 void CorrectClusterTime(EcalCluster* cl) {
@@ -600,6 +632,11 @@ bool CheckAllOtherCuts(std::string astr) {
     // ======= So we might want to put this cut again
 
     IsD0ep = true;
+    IsepClTrkdT = true;
+    IsemClTrkdT = true;
+    IsepTrkClMatch = true;
+    IsemTrkClMatch = true;
+    IsPem = true;
     //===============================
 
     if (astr.compare("cldT") == 0) {
@@ -1001,7 +1038,7 @@ bool IsTightD0CutPassed(GblTrack* trk) {
 
 void FillLargeD0Hists(double mV0, double Pem, double Pep) {
 
-    if (isLarged0ep && IscldT && IsemClTrkdT && IsepClTrkdT && IsemTrkClMatch && IsepTrkClMatch ) {
+    if (isLarged0ep && IscldT && IsemClTrkdT && IsepClTrkdT && IsemTrkClMatch && IsepTrkClMatch) {
         h_Pem_BigD0_1->Fill(Pem);
         h_Pep_BigD0_1->Fill(Pep);
         h_PSum_BigD0_1->Fill(Pem + Pep);
@@ -1135,6 +1172,52 @@ double GetMagnitude(vector<double> v) {
     }
 
     return sqrt(magn2);
+}
+
+vector<double> GetMassBins() {
+
+    vector<double> massBins;
+
+    TF1 *f_Pol9 = new TF1("f_Pol9", "pol9", 0.02, 0.25);
+
+    //======== These parameters are just empirical parameters obtained by fitting the Tri mass spectrum with pol9 function
+    double pars[10] = {-153346.6270154149387963116168975830078125, 11201974.94080074690282344818115234375, -304941970.057447373867034912109375,
+        4447333216.984340667724609375, -39577578066.1367340087890625, 226243975671.709014892578125, -837152757876.4150390625, 1941315061381.22021484375,
+        -2565233441882.16552734375, 1472607538595.3955078125};
+    f_Pol9->SetParameters(pars);
+
+    double xMax = 0.25;
+    double x0 = 0.032;
+    //double cur_x = x0;
+    double cur_x = 0;
+    const double bw = 0.25 / 200;
+    const double desiredCont = 4000.; // The number that we want eah bin of the histo to have
+
+    massBins.push_back(cur_x);
+    while (cur_x < xMax) {
+
+        double f = f_Pol9->Eval(cur_x);
+
+        double delta_x = 0.0005;
+        if (cur_x > x0) {
+            delta_x = TMath::Min(0.01, desiredCont * bw / f);
+        }
+        if (delta_x < 0.0005) {
+            delta_x = 0.0005;
+        }
+
+        cur_x = cur_x + delta_x;
+
+        massBins.push_back(cur_x);
+
+    }
+
+    //    for (int i = 0; i < massBins.size(); i++) {
+    //        cout << massBins.at(i) << ", ";
+    //    }
+    //    cout << endl;
+
+    return massBins;
 }
 
 void DefineCutGeneral(TH2D *h_inp, TH2D *h_cut, double acutFraction) {
@@ -1418,6 +1501,200 @@ void FilldtP_em(HpsParticle *V0, HpsParticle *em, double P, double dt) {
     }
 }
 
+void FillMCHists(HpsEvent *ev, HpsParticle *em, HpsParticle *ep) {
+
+    if (isMC && IscldT && IsemClTrkdT && IsepClTrkdT && IsemTrkClMatch && IsepTrkClMatch) {
+        int nMCParticles = ev->getNumberOfMCParticles();
+
+        double Pem_Rec = 0;
+        double Pep_Rec = 0;
+
+        double Pem_MC = 0;
+        double Pep_MC = 0;
+
+        bool epHasL1 = false;
+        for (int iMC = 0; iMC < nMCParticles; iMC++) {
+            MCParticle *mcpart = ev->getMCParticle(iMC);
+
+            if (mcpart->getParentCount() > 0 && mcpart->getParent(0)->getPdgID() == 622 || mcpart->getParentCount() == 0 ||
+                    (mcpart->getParentCount() > 0 && mcpart->getParent(0)->getPdgID() == 22 && mcpart->getParent(0)->getParentCount() == 0)) {
+
+                if (mcpart->getPdgID() == 11) {
+
+                    Pem_MC = GetMagnitude(mcpart->getMomentum());
+                    Pem_Rec = GetMagnitude(em->getMomentum());
+
+                    double hasL1 = HasL1Hit((GblTrack*) em->getTracks()->At(0));
+
+                    if (hasL1) {
+                        h_dP_P_em_WithL1_1->Fill(Pem_MC, (Pem_Rec - Pem_MC) / Pem_MC);
+                    } else {
+                        h_dP_P_em_NoL1_1->Fill(Pem_MC, (Pem_Rec - Pem_MC) / Pem_MC);
+                    }
+
+                } else if (mcpart->getPdgID() == -11) {
+
+                    Pep_MC = GetMagnitude(mcpart->getMomentum());
+                    Pep_Rec = GetMagnitude(ep->getMomentum());
+
+                    double hasL1 = HasL1Hit((GblTrack*) ep->getTracks()->At(0));
+
+                    if (hasL1) {
+                        h_dP_P_ep_WithL1_1->Fill(Pep_MC, (Pep_Rec - Pep_MC) / Pep_MC);
+                        epHasL1 = true;
+                    } else {
+                        h_dP_P_ep_NoL1_1->Fill(Pep_MC, (Pep_Rec - Pep_MC) / Pep_MC);
+                        epHasL1 = false;
+                    }
+                }
+            }
+
+        }
+
+        if (epHasL1) {
+            h_PSum_RecMC_WithL1_1->Fill(Pem_MC + Pep_MC, Pem_Rec + Pep_Rec);
+        } else {
+            h_PSum_RecMC_NoL1_1->Fill(Pem_MC + Pep_MC, Pem_Rec + Pep_Rec);
+        }
+
+    }
+}
+
+// ===== ==============================================     ======
+
+void FillfRadHists(HpsEvent *ev, HpsParticle *v0) {
+
+    if (!isMC) {
+        return;
+    }
+
+
+    double m_v0 = v0->getMass();
+    int nMCParticles = ev->getNumberOfMCParticles();
+
+    // =========== Studies with Rad samples =========
+    if (isRad || isAp) {
+
+        isRadAndRecoil = true; // As soon we know this sample is Rad we set it "true", BUT
+        // below, if it failed to match the truth then it will be reset back to false
+        double P_RecoilTrue = 0;
+        double P_em_True = 0;
+
+        for (int ii = 0; ii < nMCParticles; ii++) {
+            MCParticle *mcpart = ev->getMCParticle(ii);
+
+            if (mcpart->getPdgID() == 622) {
+                double m_gg = mcpart->getMass();
+                double P_gg = GetMagnitude(mcpart->getMomentum());
+
+                HpsParticle *em;
+                if (((HpsParticle*) v0->getParticles()->At(0))->getCharge() < 0) {
+                    em = (HpsParticle*) v0->getParticles()->At(0);
+                } else {
+                    em = (HpsParticle*) v0->getParticles()->At(1);
+                }
+
+                double P_em_Rec = GetMagnitude(em->getMomentum());
+                TVector3 v3_em_Rec(em->getMomentum().at(0), em->getMomentum().at(1), em->getMomentum().at(2));
+
+                //            const int nfRadMassBins = 20;
+                //double fRadMassCenters[nfRadMassBins] = {0.04, 0.05, 0.06, 0.07, 0.08, 0.09, 0.1, 0.11, 0.12, 0.13, 0.14, 0.15, 0.16, 0.17, 0.18, 0.19, 0.2, 0.21, 0.22, 0.23};
+
+
+
+
+                int n_Daught = mcpart->getDaughterCount();
+
+                //                if (n_Daught == 1) {
+                //                    cout << mcpart->getDaughter(0)->getPdgID() << "      " << GetMagnitude(mcpart->getDaughter(0)->getMomentum()) << "     " << m_gg << "     " << P_gg << endl;
+                //
+                //                }
+
+                true_em_match = false;
+                for (int iD = 0; iD < n_Daught; iD++) {
+
+                    MCParticle *curDaught = mcpart->getDaughter(iD);
+
+
+
+                    if (curDaught->getCharge() < 0) {
+
+                        P_em_True = GetMagnitude(curDaught->getMomentum());
+                        h_dP_PTrue_em1->Fill(P_em_True, P_em_Rec / P_em_True);
+
+                        TVector3 v3_em_True(curDaught->getMomentum().at(0), curDaught->getMomentum().at(1), curDaught->getMomentum().at(2));
+                        double angle_RecTrue = v3_em_True.Angle(v3_em_Rec) * TMath::RadToDeg();
+
+                        h_dThetaTrue_Minv1->Fill(m_gg, angle_RecTrue);
+
+                        h_dP_dTh_True1->Fill(P_em_Rec / P_em_True, angle_RecTrue);
+
+                        if (m_gg > 0.04) {
+                            h_dP_dTh_True2->Fill(P_em_Rec / P_em_True, angle_RecTrue);
+                        }
+
+                        if (angle_RecTrue < 1.) {
+                            h_dP_PTrue_em2->Fill(P_em_True, P_em_Rec / P_em_True);
+                        }
+
+                        if (P_em_Rec / P_em_True > 0.8 && P_em_Rec / P_em_True < 1.1) {
+                            h_dThetaTrue_Minv2->Fill(m_gg, angle_RecTrue);
+
+                            if (angle_RecTrue < 1.) {
+                                true_em_match = true;
+                                isRadAndRecoil = false;
+                            }
+                        }
+                    }
+                }
+
+
+                for (int imass = 0; imass < nfRadMassBins; imass++) {
+                    if (TMath::Abs(m_gg - fRadMassCenters[imass]) < TMath::Min(0.01, 2000. * massHistBinWidth / MassFunc[imass])) {
+                        h_Rad_MinvPSum1_[imass]->Fill(GetMagnitude(v0->getMomentum()), m_v0);
+                        h_Rad_MinvPSumTrue_[imass]->Fill(GetMagnitude(mcpart->getMomentum()), m_gg);
+
+                        if (true_em_match)
+                            h_Rad_MinvPSum2_[imass]->Fill(GetMagnitude(v0->getMomentum()), m_v0);
+                    }
+                }
+
+
+                if (true_em_match && IsPsumMin) {
+                    h_Memep1->Fill(m_v0);
+                    h_Memep_True1->Fill(m_gg);
+                    h_Memep_VarBins1->Fill(m_v0);
+                    h_Memep_True_VarBins1->Fill(m_gg);
+                    trueMass = m_gg;
+                }
+
+
+                //break;
+            } else if (mcpart->getPdgID() == 623 && mcpart->getDaughterCount() == 1 && mcpart->getDaughter(0)->getCharge() == -1) {
+
+                P_RecoilTrue = GetMagnitude(mcpart->getDaughter(0)->getMomentum());
+            }
+
+
+        }
+
+
+
+        //        double P_RecoilTrue = 0;
+        //        double P_em_True = 0;
+
+        h_P_DecayRecoil->Fill(P_em_True, P_RecoilTrue);
+
+    } else if (isTri || isWab) {
+
+        if (IsPsumMin) {
+            h_Memep1->Fill(m_v0);
+            h_Memep_VarBins1->Fill(m_v0);
+        }
+    }
+
+}
+
 void InitCutHistograms() {
 
     TH2D *h_dX_Top_PosWithL6 = (TH2D*) file_CutHists->Get("h_dX_epTopWithL6_AllBut");
@@ -1692,4 +1969,200 @@ void InitGeneralHistograms() {
     h_PSum_BigD0_2 = new TH1D("h_PSum_BigD0_2", "", 70, 0., 1.2 * Eb);
     h_Minv_BidD0_1 = new TH1D("h_Minv_BidD0_1", "", 70, 0., 0.24);
 
+
+    h_dP_P_ep_WithL1_1 = new TH2D("h_dP_P_ep_WithL1_1", "", 100, 0., Eb, 100, -0.2, 0.2);
+    h_dP_P_ep_NoL1_1 = new TH2D("h_dP_P_ep_NoL1_1", "", 100, 0., Eb, 100, -0.2, 0.2);
+    h_dP_P_em_WithL1_1 = new TH2D("h_dP_P_em_WithL1_1", "", 100, 0., Eb, 100, -0.2, 0.2);
+    h_dP_P_em_NoL1_1 = new TH2D("h_dP_P_em_NoL1_1", "", 100, 0., Eb, 100, -0.2, 0.2);
+
+    h_PSum_RecMC_WithL1_1 = new TH2D("h_PSum_RecMC_WithL1_1", "", 100, 0., 1.2 * Eb, 100, 0., 1.2 * Eb);
+    h_PSum_RecMC_NoL1_1 = new TH2D("h_PSum_RecMC_NoL1_1", "", 100, 0., 1.2 * Eb, 100, 0., 1.2 * Eb);
+
+
+    for (int ii = 0; ii < nfRadMassBins; ii++) {
+        h_Rad_MinvPSum1_[ii] = new TH2D(Form("h_Rad_MinvPSum1_%d", ii), "", 200, 0.7, 1.2 * Eb, 200., 0., 0.3);
+        h_Rad_MinvPSum2_[ii] = new TH2D(Form("h_Rad_MinvPSum2_%d", ii), "", 200, 0.7, 1.2 * Eb, 200., 0., 0.3);
+        h_Rad_MinvPSumTrue_[ii] = new TH2D(Form("h_Rad_MinvPSumTrue_%d", ii), "", 200, 0.7, 1.2 * Eb, 200., 0., 0.3);
+    }
+
+    h_dP_PTrue_em1 = new TH2D("h_dP_PTrue_em1", "", 200, 0., 1.2 * Eb, 200, 0., 1.5);
+    h_dP_PTrue_em2 = new TH2D("h_dP_PTrue_em2", "", 200, 0., 1.2 * Eb, 200, 0., 1.5);
+    h_dThetaTrue_Minv1 = new TH2D("h_dThetaTrue_Minv1", "", 200, 0., 0.25, 200, 0., 12.);
+    h_dThetaTrue_Minv2 = new TH2D("h_dThetaTrue_Minv2", "", 200, 0., 0.25, 200, 0., 12.);
+
+    h_dP_dTh_True1 = new TH2D("h_dP_dTh_True1", "", 200, 0., 1.5, 200, 0., 12);
+    h_dP_dTh_True2 = new TH2D("h_dP_dTh_True2", "", 200, 0., 1.5, 200, 0., 12);
+
+    h_Memep1 = new TH1D("h_Memep1", "", 400, 0., 0.25);
+    h_Memep_True1 = new TH1D("h_Memep_True1", "", 400, 0., 0.25);
+
+    h_P_DecayRecoil = new TH2D("h_P_DecayRecoil", "", 200, 0., 1.05 * Eb, 200, 0., 1.05 * Eb);
+
+    vector<double> v_massBins = GetMassBins();
+    int nMassBins = v_massBins.size() - 1;
+
+    double massBinEdges[nMassBins + 1];
+    std::copy(v_massBins.begin(), v_massBins.end(), massBinEdges);
+
+    h_Memep_VarBins1 = new TH1D("h_Memep_VarBins1", "", nMassBins, massBinEdges);
+    h_Memep_True_VarBins1 = new TH1D("h_Memep_True_VarBins1", "", nMassBins, massBinEdges);
+
+}
+
+void InitTrkKillingHist() {
+
+    TFile *fileTrkKiller = new TFile("../Data/dualPlaneTest.root", "Read");
+
+
+    gr_TrkKiller = (TGraphAsymmErrors*) fileTrkKiller->Get("p2slopehps_007963.1GamEm_L1HitInefficiency");
+
+    double x, y;
+    int nPoints = gr_TrkKiller->GetN();
+    gr_TrkKiller->GetPoint(nPoints - 1, x, y);
+    double xMax = x;
+    gr_TrkKiller->GetPoint(0, x, y);
+    double xMin = x;
+    double bw = (xMax - xMin) / double(nPoints - 1);
+
+    //    double xMax = gr_TrkKiller->GetXaxis()->GetXmax();
+    //    double xMin = gr_TrkKiller->GetXaxis()->GetXmin();
+
+    //cout << "xMin is " << xMin << "    xMax is " << xMax << "    nBin is " << nPoints << endl;
+
+    h_TrkKiller = new TH1D("h_TrkKiller", "", nPoints, xMin - bw / 2., xMax + bw / 2.);
+
+    //cout<<"h_TrkKiller = "<<h_TrkKiller<<endl;
+
+    for (int ipoint = 0; ipoint < nPoints; ipoint++) {
+
+        gr_TrkKiller->GetPoint(ipoint, x, y);
+
+        int ibin = h_TrkKiller->FindBin(x);
+        //cout << "ipoint = " << ipoint << "   x = " << x << "    y = " << y << "    ibin = " << ibin << endl;
+        h_TrkKiller->SetBinContent(ibin, y);
+    }
+
+    //fileTrkKiller->Close();
+
+}
+
+bool IsParticleKilled(HpsParticle * part) {
+
+    if (!isMC) {
+        return false;
+    }
+
+    GblTrack *trk = (GblTrack*) part->getTracks()->At(0);
+
+    double slp = trk->getTanLambda();
+
+    int nHits = trk->getSvtHits()->GetSize();
+
+    //cout << "nHits = " << nHits << "     slp = " << slp << endl;
+
+    if (nHits == 6) {
+        return false;
+    } else if (nHits == 5) {
+
+        int ibin = h_TrkKiller->FindBin(slp);
+
+        //cout<<"xMin = "<<h_TrkKiller->GetXaxis()->GetXmin()<<"     xMax = "<<h_TrkKiller->GetXaxis()->GetXmax()<<endl;
+
+        double eff = 1 - h_TrkKiller->GetBinContent(ibin);
+
+        double randNumber = rnd1->Uniform(0., 1.);
+
+        //cout<<"ibin = "<<ibin << "     Eff = " << eff << "      randNumber is " << randNumber << endl;
+
+        if (randNumber > eff) {
+            return true;
+        } else {
+            return false;
+        }
+
+    }
+
+}
+
+double GetSmearMass(HpsParticle* v0) {
+
+    HpsParticle *top = ((HpsParticle*) v0->getParticles()->At(0))->getMomentum().at(1) > 0 ? ((HpsParticle*) v0->getParticles()->At(0)) : ((HpsParticle*) v0->getParticles()->At(1));
+    HpsParticle *bot = ((HpsParticle*) v0->getParticles()->At(0))->getMomentum().at(1) < 0 ? ((HpsParticle*) v0->getParticles()->At(0)) : ((HpsParticle*) v0->getParticles()->At(1));
+
+    double M_V0 = v0->getMass();
+    
+    double P_Top = GetMagnitude(top->getMomentum());
+    double P_Bot = GetMagnitude(bot->getMomentum());
+    int nTopHits = ((GblTrack*) top->getTracks()->At(0))->getSvtHits()->GetSize();
+    int nBotHits = ((GblTrack*) bot->getTracks()->At(0))->getSvtHits()->GetSize();
+
+    double scaleMomTop;
+    double scaleMomBot;
+
+    if (isData) {
+        scaleMomTop = nTopHits == 5 ? scale_Data_Top5hits : scale_Data_Top6hits;
+        scaleMomBot = nBotHits == 5 ? scale_Data_Bot5hits : scale_Data_Bot6hits;
+    } else {
+        scaleMomTop = nTopHits == 5 ? scale_MC_Top5hits : scale_MC_Top6hits;
+        scaleMomBot = nBotHits == 5 ? scale_MC_Bot5hits : scale_MC_Bot6hits;
+    }
+
+    double P_TopScaled = scaleMomTop*P_Top;
+    double P_BotScaled = scaleMomBot*P_Bot;
+
+    double smearTop = nTopHits == 5 ? smear_Top5hits : smear_Top6hits;
+    double smearBot = nBotHits == 5 ? smear_Bot5hits : smear_Bot6hits;
+
+    double P_TopSmSc = rnd1->Gaus(P_TopScaled, P_TopScaled * smearTop);
+    double P_BotSmSc = rnd1->Gaus(P_BotScaled, P_BotScaled * smearBot);
+
+    if (isData) {
+        P_TopSmSc = P_TopScaled;
+        P_BotSmSc = P_BotScaled;
+    }
+
+    double MinvScSmfactor = sqrt((P_TopSmSc / P_Top)*(P_BotSmSc / P_Bot));
+    double M_V0_ScSm = MinvScSmfactor*M_V0;
+    
+    return M_V0_ScSm;
+}
+
+void InitSmearPars() {
+
+    file_smearPars = new TFile("MomSmearScale.root", "Read");
+    trSmear = (TTree*) file_smearPars->Get("tr1");
+
+    trSmear->SetBranchAddress("mean_Data_Top5hits", &mean_Data_Top5hits);
+    trSmear->SetBranchAddress("sigm_Data_Top5hits", &sigm_Data_Top5hits);
+    trSmear->SetBranchAddress("scale_Data_Top5hits", &scale_Data_Top5hits);
+    trSmear->SetBranchAddress("mean_Data_Top6hits", &mean_Data_Top6hits);
+    trSmear->SetBranchAddress("sigm_Data_Top6hits", &sigm_Data_Top6hits);
+    trSmear->SetBranchAddress("scale_Data_Top6hits", &scale_Data_Top6hits);
+    trSmear->SetBranchAddress("mean_Data_Bot5hits", &mean_Data_Bot5hits);
+    trSmear->SetBranchAddress("sigm_Data_Bot5hits", &sigm_Data_Bot5hits);
+    trSmear->SetBranchAddress("scale_Data_Bot5hits", &scale_Data_Bot5hits);
+    trSmear->SetBranchAddress("mean_Data_Bot6hits", &mean_Data_Bot6hits);
+    trSmear->SetBranchAddress("sigm_Data_Bot6hits", &sigm_Data_Bot6hits);
+    trSmear->SetBranchAddress("scale_Data_Bot6hits", &scale_Data_Bot6hits);
+
+    trSmear->SetBranchAddress("mean_MC_Top5hits", &mean_MC_Top5hits);
+    trSmear->SetBranchAddress("sigm_MC_Top5hits", &sigm_MC_Top5hits);
+    trSmear->SetBranchAddress("scale_MC_Top5hits", &scale_MC_Top5hits);
+    trSmear->SetBranchAddress("mean_MC_Top6hits", &mean_MC_Top6hits);
+    trSmear->SetBranchAddress("sigm_MC_Top6hits", &sigm_MC_Top6hits);
+    trSmear->SetBranchAddress("scale_MC_Top6hits", &scale_MC_Top6hits);
+    trSmear->SetBranchAddress("mean_MC_Bot5hits", &mean_MC_Bot5hits);
+    trSmear->SetBranchAddress("sigm_MC_Bot5hits", &sigm_MC_Bot5hits);
+    trSmear->SetBranchAddress("scale_MC_Bot5hits", &scale_MC_Bot5hits);
+    trSmear->SetBranchAddress("mean_MC_Bot6hits", &mean_MC_Bot6hits);
+    trSmear->SetBranchAddress("sigm_MC_Bot6hits", &sigm_MC_Bot6hits);
+    trSmear->SetBranchAddress("scale_MC_Bot6hits", &scale_MC_Bot6hits);
+
+    trSmear->SetBranchAddress("smear_Top5hits", &smear_Top5hits);
+    trSmear->SetBranchAddress("smear_Top6hits", &smear_Top6hits);
+    trSmear->SetBranchAddress("smear_Bot5hits", &smear_Bot5hits);
+    trSmear->SetBranchAddress("smear_Bot6hits", &smear_Bot6hits);
+
+    trSmear->GetEntry(0);
+    file_smearPars->Close();
 }

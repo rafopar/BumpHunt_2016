@@ -175,6 +175,9 @@ int main(int argc, char** argv) {
 
     TH2D *h_PemPep1 = new TH2D("h_PemPep1", "", 200, 0., 1.05 * Eb, 200, 0., 1.05 * Eb);
 
+    TH2D *h_cl_E_Xc_ep1 = new TH2D("h_cl_E_Xc_ep1", "", 200, -300., 370, 200, 0., Eb);
+    TH2D *h_cl_E_Xc_em1 = new TH2D("h_cl_E_Xc_em1", "", 200, -300., 370, 200, 0., Eb);
+
     // =============== n-1 histograms, i.e. these histograms are filled when cuts on the rest of variables are applied
 
     TH1D *h_d0_ep_Nminus1 = new TH1D("h_d0_ep_Nminus1", "", 200, -3.5, 3.5);
@@ -394,7 +397,7 @@ int main(int argc, char** argv) {
                 //                double dtCorr = t_top_corrected - t_bot_corrected;
 
                 h_dt_Esum1->Fill(Esum, dt);
-                //                h_dtCorr_Esum1->Fill(Esum, dtCorr);
+                //h_dtCorr_Esum1->Fill(Esum, dtCorr);
 
                 if (n_pos == 1 && n_neg == 1) {
                     h_dt_Esum2->Fill(Esum, dt);
@@ -445,7 +448,14 @@ int main(int argc, char** argv) {
             //cout<<part0->getCharge()<<endl;
 
 
+            if (IsParticleKilled(em) || IsParticleKilled(ep)) {
+                continue;
+            }
+
+
+
             double mV0 = cur_v0->getMass();
+            
 
             //            cout << "# of em clusters     " << em->getClusters()->GetSize() << endl;
             //            cout << "# of ep clusters " << ep->getClusters()->GetSize() << endl;
@@ -800,7 +810,10 @@ int main(int argc, char** argv) {
                 //                cout<<mcpart->getPdgID()<<"     "<<mcpart->getEnergy()<<"     "<<mcpart->getMass()<<"    "<<mcpart->getMomentum().at(0)<<"     "
                 //                        <<mcpart->getMomentum().at(1)<<"     "<<mcpart->getMomentum().at(2)<<"     "<<endl;
 
+
+
                 if (mcpart->getPdgID() == 622) {
+
 
                     h_N_MCDaughters1->Fill(mcpart->getDaughterCount());
 
@@ -835,6 +848,8 @@ int main(int argc, char** argv) {
 
                     double Minv = TLorentzVector(L0 + L1).M();
 
+                    //cout<<mcpart->getMass()<<"       "<<Minv<<endl;
+
                     //cout<<mcpart->getDaughterCount()<<"        "<<P0 + P1<<"      "<<Minv<<endl;
 
 
@@ -852,6 +867,10 @@ int main(int argc, char** argv) {
             // ==========================
 
 
+            h_cl_E_Xc_ep1->Fill(((EcalCluster*) ep->getClusters()->At(0))->getPosition().at(0), ((EcalCluster*) ep->getClusters()->At(0))->getEnergy());
+            h_cl_E_Xc_em1->Fill(((EcalCluster*) em->getClusters()->At(0))->getPosition().at(0), ((EcalCluster*) em->getClusters()->At(0))->getEnergy());
+
+
             // ===============================================================================================
             // ====== Selecting Final V0 candidates
             // ===============================================================================================
@@ -866,6 +885,20 @@ int main(int argc, char** argv) {
             IsPem = IsEmMaxMomCut(P_em);
             IsD0ep = IsD0Cut(d0_ep);
 
+
+            FillMCHists(ev, em, ep);
+            if (IsPsumMax && IscldT) {
+                FillfRadHists(ev, cur_v0);
+            }
+
+            double M_TCSmSc = GetSmearMass(cur_v0);
+            
+            // ===== This checks if the sample is Rad, and if yes then the electron from the current v0 should be
+            // ===== matched to the gen electron, otherwise we don't want to use this v0, for other samples
+            // ===== we don't care, and the v0 should be used.
+            if (isRadAndRecoil) {
+                continue;
+            }
 
             h_PsumMax_All->Fill(Psum);
             h_Minv_PSumMax_All->Fill(Psum, mV0);
@@ -965,8 +998,8 @@ int main(int argc, char** argv) {
             // =============================== Do Not Remove the   above line   ============================ 
 
             FillLargeD0Hists(mV0, P_em, P_ep);
-            
-            if (IsPsumMax && IsPsumMin && IscldT && IsemClTrkdT && IsepClTrkdT && IsemTrkClMatch && IsepTrkClMatch && IsPem) {
+
+            if (IsPsumMax && IsPsumMin && IscldT /*&& IsemClTrkdT && IsepClTrkdT && IsemTrkClMatch && IsepTrkClMatch && IsPem */) {
                 CutsKey = GetCutsKey();
 
                 m_v_ee[CutsKey].push_back(mV0);
@@ -977,6 +1010,10 @@ int main(int argc, char** argv) {
                 for (int iCut = 0; iCut < v_CutsKeys.size(); iCut++) {
                     m_v_Minv_General[v_CutsKeys.at(iCut)].push_back(mV0);
                     m_v_PSum_General[v_CutsKeys.at(iCut)].push_back(Psum);
+                    m_v_MinvScSm_General[v_CutsKeys.at(iCut)].push_back(M_TCSmSc);
+                    if (true_em_match) {
+                        m_v_MinvTrue_General[v_CutsKeys.at(iCut)].push_back(trueMass);
+                    }
                 }
 
             }
@@ -1020,6 +1057,16 @@ int main(int argc, char** argv) {
             for (int iV0 = 0; iV0 < nCurV0; iV0++) {
                 m_h_Minv_General[HistKey]->Fill((it->second).at(iV0));
                 m_h_Psum_General[HistKey]->Fill(m_v_PSum_General[CurCutKey].at(iV0));
+
+                //m_h_Minv_GeneralLargeBins[HistKey]->Fill( m_v_MinvTrue_General[CurCutKey].at(iV0) );
+                m_h_Minv_GeneralLargeBins[HistKey]->Fill((it->second).at(iV0));
+                m_h_Psum_GeneralLargeBins[HistKey]->Fill(m_v_PSum_General[CurCutKey].at(iV0));
+
+                m_h_MinvScSm_GeneralLargeBins[HistKey]->Fill(m_v_MinvScSm_General[CurCutKey].at(iV0));
+                
+                if (isRad || isAp) {
+                    m_h_MinvTrue_GeneralLargeBins[HistKey]->Fill(m_v_MinvTrue_General[CurCutKey].at(iV0));
+                }
             }
 
             //            it->second.clear();
@@ -1029,8 +1076,10 @@ int main(int argc, char** argv) {
             //            m_v_PSum_General[CurCutKey].shrink_to_fit();
         }
 
+        m_v_MinvScSm_General.clear();
         m_v_Minv_General.clear();
         m_v_PSum_General.clear();
+        m_v_MinvTrue_General.clear();
 
         //cout<<m_v_ee[0].size()<<"    "<<m_v_ee[1].size()<<endl;
 

@@ -5,6 +5,8 @@
 #include <map>
 #include <TF1.h>
 #include <TH2D.h>
+#include <TRandom.h>
+#include <TGraphAsymmErrors.h>
 #include <hps_event/EcalCluster.h>
 
 using namespace std;
@@ -57,8 +59,8 @@ const double PsumCutMax_Data = 2.4;
 const double PsumCutMax_MC = 2.4;
 //const double PsumCutMax_Data = 2.7;
 //const double PsumCutMax_MC = 2.7;
-const double PsumCutMin_Data = 1.44; // GeV
-const double PsumCutMin_MC = 1.44; // GeV
+const double PsumCutMin_Data = 1.9; // GeV
+const double PsumCutMin_MC = 1.9; // GeV
 
 const double d0_cut_Data = 1.176; // From pass1 Data and MC, will be revised with new MC
 const double d0_cut_MC = 0.65; // Needs to be verified
@@ -69,6 +71,12 @@ const double largeD0Cut_MC = 2.25;
 const int nMinvBins = 12; // # of Minv bins, We want to study Psum for different Minv Bins
 const double MinvMin = 0.;
 const double MinvMax = 0.24;
+
+const double massHistBinWidth = 0.00125;
+const int nfRadMassBins = 20;
+double fRadMassCenters[nfRadMassBins] = {0.04, 0.05, 0.06, 0.07, 0.08, 0.09, 0.1, 0.11, 0.12, 0.13, 0.14, 0.15, 0.16, 0.17, 0.18, 0.19, 0.2, 0.21, 0.22, 0.23};
+double MassFunc[nfRadMassBins] = {30680.241, 53470.531, 54103.101, 44978.409,  33243.990, 22523.242, 14226.734, 8507.0612, 4917.0723, 2829.1550, 1670.1034,
+1021.9460, 633.97565, 385.09633, 228.47491, 142.37557, 101.94707, 76.634804, 46.799326, 25.040282};
 
 // =========================================================================
 // =====  Definition of Non-Const Variables
@@ -119,6 +127,7 @@ bool IsPsumMax;
 bool IsPsumMin;
 bool hasepL1;
 bool isLarged0ep;
+bool isRadAndRecoil;
 
 // ========================================================================
 // === Bool variables defining which program is running
@@ -179,7 +188,8 @@ const double tritrig_SigmaGen = 1.416e-3;
 const double NGen_tritrig = 985. * 50000.; /* 985 recon files, and each recon has 50K Gen events*/
 
 const double Rad_SigmaGen = 81.61e-6;
-const double NGen_Rad = 4989 * 10000.;
+const double NGen_Rad = 9959 * 10000.;
+//const double NGen_Rad = 4989 * 10000.;
 
 const double Wab_SigmaGen = 0.1985;
 const double NGen_Wab = 9965. * 100000.;
@@ -199,6 +209,48 @@ double rad_mc_lumi = (100 * 1 * 10000) / .0667e-3;
 double lumi_per_C = 0.00782 / (183.8 / 6.023E+23)*1e-24 / 1.602E-19;
 double charge = 827975.643e-9 / 10; // divide by 10 for blinding
 double tri_data_lumi = charge*lumi_per_C;
+
+
+double trueMass = 0.;
+bool true_em_match = false;
+
+
+
+// =========================================================================
+// ===== Smearing related variables
+// =========================================================================
+double mean_Data_Top5hits;
+double sigm_Data_Top5hits;
+double scale_Data_Top5hits;
+double mean_Data_Top6hits;
+double sigm_Data_Top6hits;
+double scale_Data_Top6hits;
+double mean_Data_Bot5hits;
+double sigm_Data_Bot5hits;
+double scale_Data_Bot5hits;
+double mean_Data_Bot6hits;
+double sigm_Data_Bot6hits;
+double scale_Data_Bot6hits;
+double mean_MC_Top5hits;
+double sigm_MC_Top5hits;
+double scale_MC_Top5hits;
+double mean_MC_Top6hits;
+double sigm_MC_Top6hits;
+double scale_MC_Top6hits;
+double mean_MC_Bot5hits;
+double sigm_MC_Bot5hits;
+double scale_MC_Bot5hits;
+double mean_MC_Bot6hits;
+double sigm_MC_Bot6hits;
+double scale_MC_Bot6hits;
+double smear_Top5hits;
+double smear_Top6hits;
+double smear_Bot5hits;
+double smear_Bot6hits;
+
+TFile *file_smearPars;
+TTree *trSmear;
+
 
 
 // =========================================================================
@@ -226,6 +278,8 @@ map<int, vector<double> > m_v_PSum;
 
 
 map<int, vector<double> > m_v_Minv_General;
+map<int, vector<double> > m_v_MinvScSm_General;
+map<int, vector<double> > m_v_MinvTrue_General;
 map<int, vector<double> > m_v_PSum_General;
 
 
@@ -261,6 +315,10 @@ map<int, TH1D*> m_h_Psum;
 
 map<int, TH1D*> m_h_Minv_General;
 map<int, TH1D*> m_h_Psum_General;
+map<int, TH1D*> m_h_Minv_GeneralLargeBins;
+map<int, TH1D*> m_h_MinvScSm_GeneralLargeBins;
+map<int, TH1D*> m_h_MinvTrue_GeneralLargeBins;
+map<int, TH1D*> m_h_Psum_GeneralLargeBins;
 
 // ==================================
 
@@ -367,6 +425,13 @@ TF1 *f_TrashUp_dX_Bot_NegNoL6;
 TF1 *f_TrashLow_dX_Bot_NegNoL6;
 
 
+// ====== ========================================= =====
+// ====== A function close to fRad mass spectrum    =====
+// ====== That will be used to chose mass widths    =====
+// ====== for fRad calculation                      =====
+// ====== ========================================= =====
+
+TF1 *f_fRad_Mass;
 
 // ========= ========================================================================= ========
 // ========= Histograms  ========
@@ -489,6 +554,51 @@ TH1D *h_Minv_BidD0_1;
 TH1D *h_Pem_BigD0_2;
 TH1D *h_Pep_BigD0_2;
 TH1D *h_PSum_BigD0_2;
+
+
+// =============== Histograms of MC studies ======================
+TH2D *h_dP_P_ep_WithL1_1;
+TH2D *h_dP_P_ep_NoL1_1;
+TH2D *h_dP_P_em_WithL1_1;
+TH2D *h_dP_P_em_NoL1_1;
+
+TH2D *h_PSum_RecMC_WithL1_1;
+TH2D *h_PSum_RecMC_NoL1_1;
+
+
+// ================ Rad Fraction related histograms ==============
+TH2D *h_Rad_MinvPSum1_[nfRadMassBins];
+TH2D *h_Rad_MinvPSum2_[nfRadMassBins];
+TH2D *h_Rad_MinvPSumTrue_[nfRadMassBins];
+
+TH2D *h_dP_PTrue_em1;
+TH2D *h_dP_PTrue_em2;
+TH2D *h_dThetaTrue_Minv1;
+TH2D *h_dThetaTrue_Minv2;
+
+TH2D *h_dP_dTh_True1;
+TH2D *h_dP_dTh_True2;
+
+TH2D *h_P_DecayRecoil;
+
+TH1D *h_Memep1;
+TH1D *h_Memep_True1;
+
+TH1D *h_Memep_VarBins1;
+TH1D *h_Memep_True_VarBins1;
+
+// ====== ============================================================================ =======
+// ====== Graph and hist for track killing =======
+// ====== ============================================================================ =======
+TGraphAsymmErrors *gr_TrkKiller;
+TH1D *h_TrkKiller;
+
+
+// ====== ============================================================================ =======
+// ====== TRandom object =======
+// ====== ============================================================================ =======
+TRandom *rnd1;
+
 
 // ========= ========================================================================= ========
 // ========= DST HPS type variables
@@ -676,6 +786,16 @@ vector<double> GetHitCoordAtLayer(GblTrack*, int);
 
 double GetMagnitude(vector<double>);
 
+
+// ===== ============================================== ======
+// ===== This function returns a vector which will define
+// ===== bins of a mass histogram for fRad calculation
+// ===== It will choose bins such bin contents to be around
+// ===== 1000 for each bin.
+// ===== ============================================== ======
+
+vector<double> GetMassBins();
+
 // ===== ==============================================     ======
 // ===== Fill "dx VS P" histograms, it will figure out
 // ===== which category it is, whether it is top/bot or
@@ -692,6 +812,17 @@ void FilldXP_em(HpsParticle *V0, HpsParticle *Part, double P, double dX);
 void FilldtP_ep(HpsParticle *V0, HpsParticle *Part, double P, double dp);
 void FilldtP_em(HpsParticle *V0, HpsParticle *Part, double P, double dp);
 
+
+// ===== ==============================================     ======
+// ===== Fill MC related histograms
+// ===== ==============================================     ======
+void FillMCHists(HpsEvent *ev, HpsParticle *em, HpsParticle *ep);
+
+
+// ===== ==============================================     ======
+// ===== Fill hists related to radiative fraction           ======
+// ===== ==============================================     ======
+void FillfRadHists(HpsEvent *ev, HpsParticle v0);
 
 // ===== ==============================================     ======
 // ===== A function that you give as a 1st argument the     ======
@@ -719,5 +850,31 @@ void InitCutHistograms();
 // ===== histograms.                                        ======
 // ===== ==============================================     ======
 void InitGeneralHistograms();
+
+
+// ===== ================================================================= ====
+// ===== This function will initialize track killing graphs and histograms ====
+// ===== ================================================================= ====
+
+void InitTrkKillingHist();
+
+// ===== ================================================================= ====
+// ===== Checks whether the v0 should be killed, i.e., if any of it's      ====
+// ===== tracks are killed, then v0 should be killed as well               ====
+// ===== ================================================================= ====
+
+bool IsParticleKilled(HpsParticle*);
+
+// =======================================================
+// ===== Init smearing parameters
+// =======================================================
+void InitSmearPars();
+
+
+// =======================================================
+// ===== Returns smeared mass according to the mass
+// ===== parametrization
+// =======================================================
+double GetSmearMass(HpsParticle*);
 
 #endif
