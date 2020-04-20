@@ -178,6 +178,8 @@ int main(int argc, char** argv) {
     TH2D *h_cl_E_Xc_ep1 = new TH2D("h_cl_E_Xc_ep1", "", 200, -300., 370, 200, 0., Eb);
     TH2D *h_cl_E_Xc_em1 = new TH2D("h_cl_E_Xc_em1", "", 200, -300., 370, 200, 0., Eb);
 
+
+
     // =============== n-1 histograms, i.e. these histograms are filled when cuts on the rest of variables are applied
 
     TH1D *h_d0_ep_Nminus1 = new TH1D("h_d0_ep_Nminus1", "", 200, -3.5, 3.5);
@@ -193,18 +195,13 @@ int main(int argc, char** argv) {
     // ==    when all cuts (including the given variable) are applied
     // ============================= Three stages of histograms ==================================
 
-    TH1D *h_PsumMax_All = new TH1D("h_PsumMax_All", "", 70, 0.7, 1.2 * Eb);
-    TH1D *h_PsumMax_AllBut = new TH1D("h_PsumMax_AllBut", "", 70, 0.7, 1.2 * Eb);
-    TH1D *h_PsumMax_CutEffect = new TH1D("h_PsumMax_CutEffect", "", 70, 0.7, 1.2 * Eb);
+    //    TH1D *h_PsumMax_All = new TH1D("h_PsumMax_All", "", 70, 0.7, 1.2 * Eb);
+    //    TH1D *h_PsumMax_AllBut = new TH1D("h_PsumMax_AllBut", "", 70, 0.7, 1.2 * Eb);
+    //    TH1D *h_PsumMax_CutEffect = new TH1D("h_PsumMax_CutEffect", "", 70, 0.7, 1.2 * Eb);
 
     TH2D *h_Minv_PSumMax_All = new TH2D("h_Minv_PSumMax_All", "", 200, 0.7, 1.2 * Eb, 200, 0., 0.25);
     TH2D *h_Minv_PSumMax_AllBut = new TH2D("h_Minv_PSumMax_AllBut", "", 200, 0.7, 1.2 * Eb, 200, 0., 0.25);
     TH2D *h_Minv_PSumMax_CutEffect = new TH2D("h_Minv_PSumMax_CutEffect", "", 200, 0.7, 1.2 * Eb, 200, 0., 0.25);
-
-
-    TH1D *h_PsumMin_All = new TH1D("h_PsumMin_All", "", 70, 0.7, 1.2 * Eb);
-    TH1D *h_PsumMin_AllBut = new TH1D("h_PsumMin_AllBut", "", 70, 0.7, 1.2 * Eb);
-    TH1D *h_PsumMin_CutEffect = new TH1D("h_PsumMin_CutEffect", "", 70, 0.7, 1.2 * Eb);
 
     TH2D *h_Minv_PSumMin_All = new TH2D("h_Minv_PSumMin_All", "", 200, 0.7, 1.2 * Eb, 200, 0., 0.25);
     TH2D *h_Minv_PSumMin_AllBut = new TH2D("h_Minv_PSumMin_AllBut", "", 200, 0.7, 1.2 * Eb, 200, 0., 0.25);
@@ -284,6 +281,7 @@ int main(int argc, char** argv) {
 
         // This needs to be called at the beginning of every event
         ResetEventFlags();
+
 
         int n_cl = ev->getNumberOfEcalClusters();
 
@@ -455,7 +453,13 @@ int main(int argc, char** argv) {
 
 
             double mV0 = cur_v0->getMass();
-            
+            vector<double> smearKine = GetSmearKine(cur_v0);
+            double M_TCSmSc = smearKine.at(0);
+            double PemScSm = smearKine.at(1);
+            double PepScSm = smearKine.at(2);
+            double PSumScSm = smearKine.at(3);
+
+
 
             //            cout << "# of em clusters     " << em->getClusters()->GetSize() << endl;
             //            cout << "# of ep clusters " << ep->getClusters()->GetSize() << endl;
@@ -891,8 +895,10 @@ int main(int argc, char** argv) {
                 FillfRadHists(ev, cur_v0);
             }
 
-            double M_TCSmSc = GetSmearMass(cur_v0);
-            
+
+            //cout<<P_em<<"    "<<PemScSm<<"                         "<<P_ep<<"    "<<PepScSm<<endl;
+            //cout<<Psum<<"     "<<P_em + P_ep<<"    "<<PSumScSm<<endl;
+
             // ===== This checks if the sample is Rad, and if yes then the electron from the current v0 should be
             // ===== matched to the gen electron, otherwise we don't want to use this v0, for other samples
             // ===== we don't care, and the v0 should be used.
@@ -901,15 +907,18 @@ int main(int argc, char** argv) {
             }
 
             h_PsumMax_All->Fill(Psum);
+            h_PsumScSmMax_All->Fill(PSumScSm);
             h_Minv_PSumMax_All->Fill(Psum, mV0);
             if (CheckAllOtherCuts("PsumMax")) {
                 h_Minv_PMax_Final1->Fill(mV0);
                 h_Psum_Test1->Fill(Psum);
                 h_PsumMax_AllBut->Fill(Psum);
+                h_PsumScSmMax_AllBut->Fill(PSumScSm);
                 h_Minv_PSumMax_AllBut->Fill(Psum, mV0);
 
                 if (IsPsumMax) {
                     h_PsumMax_CutEffect->Fill(Psum);
+                    h_PsumScSmMax_CutEffect->Fill(PSumScSm);
                     h_Minv_PSumMax_CutEffect->Fill(Psum, mV0);
                 }
             }
@@ -917,12 +926,16 @@ int main(int argc, char** argv) {
             MinvBin = h_MinvBins1->FindBin(mV0) - 1;
             h_PSumMin_MinvBin_All[MinvBin]->Fill(Psum);
             h_PsumMin_All->Fill(Psum);
+            h_PsumScSmMin_All->Fill(PSumScSm);
             h_Minv_PSumMin_All->Fill(Psum, mV0);
+
+
             if (CheckAllOtherCuts("PsumMin")) {
                 h_Minv_PMin_Final1->Fill(mV0);
                 h_Psum3->Fill(Psum);
                 h_Psum_Test2->Fill(Psum);
                 h_PsumMin_AllBut->Fill(Psum);
+                h_PsumScSmMin_AllBut->Fill(PSumScSm);
 
                 h_Minv_PSumMin_AllBut->Fill(Psum, mV0);
 
@@ -931,6 +944,7 @@ int main(int argc, char** argv) {
 
                 if (IsPsumMin) {
                     h_PsumMin_CutEffect->Fill(Psum);
+                    h_PsumScSmMin_CutEffect->Fill(PSumScSm);
                     h_Minv_PSumMin_CutEffect->Fill(Psum, mV0);
                     h_PSumMin_MinvBin_CutEffect[MinvBin]->Fill(Psum);
                 }
@@ -999,8 +1013,13 @@ int main(int argc, char** argv) {
 
             FillLargeD0Hists(mV0, P_em, P_ep);
 
+
             if (IsPsumMax && IsPsumMin && IscldT /*&& IsemClTrkdT && IsepClTrkdT && IsemTrkClMatch && IsepTrkClMatch && IsPem */) {
                 CutsKey = GetCutsKey();
+
+                FillPositDistributions(ep);
+
+                h_Pemep_Final->Fill(P_em, P_ep);
 
                 m_v_ee[CutsKey].push_back(mV0);
                 m_v_PSum[CutsKey].push_back(Psum);
@@ -1010,6 +1029,7 @@ int main(int argc, char** argv) {
                 for (int iCut = 0; iCut < v_CutsKeys.size(); iCut++) {
                     m_v_Minv_General[v_CutsKeys.at(iCut)].push_back(mV0);
                     m_v_PSum_General[v_CutsKeys.at(iCut)].push_back(Psum);
+                    m_v_PSumScSm_General[v_CutsKeys.at(iCut)].push_back(PSumScSm);
                     m_v_MinvScSm_General[v_CutsKeys.at(iCut)].push_back(M_TCSmSc);
                     if (true_em_match) {
                         m_v_MinvTrue_General[v_CutsKeys.at(iCut)].push_back(trueMass);
@@ -1056,16 +1076,22 @@ int main(int argc, char** argv) {
 
             for (int iV0 = 0; iV0 < nCurV0; iV0++) {
                 m_h_Minv_General[HistKey]->Fill((it->second).at(iV0));
+                m_h_MinvScSm_General[HistKey]->Fill(m_v_MinvScSm_General[CurCutKey].at(iV0));
                 m_h_Psum_General[HistKey]->Fill(m_v_PSum_General[CurCutKey].at(iV0));
 
                 //m_h_Minv_GeneralLargeBins[HistKey]->Fill( m_v_MinvTrue_General[CurCutKey].at(iV0) );
                 m_h_Minv_GeneralLargeBins[HistKey]->Fill((it->second).at(iV0));
                 m_h_Psum_GeneralLargeBins[HistKey]->Fill(m_v_PSum_General[CurCutKey].at(iV0));
+                m_h_PsumScSm_GeneralLargeBins[HistKey]->Fill(m_v_PSumScSm_General[CurCutKey].at(iV0));
 
                 m_h_MinvScSm_GeneralLargeBins[HistKey]->Fill(m_v_MinvScSm_General[CurCutKey].at(iV0));
-                
+
                 if (isRad || isAp) {
-                    m_h_MinvTrue_GeneralLargeBins[HistKey]->Fill(m_v_MinvTrue_General[CurCutKey].at(iV0));
+
+                    if (m_v_MinvTrue_General[CurCutKey].size() > 0) {
+
+                        m_h_MinvTrue_GeneralLargeBins[HistKey]->Fill(m_v_MinvTrue_General[CurCutKey].at(iV0));
+                    }
                 }
             }
 
@@ -1079,6 +1105,7 @@ int main(int argc, char** argv) {
         m_v_MinvScSm_General.clear();
         m_v_Minv_General.clear();
         m_v_PSum_General.clear();
+        m_v_PSumScSm_General.clear();
         m_v_MinvTrue_General.clear();
 
         //cout<<m_v_ee[0].size()<<"    "<<m_v_ee[1].size()<<endl;

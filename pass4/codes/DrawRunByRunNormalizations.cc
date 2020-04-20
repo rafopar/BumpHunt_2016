@@ -77,7 +77,6 @@ void DrawRunByRunNormalizations() {
             MinvIntegr = MinvIntegr / ((nfilesRecon / nfilesSpredsheet) * charge);
             IntegrError = IntegrError / ((nfilesRecon / nfilesSpredsheet) * charge);
 
-
             if (nfilesSpredsheet == nfilesRecon) {
                 gr_MinvInegral_equalFileNumbers[ii]->SetPoint(ind_point_equalFileNumbers, run, MinvIntegr);
                 gr_MinvInegral_equalFileNumbers[ii]->SetPointError(ind_point_equalFileNumbers, 0., IntegrError);

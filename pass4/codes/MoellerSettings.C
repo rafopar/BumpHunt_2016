@@ -15,6 +15,7 @@ void InitSettings(std::string dataSet) {
     isData = false;
     isMC = false;
 
+    rand1 = new TRandom();
 
     if (dataSet.compare("Data") == 0) {
 
@@ -23,7 +24,10 @@ void InitSettings(std::string dataSet) {
         //inpFileName = "../Data/hps_007796_All_Moller_4.2.root";
         //inpFileName = "../Data/hps_007966_All_Moller_4.2.root";
         //inpFileName = "../Data/hps_008096_All_Moller_4.2.root";
-        inpFileName = "../Data/hps_Moeller_Data_All.root";
+
+        //inpFileName = "../Data/hps_Moeller_Data_All.root";
+        //inpFileName = "../Data/Moeller_8099.root";
+        inpFileName = "../Data/Moeller_7966.root";
         outFileName = "MoellerAnalyze_Data.root";
 
     } else if (dataSet.compare("MC") == 0) {
@@ -35,6 +39,8 @@ void InitSettings(std::string dataSet) {
         //inpFileName = "../Data/skim_Moeller.root";
         outFileName = "MoellerAnalyze_MC.root";
     }
+
+    InitSmearPars();
 
     file_in = new TFile(inpFileName.c_str(), "Read");
 
@@ -59,11 +65,19 @@ void InitSettings(std::string dataSet) {
 
     if (isData) {
         CL_trk_time_Offset = CL_trk_time_Offset_Data;
+        tr_dT_Max = tr_dT_Max_Data;
+        tr_dT_Min = tr_dT_Min_Data;
+        PSumMax = PSumMax_Data;
+        PSumMin = PSumMin_Data;
     }
 
 
     if (isMC) {
         CL_trk_time_Offset = CL_trk_time_Offset_tri;
+        tr_dT_Max = tr_dT_Max_MC;
+        tr_dT_Min = tr_dT_Min_MC;
+        PSumMax = PSumMax_MC;
+        PSumMin = PSumMin_MC;
     }
 
 
@@ -162,43 +176,163 @@ bool TrackFiducial(double tr_x, double tr_y) {
 
     bool fiducial = false;
 
-    if (tr_y > 0) {
+    if (isData) {
 
-        if (tr_x > -125 && tr_x < -97.) {
-
-            if (tr_y > 26. && tr_y < 40.) {
+        if (tr_y > 0) {
+            if (tr_y < 42. && tr_y < 13 - 0.26 * tr_x && tr_y > 18 - 0.08 * tr_x && ((tr_x > -125. && tr_x < -95.) || (tr_x > -85 && tr_x < -55.))) {
                 fiducial = true;
             }
-        } else if (tr_x > -85. && tr_x < -60.) {
-            if (tr_y > 23. && tr_y < 31.) {
+        } else if (tr_y < 0) {
+            if (tr_y < -23. && tr_y < -15. + 0.08 * tr_x && tr_y > -18. + 0.22 * tr_x && ((tr_x > -75. && tr_x < -45) || (tr_x > -110. && tr_x < -95.))) {
+                fiducial = true;
+            }
+        }
+
+    } else if (isMC) {
+
+        if (tr_y > 0) {
+
+            if (tr_y > 23. && tr_y > 15 - 0.1 * tr_x && tr_y < 12 - 0.3 * tr_x && ((tr_x > -75. && tr_x < -50.) || (tr_x > -130. && tr_x < -95))) {
+                fiducial = true;
+            }
+
+        } else if (tr_y < 0) {
+
+            if (tr_y < -22 && tr_y < -15 + 0.1 * tr_x && tr_y > -15 + 0.25 * tr_x && ((tr_x > -120. && tr_x < -94) || (tr_x > -75 && tr_x < -50.))) {
                 fiducial = true;
             }
 
         }
-    } else {
-        if (tr_x > -112. && tr_x < -95.) {
-            if (tr_y > -40 && tr_y < -27.) {
-                fiducial = true;
-            }
-        } else if (tr_x > -95. && tr_x < -85) {
-            if (tr_y > -39. && tr_y < -33.) {
-                fiducial = true;
-            }
 
-        } else if (tr_x > -70. && tr_x < -48.) {
-            if (tr_y > -30. && tr_y < -23.) {
-                fiducial = true;
-            }
-
-        }
     }
 
+
     return fiducial;
+
+    // if (tr_y > 0) {
+
+    /*
+     * 
+     * ********** DATA ***********
+     TOP:
+     * tr_y > 18 - 0.08 * tr_x
+     * tr_y < 13 - 0.26 * tr_x
+     * tr_y < 42.
+     * tr_x > -125. && tr_x < -90. || tr_x > -85 && tr_x < -52.
+     * 
+     * 
+         
+     *BOT:
+     * tr_y < -20.
+     * tr_y < -15. + 0.08 * tr_x
+     * tr_y > -18. + 0.22 * tr_x
+     * tr_x > -70. && tr_x < -40
+     * tr_x > -110. && tr_x < -95.
+         
+     * 
+     * 
+     * ************ MC ************
+     * 
+     * TOP
+     * 
+     * tr_y > 23
+     * 
+     * tr_x > - 75. && tr_x < -50.
+     * tr_x > -130. && tr_x < -95
+     * tr_y > 15 - 0.1*tr_x
+     * tr_y < 12 - 0.3*tr_x
+     * 
+     * 
+     * BOT
+     * 
+     * tr_y < -22
+     * tr_y < -15 + 0.1*tr_x
+     * tr_y > -15 + 0..25*tr_x
+     * tr_x > -120. && tr_x < -94
+     * tr_x > -80 && tr_x < -50.
+     * 
+     */
+
+
+
+
+
+    //        if (tr_x > -125 && tr_x < -97.) {
+    //
+    //            if (tr_y > 26. && tr_y < 40.) {
+    //                fiducial = true;
+    //            }
+    //        } else if (tr_x > -85. && tr_x < -60.) {
+    //            if (tr_y > 23. && tr_y < 31.) {
+    //                fiducial = true;
+    //            }
+    //
+    //        }
+    //    } else {
+    //        if (tr_x > -112. && tr_x < -95.) {
+    //            if (tr_y > -40 && tr_y < -27.) {
+    //                fiducial = true;
+    //            }
+    //        } else if (tr_x > -95. && tr_x < -85) {
+    //            if (tr_y > -39. && tr_y < -33.) {
+    //                fiducial = true;
+    //            }
+    //
+    //        } else if (tr_x > -70. && tr_x < -48.) {
+    //            if (tr_y > -30. && tr_y < -23.) {
+    //                fiducial = true;
+    //            }
+    //
+    //        }
+    //    }
+    //
+    //    return fiducial;
 }
 
 bool TrackInHole(double tr_x, double tr_y) {
-    
-    bool InHole = (tr_x > -80 && tr_x < -40. && TMath::Abs(tr_y) < 30);
+
+    bool InHole = (tr_x > -95 && tr_x < -20. && TMath::Abs(tr_y) < 35);
 
     return InHole;
+}
+
+void InitSmearPars() {
+
+    file_smearPars = new TFile("MomSmearScale.root", "Read");
+    trSmear = (TTree*) file_smearPars->Get("tr1");
+
+    trSmear->SetBranchAddress("mean_Data_Top5hits", &mean_Data_Top5hits);
+    trSmear->SetBranchAddress("sigm_Data_Top5hits", &sigm_Data_Top5hits);
+    trSmear->SetBranchAddress("scale_Data_Top5hits", &scale_Data_Top5hits);
+    trSmear->SetBranchAddress("mean_Data_Top6hits", &mean_Data_Top6hits);
+    trSmear->SetBranchAddress("sigm_Data_Top6hits", &sigm_Data_Top6hits);
+    trSmear->SetBranchAddress("scale_Data_Top6hits", &scale_Data_Top6hits);
+    trSmear->SetBranchAddress("mean_Data_Bot5hits", &mean_Data_Bot5hits);
+    trSmear->SetBranchAddress("sigm_Data_Bot5hits", &sigm_Data_Bot5hits);
+    trSmear->SetBranchAddress("scale_Data_Bot5hits", &scale_Data_Bot5hits);
+    trSmear->SetBranchAddress("mean_Data_Bot6hits", &mean_Data_Bot6hits);
+    trSmear->SetBranchAddress("sigm_Data_Bot6hits", &sigm_Data_Bot6hits);
+    trSmear->SetBranchAddress("scale_Data_Bot6hits", &scale_Data_Bot6hits);
+
+    trSmear->SetBranchAddress("mean_MC_Top5hits", &mean_MC_Top5hits);
+    trSmear->SetBranchAddress("sigm_MC_Top5hits", &sigm_MC_Top5hits);
+    trSmear->SetBranchAddress("scale_MC_Top5hits", &scale_MC_Top5hits);
+    trSmear->SetBranchAddress("mean_MC_Top6hits", &mean_MC_Top6hits);
+    trSmear->SetBranchAddress("sigm_MC_Top6hits", &sigm_MC_Top6hits);
+    trSmear->SetBranchAddress("scale_MC_Top6hits", &scale_MC_Top6hits);
+    trSmear->SetBranchAddress("mean_MC_Bot5hits", &mean_MC_Bot5hits);
+    trSmear->SetBranchAddress("sigm_MC_Bot5hits", &sigm_MC_Bot5hits);
+    trSmear->SetBranchAddress("scale_MC_Bot5hits", &scale_MC_Bot5hits);
+    trSmear->SetBranchAddress("mean_MC_Bot6hits", &mean_MC_Bot6hits);
+    trSmear->SetBranchAddress("sigm_MC_Bot6hits", &sigm_MC_Bot6hits);
+    trSmear->SetBranchAddress("scale_MC_Bot6hits", &scale_MC_Bot6hits);
+
+    trSmear->SetBranchAddress("smear_Top5hits", &smear_Top5hits);
+    trSmear->SetBranchAddress("smear_Top6hits", &smear_Top6hits);
+    trSmear->SetBranchAddress("smear_Bot5hits", &smear_Bot5hits);
+    trSmear->SetBranchAddress("smear_Bot6hits", &smear_Bot6hits);
+
+    trSmear->GetEntry(0);
+    file_smearPars->Close();
+
 }

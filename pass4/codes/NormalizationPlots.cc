@@ -5,6 +5,7 @@
  * Created on November 25, 2019, 11:21 AM
  */
 
+#include <TF1.h>
 #include <TH1D.h>
 #include <TH2D.h>
 #include <TLine.h>
@@ -23,6 +24,7 @@
 using namespace std;
 
 
+void DrawDatMCComparisonSingleHist(TFile** files, std::string histNameBase, std::string Title, int nDim);
 void DrawDatMCComparison(TFile** files, std::string histNameBase, std::string Title, int nDim);
 void AddErrorAllBins(TH1D* h, double RelErr);
 
@@ -32,8 +34,11 @@ void DrawAntiFEECut(TFile** files);
 void DrawPSumMaxCut(TFile** files);
 
 void Drawd0Cut(TFile** files);
+void DrawfRad(TFile** files);
 
 void DrawLarged0hists(TFile** files, std::string histNameBase, std::string Title);
+
+void WriteSingleV0CutFractins(TFile** files);
 
 // ===== This function should return the Radiative fraction /
 // ===== It should take the "CutEffect" histograms, and calculate the 
@@ -46,7 +51,8 @@ const double NGen_tritrig = 985. * 50000.; /* 200 recon files, and each recon ha
 
 const double Rad_SigmaGen = 81.e-6;
 const double Rad_SigmError = 0.834e-6;
-const double NGen_Rad = 4989 * 10000.;
+const double NGen_Rad = 9959 * 10000.;
+//const double NGen_Rad = 4989 * 10000.;
 
 const double Wab_SigmaGen = 0.1985;
 const double Wab_SigmError = 0.01973;
@@ -77,6 +83,7 @@ void NormalizationPlots() {
     line1->SetLineColor(2);
 
     TFile *file_EvSelection_Data = new TFile("EventSelection_Data.root", "Read");
+    //TFile *file_EvSelection_Data = new TFile("EventSelection_Data_10Percent.root", "Read");
     TH1D *h_Psum3_Data = (TH1D*) file_EvSelection_Data->Get("h_Psum3");
     double bwPSum3 = h_Psum3_Data->GetBinWidth(10);
     h_Psum3_Data->SetLineColor(1);
@@ -159,11 +166,18 @@ void NormalizationPlots() {
     CutFractions.open("CutPowers.dat", ios::out);
 
     const int nMinvBins = 12;
-/*
+
+
+    DrawDatMCComparisonSingleHist(files_EvSelection, "Minv_GeneralLargeBins_Final_1", "; M_{ee} [GeV]; d#sigma/dM_{ee} [bn/GeV] ", 5);
+    DrawDatMCComparisonSingleHist(files_EvSelection, "MinvScSm_GeneralLargeBins_Final_1", "; M_{ee} [GeV]; d#sigma/dM_{ee} [bn/GeV] ", 5);
+    DrawDatMCComparisonSingleHist(files_EvSelection, "PsumScSm_GeneralLargeBins_Final_1", "; P(e^{-}e^{+}) [GeV]; d#sigma/dP(e^{-}e^{+}) [bn/GeV] ", 1);
     DrawDatMCComparison(files_EvSelection, "PsumMax", "; P_{Sum} [GeV]; d#sigma/dP_{Sum} [bn/GeV] ", 1);
 
+    DrawDatMCComparison(files_EvSelection, "PsumScSmMin", "; P_{Sum} [GeV]; d#sigma/dP_{Sum} [bn/GeV] ", 1);
     DrawDatMCComparison(files_EvSelection, "PsumMin", "; P_{Sum} [GeV]; d#sigma/dP_{Sum} [bn/GeV] ", 1);
     DrawDatMCComparison(files_EvSelection, "clDt", "; Cluster #Delta t [ns]; d#sigma/d #Delta t [bn/ns] ", 1);
+    WriteSingleV0CutFractins(files_EvSelection);
+    /*
     DrawDatMCComparison(files_EvSelection, "Pem", "; P_{e^{-}} [GeV]; d#sigma/d P_{e^{-}} [bn/GeV] ", 1);
     DrawDatMCComparison(files_EvSelection, "d0_ep", "; d_{0}(e^{+}) [mm]; d#sigma/d d_{0}(e^{+}) [bn/mm] ", 1);
 
@@ -188,39 +202,42 @@ void NormalizationPlots() {
     DrawDatMCComparison(files_EvSelection, "dX_epTopNoL6", "; P_{e^{+}} [GeV]; X_{cl} - X_{trk} [mm]", 2);
     DrawDatMCComparison(files_EvSelection, "dX_epBotWithL6", "; P_{e^{+}} [GeV]; X_{cl} - X_{trk} [mm]", 2);
     DrawDatMCComparison(files_EvSelection, "dX_epBotNoL6", "; P_{e^{+}} [GeV]; X_{cl} - X_{trk} [mm]", 2);
-*/
+     */
     double MinvBins[nMinvBins + 1] = {0., 0.02, 0.04, 0.06, 0.08, 0.1, 0.12, 0.14, 0.16, 0.18, 0.2, 0.22, 0.24};
-/*
-    for (int i = 0; i < nMinvBins; i++) {
-        DrawDatMCComparison(files_EvSelection, Form("PSumMin_MinvBin_%d", i),
-                Form("%1.3f GeV < M(ee) < %1.3f GeV; P_{Sum} [GeV]; d#sigma/dP_{Sum} [bn/GeV]", MinvBins[i], MinvBins[i + 1]), 1);
-    }
 
-    Draw2DCuts("em_cl_trk_dT_Top", "h_trkCl_dt_P_Top_Cut", "; P_{e^{-}} [GeV]; t_{cl} - t_{trk} [ns]");
-    Draw2DCuts("em_cl_trk_dT_Bot", "h_trkCl_dt_P_Bot_Cut", "; P_{e^{-}} [GeV]; t_{cl} - t_{trk} [ns]");
+    //    for (int i = 0; i < nMinvBins; i++) {
+    //        DrawDatMCComparison(files_EvSelection, Form("PSumMin_MinvBin_%d", i),
+    //                Form("%1.3f GeV < M(ee) < %1.3f GeV; P_{Sum} [GeV]; d#sigma/dP_{Sum} [bn/GeV]", MinvBins[i], MinvBins[i + 1]), 1);
+    //    }
+    /*
+        Draw2DCuts("em_cl_trk_dT_Top", "h_trkCl_dt_P_Top_Cut", "; P_{e^{-}} [GeV]; t_{cl} - t_{trk} [ns]");
+        Draw2DCuts("em_cl_trk_dT_Bot", "h_trkCl_dt_P_Bot_Cut", "; P_{e^{-}} [GeV]; t_{cl} - t_{trk} [ns]");
 
-    Draw2DCuts("dX_emTopWithL6", "h_dX_Top_NegWithL6_Cut", "; P_{e^{-}} [GeV]; X_{cl} - X_{trk} [mm]");
-    Draw2DCuts("dX_emTopNoL6", "h_dX_Top_NegNoL6_Cut", "; P_{e^{-}} [GeV]; X_{cl} - X_{trk} [mm]");
-    Draw2DCuts("dX_emBotWithL6", "h_dX_Bot_NegWithL6_Cut", "; P_{e^{-}} [GeV]; X_{cl} - X_{trk} [mm]");
-    Draw2DCuts("dX_emBotNoL6", "h_dX_Bot_NegNoL6_Cut", "; P_{e^{-}} [GeV]; X_{cl} - X_{trk} [mm]");
+        Draw2DCuts("dX_emTopWithL6", "h_dX_Top_NegWithL6_Cut", "; P_{e^{-}} [GeV]; X_{cl} - X_{trk} [mm]");
+        Draw2DCuts("dX_emTopNoL6", "h_dX_Top_NegNoL6_Cut", "; P_{e^{-}} [GeV]; X_{cl} - X_{trk} [mm]");
+        Draw2DCuts("dX_emBotWithL6", "h_dX_Bot_NegWithL6_Cut", "; P_{e^{-}} [GeV]; X_{cl} - X_{trk} [mm]");
+        Draw2DCuts("dX_emBotNoL6", "h_dX_Bot_NegNoL6_Cut", "; P_{e^{-}} [GeV]; X_{cl} - X_{trk} [mm]");
 
-    Draw2DCuts("dX_epTopWithL6", "h_dX_Top_PosWithL6_Cut", "; P_{e^{+}} [GeV]; X_{cl} - X_{trk} [mm]");
-    Draw2DCuts("dX_epTopNoL6", "h_dX_Top_PosNoL6_Cut", "; P_{e^{+}} [GeV]; X_{cl} - X_{trk} [mm]");
-    Draw2DCuts("dX_epBotWithL6", "h_dX_Bot_PosWithL6_Cut", "; P_{e^{+}} [GeV]; X_{cl} - X_{trk} [mm]");
-    Draw2DCuts("dX_epBotNoL6", "h_dX_Bot_PosNoL6_Cut", "; P_{e^{+}} [GeV]; X_{cl} - X_{trk} [mm]");
+        Draw2DCuts("dX_epTopWithL6", "h_dX_Top_PosWithL6_Cut", "; P_{e^{+}} [GeV]; X_{cl} - X_{trk} [mm]");
+        Draw2DCuts("dX_epTopNoL6", "h_dX_Top_PosNoL6_Cut", "; P_{e^{+}} [GeV]; X_{cl} - X_{trk} [mm]");
+        Draw2DCuts("dX_epBotWithL6", "h_dX_Bot_PosWithL6_Cut", "; P_{e^{+}} [GeV]; X_{cl} - X_{trk} [mm]");
+        Draw2DCuts("dX_epBotNoL6", "h_dX_Bot_PosNoL6_Cut", "; P_{e^{+}} [GeV]; X_{cl} - X_{trk} [mm]");
 
-    DrawAntiFEECut(files_EvSelection);
-    DrawPSumMaxCut(files_EvSelection);
-    Drawd0Cut(files_EvSelection);
-    */
+        DrawAntiFEECut(files_EvSelection);
+        DrawPSumMaxCut(files_EvSelection);
+        Drawd0Cut(files_EvSelection);
+     */
     // ========== Getting the Rad Fraction ===========
 
+    c1->Clear();
     TGraphErrors *gr_fRad = new TGraphErrors();
     gr_fRad->SetTitle("; M(e^{-}e^{+}) [GeV]; f_{Rad}");
 
     for (int i = 0; i < nMinvBins; i++) {
         double fRadErr;
-        double fRad = GetfRad(files_EvSelection, Form("PSumMin_MinvBin_%d", i), fRadErr);
+        double fRad = TMath::Max(0., GetfRad(files_EvSelection, Form("PSumMin_MinvBin_%d", i), fRadErr));
+
+        cout << "fRad = " << fRad << endl;
 
         double MinvVal = (MinvBins[i] + MinvBins[i + 1]) / 2.;
         gr_fRad->SetPoint(i, MinvVal, fRad);
@@ -237,7 +254,10 @@ void NormalizationPlots() {
     c1->Print("Figs/fRad_MassBins.pdf");
     c1->Print("Figs/fRad_MassBins.png");
 
-    
+
+    DrawfRad(files_EvSelection);
+
+    /*
     DrawLarged0hists(files_EvSelection, "Pem_BigD0_1", ";P_{e^{-}} [GeV]; d#sigma/dP_{e^{-}} [bn/GeV]");
     DrawLarged0hists(files_EvSelection, "Pem_BigD0_2", ";P_{e^{-}} [GeV]; d#sigma/dP_{e^{-}} [bn/GeV]");
     DrawLarged0hists(files_EvSelection, "Pep_BigD0_1", ";P_{e^{+}} [GeV]; d#sigma/dP_{e^{+}} [bn/GeV]");
@@ -245,6 +265,7 @@ void NormalizationPlots() {
     DrawLarged0hists(files_EvSelection, "PSum_BigD0_1", ";P_{Sum} [GeV]; d#sigma/dP_{Sum} [bn/GeV]");
     DrawLarged0hists(files_EvSelection, "PSum_BigD0_2", ";P_{Sum} [GeV]; d#sigma/dP_{Sum} [bn/GeV]");
     DrawLarged0hists(files_EvSelection, "Minv_BidD0_1", ";M(e^{-}e^{+}) [GeV]; d#sigma/dM [bn/GeV]");
+     */
 }
 
 void Draw2DCuts(std::string histnminusbase, std::string histCut, std::string Title) {
@@ -332,6 +353,85 @@ void Draw2DCuts(std::string histnminusbase, std::string histCut, std::string Tit
     delete ctmp;
 }
 
+void DrawDatMCComparisonSingleHist(TFile** files, std::string histNameBase, std::string Title, int Rb) {
+    //==========================================================
+    //===== Order of files in the pointer "files" is the following
+    //===== 1-st: Data
+    //===== 2-nd: TriTrig
+    //===== 3-3d: Radiatives
+    //===== 4-th: Converted Wabs
+    //==========================================================
+
+    TFile *file_Data = files[0];
+    TFile *file_Tri = files[1];
+    TFile *file_Rad = files[2];
+    TFile *file_WAB = files[3];
+
+    TCanvas *c1 = new TCanvas("c", "", 950, 950);
+    c1->SetLeftMargin(0.15);
+    c1->SetRightMargin(0.02);
+
+    TH1D *h_Data = (TH1D*) file_Data->Get(Form("h_%s", histNameBase.c_str()));
+
+    h_Data = (TH1D*)h_Data->Rebin(Rb, "h_Data");
+    double bw = h_Data->GetBinWidth(10);
+    h_Data->Sumw2();
+    h_Data->SetLineColor(1);
+    h_Data->SetTitle(Title.c_str());
+    h_Data->Scale(1. / (bw * Lumin8099));
+
+    TH1D *h_Tri = (TH1D*) file_Tri->Get(Form("h_%s", histNameBase.c_str()));
+    h_Tri = (TH1D*)h_Tri->Rebin(Rb, "h_Tri");
+    bw = h_Tri->GetBinWidth(10);
+    h_Tri->Sumw2();
+    h_Tri->SetLineColor(4);
+    h_Tri->SetTitle(Title.c_str());
+    h_Tri->Scale(tritrig_SigmaGen / (bw * NGen_tritrig));
+
+
+    TH1D *h_Rad = (TH1D*) file_Rad->Get(Form("h_%s", histNameBase.c_str()));
+    h_Rad = (TH1D*)h_Rad->Rebin(Rb, "h_Rad");
+
+    bw = h_Rad->GetBinWidth(10);
+    h_Rad->Sumw2();
+    h_Rad->SetLineColor(2);
+    h_Rad->SetTitle(Title.c_str());
+    h_Rad->Scale(Rad_SigmaGen / (bw * NGen_Rad));
+
+    TH1D *h_WAB = (TH1D*) file_WAB->Get(Form("h_%s", histNameBase.c_str()));
+    h_WAB = (TH1D*)h_WAB->Rebin(Rb, "h_WAB");
+
+    bw = h_WAB->GetBinWidth(10);
+    h_WAB->Sumw2();
+    h_WAB->SetLineColor(45);
+    h_WAB->SetTitle(Title.c_str());
+    h_WAB->Scale(Wab_SigmaGen / (bw * NGen_Wab));
+
+    TH1D *h_Tot = (TH1D*) h_Tri->Clone("h_Tot");
+    h_Tot->Add(h_WAB);
+
+    h_Tot->SetLineColor(95);
+    
+    TRatioPlot *rp = new TRatioPlot(h_Data, h_Tot, "divsym");
+    rp->SetLeftMargin(0.15);
+    rp->GetUpperPad()->SetBottomMargin(0);
+    rp->GetLowerPad()->SetTopMargin(0);
+    h_Data->SetMaximum(1.05*h_Tot->GetMaximum());
+    rp->Draw();
+    rp->GetUpperPad()->cd();
+    h_Tri->Draw("Same");
+    h_Rad->Draw("Same");
+    h_WAB->Draw("Same");
+    rp->GetLowerRefGraph()->SetMaximum(1.5);
+    rp->GetLowerRefGraph()->SetMinimum(0.5);
+    c1->Update();
+
+    c1->Print(Form("Figs/%s.eps", histNameBase.c_str()));
+    c1->Print(Form("Figs/%s.pdf", histNameBase.c_str()));
+    c1->Print(Form("Figs/%s.png", histNameBase.c_str()));
+
+}
+
 void DrawDatMCComparison(TFile** files, std::string histNameBase, std::string Title, int nDim) {
 
     //==========================================================
@@ -354,6 +454,7 @@ void DrawDatMCComparison(TFile** files, std::string histNameBase, std::string Ti
         c1D->SetRightMargin(0.02);
 
         TH1D *h_Data_All = (TH1D*) file_Data->Get(Form("h_%s_All", histNameBase.c_str()));
+        double dataAll = h_Data_All->Integral();
 
         double bw = h_Data_All->GetBinWidth(10);
         h_Data_All->Sumw2();
@@ -361,6 +462,7 @@ void DrawDatMCComparison(TFile** files, std::string histNameBase, std::string Ti
         h_Data_All->SetTitle(Title.c_str());
         h_Data_All->Scale(1. / (bw * Lumin8099));
         TH1D *h_Data_AllBut = (TH1D*) file_Data->Get(Form("h_%s_AllBut", histNameBase.c_str()));
+        double dataAllBut = h_Data_AllBut->Integral();
         h_Data_AllBut->Sumw2();
         h_Data_AllBut->SetLineColor(1);
         h_Data_AllBut->SetTitle(Title.c_str());
@@ -372,6 +474,7 @@ void DrawDatMCComparison(TFile** files, std::string histNameBase, std::string Ti
         h_Data_CutEffect->Scale(1. / (bw * Lumin8099));
 
         double dataFraction = h_Data_CutEffect->Integral() / h_Data_AllBut->Integral();
+
 
 
         TH1D *h_Tri_All = (TH1D*) file_Tri->Get(Form("h_%s_All", histNameBase.c_str()));
@@ -500,6 +603,10 @@ void DrawDatMCComparison(TFile** files, std::string histNameBase, std::string Ti
         c1D->Clear();
         delete rp2;
 
+        if (histNameBase.compare("PsumMin") == 0) {
+            h_Data_CutEffect->SetAxisRange(1.6, 2.6);
+        }
+
         h_Data_CutEffect->SetMaximum(1.05 * Max_AllBut);
         TRatioPlot *rp3 = new TRatioPlot(h_Data_CutEffect, hTriPlusWab_CutEffect, "divsym");
         rp3->GetUpperPad()->SetBottomMargin(0);
@@ -519,8 +626,8 @@ void DrawDatMCComparison(TFile** files, std::string histNameBase, std::string Ti
         c1D->Clear();
         delete rp3;
 
-        CutFractions << setw(25) << histNameBase << setw(12) << " & " << dataFraction << setw(12) << " & " << triFraction << setw(12) << " & " << radFraction << setw(12) << " & " << wabFraction
-                << setw(12) << " & " << wabTriFraction << " \\\\ \\hline" << endl;
+        CutFractions << setw(25) << histNameBase << setw(12) << " & " << Form("%1.3e", dataAllBut) << " & " << dataFraction << setw(12) << " & " << triFraction << setw(12)
+                << " & " << radFraction << setw(12) << " & " << wabFraction << setw(12) << " & " << wabTriFraction << " \\\\ \\hline" << endl;
 
 
         delete h_Data_All;
@@ -750,6 +857,10 @@ double GetfRad(TFile** files, std::string histNameBase, double &fRad_Err) {
 
     double Integr_Rad = h_Rad_CutEffect->IntegralAndError(1, h_Rad_CutEffect->GetNbinsX(), err_Rad);
     double Integr_TriWAB = hTriPlusWab_CutEffect->IntegralAndError(1, hTriPlusWab_CutEffect->GetNbinsX(), err_TriWAB);
+    if (Integr_TriWAB == 0) {
+        return 0.;
+    }
+
 
     double fRad = Integr_Rad / Integr_TriWAB;
 
@@ -764,6 +875,284 @@ double GetfRad(TFile** files, std::string histNameBase, double &fRad_Err) {
 
     return fRad;
 
+}
+
+void DrawfRad(TFile** files) {
+
+    TCanvas *ctmp = new TCanvas("ctmp", "", 950, 950);
+    ctmp->SetRightMargin(0.02);
+    ctmp->SetLeftMargin(0.12);
+
+    //==========================================================
+    //===== Order of files in the pointer "files" is the following
+    //===== 1-st: Data
+    //===== 2-nd: TriTrig
+    //===== 3-3d: Radiatives
+    //===== 4-th: Converted Wabs
+    //==========================================================
+
+    TFile *file_Tri = files[1];
+    TFile *file_Rad = files[2];
+    TFile *file_WAB = files[3];
+
+    TFile *file_fRad_Output = new TFile("fRadHists.root", "Recreate");
+
+
+    //TH1D *h_Memep_True1_Rad = (TH1D*) file_Rad->Get("h_Memep_True1");
+    TH1D *h_Memep_True1_Rad = (TH1D*) file_Rad->Get("h_MinvTrue_GeneralLargeBins_Final_1");
+    h_Memep_True1_Rad->SetTitle("; M(e^{-}e^{+}) [ GeV]; d#sigma/dm [bn*GeV^{-1}]");
+    h_Memep_True1_Rad->Sumw2();
+    h_Memep_True1_Rad->SetLineColor(2);
+    h_Memep_True1_Rad->Scale(Rad_SigmaGen / NGen_Rad);
+    //AddErrorAllBins(h_Memep_True1_Rad, Rad_SigmError / Rad_SigmaGen);
+
+    //TH1D *h_Memep1_Rad = (TH1D*) file_Rad->Get("h_Memep1");
+    TH1D *h_Memep1_Rad = (TH1D*) file_Rad->Get("h_Minv_GeneralLargeBins_Final_1");
+    h_Memep1_Rad->SetTitle("; M(e^{-}e^{+}) [ GeV]; d#sigma/dm [bn*GeV^{-1}]");
+    h_Memep1_Rad->Sumw2();
+    h_Memep1_Rad->SetLineColor(2);
+    h_Memep1_Rad->Scale(Rad_SigmaGen / NGen_Rad);
+    // AddErrorAllBins(h_Memep1_Rad, Rad_SigmError / Rad_SigmaGen);
+
+    TH1D *h_Memep1_Tri = (TH1D*) file_Tri->Get("h_Minv_GeneralLargeBins_Final_1");
+    //TH1D *h_Memep1_Tri = (TH1D*) file_Tri->Get("h_Memep1");
+    h_Memep1_Tri->SetTitle("; M(e^{-}e^{+}) [ GeV]; d#sigma/dm [bn*GeV^{-1}]");
+    h_Memep1_Tri->Sumw2();
+    h_Memep1_Tri->SetLineColor(4);
+    h_Memep1_Tri->Scale(tritrig_SigmaGen / NGen_tritrig);
+    //AddErrorAllBins(h_Memep1_Tri, tritrig_SigmError / tritrig_SigmaGen);
+
+
+    //    TH1D *h_Memep1_WAB = (TH1D*) file_WAB->Get("h_Memep1");
+    TH1D *h_Memep1_WAB = (TH1D*) file_WAB->Get("h_Minv_GeneralLargeBins_Final_1");
+    h_Memep1_WAB->SetTitle("; M(e^{-}e^{+}) [ GeV]; d#sigma/dm [bn*GeV^{-1}]");
+    h_Memep1_WAB->Sumw2();
+    h_Memep1_WAB->SetLineColor(45);
+    h_Memep1_WAB->Scale(Wab_SigmaGen / NGen_Wab);
+    //AddErrorAllBins(h_Memep1_WAB, Wab_SigmError / Wab_SigmaGen);
+
+
+    TH1D *h_Memep1_Tot = (TH1D*) h_Memep1_Tri->Clone("Memep_Tot");
+    h_Memep1_Tot->Add(h_Memep1_WAB);
+    h_Memep1_Tot->SetLineColor(45);
+
+    TH1D *h_Memep1_Tri_RB = (TH1D*) h_Memep1_Tri->Rebin(8, "h_Memep_Tri_RB");
+    TH1D *h_Memep1_WAB_RB = (TH1D*) h_Memep1_WAB->Rebin(8, "h_Memep_WAB_RB");
+    TH1D *h_Memep1_Rad_RB = (TH1D*) h_Memep1_Rad->Rebin(8, "h_Memep_Rad_RB");
+    TH1D *h_Memep_True1_Rad_RB = (TH1D*) h_Memep_True1_Rad->Rebin(8, "h_Memep_True1_Rad_RB");
+    TH1D *h_Memep1_Tot_RB = (TH1D*) h_Memep1_Tot->Rebin(8, "h_Memep_Tot_RB");
+
+    h_Memep1_Tot_RB->SetLineColor(95);
+    h_Memep1_WAB_RB->SetLineColor(45);
+    h_Memep1_Tri_RB->SetLineColor(4);
+    h_Memep1_Rad_RB->SetLineColor(2);
+    h_Memep_True1_Rad_RB->SetLineColor(2);
+
+    TLegend *leg1 = new TLegend(0.25, 0.2, 0.45, 0.4);
+    leg1->SetBorderSize(0);
+    leg1->SetFillColor(0);
+    leg1->AddEntry(h_Memep1_Tot_RB, "Tri + WAB");
+    leg1->AddEntry(h_Memep1_Tri_RB, "Tri");
+    leg1->AddEntry(h_Memep1_WAB_RB, "WAB");
+    leg1->AddEntry(h_Memep1_Rad_RB, "Rad");
+
+
+    ctmp->SetLogy();
+    h_Memep1_Tot_RB->SetMinimum(1.e-6 * h_Memep1_Tot_RB->GetMaximum());
+    h_Memep1_Tot_RB->Draw("hist e");
+    h_Memep1_WAB_RB->Draw("hist Same e");
+    h_Memep1_Tri_RB->Draw("hist Same e");
+    h_Memep1_Rad_RB->Draw("hist Same e");
+    leg1->Draw();
+    ctmp->Print("Figs/Mass_MCComponets_RB.eps");
+    ctmp->Print("Figs/Mass_MCComponets_RB.pdf");
+    ctmp->Print("Figs/Mass_MCComponets_RB.png");
+
+    TH1D *h_fRad = (TH1D*) h_Memep1_Rad_RB->Clone("h_fRad");
+
+    h_fRad->Divide(h_Memep1_Tot_RB);
+    h_fRad->SetTitle("; M(e^{-}e^{+}) [GeV]; f_{Rad}");
+
+    ctmp->SetLogy(0);
+    h_fRad->SetAxisRange(0., 0.12, "Y");
+    h_fRad->SetLineColor(2);
+    h_fRad->Draw();
+
+    ctmp->Print("Figs/fRadWithTruts.eps");
+    ctmp->Print("Figs/fRadWithTruts.pdf");
+    ctmp->Print("Figs/fRadWithTruts.png");
+
+
+    TH1D *h_fRadTrue = (TH1D*) h_Memep_True1_Rad_RB->Clone("h_Memep_True1_Rad_RB");
+    h_fRadTrue->Divide(h_Memep1_Tot_RB);
+    h_fRadTrue->SetTitle("; M(e^{-}e^{+}) [GeV]; f_{Rad}");
+    h_fRadTrue->GetXaxis()->SetNdivisions(506);
+    h_fRadTrue->SetLineColor(4);
+    h_fRadTrue->SetAxisRange(0.03, 0.09, "Y");
+    h_fRadTrue->SetAxisRange(0.04, 0.18, "X");
+    h_fRadTrue->Draw();
+    ctmp->Print("Figs/fRadWithTrutsTrueMass.eps");
+    ctmp->Print("Figs/fRadWithTrutsTrueMass.pdf");
+    ctmp->Print("Figs/fRadWithTrutsTrueMass.png");
+
+
+    TF1 *f_Pol6 = new TF1("f_Pol6", "pol6", 0., 0.2);
+    f_Pol6->SetNpx(4500);
+    f_Pol6->SetLineColor(95);
+    TLatex *lat1 = new TLatex();
+    lat1->SetNDC();
+    lat1->SetTextFont(42);
+    TLegend *legfRad1 = new TLegend(0.35, 0.75, 0.65, 0.88);
+    legfRad1->SetBorderSize(0.);
+    legfRad1->SetFillColor(0);
+    legfRad1->AddEntry(h_fRadTrue, "True Mass");
+    legfRad1->AddEntry(h_fRad, "Rec Mass");
+    TCanvas *cfRad = new TCanvas("cfRad", "", 950, 950);
+    cfRad->cd();
+    cfRad->SetTopMargin(0.02);
+    cfRad->SetRightMargin(0.02);
+    cfRad->SetLeftMargin(0.19);
+    cfRad->SetBottomMargin(0.14);
+    h_fRad->SetStats(0);
+    h_fRadTrue->SetStats(0);
+    h_fRadTrue->GetXaxis()->SetTitleSize(0.06);
+    h_fRadTrue->GetYaxis()->SetTitleSize(0.06);
+    h_fRadTrue->GetXaxis()->SetLabelSize(0.06);
+    h_fRadTrue->GetYaxis()->SetLabelSize(0.06);
+    h_fRadTrue->Draw();
+    h_fRadTrue->Fit(f_Pol6, "MeV", "", 0.04, 0.18);
+    h_fRad->Draw("Same");
+    legfRad1->Draw();
+    double chi2 = f_Pol6->GetChisquare();
+    double NDF = f_Pol6->GetNDF();
+    lat1->DrawLatex(0.3, 0.32, Form("#chi^{2}/NDF = %1.2f", chi2 / NDF));
+    cfRad->Print("Figs/fRad_Fit.eps");
+    cfRad->Print("Figs/fRad_Fit.pdf");
+    cfRad->Print("Figs/fRad_Fit.png");
+
+    const int nPar = 7;
+    double parsPol[nPar];
+
+    f_Pol6->GetParameters(parsPol);
+    ofstream outfRadFit("fRadFitPars.dat");
+    outfRadFit << "Par(0)  & Par(1) & Par(2) & Par(3) & Par(4) & Par(5) & Par(6)" << endl;
+    outfRadFit.precision(10);
+    for (int i = 0; i < nPar; i++) {
+        outfRadFit << parsPol[i] << " & \t";
+    }
+    outfRadFit << endl;
+
+    delete cfRad;
+
+
+    TH1D *h_Memep_True_VarBins1_Rad = (TH1D*) file_Rad->Get("h_Memep_True_VarBins1");
+    h_Memep_True_VarBins1_Rad->SetTitle("; M(e^{-}e^{+}) [ GeV]; d#sigma/dm [bn*GeV^{-1}]");
+    h_Memep_True_VarBins1_Rad->Sumw2();
+    h_Memep_True_VarBins1_Rad->Scale(Rad_SigmaGen / NGen_Rad);
+    //AddErrorAllBins(h_Memep_True_VarBins1_Rad, Rad_SigmError / Rad_SigmaGen);
+
+    TH1D *h_Memep_VarBins1_Rad = (TH1D*) file_Rad->Get("h_Memep_VarBins1");
+    h_Memep_VarBins1_Rad->SetTitle("; M(e^{-}e^{+}) [ GeV]; d#sigma/dm [bn*GeV^{-1}]");
+    h_Memep_VarBins1_Rad->Sumw2();
+    h_Memep_VarBins1_Rad->Scale(Rad_SigmaGen / NGen_Rad);
+    // AddErrorAllBins(h_Memep_VarBins1_Rad, Rad_SigmError / Rad_SigmaGen);
+
+    TH1D *h_Memep_VarBins1_Tri = (TH1D*) file_Tri->Get("h_Memep_VarBins1");
+    h_Memep_VarBins1_Tri->SetTitle("; M(e^{-}e^{+}) [ GeV]; d#sigma/dm [bn*GeV^{-1}]");
+    h_Memep_VarBins1_Tri->Sumw2();
+    h_Memep_VarBins1_Tri->Scale(tritrig_SigmaGen / NGen_tritrig);
+    // AddErrorAllBins(h_Memep_VarBins1_Tri, tritrig_SigmError / tritrig_SigmaGen);
+
+
+    TH1D *h_Memep_VarBins1_WAB = (TH1D*) file_WAB->Get("h_Memep_VarBins1");
+    h_Memep_VarBins1_WAB->SetTitle("; M(e^{-}e^{+}) [ GeV]; d#sigma/dm [bn*GeV^{-1}]");
+    h_Memep_VarBins1_WAB->Sumw2();
+    h_Memep_VarBins1_WAB->Scale(Wab_SigmaGen / NGen_Wab);
+    //AddErrorAllBins(h_Memep_VarBins1_WAB, Wab_SigmError / Wab_SigmaGen);
+
+
+    TH1D *h_Memep_VarBins1_Tot = (TH1D*) h_Memep_VarBins1_Tri->Clone("Memep_VarBins_Tot");
+    h_Memep_VarBins1_Tot->Add(h_Memep_VarBins1_WAB);
+
+
+    h_Memep_VarBins1_Tot->SetLineColor(95);
+    h_Memep_VarBins1_WAB->SetLineColor(45);
+    h_Memep_VarBins1_Tri->SetLineColor(4);
+    h_Memep_VarBins1_Rad->SetLineColor(2);
+
+    TLegend *leg2 = new TLegend(0.25, 0.2, 0.45, 0.4);
+    leg2->SetBorderSize(0);
+    leg2->SetFillColor(0);
+    leg2->AddEntry(h_Memep_VarBins1_Tot, "Tri + WAB");
+    leg2->AddEntry(h_Memep_VarBins1_Tri, "Tri");
+    leg2->AddEntry(h_Memep_VarBins1_WAB, "WAB");
+    leg2->AddEntry(h_Memep_VarBins1_Rad, "Rad");
+
+    ctmp->SetLogy();
+    h_Memep_VarBins1_Tot->SetMinimum(1.e-6 * h_Memep_VarBins1_Tot->GetMaximum());
+    h_Memep_VarBins1_Tot->Draw("hist e");
+    h_Memep_VarBins1_WAB->Draw("hist Same e");
+    h_Memep_VarBins1_Tri->Draw("hist Same e");
+    h_Memep_VarBins1_Rad->Draw("hist Same e");
+    leg2->Draw();
+    ctmp->Print("Figs/Mass_MCComponets_VarBins.eps");
+    ctmp->Print("Figs/Mass_MCComponets_VarBIns.pdf");
+    ctmp->Print("Figs/Mass_MCComponets_VarBIns.png");
+
+    TH1D *h_fRad_VarBins = (TH1D*) h_Memep_VarBins1_Rad->Clone("h_fRad_VarBins");
+
+    h_fRad_VarBins->Divide(h_Memep_VarBins1_Tot);
+    h_fRad_VarBins->SetTitle("; M(e^{-}e^{+}) [GeV]; f_{Rad}");
+
+    ctmp->SetLogy(0);
+    h_fRad_VarBins->SetAxisRange(0., 0.12, "Y");
+    h_fRad_VarBins->Draw();
+
+    ctmp->Print("Figs/fRadWithTruts_VarBins.eps");
+    ctmp->Print("Figs/fRadWithTruts_VarBins.pdf");
+    ctmp->Print("Figs/fRadWithTruts_VarBins.png");
+
+    TH1D *h_fRad_TrueMass_VarBins = (TH1D*) h_Memep_True_VarBins1_Rad->Clone("h_fRad_TrueMass_VarBins");
+    h_fRad_TrueMass_VarBins->Divide(h_Memep_VarBins1_Tot);
+    h_fRad_TrueMass_VarBins->SetTitle("; M(e^{-}e^{+}) [GeV]; f_{Rad}");
+    h_fRad_TrueMass_VarBins->SetLineColor(4);
+    h_fRad_TrueMass_VarBins->Draw("Same");
+    ctmp->Print("Figs/fRadVarBins_TrueAndRecMass.eps");
+    ctmp->Print("Figs/fRadVarBins_TrueAndRecMass.pdf");
+    ctmp->Print("Figs/fRadVarBins_TrueAndRecMass.png");
+
+    h_fRad_TrueMass_VarBins->SetAxisRange(0., 0.12, "Y");
+    h_fRad_TrueMass_VarBins->Draw();
+    ctmp->Print("Figs/fRadVarBins_TrueMass.eps");
+    ctmp->Print("Figs/fRadVarBins_TrueMass.pdf");
+    ctmp->Print("Figs/fRadVarBins_TrueMass.png");
+
+    h_Memep_True1_Rad->Write("h_Memep_True1_Rad");
+    h_Memep1_Rad->Write("h_Memep1_Rad");
+    h_Memep1_Tri->Write("h_Memep1_Tri");
+    h_Memep1_WAB->Write("h_Memep1_WAB");
+    h_Memep1_Tot->Write("h_Memep1_Tot");
+
+    h_Memep1_Tot_RB->Write("h_Memep1_Tot_RB");
+    h_Memep1_Rad_RB->Write("h_Memep1_Rad_RB");
+    h_Memep1_Tri_RB->Write("h_Memep1_Tri_RB");
+    h_Memep1_WAB_RB->Write("h_Memep1_WAB_RB");
+
+    h_fRad->Write("h_fRad");
+    h_fRadTrue->Write("h_fRadTrue");
+
+    h_Memep_True_VarBins1_Rad->Write("h_Memep_True_VarBins1_Rad");
+    h_Memep_VarBins1_Rad->Write("h_Memep_VarBins1_Rad");
+    h_Memep_VarBins1_WAB->Write("h_Memep_VarBins1_WAB");
+    h_Memep_VarBins1_Tri->Write("h_Memep_VarBins1_Tri");
+    h_Memep_VarBins1_Tot->Write("h_Memep_VarBins1_Tot");
+    h_fRad_VarBins->Write("h_fRad_VarBins");
+    h_fRad_TrueMass_VarBins->Write("h_fRad_TrueMass_VarBins");
+
+
+    file_fRad_Output->Close();
+    delete file_fRad_Output;
+    delete ctmp;
 }
 
 void DrawAntiFEECut(TFile** files) {
@@ -1095,7 +1484,7 @@ void Drawd0Cut(TFile** files) {
 void DrawLarged0hists(TFile** files, std::string histNameBase, std::string Title) {
 
     TCanvas *c1D = new TCanvas("c1D", "", 950, 950);
-    
+
     //==========================================================
     //===== Order of files in the pointer "files" is the following
     //===== 1-st: Data
@@ -1161,11 +1550,64 @@ void DrawLarged0hists(TFile** files, std::string histNameBase, std::string Title
     c1D->Print(Form("Figs/%s_All.png", histNameBase.c_str()));
 
     c1D->Clear();
-    
+
     c1D->Print(Form("WABStudy_%s.eps", histNameBase.c_str()));
     c1D->Print(Form("WABStudy_%s.pdf", histNameBase.c_str()));
     c1D->Print(Form("WABStudy_%s.png", histNameBase.c_str()));
-    
+
     delete rp;
+
+}
+
+void WriteSingleV0CutFractins(TFile** files) {
+    //==========================================================
+    //===== Order of files in the pointer "files" is the following
+    //===== 1-st: Data
+    //===== 2-nd: TriTrig
+    //===== 3-3d: Radiatives
+    //===== 4-th: Converted Wabs
+    //==========================================================
+
+    TFile *file_Data = files[0];
+    TFile *file_Tri = files[1];
+    TFile *file_Rad = files[2];
+    TFile *file_WAB = files[3];
+
+    TH1D *h_PSum0_Data = (TH1D*) file_Data->Get("h_PSum_General_Final_0");
+    double NV0_Data_0 = h_PSum0_Data->Integral();
+    TH1D *h_PSum1_Data = (TH1D*) file_Data->Get("h_PSum_General_Final_1");
+    double NV0_Data_1 = h_PSum1_Data->Integral();
+    double beforeCut_Data = NV0_Data_0 + NV0_Data_1;
+    double Ratio_Data = NV0_Data_1 / (NV0_Data_0 + NV0_Data_1);
+
+    TH1D *h_PSum0_Tri = (TH1D*) file_Tri->Get("h_PSum_General_Final_0");
+    h_PSum0_Tri->Scale(tritrig_SigmaGen / (NGen_tritrig));
+    double NV0_Tri_0 = h_PSum0_Tri->Integral();
+    TH1D *h_PSum1_Tri = (TH1D*) file_Tri->Get("h_PSum_General_Final_1");
+    h_PSum1_Tri->Scale(tritrig_SigmaGen / (NGen_tritrig));
+    double NV0_Tri_1 = h_PSum1_Tri->Integral();
+    double Ratio_Tri = NV0_Tri_1 / (NV0_Tri_0 + NV0_Tri_1);
+
+    TH1D *h_PSum0_Rad = (TH1D*) file_Rad->Get("h_PSum_General_Final_0");
+    double NV0_Rad_0 = h_PSum0_Rad->Integral();
+    TH1D *h_PSum1_Rad = (TH1D*) file_Rad->Get("h_PSum_General_Final_1");
+    double NV0_Rad_1 = h_PSum1_Rad->Integral();
+    double Ratio_Rad = NV0_Rad_1 / (NV0_Rad_0 + NV0_Rad_1);
+
+    TH1D *h_PSum0_WAB = (TH1D*) file_WAB->Get("h_PSum_General_Final_0");
+    h_PSum0_WAB->Scale(Wab_SigmaGen / NGen_Wab);
+    double NV0_WAB_0 = h_PSum0_WAB->Integral();
+    TH1D *h_PSum1_WAB = (TH1D*) file_WAB->Get("h_PSum_General_Final_1");
+    h_PSum1_WAB->Scale(Wab_SigmaGen / (NGen_Wab));
+    double NV0_WAB_1 = h_PSum1_WAB->Integral();
+    double Ratio_WAB = NV0_WAB_1 / (NV0_WAB_0 + NV0_WAB_1);
+
+    double NV0_TriPlusWAB_0 = NV0_Tri_0 + NV0_WAB_0;
+    double NV0_TriPlusWAB_1 = NV0_Tri_1 + NV0_WAB_1;
+    double Ratio_TriPlusWAB = NV0_TriPlusWAB_1 / (NV0_TriPlusWAB_0 + NV0_TriPlusWAB_1);
+
+
+    CutFractions << setw(25) << "Single V0 " << setw(12) << " & " << Form("%1.3e", beforeCut_Data) << " & " << Ratio_Data << setw(12) << " & " << Ratio_Tri
+            << setw(12) << " & " << Ratio_Rad << setw(12) << " & " << Ratio_WAB << setw(12) << " & " << Ratio_TriPlusWAB << " \\\\ \\hline" << endl;
 
 }

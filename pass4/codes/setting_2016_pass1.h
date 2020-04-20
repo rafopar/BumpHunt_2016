@@ -75,8 +75,8 @@ const double MinvMax = 0.24;
 const double massHistBinWidth = 0.00125;
 const int nfRadMassBins = 20;
 double fRadMassCenters[nfRadMassBins] = {0.04, 0.05, 0.06, 0.07, 0.08, 0.09, 0.1, 0.11, 0.12, 0.13, 0.14, 0.15, 0.16, 0.17, 0.18, 0.19, 0.2, 0.21, 0.22, 0.23};
-double MassFunc[nfRadMassBins] = {30680.241, 53470.531, 54103.101, 44978.409,  33243.990, 22523.242, 14226.734, 8507.0612, 4917.0723, 2829.1550, 1670.1034,
-1021.9460, 633.97565, 385.09633, 228.47491, 142.37557, 101.94707, 76.634804, 46.799326, 25.040282};
+double MassFunc[nfRadMassBins] = {30680.241, 53470.531, 54103.101, 44978.409, 33243.990, 22523.242, 14226.734, 8507.0612, 4917.0723, 2829.1550, 1670.1034,
+    1021.9460, 633.97565, 385.09633, 228.47491, 142.37557, 101.94707, 76.634804, 46.799326, 25.040282};
 
 // =========================================================================
 // =====  Definition of Non-Const Variables
@@ -281,6 +281,7 @@ map<int, vector<double> > m_v_Minv_General;
 map<int, vector<double> > m_v_MinvScSm_General;
 map<int, vector<double> > m_v_MinvTrue_General;
 map<int, vector<double> > m_v_PSum_General;
+map<int, vector<double> > m_v_PSumScSm_General;
 
 
 
@@ -314,11 +315,13 @@ map<int, TH1D*> m_h_Psum;
 // ========== i.e. if the the V0 has ep_d0 cut passed, then both with/ and without d0 histograms will be filled
 
 map<int, TH1D*> m_h_Minv_General;
+map<int, TH1D*> m_h_MinvScSm_General;
 map<int, TH1D*> m_h_Psum_General;
 map<int, TH1D*> m_h_Minv_GeneralLargeBins;
 map<int, TH1D*> m_h_MinvScSm_GeneralLargeBins;
 map<int, TH1D*> m_h_MinvTrue_GeneralLargeBins;
 map<int, TH1D*> m_h_Psum_GeneralLargeBins;
+map<int, TH1D*> m_h_PsumScSm_GeneralLargeBins;
 
 // ==================================
 
@@ -459,6 +462,22 @@ TH1D *h_clDt_All;
 TH1D *h_clDt_AllBut;
 TH1D *h_clDt_CutEffect;
 
+TH1D *h_PsumMin_All;
+TH1D *h_PsumMin_AllBut;
+TH1D *h_PsumMin_CutEffect;
+
+TH1D *h_PsumScSmMin_All;
+TH1D *h_PsumScSmMin_AllBut;
+TH1D *h_PsumScSmMin_CutEffect;
+
+TH1D *h_PsumMax_All;
+TH1D *h_PsumMax_AllBut;
+TH1D *h_PsumMax_CutEffect;
+
+TH1D *h_PsumScSmMax_All;
+TH1D *h_PsumScSmMax_AllBut;
+TH1D *h_PsumScSmMax_CutEffect;
+
 TH2D *h_cl_trk_dT_All;
 TH2D *h_cl_trk_dT_AllBut;
 TH2D *h_cl_trk_dT_CutEffect;
@@ -586,6 +605,17 @@ TH1D *h_Memep_True1;
 
 TH1D *h_Memep_VarBins1;
 TH1D *h_Memep_True_VarBins1;
+
+TH2D *h_Pemep_Final;
+
+
+// ================== Positron related histograms for Stepan's request =======================
+const int n_MomRange = 3;
+TH1D *h_Pep_Fid1;
+TH1D *h_Pep_DeepFid1;
+
+TH1D *h_E_P_ep_Fid1_[n_MomRange];
+TH1D *h_E_P_ep_DeepFid1_[n_MomRange];
 
 // ====== ============================================================================ =======
 // ====== Graph and hist for track killing =======
@@ -773,6 +803,16 @@ bool IsD0Cut(double);
 bool IsLargeD0(double);
 
 // ========= ============================================================= ============
+// ========= Checks if the track is in ECal Fiducial region ============
+// ========= ============================================================= ============
+bool IsClInFid(HpsParticle*);
+
+// ========= ============================================================= ============
+// ========= Checks if the track is deep in ECal Fiducial region ============
+// ========= ============================================================= ============
+bool IsClInDeepFid(HpsParticle*);
+
+// ========= ============================================================= ============
 // ========= This function returns the position of the hit associated to the track
 // ========= in the given layer
 // ========= ============================================================= ============
@@ -875,6 +915,13 @@ void InitSmearPars();
 // ===== Returns smeared mass according to the mass
 // ===== parametrization
 // =======================================================
-double GetSmearMass(HpsParticle*);
+vector<double> GetSmearKine(HpsParticle*);
+
+// =======================================================
+// ====== Filling histograms for positrons, 
+// ====== This is for request that Stepan made
+// =======================================================
+
+void FillPositDistributions(HpsParticle*);
 
 #endif

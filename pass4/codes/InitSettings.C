@@ -9,6 +9,10 @@ void InitVariables(std::string dataSet) {
     rnd1 = new TRandom();
 
     // Defing available values for Ap simulation
+    ApMassSet.insert(30);
+    ApMassSet.insert(35);
+    ApMassSet.insert(40);
+    ApMassSet.insert(45);
     ApMassSet.insert(50);
     ApMassSet.insert(55);
     ApMassSet.insert(60);
@@ -20,8 +24,20 @@ void InitVariables(std::string dataSet) {
     ApMassSet.insert(90);
     ApMassSet.insert(95);
     ApMassSet.insert(100);
+    ApMassSet.insert(105);
+    ApMassSet.insert(110);
+    ApMassSet.insert(115);
+    ApMassSet.insert(120);
     ApMassSet.insert(125);
+    ApMassSet.insert(130);
+    ApMassSet.insert(135);
+    ApMassSet.insert(140);
+    ApMassSet.insert(145);
     ApMassSet.insert(150);
+    ApMassSet.insert(155);
+    ApMassSet.insert(160);
+    ApMassSet.insert(165);
+    ApMassSet.insert(170);
     ApMassSet.insert(175);
 
 
@@ -40,7 +56,7 @@ void InitVariables(std::string dataSet) {
     m_v_Minv_General[1] = {};
     m_v_Minv_General[2] = {};
     m_v_Minv_General[3] = {};
-    
+
     m_v_MinvScSm_General[0] = {};
     m_v_MinvScSm_General[1] = {};
     m_v_MinvScSm_General[2] = {};
@@ -55,6 +71,11 @@ void InitVariables(std::string dataSet) {
     m_v_PSum_General[1] = {};
     m_v_PSum_General[2] = {};
     m_v_PSum_General[3] = {};
+
+    m_v_PSumScSm_General[0] = {};
+    m_v_PSumScSm_General[1] = {};
+    m_v_PSumScSm_General[2] = {};
+    m_v_PSumScSm_General[3] = {};
 
     // ========== Initialize the vector of CutKeys
     v_CutsKeys = {};
@@ -161,7 +182,9 @@ void InitVariables(std::string dataSet) {
             if (ApMassSet.count(ApMass) > 0) {
 
                 //inpFileName = Form("../Data/Ap_%dMeV.root", ApMass);
-                inpFileName = Form("../Data/AP_TargNominal_%d_MeV.root", ApMass);
+                //inpFileName = Form("../Data/AP_TargNominal_%d_MeV.root", ApMass);
+                inpFileName = Form("../Data/AP_TargM0p5mm_%d_MeV.root", ApMass);
+                //inpFileName = Form("../Data/AP_TargP0p5mm_%d_MeV.root", ApMass);
                 //inpFileName = Form("../Data/Ap_%dMeV_Dec11_2019.root", ApMass);
                 outFileName = Form("EventSelection_Ap_%dMeV.root", ApMass);
 
@@ -507,10 +530,12 @@ void InitVariables(std::string dataSet) {
         m_h_Psum[ii] = new TH1D(Form("h_PSum_Final_%d", ii), "", 600, 0.7, 1.2 * Eb);
 
         m_h_Minv_General[ii] = new TH1D(Form("h_Minv_General_Final_%d", ii), "", 6000, 0., 0.3);
+        m_h_MinvScSm_General[ii] = new TH1D(Form("h_MinvScSm_General_Final_%d", ii), "", 6000, 0., 0.3);
         m_h_Psum_General[ii] = new TH1D(Form("h_PSum_General_Final_%d", ii), "", 600, 0.7, 1.2 * Eb);
         m_h_Minv_GeneralLargeBins[ii] = new TH1D(Form("h_Minv_GeneralLargeBins_Final_%d", ii), "", 400, 0., 0.25);
         m_h_MinvTrue_GeneralLargeBins[ii] = new TH1D(Form("h_MinvTrue_GeneralLargeBins_Final_%d", ii), "", 400, 0., 0.25);
         m_h_Psum_GeneralLargeBins[ii] = new TH1D(Form("h_Psum_GeneralLargeBins_Final_%d", ii), "", 40, 1.6, 1.2 * Eb);
+        m_h_PsumScSm_GeneralLargeBins[ii] = new TH1D(Form("h_PsumScSm_GeneralLargeBins_Final_%d", ii), "", 40, 1.6, 1.2 * Eb);
         m_h_MinvScSm_GeneralLargeBins[ii] = new TH1D(Form("h_MinvScSm_GeneralLargeBins_Final_%d", ii), "", 400, 0., 0.25);
     }
 
@@ -1104,6 +1129,46 @@ bool IsD0Cut(double d0) {
 bool IsLargeD0(double d0) {
 
     return (d0 > largeD0Cut);
+}
+
+bool IsClInFid(HpsParticle* part) {
+
+    EcalCluster *cl = (EcalCluster*) part->getClusters()->At(0);
+    double y_cl = cl->getPosition().at(1);
+    double x_cl = cl->getPosition().at(0);
+
+    bool inFid = true;
+
+    // Excluding regions step by step
+
+    if (x_cl < -270 || x_cl > 350. || TMath::Abs(y_cl) > 78 || TMath::Abs(y_cl) < 36) {
+        inFid = false;
+    } else if (
+            x_cl > -112 && x_cl < 40. && TMath::Abs(y_cl) < 49.) {
+        inFid == false;
+    }
+
+    return inFid;
+}
+
+bool IsClInDeepFid(HpsParticle* part) {
+
+    EcalCluster *cl = (EcalCluster*) part->getClusters()->At(0);
+    double y_cl = cl->getPosition().at(1);
+    double x_cl = cl->getPosition().at(0);
+
+    bool inFid = true;
+
+    // Excluding regions step by step
+
+    if (x_cl < -260 || x_cl > 340. || TMath::Abs(y_cl) > 70. || TMath::Abs(y_cl) < 43.5) {
+        inFid = false;
+    } else if (
+            x_cl > -120 && x_cl < 50. && TMath::Abs(y_cl) < 58.) {
+        inFid == false;
+    }
+
+    return inFid;
 }
 
 vector<double> GetHitCoordAtLayer(GblTrack* trk, int layer) {
@@ -1872,6 +1937,22 @@ void InitGeneralHistograms() {
     h_clDt_AllBut = new TH1D("h_clDt_AllBut", "", 70, -3., 3.);
     h_clDt_CutEffect = new TH1D("h_clDt_CutEffect", "", 70, -3., 3.);
 
+    h_PsumMax_All = new TH1D("h_PsumMax_All", "", 70, 0.7, 1.2 * Eb);
+    h_PsumMax_AllBut = new TH1D("h_PsumMax_AllBut", "", 70, 0.7, 1.2 * Eb);
+    h_PsumMax_CutEffect = new TH1D("h_PsumMax_CutEffect", "", 70, 0.7, 1.2 * Eb);
+
+    h_PsumScSmMax_All = new TH1D("h_PsumScSmMax_All", "", 70, 0.7, 1.2 * Eb);
+    h_PsumScSmMax_AllBut = new TH1D("h_PsumScSmMax_AllBut", "", 70, 0.7, 1.2 * Eb);
+    h_PsumScSmMax_CutEffect = new TH1D("h_PsumScSmMax_CutEffect", "", 70, 0.7, 1.2 * Eb);
+
+    h_PsumMin_All = new TH1D("h_PsumMin_All", "", 70, 0.7, 1.2 * Eb);
+    h_PsumMin_AllBut = new TH1D("h_PsumMin_AllBut", "", 70, 0.7, 1.2 * Eb);
+    h_PsumMin_CutEffect = new TH1D("h_PsumMin_CutEffect", "", 70, 0.7, 1.2 * Eb);
+
+    h_PsumScSmMin_All = new TH1D("h_PsumScSmMin_All", "", 70, 0.7, 1.2 * Eb);
+    h_PsumScSmMin_AllBut = new TH1D("h_PsumScSmMin_AllBut", "", 70, 0.7, 1.2 * Eb);
+    h_PsumScSmMin_CutEffect = new TH1D("h_PsumScSmMin_CutEffect", "", 70, 0.7, 1.2 * Eb);
+
     h_cl_trk_dT_All = new TH2D("h_cl_trk_dT_All", "", 200, 0., 2.5, 200, -8., 8.);
     h_cl_trk_dT_AllBut = new TH2D("h_cl_trk_dT_AllBut", "", 200, 0., 2.5, 200, -8., 8.);
     h_cl_trk_dT_CutEffect = new TH2D("h_cl_trk_dT_CutEffect", "", 200, 0., 2.5, 200, -8., 8.);
@@ -2007,6 +2088,15 @@ void InitGeneralHistograms() {
     h_Memep_VarBins1 = new TH1D("h_Memep_VarBins1", "", nMassBins, massBinEdges);
     h_Memep_True_VarBins1 = new TH1D("h_Memep_True_VarBins1", "", nMassBins, massBinEdges);
 
+    h_Pemep_Final = new TH2D("h_Pemep_Final", "", 200, 0., Eb, 200, 0., Eb);
+
+    h_Pep_Fid1 = new TH1D("h_Pep_Fid1", "", 400, 0., 1.2 * Eb);
+    h_Pep_DeepFid1 = new TH1D("h_DeepPep_Fid1", "", 400, 0., 1.2 * Eb);
+
+    for (int ii = 0; ii < n_MomRange; ii++) {
+        h_E_P_ep_Fid1_[ii] = new TH1D(Form("h_E_P_ep_Fid1_%d", ii), "", 400, 0., 2.);
+        h_E_P_ep_DeepFid1_[ii] = new TH1D(Form("h_E_P_ep_DeepFid1_%d", ii), "", 400, 0., 2.);
+    }
 }
 
 void InitTrkKillingHist() {
@@ -2084,13 +2174,14 @@ bool IsParticleKilled(HpsParticle * part) {
 
 }
 
-double GetSmearMass(HpsParticle* v0) {
+vector<double> GetSmearKine(HpsParticle* v0) {
 
     HpsParticle *top = ((HpsParticle*) v0->getParticles()->At(0))->getMomentum().at(1) > 0 ? ((HpsParticle*) v0->getParticles()->At(0)) : ((HpsParticle*) v0->getParticles()->At(1));
     HpsParticle *bot = ((HpsParticle*) v0->getParticles()->At(0))->getMomentum().at(1) < 0 ? ((HpsParticle*) v0->getParticles()->At(0)) : ((HpsParticle*) v0->getParticles()->At(1));
 
     double M_V0 = v0->getMass();
-    
+    double P_V0 = GetMagnitude(v0->getMomentum());
+
     double P_Top = GetMagnitude(top->getMomentum());
     double P_Bot = GetMagnitude(bot->getMomentum());
     int nTopHits = ((GblTrack*) top->getTracks()->At(0))->getSvtHits()->GetSize();
@@ -2121,10 +2212,18 @@ double GetSmearMass(HpsParticle* v0) {
         P_BotSmSc = P_BotScaled;
     }
 
+    double P_emScSm = top->getCharge() < 0 ? P_TopSmSc : P_BotSmSc;
+    double P_epScSm = top->getCharge() > 0 ? P_TopSmSc : P_BotSmSc;
+
+    double PV0ScSm = P_V0 * (P_TopSmSc + P_BotSmSc) / (P_Top + P_Bot);
+
     double MinvScSmfactor = sqrt((P_TopSmSc / P_Top)*(P_BotSmSc / P_Bot));
     double M_V0_ScSm = MinvScSmfactor*M_V0;
-    
-    return M_V0_ScSm;
+
+    //cout<<"MV_0 = "<<M_V0<<"    M_V0_ScSm = "<<M_V0_ScSm<<endl;
+
+    vector<double> smearKine = {M_V0_ScSm, P_emScSm, P_epScSm, PV0ScSm};
+    return smearKine;
 }
 
 void InitSmearPars() {
@@ -2165,4 +2264,40 @@ void InitSmearPars() {
 
     trSmear->GetEntry(0);
     file_smearPars->Close();
+}
+
+void FillPositDistributions(HpsParticle* ep) {
+
+    double P = GetMagnitude(((GblTrack*) ep->getTracks()->At(0))->getMomentum());
+    double cl_E = ((EcalCluster*) ep->getClusters()->At(0))->getEnergy();
+
+    if (IsClInFid(ep)) {
+        h_Pep_Fid1->Fill(P);
+    }
+    if (IsClInDeepFid(ep)) {
+        h_Pep_DeepFid1->Fill(P);
+    }
+
+    if (P < 0.4 || P > 1.8) {
+        return;
+    }
+
+
+    int iMomBin;
+    if (P > 0.4 && P < 0.8) {
+        iMomBin = 0;
+    } else if (P > 0.8 && P < 1.2) {
+        iMomBin = 1;
+    } else {
+        iMomBin = 2;
+    }
+
+
+    if (IsClInFid(ep)) {
+        h_E_P_ep_Fid1_[iMomBin]->Fill(cl_E / P);
+    }
+
+    if (IsClInDeepFid(ep)) {
+        h_E_P_ep_DeepFid1_[iMomBin]->Fill(cl_E / P);
+    }
 }

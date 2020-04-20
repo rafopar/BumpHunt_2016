@@ -16,6 +16,7 @@
 #include <TTree.h>
 #include <TFile.h>
 #include <TChain.h>
+#include <TVector3.h>
 #include <TGraphErrors.h>
 
 #include <hps_event/HpsEvent.h>
@@ -54,6 +55,7 @@ int main(int argc, char** argv) {
     isECalTimeStudies = true;
     InitVariables(dataSet);
 
+    //TFile *file_in = new TFile("../Data/tritrig_pass4.root");
     TFile *file_in = new TFile("../Data/hps_008099.All_dst_4.2.root");
 
     TFile *file_ECalTimeCorrections = new TFile("ECalTimeCorrections.root", "Read");
@@ -63,6 +65,7 @@ int main(int argc, char** argv) {
     TTree *tr1 = (TTree*) file_in->Get("HPS_Event");
 
     TFile *file_out = new TFile("ECalTimingStudies.root", "Recreate");
+    //TFile *file_out = new TFile("ECalTimingStudies_Tri.root", "Recreate");
 
     TH1D *h_clE1 = new TH1D("h_clE1", "", 200, 0., 1.2 * Eb);
     TH2D *h_cl_E_t1 = new TH2D("h_cl_E_t1", "", 200, 0., 1.2 * Eb, 200, 0., 180.);
@@ -150,7 +153,6 @@ int main(int argc, char** argv) {
         if (!ev->isPair1Trigger()) {
             continue;
         }
-
 
         int n_top_cl = 0;
         int n_bot_cl = 0;
