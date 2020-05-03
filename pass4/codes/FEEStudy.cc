@@ -43,6 +43,7 @@ int main(int argc, char** argv) {
 
     TRandom *rand1 = new TRandom();
 
+    const int n_X_Regions = 8;
     const double Eb = 2.306;
     //const double sigm_smear = 0.11;
 
@@ -67,7 +68,7 @@ int main(int argc, char** argv) {
 
     TFile *file_smearPars = new TFile("MomSmearScale.root", "Read");
     TTree *trSmear = (TTree*) file_smearPars->Get("tr1");
-    
+
     //TFile *file_in = new TFile("../Data/hps_008099.145_dst_4.2.root");
     TFile *file_in = new TFile(inpFile.c_str());
     TFile *file_out = new TFile(Form("FEE_Studies_%s.root", dataSet.c_str()), "Recreate");
@@ -78,6 +79,11 @@ int main(int argc, char** argv) {
 
     TH1D *h_Pem1 = new TH1D("h_Pem1", "", 400, 0., 1.35 * Eb);
     TH1D *h_Pem2 = new TH1D("h_Pem2", "", 400, 0., 1.35 * Eb);
+
+    TH2D *tr_P_X_Top6hits = new TH2D("tr_P_X_Top6hits", "", 200, -300, 220., 200, 0., 1.35 * Eb);
+    TH2D *tr_P_X_Top5hits = new TH2D("tr_P_X_Top5hits", "", 200, -300, 220., 200, 0., 1.35 * Eb);
+    TH2D *tr_P_X_Bot6hits = new TH2D("tr_P_X_Bot6hits", "", 200, -300, 220., 200, 0., 1.35 * Eb);
+    TH2D *tr_P_X_Bot5hits = new TH2D("tr_P_X_Bot5hits", "", 200, -300, 220., 200, 0., 1.35 * Eb);
 
     TH1D *h_Pem2_Top = new TH1D("h_Pem2_Top", "", 400, 0., 1.35 * Eb);
     TH1D *h_Pem2_Top5hits = new TH1D("h_Pem2_Top5hits", "", 400, 0., 1.35 * Eb);
@@ -92,6 +98,19 @@ int main(int argc, char** argv) {
     TH1D *h_Pem2ScaledSmear_Top = new TH1D("h_Pem2ScaledSmear_Top", "", 400, 0., 1.35 * Eb);
     TH1D *h_Pem2ScaledSmear_Bot = new TH1D("h_Pem2ScaledSmear_Bot", "", 400, 0., 1.35 * Eb);
 
+    TH1D * h_Pem2_[n_X_Regions];
+    TH1D * h_Pem2_Top6hits_[n_X_Regions];
+    TH1D * h_Pem2_Top5hits_[n_X_Regions];
+    TH1D * h_Pem2_Bot6hits_[n_X_Regions];
+    TH1D * h_Pem2_Bot5hits_[n_X_Regions];
+
+    for (int i = 0; i < n_X_Regions; i++) {
+        h_Pem2_[i] = new TH1D(Form("h_Pem2_%d", i), "", 200, 0., 1.35 * Eb);
+        h_Pem2_Top6hits_[i] = new TH1D(Form("h_Pem2_Top6hits_%d", i), "", 200, 0., 1.35 * Eb);
+        h_Pem2_Top5hits_[i] = new TH1D(Form("h_Pem2_Top5hits_%d", i), "", 200, 0., 1.35 * Eb);
+        h_Pem2_Bot6hits_[i] = new TH1D(Form("h_Pem2_Bot6hits_%d", i), "", 200, 0., 1.35 * Eb);
+        h_Pem2_Bot5hits_[i] = new TH1D(Form("h_Pem2_Bot5hits_%d", i), "", 200, 0., 1.35 * Eb);
+    }
 
     // ====================== Sc means "Scaled", Sm means "Smeared"
     TH1D *h_Pem2_Top5hitsScSm = new TH1D("h_Pem2_Top5hitsScSm", "", 400, 0., 1.35 * Eb);
@@ -166,6 +185,8 @@ int main(int argc, char** argv) {
     cout << "mean_Data_Top5hits = " << mean_Data_Top5hits << endl;
 
     TH2D *h_tr_YXc1 = new TH2D("h_tr_YXc1", "", 200, -300, 390, 200, -100, 100.);
+    TH2D *h_tr_YXc_6hit1 = new TH2D("h_tr_YXc_6hit1", "", 200, -300, 390, 200, -100, 100.);
+    TH2D *h_tr_YXc_5hit1 = new TH2D("h_tr_YXc_5hit1", "", 200, -300, 390, 200, -100, 100.);
 
     TTree *tr1 = (TTree*) file_in->Get("HPS_Event");
 
@@ -243,6 +264,11 @@ int main(int argc, char** argv) {
             h_chi2NDF1->Fill(chi2 / NDF);
 
             h_tr_YXc1->Fill(x_tr, y_tr);
+            if (nHits == 5) {
+                h_tr_YXc_5hit1->Fill(x_tr, y_tr);
+            } else if (nHits == 6) {
+                h_tr_YXc_6hit1->Fill(x_tr, y_tr);
+            }
 
 
             double scaleMom;
@@ -319,6 +345,54 @@ int main(int argc, char** argv) {
 
             //cout<<Pem<<"    "<<PemScaled<<"    "<<PemScaledSmear<<endl;
 
+            if (isnan(x_tr)) {
+                continue;
+            }
+
+            if (x_tr > -5.) {
+                continue;
+            }
+
+            int tr_x_region = int(TMath::Abs((x_tr + 25.)) / 10.);
+
+            if (tr_x_region < n_X_Regions) {
+                //cout<<x_tr <<"   "<<tr_x_region<<endl;
+                h_Pem2_[tr_x_region]->Fill(Pem);
+
+                if (y_tr > 0) {
+
+                    if (nHits == 6) {
+                        h_Pem2_Top6hits_[tr_x_region]->Fill(Pem);
+                    } else if (nHits == 5) {
+                        h_Pem2_Top5hits_[tr_x_region]->Fill(Pem);
+                    }
+
+                } else if (y_tr < 0.) {
+                    if (nHits == 6) {
+                        h_Pem2_Bot6hits_[tr_x_region]->Fill(Pem);
+                    } else if (nHits == 5) {
+                        h_Pem2_Bot5hits_[tr_x_region]->Fill(Pem);
+                    }
+
+                }
+            }
+
+            if (y_tr > 0) {
+
+                if (nHits == 6) {
+                    tr_P_X_Top6hits->Fill(x_tr, Pem);
+                }else if ( nHits == 5 ){
+                    tr_P_X_Top5hits->Fill(x_tr, Pem);
+                }
+
+            }else if( y_tr < 0. ){
+                if (nHits == 6) {
+                    tr_P_X_Bot6hits->Fill(x_tr, Pem);
+                }else if ( nHits == 5 ){
+                    tr_P_X_Bot5hits->Fill(x_tr, Pem);
+                }
+            }
+
             if (ECalFEECut(em_trk)) {
                 h_Pem2->Fill(Pem);
 
@@ -326,7 +400,7 @@ int main(int argc, char** argv) {
                     h_Pem2_Top->Fill(Pem);
                     h_Pem2Smear_Top->Fill(PemSmear);
                     h_Pem2ScaledSmear_Top->Fill(PemScaledSmear);
-                    
+
 
                     if (nHits == 5) {
                         h_Pem2_Top5hits->Fill(Pem);
@@ -378,6 +452,7 @@ bool ECalFEECut(GblTrack* trk) {
     double y_tr = trk->getPositionAtEcal().at(1);
     double x_tr = trk->getPositionAtEcal().at(0);
 
-    return x_tr > -120. && x_tr < 40.;
-    //return x_tr > -140. && x_tr < 40.;
+    //return x_tr > -120. && x_tr < 40.;
+    return x_tr > -140. && x_tr < 40.;
+    //return x_tr > -140. && x_tr < -120.;
 }
