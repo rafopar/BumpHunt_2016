@@ -55,12 +55,12 @@ const double Pem_MaxCut_Data = 1.75;
 const double Pem_MaxCut_MC = 1.72;
 
 const double cl_dTcut_Data = 1.43;
-const double PsumCutMax_Data = 2.4;
-const double PsumCutMax_MC = 2.4;
-//const double PsumCutMax_Data = 2.7;
-//const double PsumCutMax_MC = 2.7;
-const double PsumCutMin_Data = 1.9; // GeV
-const double PsumCutMin_MC = 1.9; // GeV
+const double PV0CutMax_Data = 2.4;
+const double PV0CutMax_MC = 2.4;
+//const double PV0CutMax_Data = 2.7;
+//const double PV0CutMax_MC = 2.7;
+const double PV0CutMin_Data = 1.9; // GeV
+const double PV0CutMin_MC = 1.9; // GeV
 
 const double d0_cut_Data = 1.176; // From pass1 Data and MC, will be revised with new MC
 const double d0_cut_MC = 0.65; // Needs to be verified
@@ -68,7 +68,7 @@ const double d0_cut_MC = 0.65; // Needs to be verified
 const double largeD0Cut_Data = 2.25;
 const double largeD0Cut_MC = 2.25;
 
-const int nMinvBins = 12; // # of Minv bins, We want to study Psum for different Minv Bins
+const int nMinvBins = 12; // # of Minv bins, We want to study PV0 for different Minv Bins
 const double MinvMin = 0.;
 const double MinvMax = 0.24;
 
@@ -123,8 +123,8 @@ bool IseptrkChi2;
 bool IsPem;
 bool IsD0ep;
 bool IsD0em;
-bool IsPsumMax;
-bool IsPsumMin;
+bool IsPV0Max;
+bool IsPV0Min;
 bool hasepL1;
 bool isLarged0ep;
 bool isRadAndRecoil;
@@ -171,8 +171,8 @@ double Pem_MaxCut;
 
 double cl_dTcut;
 
-double PsumCutMax;
-double PsumCutMin;
+double PV0CutMax;
+double PV0CutMin;
 double d0_cut;
 double largeD0Cut;
 
@@ -244,9 +244,13 @@ double mean_MC_Bot6hits;
 double sigm_MC_Bot6hits;
 double scale_MC_Bot6hits;
 double smear_Top5hits;
+double smearErr_Top5hits;
 double smear_Top6hits;
+double smearErr_Top6hits;
 double smear_Bot5hits;
+double smearErr_Bot5hits;
 double smear_Bot6hits;
+double smearErr_Bot6hits;
 
 TFile *file_smearPars;
 TTree *trSmear;
@@ -274,16 +278,19 @@ std::string cutHistFileName2;
 // =========================================================================
 
 map<int, vector<double> > m_v_ee;
-map<int, vector<double> > m_v_PSum;
+map<int, vector<double> > m_v_PV0;
 
 
 map<int, vector<double> > m_v_Minv_General;
 map<int, vector<double> > m_v_MinvScSm_General;
+map<int, vector<double> > m_v_MinvScSmErrPos_General;
+map<int, vector<double> > m_v_MinvScSmErrNeg_General;
 map<int, vector<double> > m_v_MinvTrue_General;
-map<int, vector<double> > m_v_PSum_General;
-map<int, vector<double> > m_v_PSumScSm_General;
+map<int, vector<double> > m_v_PV0_General;
+map<int, vector<double> > m_v_PV0ScSm_General;
 
-
+map< int, vector<HpsParticle*> > m_v_ep_General;   // pointers of positrons for a given V0
+map< int, vector<HpsParticle*> > m_v_em_General;   // pointers of electrons for a given V0
 
 // =========================================================================
 // ===== Map of histograms for for
@@ -309,19 +316,23 @@ const int NCutInQuestion = 3;
 // = bit - - 6 5 4 3 2 1 0
 
 map<int, TH1D*> m_h_Minv;
-map<int, TH1D*> m_h_Psum;
+map<int, TH1D*> m_h_PV0;
 
 // ========== Here the extension general refers to histograms that can be filled more often,
 // ========== i.e. if the the V0 has ep_d0 cut passed, then both with/ and without d0 histograms will be filled
 
 map<int, TH1D*> m_h_Minv_General;
 map<int, TH1D*> m_h_MinvScSm_General;
-map<int, TH1D*> m_h_Psum_General;
+map<int, TH1D*> m_h_PV0_General;
 map<int, TH1D*> m_h_Minv_GeneralLargeBins;
+map<int, TH1D*> m_h_MinvScSmErrPos_GeneralLargeBins;
+map<int, TH1D*> m_h_MinvScSmErrNeg_GeneralLargeBins;
 map<int, TH1D*> m_h_MinvScSm_GeneralLargeBins;
 map<int, TH1D*> m_h_MinvTrue_GeneralLargeBins;
-map<int, TH1D*> m_h_Psum_GeneralLargeBins;
-map<int, TH1D*> m_h_PsumScSm_GeneralLargeBins;
+map<int, TH1D*> m_h_PV0_GeneralLargeBins;
+map<int, TH1D*> m_h_PV0ScSm_GeneralLargeBins;
+map<int, TH2D*> m_h_unique_ep_General;
+map<int, TH2D*> m_h_unique_em_General;
 
 // ==================================
 
@@ -462,21 +473,30 @@ TH1D *h_clDt_All;
 TH1D *h_clDt_AllBut;
 TH1D *h_clDt_CutEffect;
 
-TH1D *h_PsumMin_All;
-TH1D *h_PsumMin_AllBut;
-TH1D *h_PsumMin_CutEffect;
+TH1D *h_PV0Min_All;
+TH1D *h_PV0Min_AllBut;
+TH1D *h_PV0Min_CutEffect;
 
-TH1D *h_PsumScSmMin_All;
-TH1D *h_PsumScSmMin_AllBut;
-TH1D *h_PsumScSmMin_CutEffect;
+TH1D *h_PV0ScSmMin_All;
+TH1D *h_PV0ScSmMin_AllBut;
+TH1D *h_PV0ScSmMin_CutEffect;
 
-TH1D *h_PsumMax_All;
-TH1D *h_PsumMax_AllBut;
-TH1D *h_PsumMax_CutEffect;
+TH1D *h_PSumMin_All;
+TH1D *h_PSumMin_AllBut;
+TH1D *h_PSumMin_CutEffect;
 
-TH1D *h_PsumScSmMax_All;
-TH1D *h_PsumScSmMax_AllBut;
-TH1D *h_PsumScSmMax_CutEffect;
+TH1D *h_PSumScSmMin_All;
+TH1D *h_PSumScSmMin_AllBut;
+TH1D *h_PSumScSmMin_CutEffect;
+
+
+TH1D *h_PV0Max_All;
+TH1D *h_PV0Max_AllBut;
+TH1D *h_PV0Max_CutEffect;
+
+TH1D *h_PV0ScSmMax_All;
+TH1D *h_PV0ScSmMax_AllBut;
+TH1D *h_PV0ScSmMax_CutEffect;
 
 TH2D *h_cl_trk_dT_All;
 TH2D *h_cl_trk_dT_AllBut;
@@ -567,12 +587,12 @@ TH1D *h_Minv_d0ep_Final1;
 
 TH1D *h_Pem_BigD0_1;
 TH1D *h_Pep_BigD0_1;
-TH1D *h_PSum_BigD0_1;
+TH1D *h_PV0_BigD0_1;
 TH1D *h_Minv_BidD0_1;
 
 TH1D *h_Pem_BigD0_2;
 TH1D *h_Pep_BigD0_2;
-TH1D *h_PSum_BigD0_2;
+TH1D *h_PV0_BigD0_2;
 
 
 // =============== Histograms of MC studies ======================
@@ -581,14 +601,14 @@ TH2D *h_dP_P_ep_NoL1_1;
 TH2D *h_dP_P_em_WithL1_1;
 TH2D *h_dP_P_em_NoL1_1;
 
-TH2D *h_PSum_RecMC_WithL1_1;
-TH2D *h_PSum_RecMC_NoL1_1;
+TH2D *h_PV0_RecMC_WithL1_1;
+TH2D *h_PV0_RecMC_NoL1_1;
 
 
 // ================ Rad Fraction related histograms ==============
-TH2D *h_Rad_MinvPSum1_[nfRadMassBins];
-TH2D *h_Rad_MinvPSum2_[nfRadMassBins];
-TH2D *h_Rad_MinvPSumTrue_[nfRadMassBins];
+TH2D *h_Rad_MinvPV01_[nfRadMassBins];
+TH2D *h_Rad_MinvPV02_[nfRadMassBins];
+TH2D *h_Rad_MinvPV0True_[nfRadMassBins];
 
 TH2D *h_dP_PTrue_em1;
 TH2D *h_dP_PTrue_em2;
@@ -781,14 +801,14 @@ bool IsTrkClusterdTMatch(GblTrack*, EcalCluster*);
 
 
 // ========= ============================================================= ============
-// ========= Psum cut ============
+// ========= PV0 cut ============
 // ========= ============================================================= ============
-bool IsPsumMaxCut(double);
+bool IsPV0MaxCut(double);
 
 // ========= ============================================================= ============
-// ========= Psum cut ============
+// ========= PV0 cut ============
 // ========= ============================================================= ============
-bool IsPsumMinCut(double);
+bool IsPV0MinCut(double);
 
 
 // ========= ============================================================= ============

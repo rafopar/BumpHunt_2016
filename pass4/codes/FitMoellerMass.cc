@@ -30,6 +30,7 @@ void DrawMoellerFiducial();
 void DrawMoellerFiducial(std::string);
 void DrawPSumDeltatCuts(TFile *, std::string);
 void DrawdXCuts(TFile *, std::string);
+void OutlineECalEdges();
 //void FitMass(TFile *, std::string);
 
 int main(int argc, char** argv) {
@@ -209,7 +210,7 @@ int main(int argc, char** argv) {
      */
     //c1->SetLogz();
 
-    /*
+    
     TH2D *h_tr_yxc_1 = (TH2D*) file_in->Get("h_tr_yxc_3");
     h_tr_yxc_1->SetTitle("; X_{tr} [mm]; Y_{tr} [mm]");
     h_tr_yxc_1->SetAxisRange(-160., -30., "X");
@@ -220,6 +221,7 @@ int main(int argc, char** argv) {
     h_tr_yxc_1->Draw("colz");
     //DrawMoellerFiducial();
     DrawMoellerFiducial(dataSet.c_str());
+    
     c1->Print(Form("Figs/tr_yxc_1_%s.eps", dataSet.c_str()));
     c1->Print(Form("Figs/tr_yxc_1_%s.pdf", dataSet.c_str()));
     c1->Print(Form("Figs/tr_yxc_1_%s.png", dataSet.c_str()));
@@ -237,14 +239,17 @@ int main(int argc, char** argv) {
     c1->Print(Form("Figs/cl_yxc_1_%s.png", dataSet.c_str()));
 
     c1->SetLogz(0);
+    h_cl_yxc_1->SetStats(0);
+    h_tr_yxc_1->SetStats(0);
     h_cl_yxc_1->Draw("");
     h_tr_yxc_1->Draw("Same");
     //DrawMoellerFiducial();
     DrawMoellerFiducial(dataSet.c_str());
+    OutlineECalEdges();
     c1->Print(Form("Figs/ClTrk_yxc1_%s.eps", dataSet.c_str()));
     c1->Print(Form("Figs/ClTrk_yxc1_%s.pdf", dataSet.c_str()));
     c1->Print(Form("Figs/ClTrk_yxc1_%s.png", dataSet.c_str()));
-     */
+    
 
     DrawPSumDeltatCuts(file_in, dataSet.c_str());
     DrawdXCuts(file_in, dataSet.c_str());
@@ -548,4 +553,27 @@ void DrawdXCuts(TFile *file_in, std::string dataSet) {
     delete c1;
     delete f_Gaus;
     delete line1;
+}
+
+
+void OutlineECalEdges(){
+    const double y1stRow = 21.5;
+    const double y2ndRow = 34.5;
+    const double xHoleNeg = -93.5;
+    const double histNegLim = -160.;
+    const double histPosLim = -30.;
+    
+    TLine *line1 = new TLine();
+    line1->SetLineColor(6);
+    line1->SetLineStyle(9);
+    line1->SetLineWidth(3);
+    // ============ Top Haf ===================
+    line1->DrawLine(histNegLim, y1stRow, xHoleNeg, y1stRow);
+    line1->DrawLine(xHoleNeg, y1stRow, xHoleNeg, y2ndRow);
+    line1->DrawLine(xHoleNeg, y2ndRow, histPosLim, y2ndRow);
+
+    // ============ Bottom Haf ===================
+    line1->DrawLine(histNegLim, -y1stRow, xHoleNeg, -y1stRow);
+    line1->DrawLine(xHoleNeg, -y1stRow, xHoleNeg, -y2ndRow);
+    line1->DrawLine(xHoleNeg, -y2ndRow, histPosLim, -y2ndRow);
 }

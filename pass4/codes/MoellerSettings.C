@@ -176,7 +176,7 @@ bool TrackFiducial(double tr_x, double tr_y) {
 
     bool fiducial = false;
 
-    if (isData) {
+    if ( isData ) {
 
         if (tr_y > 0) {
             if (tr_y < 42. && tr_y < 13 - 0.26 * tr_x && tr_y > 18 - 0.08 * tr_x && ((tr_x > -125. && tr_x < -95.) || (tr_x > -85 && tr_x < -55.))) {
@@ -188,7 +188,7 @@ bool TrackFiducial(double tr_x, double tr_y) {
             }
         }
 
-    } else if (isMC) {
+    } else if ( isMC ) {
 
         if (tr_y > 0) {
 

@@ -34,7 +34,8 @@ void DrawFEEPlots() {
     lat1->SetTextFont(42);
 
     const double tr_xMaxFEE = 40.;
-    const double tr_xMinFEE = -120.;
+    const double tr_xMinFEE = -140.;
+    //const double tr_xMinFEE = -120.;
     
     TLine *line1 = new TLine();
     line1->SetLineColor(2);
@@ -147,6 +148,7 @@ void DrawFEEPlots() {
     h_Pem2_Top5hits_Data->Fit(f_Gaus, "MeV", "", 2.1, 2.5);
     double mean_Data_Top5hits = f_Gaus->GetParameter(1);
     double sigm_Data_Top5hits = f_Gaus->GetParameter(2);
+    double sigmErr_Data_Top5hits = f_Gaus->GetParError(2);
     //double scale_Data_Top5hits = Eb / mean_Data_Top5hits;
     double scale_Data_Top5hits = 1;
     lat1->DrawLatex(0.11, 0.89, Form("#mu = %1.3f GeV", mean_Data_Top5hits));
@@ -164,6 +166,7 @@ void DrawFEEPlots() {
     h_Pem2_Top6hits_Data->Fit(f_Gaus, "MeV", "", 2.1, 2.5);
     double mean_Data_Top6hits = f_Gaus->GetParameter(1);
     double sigm_Data_Top6hits = f_Gaus->GetParameter(2);
+    double sigmErr_Data_Top6hits = f_Gaus->GetParError(2);
     //double scale_Data_Top6hits = Eb / mean_Data_Top6hits;
     double scale_Data_Top6hits = 1;
     lat1->DrawLatex(0.11, 0.89, Form("#mu = %1.3f GeV", mean_Data_Top6hits));
@@ -181,6 +184,7 @@ void DrawFEEPlots() {
     h_Pem2_Bot5hits_Data->Fit(f_Gaus, "MeV", "", 2.1, 2.5);
     double mean_Data_Bot5hits = f_Gaus->GetParameter(1);
     double sigm_Data_Bot5hits = f_Gaus->GetParameter(2);
+    double sigmErr_Data_Bot5hits = f_Gaus->GetParError(2);
     //double scale_Data_Bot5hits = Eb / mean_Data_Bot5hits;
     double scale_Data_Bot5hits = 1;
     lat1->DrawLatex(0.11, 0.89, Form("#mu = %1.3f GeV", mean_Data_Bot5hits));
@@ -198,6 +202,7 @@ void DrawFEEPlots() {
     h_Pem2_Bot6hits_Data->Fit(f_Gaus, "MeV", "", 2.1, 2.5);
     double mean_Data_Bot6hits = f_Gaus->GetParameter(1);
     double sigm_Data_Bot6hits = f_Gaus->GetParameter(2);
+    double sigmErr_Data_Bot6hits = f_Gaus->GetParError(2);
     //double scale_Data_Bot6hits = Eb / mean_Data_Bot6hits;
     double scale_Data_Bot6hits = 1;
     lat1->DrawLatex(0.11, 0.89, Form("#mu = %1.3f GeV", mean_Data_Bot6hits));
@@ -218,6 +223,7 @@ void DrawFEEPlots() {
     h_Pem2_Top5hits_MC->Fit(f_Gaus, "MeV", "", 2.15, 2.55);
     double mean_MC_Top5hits = f_Gaus->GetParameter(1);
     double sigm_MC_Top5hits = f_Gaus->GetParameter(2);
+    double sigmErr_MC_Top5hits = f_Gaus->GetParError(2);
     //double scale_MC_Top5hits = scaleCorr*Eb / mean_MC_Top5hits;
     double scale_MC_Top5hits = 1;
     lat1->DrawLatex(0.11, 0.89, Form("#mu = %1.3f GeV", mean_MC_Top5hits));
@@ -235,6 +241,7 @@ void DrawFEEPlots() {
     h_Pem2_Top6hits_MC->Fit(f_Gaus, "MeV", "", 2.15, 2.55);
     double mean_MC_Top6hits = f_Gaus->GetParameter(1);
     double sigm_MC_Top6hits = f_Gaus->GetParameter(2);
+    double sigmErr_MC_Top6hits = f_Gaus->GetParError(2);
     //double scale_MC_Top6hits = scaleCorr*Eb / mean_MC_Top6hits;
     double scale_MC_Top6hits = 1;
     lat1->DrawLatex(0.11, 0.89, Form("#mu = %1.3f GeV", mean_MC_Top6hits));
@@ -252,6 +259,7 @@ void DrawFEEPlots() {
     h_Pem2_Bot5hits_MC->Fit(f_Gaus, "MeV", "", 2.15, 2.55);
     double mean_MC_Bot5hits = f_Gaus->GetParameter(1);
     double sigm_MC_Bot5hits = f_Gaus->GetParameter(2);
+    double sigmErr_MC_Bot5hits = f_Gaus->GetParError(2);
     //double scale_MC_Bot5hits = scaleCorr*Eb / mean_MC_Bot5hits;
     double scale_MC_Bot5hits = 1;
     lat1->DrawLatex(0.11, 0.89, Form("#mu = %1.3f GeV", mean_MC_Bot5hits));
@@ -269,6 +277,7 @@ void DrawFEEPlots() {
     h_Pem2_Bot6hits_MC->Fit(f_Gaus, "MeV", "", 2.15, 2.55);
     double mean_MC_Bot6hits = f_Gaus->GetParameter(1);
     double sigm_MC_Bot6hits = f_Gaus->GetParameter(2);
+    double sigmErr_MC_Bot6hits = f_Gaus->GetParError(2);
     //double scale_MC_Bot6hits = scaleCorr*Eb / mean_MC_Bot6hits;
     double scale_MC_Bot6hits = 1;
     lat1->DrawLatex(0.11, 0.89, Form("#mu = %1.3f GeV", mean_MC_Bot6hits));
@@ -280,23 +289,31 @@ void DrawFEEPlots() {
 
 
     double smear_Top5hits = sqrt(TMath::Power(sigm_Data_Top5hits / mean_Data_Top5hits, 2) - TMath::Power(sigm_MC_Top5hits / mean_MC_Top5hits, 2));
+    double smearErr_Top5hits = sqrt(TMath::Power(sigmErr_Data_Top5hits / mean_Data_Top5hits, 2) + TMath::Power(sigmErr_MC_Top5hits / mean_MC_Top5hits, 2));
     double smear_Top6hits = sqrt(TMath::Power(sigm_Data_Top6hits / mean_Data_Top6hits, 2) - TMath::Power(sigm_MC_Top6hits / mean_MC_Top6hits, 2));
+    double smearErr_Top6hits = sqrt(TMath::Power(sigmErr_Data_Top6hits / mean_Data_Top6hits, 2) + TMath::Power(sigmErr_MC_Top6hits / mean_MC_Top6hits, 2));
     double smear_Bot5hits = sqrt(TMath::Power(sigm_Data_Bot5hits / mean_Data_Bot5hits, 2) - TMath::Power(sigm_MC_Bot5hits / mean_MC_Bot5hits, 2));
+    double smearErr_Bot5hits = sqrt(TMath::Power(sigmErr_Data_Bot5hits / mean_Data_Bot5hits, 2) + TMath::Power(sigmErr_MC_Bot5hits / mean_MC_Bot5hits, 2));
     double smear_Bot6hits = sqrt(TMath::Power(sigm_Data_Bot6hits / mean_Data_Bot6hits, 2) - TMath::Power(sigm_MC_Bot6hits / mean_MC_Bot6hits, 2));
+    double smearErr_Bot6hits = sqrt(TMath::Power(sigmErr_Data_Bot6hits / mean_Data_Bot6hits, 2) + TMath::Power(sigmErr_MC_Bot6hits / mean_MC_Bot6hits, 2));
 
     TFile *file_out = new TFile("MomSmearScale.root", "Recreate");
     TTree *tr1 = new TTree("tr1", "Momentum resolution Parameters");
     tr1->Branch("mean_Data_Top5hits", &mean_Data_Top5hits, "mean_Data_Top5hits/D");
     tr1->Branch("sigm_Data_Top5hits", &sigm_Data_Top5hits, "sigm_Data_Top5hits/D");
+    tr1->Branch("sigmErr_Data_Top5hits", &sigmErr_Data_Top5hits, "sigmErr_Data_Top5hits/D");
     tr1->Branch("scale_Data_Top5hits", &scale_Data_Top5hits, "scale_Data_Top5hits/D");
     tr1->Branch("mean_Data_Top6hits", &mean_Data_Top6hits, "mean_Data_Top6hits/D");
     tr1->Branch("sigm_Data_Top6hits", &sigm_Data_Top6hits, "sigm_Data_Top6hits/D");
+    tr1->Branch("sigmErr_Data_Top6hits", &sigmErr_Data_Top6hits, "sigmErr_Data_Top6hits/D");
     tr1->Branch("scale_Data_Top6hits", &scale_Data_Top6hits, "scale_Data_Top6hits/D");
     tr1->Branch("mean_Data_Bot5hits", &mean_Data_Bot5hits, "mean_Data_Bot5hits/D");
     tr1->Branch("sigm_Data_Bot5hits", &sigm_Data_Bot5hits, "sigm_Data_Bot5hits/D");
+    tr1->Branch("sigmErr_Data_Bot5hits", &sigmErr_Data_Bot5hits, "sigmErr_Data_Bot5hits/D");
     tr1->Branch("scale_Data_Bot5hits", &scale_Data_Bot5hits, "scale_Data_Bot5hits/D");
     tr1->Branch("mean_Data_Bot6hits", &mean_Data_Bot6hits, "mean_Data_Bot6hits/D");
     tr1->Branch("sigm_Data_Bot6hits", &sigm_Data_Bot6hits, "sigm_Data_Bot6hits/D");
+    tr1->Branch("sigmErr_Data_Bot6hits", &sigmErr_Data_Bot6hits, "sigmErr_Data_Bot6hits/D");
     tr1->Branch("scale_Data_Bot6hits", &scale_Data_Bot6hits, "scale_Data_Bot6hits/D");
 
     tr1->Branch("mean_MC_Top5hits", &mean_MC_Top5hits, "mean_MC_Top5hits/D");
@@ -313,9 +330,13 @@ void DrawFEEPlots() {
     tr1->Branch("scale_MC_Bot6hits", &scale_MC_Bot6hits, "scale_MC_Bot6hits/D");
 
     tr1->Branch("smear_Top5hits", &smear_Top5hits, "smear_Top5hits/D");
+    tr1->Branch("smearErr_Top5hits", &smearErr_Top5hits, "smearErr_Top5hits/D");
     tr1->Branch("smear_Top6hits", &smear_Top6hits, "smear_Top6hits/D");
+    tr1->Branch("smearErr_Top6hits", &smearErr_Top6hits, "smearErr_Top6hits/D");
     tr1->Branch("smear_Bot5hits", &smear_Bot5hits, "smear_Bot5hits/D");
+    tr1->Branch("smearErr_Bot5hits", &smearErr_Bot5hits, "smearErr_Bot5hits/D");
     tr1->Branch("smear_Bot6hits", &smear_Bot6hits, "smear_Bot6hits/D");
+    tr1->Branch("smearErr_Bot6hits", &smearErr_Bot6hits, "smearErr_Bot6hits/D");
 
     tr1->Fill();
     tr1->Write();

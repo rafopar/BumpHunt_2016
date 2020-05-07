@@ -47,10 +47,10 @@ void InitVariables(std::string dataSet) {
     m_v_ee[2] = {};
     m_v_ee[3] = {};
 
-    m_v_PSum[0] = {};
-    m_v_PSum[1] = {};
-    m_v_PSum[2] = {};
-    m_v_PSum[3] = {};
+    m_v_PV0[0] = {};
+    m_v_PV0[1] = {};
+    m_v_PV0[2] = {};
+    m_v_PV0[3] = {};
 
     m_v_Minv_General[0] = {};
     m_v_Minv_General[1] = {};
@@ -62,25 +62,45 @@ void InitVariables(std::string dataSet) {
     m_v_MinvScSm_General[2] = {};
     m_v_MinvScSm_General[3] = {};
 
+    m_v_MinvScSmErrPos_General[0] = {};
+    m_v_MinvScSmErrPos_General[1] = {};
+    m_v_MinvScSmErrPos_General[2] = {};
+    m_v_MinvScSmErrPos_General[3] = {};
+
+    m_v_MinvScSmErrNeg_General[0] = {};
+    m_v_MinvScSmErrNeg_General[1] = {};
+    m_v_MinvScSmErrNeg_General[2] = {};
+    m_v_MinvScSmErrNeg_General[3] = {};
+
     m_v_MinvTrue_General[0] = {};
     m_v_MinvTrue_General[1] = {};
     m_v_MinvTrue_General[2] = {};
     m_v_MinvTrue_General[3] = {};
 
-    m_v_PSum_General[0] = {};
-    m_v_PSum_General[1] = {};
-    m_v_PSum_General[2] = {};
-    m_v_PSum_General[3] = {};
+    m_v_PV0_General[0] = {};
+    m_v_PV0_General[1] = {};
+    m_v_PV0_General[2] = {};
+    m_v_PV0_General[3] = {};
 
-    m_v_PSumScSm_General[0] = {};
-    m_v_PSumScSm_General[1] = {};
-    m_v_PSumScSm_General[2] = {};
-    m_v_PSumScSm_General[3] = {};
+    m_v_PV0ScSm_General[0] = {};
+    m_v_PV0ScSm_General[1] = {};
+    m_v_PV0ScSm_General[2] = {};
+    m_v_PV0ScSm_General[3] = {};
+
+    m_v_ep_General[0] = {};
+    m_v_ep_General[1] = {};
+    m_v_ep_General[2] = {};
+    m_v_ep_General[3] = {};
+
+    m_v_em_General[0] = {};
+    m_v_em_General[1] = {};
+    m_v_em_General[2] = {};
+    m_v_em_General[3] = {};
 
     // ========== Initialize the vector of CutKeys
     v_CutsKeys = {};
 
-    // ======= We want to study PSum distributions for different Minv ranges, below are defined ranges for these bins
+    // ======= We want to study PV0 distributions for different Minv ranges, below are defined ranges for these bins
     double MinvBins[nMinvBins + 1] = {0., 0.02, 0.04, 0.06, 0.08, 0.1, 0.12, 0.14, 0.16, 0.18, 0.2, 0.22, 0.24};
     h_MinvBins1 = new TH1D("h_MinvBins1", "", nMinvBins, MinvBins);
 
@@ -183,8 +203,8 @@ void InitVariables(std::string dataSet) {
 
                 //inpFileName = Form("../Data/Ap_%dMeV.root", ApMass);
                 //inpFileName = Form("../Data/AP_TargNominal_%d_MeV.root", ApMass);
-                inpFileName = Form("../Data/AP_TargM0p5mm_%d_MeV.root", ApMass);
-                //inpFileName = Form("../Data/AP_TargP0p5mm_%d_MeV.root", ApMass);
+                //inpFileName = Form("../Data/AP_TargM0p5mm_%d_MeV.root", ApMass);
+                inpFileName = Form("../Data/AP_TargP0p5mm_%d_MeV.root", ApMass);
                 //inpFileName = Form("../Data/Ap_%dMeV_Dec11_2019.root", ApMass);
                 outFileName = Form("EventSelection_Ap_%dMeV.root", ApMass);
 
@@ -319,15 +339,20 @@ void InitVariables(std::string dataSet) {
         Pem_MaxTight = Pem_MaxTight_Data;
 
         Pem_MaxCut = Pem_MaxCut_Data;
-        PsumCutMax = PsumCutMax_Data;
-        PsumCutMin = PsumCutMin_Data;
+        PV0CutMax = PV0CutMax_Data;
+        PV0CutMin = PV0CutMin_Data;
         d0_cut = d0_cut_Data;
         largeD0Cut = largeD0Cut_Data;
 
+        // ================== Bot cluster time cut was loosened by 2 ns in each side
+        //        f_clTBotUpLim->SetParameters(60.5, 3.40282, -1.00306);
+        //        f_clTBotLowLim->SetParameters(43.51, 7.55268, -1.89745);
+
         f_clTBotUpLim->SetParameters(58.5, 3.40282, -1.00306);
         f_clTBotLowLim->SetParameters(45.51, 7.55268, -1.89745);
-        f_clTTopUpLim->SetParameters(58.4842, 6.33371, -3.54136);
-        f_clTTopLowLim->SetParameters(49.9385, 1.38759, 0.0484333);
+
+        //        f_clTTopUpLim->SetParameters(58.4842, 6.33371, -3.54136);
+        //        f_clTTopLowLim->SetParameters(49.9385, 1.38759, 0.0484333);
 
         f_dXTopWithL6Pos_TightUpperLim->SetParameters(-5.98409, 26.061, -11.688);
         f_dXTopWithL6Pos_TightLowerLim->SetParameters(-13.1351, 13.1293, -2.22706);
@@ -428,13 +453,17 @@ void InitVariables(std::string dataSet) {
         Pem_MaxTight = Pem_MaxTight_Data;
 
         Pem_MaxCut = Pem_MaxCut_MC;
-        PsumCutMax = PsumCutMax_MC;
-        PsumCutMin = PsumCutMin_MC;
+        PV0CutMax = PV0CutMax_MC;
+        PV0CutMin = PV0CutMin_MC;
         d0_cut = d0_cut_MC;
         largeD0Cut = largeD0Cut_MC;
 
+//        f_clTBotUpLim->SetParameters(50., 0., 0.);
+//        f_clTBotLowLim->SetParameters(36, 0., 0.);
+
         f_clTBotUpLim->SetParameters(48., 0., 0.);
         f_clTBotLowLim->SetParameters(38, 0., 0.);
+
         f_clTTopUpLim->SetParameters(60., 0., 0.);
         f_clTTopLowLim->SetParameters(30., 0., 0.);
 
@@ -527,16 +556,21 @@ void InitVariables(std::string dataSet) {
 
     for (int ii = 0; ii < TMath::Power(2, NCutInQuestion); ii++) {
         m_h_Minv[ii] = new TH1D(Form("h_Minv_Final_%d", ii), "", 6000, 0., 0.3);
-        m_h_Psum[ii] = new TH1D(Form("h_PSum_Final_%d", ii), "", 600, 0.7, 1.2 * Eb);
+        m_h_PV0[ii] = new TH1D(Form("h_PV0_Final_%d", ii), "", 600, 0.7, 1.2 * Eb);
 
         m_h_Minv_General[ii] = new TH1D(Form("h_Minv_General_Final_%d", ii), "", 6000, 0., 0.3);
         m_h_MinvScSm_General[ii] = new TH1D(Form("h_MinvScSm_General_Final_%d", ii), "", 6000, 0., 0.3);
-        m_h_Psum_General[ii] = new TH1D(Form("h_PSum_General_Final_%d", ii), "", 600, 0.7, 1.2 * Eb);
+        m_h_PV0_General[ii] = new TH1D(Form("h_PV0_General_Final_%d", ii), "", 600, 0.7, 1.2 * Eb);
         m_h_Minv_GeneralLargeBins[ii] = new TH1D(Form("h_Minv_GeneralLargeBins_Final_%d", ii), "", 400, 0., 0.25);
         m_h_MinvTrue_GeneralLargeBins[ii] = new TH1D(Form("h_MinvTrue_GeneralLargeBins_Final_%d", ii), "", 400, 0., 0.25);
-        m_h_Psum_GeneralLargeBins[ii] = new TH1D(Form("h_Psum_GeneralLargeBins_Final_%d", ii), "", 40, 1.6, 1.2 * Eb);
-        m_h_PsumScSm_GeneralLargeBins[ii] = new TH1D(Form("h_PsumScSm_GeneralLargeBins_Final_%d", ii), "", 40, 1.6, 1.2 * Eb);
+        m_h_PV0_GeneralLargeBins[ii] = new TH1D(Form("h_PV0_GeneralLargeBins_Final_%d", ii), "", 40, 1.6, 1.2 * Eb);
+        m_h_PV0ScSm_GeneralLargeBins[ii] = new TH1D(Form("h_PV0ScSm_GeneralLargeBins_Final_%d", ii), "", 40, 1.6, 1.2 * Eb);
         m_h_MinvScSm_GeneralLargeBins[ii] = new TH1D(Form("h_MinvScSm_GeneralLargeBins_Final_%d", ii), "", 400, 0., 0.25);
+        m_h_MinvScSmErrPos_GeneralLargeBins[ii] = new TH1D(Form("h_MinvScSmErrPos_GeneralLargeBins_Final_%d", ii), "", 400, 0., 0.25);
+        m_h_MinvScSmErrNeg_GeneralLargeBins[ii] = new TH1D(Form("h_MinvScSmErrNeg_GeneralLargeBins_Final_%d", ii), "", 400, 0., 0.25);
+
+        m_h_unique_ep_General[ii] = new TH2D(Form("h_unique_ep_General_%d", ii), "", 6, -0.5, 5.5, 6, -0.5, 5.5);
+        m_h_unique_em_General[ii] = new TH2D(Form("h_unique_em_General_%d", ii), "", 6, -0.5, 5.5, 6, -0.5, 5.5);
     }
 
     if (isEventSelection) {
@@ -571,8 +605,8 @@ void ResetV0Flags() {
     IsPem = false;
     IsD0ep = false;
     IsD0em = false;
-    IsPsumMax = false;
-    IsPsumMin = false;
+    IsPV0Max = false;
+    IsPV0Min = false;
     isLarged0ep = false;
 
     isRadAndRecoil = false;
@@ -665,23 +699,23 @@ bool CheckAllOtherCuts(std::string astr) {
     //===============================
 
     if (astr.compare("cldT") == 0) {
-        Stat = IsemClTrkdT && IsepClTrkdT && IsemTrkClMatch && IsepTrkClMatch && IsPem && IsD0ep && IsPsumMin && IsPsumMax;
+        Stat = IsemClTrkdT && IsepClTrkdT && IsemTrkClMatch && IsepTrkClMatch && IsPem && IsD0ep && IsPV0Min && IsPV0Max;
     } else if (astr.compare("emClTrkdT") == 0) {
-        Stat = IscldT && IsepClTrkdT && IsemTrkClMatch && IsepTrkClMatch && IsD0ep && IsPsumMin && IsPsumMax;
+        Stat = IscldT && IsepClTrkdT && IsemTrkClMatch && IsepTrkClMatch && IsD0ep && IsPV0Min && IsPV0Max;
     } else if (astr.compare("epClTrkdT") == 0) {
-        Stat = IscldT && IsemClTrkdT && IsemTrkClMatch && IsepTrkClMatch && IsD0ep && IsPsumMin && IsPsumMax;
+        Stat = IscldT && IsemClTrkdT && IsemTrkClMatch && IsepTrkClMatch && IsD0ep && IsPV0Min && IsPV0Max;
     } else if (astr.compare("emClTrkMatch") == 0) {
-        Stat = IscldT && IsemClTrkdT && IsepClTrkdT && IsepTrkClMatch && IsD0ep && IsPsumMin && IsPsumMax;
+        Stat = IscldT && IsemClTrkdT && IsepClTrkdT && IsepTrkClMatch && IsD0ep && IsPV0Min && IsPV0Max;
     } else if (astr.compare("epClTrkMatch") == 0) {
-        Stat = IscldT && IsemClTrkdT && IsepClTrkdT && IsemTrkClMatch && IsD0ep && IsPsumMin && IsPsumMax;
+        Stat = IscldT && IsemClTrkdT && IsepClTrkdT && IsemTrkClMatch && IsD0ep && IsPV0Min && IsPV0Max;
     } else if (astr.compare("Pem") == 0) {
-        Stat = IscldT && IsemClTrkdT && IsepClTrkdT && IsemTrkClMatch && IsepTrkClMatch && IsD0ep && IsPsumMin && IsPsumMax;
+        Stat = IscldT && IsemClTrkdT && IsepClTrkdT && IsemTrkClMatch && IsepTrkClMatch && IsD0ep && IsPV0Min && IsPV0Max;
     } else if (astr.compare("d0ep") == 0) {
-        Stat = IscldT && IsemClTrkdT && IsepClTrkdT && IsemTrkClMatch && IsepTrkClMatch && IsPem && IsPsumMin && IsPsumMax;
-    } else if (astr.compare("PsumMax") == 0) {
-        Stat = IscldT && IsemClTrkdT && IsepClTrkdT && IsemTrkClMatch && IsepTrkClMatch && IsPem && IsD0ep && IsPsumMin;
-    } else if (astr.compare("PsumMin") == 0) {
-        Stat = IscldT && IsemClTrkdT && IsepClTrkdT && IsemTrkClMatch && IsepTrkClMatch && IsPem && IsD0ep && IsPsumMax;
+        Stat = IscldT && IsemClTrkdT && IsepClTrkdT && IsemTrkClMatch && IsepTrkClMatch && IsPem && IsPV0Min && IsPV0Max;
+    } else if (astr.compare("PV0Max") == 0) {
+        Stat = IscldT && IsemClTrkdT && IsepClTrkdT && IsemTrkClMatch && IsepTrkClMatch && IsPem && IsD0ep && IsPV0Min;
+    } else if (astr.compare("PV0Min") == 0) {
+        Stat = IscldT && IsemClTrkdT && IsepClTrkdT && IsemTrkClMatch && IsepTrkClMatch && IsPem && IsD0ep && IsPV0Max;
     } else {
         cout << "Wrong Argument is provided in the CheckTighCuts function.  Your argument is " << astr.c_str() << endl;
         cout << " The list of possible arguments are" << endl;
@@ -692,8 +726,8 @@ bool CheckAllOtherCuts(std::string astr) {
         cout << "\"epClTrkMatch\"     Applies cuts to all other variables except the trk-cluster Matching cut for e+" << endl;
         cout << "\"Pem\"              Applies cuts to all other variables except the Electron momentum upper cut" << endl;
         cout << "\"d0ep\"             Applies cuts to all other variables except the d0 of e+ track" << endl;
-        cout << "\"PsumMax\"             Applies cuts to all other variables except Psum max cut" << endl;
-        cout << "\"PsumMin\"             Applies cuts to all other variables except Psum min cut" << endl;
+        cout << "\"PV0Max\"             Applies cuts to all other variables except PV0 max cut" << endl;
+        cout << "\"PV0Min\"             Applies cuts to all other variables except PV0 min cut" << endl;
         cout << "Exiting" << endl;
         exit(1);
     }
@@ -1066,13 +1100,13 @@ void FillLargeD0Hists(double mV0, double Pem, double Pep) {
     if (isLarged0ep && IscldT && IsemClTrkdT && IsepClTrkdT && IsemTrkClMatch && IsepTrkClMatch) {
         h_Pem_BigD0_1->Fill(Pem);
         h_Pep_BigD0_1->Fill(Pep);
-        h_PSum_BigD0_1->Fill(Pem + Pep);
+        h_PV0_BigD0_1->Fill(Pem + Pep);
         h_Minv_BidD0_1->Fill(mV0);
 
         if (mV0 > 0.05) {
             h_Pem_BigD0_2->Fill(Pem);
             h_Pep_BigD0_2->Fill(Pep);
-            h_PSum_BigD0_2->Fill(Pem + Pep);
+            h_PV0_BigD0_2->Fill(Pem + Pep);
         }
 
     }
@@ -1112,12 +1146,12 @@ bool IsEmMaxMomCut(double P) {
     }
 }
 
-bool IsPsumMaxCut(double P) {
-    return (P < PsumCutMax);
+bool IsPV0MaxCut(double P) {
+    return (P < PV0CutMax);
 }
 
-bool IsPsumMinCut(double P) {
-    return (P > PsumCutMin);
+bool IsPV0MinCut(double P) {
+    return (P > PV0CutMin);
 }
 
 bool IsD0Cut(double d0) {
@@ -1617,9 +1651,9 @@ void FillMCHists(HpsEvent *ev, HpsParticle *em, HpsParticle *ep) {
         }
 
         if (epHasL1) {
-            h_PSum_RecMC_WithL1_1->Fill(Pem_MC + Pep_MC, Pem_Rec + Pep_Rec);
+            h_PV0_RecMC_WithL1_1->Fill(Pem_MC + Pep_MC, Pem_Rec + Pep_Rec);
         } else {
-            h_PSum_RecMC_NoL1_1->Fill(Pem_MC + Pep_MC, Pem_Rec + Pep_Rec);
+            h_PV0_RecMC_NoL1_1->Fill(Pem_MC + Pep_MC, Pem_Rec + Pep_Rec);
         }
 
     }
@@ -1716,16 +1750,16 @@ void FillfRadHists(HpsEvent *ev, HpsParticle *v0) {
 
                 for (int imass = 0; imass < nfRadMassBins; imass++) {
                     if (TMath::Abs(m_gg - fRadMassCenters[imass]) < TMath::Min(0.01, 2000. * massHistBinWidth / MassFunc[imass])) {
-                        h_Rad_MinvPSum1_[imass]->Fill(GetMagnitude(v0->getMomentum()), m_v0);
-                        h_Rad_MinvPSumTrue_[imass]->Fill(GetMagnitude(mcpart->getMomentum()), m_gg);
+                        h_Rad_MinvPV01_[imass]->Fill(GetMagnitude(v0->getMomentum()), m_v0);
+                        h_Rad_MinvPV0True_[imass]->Fill(GetMagnitude(mcpart->getMomentum()), m_gg);
 
                         if (true_em_match)
-                            h_Rad_MinvPSum2_[imass]->Fill(GetMagnitude(v0->getMomentum()), m_v0);
+                            h_Rad_MinvPV02_[imass]->Fill(GetMagnitude(v0->getMomentum()), m_v0);
                     }
                 }
 
 
-                if (true_em_match && IsPsumMin) {
+                if (true_em_match && IsPV0Min) {
                     h_Memep1->Fill(m_v0);
                     h_Memep_True1->Fill(m_gg);
                     h_Memep_VarBins1->Fill(m_v0);
@@ -1752,7 +1786,7 @@ void FillfRadHists(HpsEvent *ev, HpsParticle *v0) {
 
     } else if (isTri || isWab) {
 
-        if (IsPsumMin) {
+        if (IsPV0Min) {
             h_Memep1->Fill(m_v0);
             h_Memep_VarBins1->Fill(m_v0);
         }
@@ -1937,21 +1971,29 @@ void InitGeneralHistograms() {
     h_clDt_AllBut = new TH1D("h_clDt_AllBut", "", 70, -3., 3.);
     h_clDt_CutEffect = new TH1D("h_clDt_CutEffect", "", 70, -3., 3.);
 
-    h_PsumMax_All = new TH1D("h_PsumMax_All", "", 70, 0.7, 1.2 * Eb);
-    h_PsumMax_AllBut = new TH1D("h_PsumMax_AllBut", "", 70, 0.7, 1.2 * Eb);
-    h_PsumMax_CutEffect = new TH1D("h_PsumMax_CutEffect", "", 70, 0.7, 1.2 * Eb);
+    h_PV0Max_All = new TH1D("h_PV0Max_All", "", 70, 0.7, 1.2 * Eb);
+    h_PV0Max_AllBut = new TH1D("h_PV0Max_AllBut", "", 70, 0.7, 1.2 * Eb);
+    h_PV0Max_CutEffect = new TH1D("h_PV0Max_CutEffect", "", 70, 0.7, 1.2 * Eb);
 
-    h_PsumScSmMax_All = new TH1D("h_PsumScSmMax_All", "", 70, 0.7, 1.2 * Eb);
-    h_PsumScSmMax_AllBut = new TH1D("h_PsumScSmMax_AllBut", "", 70, 0.7, 1.2 * Eb);
-    h_PsumScSmMax_CutEffect = new TH1D("h_PsumScSmMax_CutEffect", "", 70, 0.7, 1.2 * Eb);
+    h_PV0ScSmMax_All = new TH1D("h_PV0ScSmMax_All", "", 70, 0.7, 1.2 * Eb);
+    h_PV0ScSmMax_AllBut = new TH1D("h_PV0ScSmMax_AllBut", "", 70, 0.7, 1.2 * Eb);
+    h_PV0ScSmMax_CutEffect = new TH1D("h_PV0ScSmMax_CutEffect", "", 70, 0.7, 1.2 * Eb);
 
-    h_PsumMin_All = new TH1D("h_PsumMin_All", "", 70, 0.7, 1.2 * Eb);
-    h_PsumMin_AllBut = new TH1D("h_PsumMin_AllBut", "", 70, 0.7, 1.2 * Eb);
-    h_PsumMin_CutEffect = new TH1D("h_PsumMin_CutEffect", "", 70, 0.7, 1.2 * Eb);
+    h_PV0Min_All = new TH1D("h_PV0Min_All", "", 70, 0.7, 1.2 * Eb);
+    h_PV0Min_AllBut = new TH1D("h_PV0Min_AllBut", "", 70, 0.7, 1.2 * Eb);
+    h_PV0Min_CutEffect = new TH1D("h_PV0Min_CutEffect", "", 70, 0.7, 1.2 * Eb);
 
-    h_PsumScSmMin_All = new TH1D("h_PsumScSmMin_All", "", 70, 0.7, 1.2 * Eb);
-    h_PsumScSmMin_AllBut = new TH1D("h_PsumScSmMin_AllBut", "", 70, 0.7, 1.2 * Eb);
-    h_PsumScSmMin_CutEffect = new TH1D("h_PsumScSmMin_CutEffect", "", 70, 0.7, 1.2 * Eb);
+    h_PV0ScSmMin_All = new TH1D("h_PV0ScSmMin_All", "", 70, 0.7, 1.2 * Eb);
+    h_PV0ScSmMin_AllBut = new TH1D("h_PV0ScSmMin_AllBut", "", 70, 0.7, 1.2 * Eb);
+    h_PV0ScSmMin_CutEffect = new TH1D("h_PV0ScSmMin_CutEffect", "", 70, 0.7, 1.2 * Eb);
+
+    h_PSumMin_All = new TH1D("h_PSumMin_All", "", 70, 0.7, 1.2 * Eb);
+    h_PSumMin_AllBut = new TH1D("h_PSumMin_AllBut", "", 70, 0.7, 1.2 * Eb);
+    h_PSumMin_CutEffect = new TH1D("h_PSumMin_CutEffect", "", 70, 0.7, 1.2 * Eb);
+
+    h_PSumScSmMin_All = new TH1D("h_PSumScSmMin_All", "", 70, 0.7, 1.2 * Eb);
+    h_PSumScSmMin_AllBut = new TH1D("h_PSumScSmMin_AllBut", "", 70, 0.7, 1.2 * Eb);
+    h_PSumScSmMin_CutEffect = new TH1D("h_PSumScSmMin_CutEffect", "", 70, 0.7, 1.2 * Eb);
 
     h_cl_trk_dT_All = new TH2D("h_cl_trk_dT_All", "", 200, 0., 2.5, 200, -8., 8.);
     h_cl_trk_dT_AllBut = new TH2D("h_cl_trk_dT_AllBut", "", 200, 0., 2.5, 200, -8., 8.);
@@ -2046,8 +2088,8 @@ void InitGeneralHistograms() {
     h_Pem_BigD0_2 = new TH1D("h_Pem_BigD0_2", "", 70, 0., 2.2);
     h_Pep_BigD0_1 = new TH1D("h_Pep_BigD0_1", "", 70, 0., 2.2);
     h_Pep_BigD0_2 = new TH1D("h_Pep_BigD0_2", "", 70, 0., 2.2);
-    h_PSum_BigD0_1 = new TH1D("h_PSum_BigD0_1", "", 70, 0., 1.2 * Eb);
-    h_PSum_BigD0_2 = new TH1D("h_PSum_BigD0_2", "", 70, 0., 1.2 * Eb);
+    h_PV0_BigD0_1 = new TH1D("h_PV0_BigD0_1", "", 70, 0., 1.2 * Eb);
+    h_PV0_BigD0_2 = new TH1D("h_PV0_BigD0_2", "", 70, 0., 1.2 * Eb);
     h_Minv_BidD0_1 = new TH1D("h_Minv_BidD0_1", "", 70, 0., 0.24);
 
 
@@ -2056,14 +2098,14 @@ void InitGeneralHistograms() {
     h_dP_P_em_WithL1_1 = new TH2D("h_dP_P_em_WithL1_1", "", 100, 0., Eb, 100, -0.2, 0.2);
     h_dP_P_em_NoL1_1 = new TH2D("h_dP_P_em_NoL1_1", "", 100, 0., Eb, 100, -0.2, 0.2);
 
-    h_PSum_RecMC_WithL1_1 = new TH2D("h_PSum_RecMC_WithL1_1", "", 100, 0., 1.2 * Eb, 100, 0., 1.2 * Eb);
-    h_PSum_RecMC_NoL1_1 = new TH2D("h_PSum_RecMC_NoL1_1", "", 100, 0., 1.2 * Eb, 100, 0., 1.2 * Eb);
+    h_PV0_RecMC_WithL1_1 = new TH2D("h_PV0_RecMC_WithL1_1", "", 100, 0., 1.2 * Eb, 100, 0., 1.2 * Eb);
+    h_PV0_RecMC_NoL1_1 = new TH2D("h_PV0_RecMC_NoL1_1", "", 100, 0., 1.2 * Eb, 100, 0., 1.2 * Eb);
 
 
     for (int ii = 0; ii < nfRadMassBins; ii++) {
-        h_Rad_MinvPSum1_[ii] = new TH2D(Form("h_Rad_MinvPSum1_%d", ii), "", 200, 0.7, 1.2 * Eb, 200., 0., 0.3);
-        h_Rad_MinvPSum2_[ii] = new TH2D(Form("h_Rad_MinvPSum2_%d", ii), "", 200, 0.7, 1.2 * Eb, 200., 0., 0.3);
-        h_Rad_MinvPSumTrue_[ii] = new TH2D(Form("h_Rad_MinvPSumTrue_%d", ii), "", 200, 0.7, 1.2 * Eb, 200., 0., 0.3);
+        h_Rad_MinvPV01_[ii] = new TH2D(Form("h_Rad_MinvPV01_%d", ii), "", 200, 0.7, 1.2 * Eb, 200., 0., 0.3);
+        h_Rad_MinvPV02_[ii] = new TH2D(Form("h_Rad_MinvPV02_%d", ii), "", 200, 0.7, 1.2 * Eb, 200., 0., 0.3);
+        h_Rad_MinvPV0True_[ii] = new TH2D(Form("h_Rad_MinvPV0True_%d", ii), "", 200, 0.7, 1.2 * Eb, 200., 0., 0.3);
     }
 
     h_dP_PTrue_em1 = new TH2D("h_dP_PTrue_em1", "", 200, 0., 1.2 * Eb, 200, 0., 1.5);
@@ -2202,7 +2244,15 @@ vector<double> GetSmearKine(HpsParticle* v0) {
     double P_BotScaled = scaleMomBot*P_Bot;
 
     double smearTop = nTopHits == 5 ? smear_Top5hits : smear_Top6hits;
+    double smearErrTop = nTopHits == 5 ? smearErr_Top5hits : smearErr_Top6hits;
     double smearBot = nBotHits == 5 ? smear_Bot5hits : smear_Bot6hits;
+    double smearErrBot = nBotHits == 5 ? smearErr_Bot5hits : smearErr_Bot6hits;
+
+    double P_TopSmScErrPos = rnd1->Gaus(P_TopScaled, P_TopScaled * (smearTop + smearErrTop));
+    double P_BotSmScErrPos = rnd1->Gaus(P_BotScaled, P_BotScaled * (smearBot + smearErrBot));
+
+    double P_TopSmScErrNeg = rnd1->Gaus(P_TopScaled, P_TopScaled * (smearTop - smearErrTop));
+    double P_BotSmScErrNeg = rnd1->Gaus(P_BotScaled, P_BotScaled * (smearBot - smearErrBot));
 
     double P_TopSmSc = rnd1->Gaus(P_TopScaled, P_TopScaled * smearTop);
     double P_BotSmSc = rnd1->Gaus(P_BotScaled, P_BotScaled * smearBot);
@@ -2210,6 +2260,10 @@ vector<double> GetSmearKine(HpsParticle* v0) {
     if (isData) {
         P_TopSmSc = P_TopScaled;
         P_BotSmSc = P_BotScaled;
+        P_TopSmScErrPos = P_TopScaled;
+        P_BotSmScErrPos = P_BotScaled;
+        P_TopSmScErrNeg = P_TopScaled;
+        P_BotSmScErrNeg = P_BotScaled;
     }
 
     double P_emScSm = top->getCharge() < 0 ? P_TopSmSc : P_BotSmSc;
@@ -2220,9 +2274,15 @@ vector<double> GetSmearKine(HpsParticle* v0) {
     double MinvScSmfactor = sqrt((P_TopSmSc / P_Top)*(P_BotSmSc / P_Bot));
     double M_V0_ScSm = MinvScSmfactor*M_V0;
 
+    double MinvScSmErrPosfactor = sqrt((P_TopSmScErrPos / P_Top)*(P_BotSmScErrPos / P_Bot));
+    double M_V0_ScSmErrPos = MinvScSmErrPosfactor*M_V0;
+
+    double MinvScSmErrNegfactor = sqrt((P_TopSmScErrNeg / P_Top)*(P_BotSmScErrNeg / P_Bot));
+    double M_V0_ScSmErrNeg = MinvScSmErrNegfactor*M_V0;
+
     //cout<<"MV_0 = "<<M_V0<<"    M_V0_ScSm = "<<M_V0_ScSm<<endl;
 
-    vector<double> smearKine = {M_V0_ScSm, P_emScSm, P_epScSm, PV0ScSm};
+    vector<double> smearKine = {M_V0_ScSm, P_emScSm, P_epScSm, PV0ScSm, M_V0_ScSmErrPos, M_V0_ScSmErrNeg};
     return smearKine;
 }
 
@@ -2258,9 +2318,13 @@ void InitSmearPars() {
     trSmear->SetBranchAddress("scale_MC_Bot6hits", &scale_MC_Bot6hits);
 
     trSmear->SetBranchAddress("smear_Top5hits", &smear_Top5hits);
+    trSmear->SetBranchAddress("smearErr_Top5hits", &smearErr_Top5hits);
     trSmear->SetBranchAddress("smear_Top6hits", &smear_Top6hits);
+    trSmear->SetBranchAddress("smearErr_Top6hits", &smearErr_Top6hits);
     trSmear->SetBranchAddress("smear_Bot5hits", &smear_Bot5hits);
+    trSmear->SetBranchAddress("smearErr_Bot5hits", &smearErr_Bot5hits);
     trSmear->SetBranchAddress("smear_Bot6hits", &smear_Bot6hits);
+    trSmear->SetBranchAddress("smearErr_Bot6hits", &smearErr_Bot6hits);
 
     trSmear->GetEntry(0);
     file_smearPars->Close();
