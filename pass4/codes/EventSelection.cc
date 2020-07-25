@@ -446,7 +446,7 @@ int main(int argc, char** argv) {
             //cout<<part0->getCharge()<<endl;
 
 
-            if (IsParticleKilled(em) || IsParticleKilled(ep)) {
+            if (IsParticleKilled(em, "Up") || IsParticleKilled(ep, "Up")) {
                 continue;
             }
 
@@ -883,10 +883,10 @@ int main(int argc, char** argv) {
             // ====== Selecting Final V0 candidates
             // ===============================================================================================
 
-            IsPV0Max = IsPV0MaxCut(PV0);
-            IsPV0Min = IsPV0MinCut(PV0);
-            //            IsPV0Max = IsPV0MaxCut(PV0ScSm);
-            //            IsPV0Min = IsPV0MinCut(PV0ScSm);
+            //            IsPV0Max = IsPV0MaxCut(PV0);
+            //            IsPV0Min = IsPV0MinCut(PV0);
+            IsPV0Max = IsPV0MaxCut(PV0ScSm);
+            IsPV0Min = IsPV0MinCut(PV0ScSm);
             IscldT = IscldTCut(cl_em, cl_ep);
             IsemClTrkdT = IsTrkClusterdTMatch(trk_em, cl_em);
             IsepClTrkdT = IsTrkClusterdTMatch(trk_ep, cl_ep);
@@ -1112,6 +1112,7 @@ int main(int argc, char** argv) {
                 m_h_PV0ScSm_GeneralLargeBins[HistKey]->Fill(m_v_PV0ScSm_General[CurCutKey].at(iV0));
 
                 m_h_MinvScSm_GeneralLargeBins[HistKey]->Fill(m_v_MinvScSm_General[CurCutKey].at(iV0));
+                m_h_MinvScSm_GeneralVarBins[HistKey]->Fill(m_v_MinvScSm_General[CurCutKey].at(iV0));
                 m_h_MinvScSmErrPos_GeneralLargeBins[HistKey]->Fill(m_v_MinvScSmErrPos_General[CurCutKey].at(iV0));
                 m_h_MinvScSmErrNeg_GeneralLargeBins[HistKey]->Fill(m_v_MinvScSmErrNeg_General[CurCutKey].at(iV0));
 
@@ -1122,7 +1123,9 @@ int main(int argc, char** argv) {
 
                     if (m_v_MinvTrue_General[CurCutKey].size() > 0) {
 
+                        m_h_Minv_GeneralTrue[HistKey]->Fill(m_v_MinvTrue_General[CurCutKey].at(iV0));
                         m_h_MinvTrue_GeneralLargeBins[HistKey]->Fill(m_v_MinvTrue_General[CurCutKey].at(iV0));
+                        m_h_MinvTrue_GeneralVarBins[HistKey]->Fill(m_v_MinvTrue_General[CurCutKey].at(iV0));
                     }
                 }
             }

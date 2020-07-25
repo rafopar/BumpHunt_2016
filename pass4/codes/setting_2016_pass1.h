@@ -187,7 +187,8 @@ int MinvBin;
 const double tritrig_SigmaGen = 1.416e-3;
 const double NGen_tritrig = 985. * 50000.; /* 985 recon files, and each recon has 50K Gen events*/
 
-const double Rad_SigmaGen = 81.61e-6;
+//const double Rad_SigmaGen = 81.61e-6;  // Long time we were using this, till Tongtong found alpha_em was not correct
+const double Rad_SigmaGen = 66.36e-6;
 const double NGen_Rad = 9959 * 10000.;
 //const double NGen_Rad = 4989 * 10000.;
 
@@ -328,7 +329,10 @@ map<int, TH1D*> m_h_Minv_GeneralLargeBins;
 map<int, TH1D*> m_h_MinvScSmErrPos_GeneralLargeBins;
 map<int, TH1D*> m_h_MinvScSmErrNeg_GeneralLargeBins;
 map<int, TH1D*> m_h_MinvScSm_GeneralLargeBins;
+map<int, TH1D*> m_h_Minv_GeneralTrue;
 map<int, TH1D*> m_h_MinvTrue_GeneralLargeBins;
+map<int, TH1D*> m_h_MinvScSm_GeneralVarBins;
+map<int, TH1D*> m_h_MinvTrue_GeneralVarBins;
 map<int, TH1D*> m_h_PV0_GeneralLargeBins;
 map<int, TH1D*> m_h_PV0ScSm_GeneralLargeBins;
 map<int, TH2D*> m_h_unique_ep_General;
@@ -641,6 +645,8 @@ TH1D *h_E_P_ep_DeepFid1_[n_MomRange];
 // ====== Graph and hist for track killing =======
 // ====== ============================================================================ =======
 TGraphAsymmErrors *gr_TrkKiller;
+TH1D *h_TrkKillerErrUp;
+TH1D *h_TrkKillerErrLow;
 TH1D *h_TrkKiller;
 
 
@@ -923,7 +929,7 @@ void InitTrkKillingHist();
 // ===== tracks are killed, then v0 should be killed as well               ====
 // ===== ================================================================= ====
 
-bool IsParticleKilled(HpsParticle*);
+bool IsParticleKilled(HpsParticle* part, std::string category="Normal");
 
 // =======================================================
 // ===== Init smearing parameters

@@ -458,8 +458,8 @@ void InitVariables(std::string dataSet) {
         d0_cut = d0_cut_MC;
         largeD0Cut = largeD0Cut_MC;
 
-//        f_clTBotUpLim->SetParameters(50., 0., 0.);
-//        f_clTBotLowLim->SetParameters(36, 0., 0.);
+        //        f_clTBotUpLim->SetParameters(50., 0., 0.);
+        //        f_clTBotLowLim->SetParameters(36, 0., 0.);
 
         f_clTBotUpLim->SetParameters(48., 0., 0.);
         f_clTBotLowLim->SetParameters(38, 0., 0.);
@@ -554,6 +554,12 @@ void InitVariables(std::string dataSet) {
 
     // =================== Initialize map of histograms with differ Cut conditions
 
+    vector<double> v_massBins = GetMassBins();
+    int nMassBins = v_massBins.size() - 1;
+
+    double massBinEdges[nMassBins + 1];
+    std::copy(v_massBins.begin(), v_massBins.end(), massBinEdges);
+
     for (int ii = 0; ii < TMath::Power(2, NCutInQuestion); ii++) {
         m_h_Minv[ii] = new TH1D(Form("h_Minv_Final_%d", ii), "", 6000, 0., 0.3);
         m_h_PV0[ii] = new TH1D(Form("h_PV0_Final_%d", ii), "", 600, 0.7, 1.2 * Eb);
@@ -562,10 +568,13 @@ void InitVariables(std::string dataSet) {
         m_h_MinvScSm_General[ii] = new TH1D(Form("h_MinvScSm_General_Final_%d", ii), "", 6000, 0., 0.3);
         m_h_PV0_General[ii] = new TH1D(Form("h_PV0_General_Final_%d", ii), "", 600, 0.7, 1.2 * Eb);
         m_h_Minv_GeneralLargeBins[ii] = new TH1D(Form("h_Minv_GeneralLargeBins_Final_%d", ii), "", 400, 0., 0.25);
+        m_h_Minv_GeneralTrue[ii] = new TH1D(Form("h_Minv_GeneralTrue_Final_%d", ii), "", 6000, 0., 0.3);
         m_h_MinvTrue_GeneralLargeBins[ii] = new TH1D(Form("h_MinvTrue_GeneralLargeBins_Final_%d", ii), "", 400, 0., 0.25);
+        m_h_MinvTrue_GeneralVarBins[ii] = new TH1D(Form("h_MinvTrue_GeneralVarBins_Final_%d", ii), "", nMassBins, massBinEdges);
         m_h_PV0_GeneralLargeBins[ii] = new TH1D(Form("h_PV0_GeneralLargeBins_Final_%d", ii), "", 40, 1.6, 1.2 * Eb);
         m_h_PV0ScSm_GeneralLargeBins[ii] = new TH1D(Form("h_PV0ScSm_GeneralLargeBins_Final_%d", ii), "", 40, 1.6, 1.2 * Eb);
         m_h_MinvScSm_GeneralLargeBins[ii] = new TH1D(Form("h_MinvScSm_GeneralLargeBins_Final_%d", ii), "", 400, 0., 0.25);
+        m_h_MinvScSm_GeneralVarBins[ii] = new TH1D(Form("h_MinvScSm_GeneralVarBins_Final_%d", ii), "", nMassBins, massBinEdges);
         m_h_MinvScSmErrPos_GeneralLargeBins[ii] = new TH1D(Form("h_MinvScSmErrPos_GeneralLargeBins_Final_%d", ii), "", 400, 0., 0.25);
         m_h_MinvScSmErrNeg_GeneralLargeBins[ii] = new TH1D(Form("h_MinvScSmErrNeg_GeneralLargeBins_Final_%d", ii), "", 400, 0., 0.25);
 
@@ -1277,33 +1286,44 @@ vector<double> GetMassBins() {
 
     vector<double> massBins;
 
+    massBins.clear();
+    massBins.shrink_to_fit();
+    
     TF1 *f_Pol9 = new TF1("f_Pol9", "pol9", 0.02, 0.25);
 
     //======== These parameters are just empirical parameters obtained by fitting the Tri mass spectrum with pol9 function
-    double pars[10] = {-153346.6270154149387963116168975830078125, 11201974.94080074690282344818115234375, -304941970.057447373867034912109375,
-        4447333216.984340667724609375, -39577578066.1367340087890625, 226243975671.709014892578125, -837152757876.4150390625, 1941315061381.22021484375,
-        -2565233441882.16552734375, 1472607538595.3955078125};
+    //    double pars[10] = {-153346.6270154149387963116168975830078125, 11201974.94080074690282344818115234375, -304941970.057447373867034912109375,
+    //        4447333216.984340667724609375, -39577578066.1367340087890625, 226243975671.709014892578125, -837152757876.4150390625, 1941315061381.22021484375,
+    //        -2565233441882.16552734375, 1472607538595.3955078125};
+
+
+    double pars[10] = {-194877.58466409504762850701808929443359375, 12903977.6578630916774272918701171875, -340900471.3800990581512451171875,
+        4988889095.28035449981689453125, -45614945102.65331268310546875, 273204025354.11773681640625, -1077653478677.638671875, 2706431016485.642578125,
+        -3931051410781.3310546875, 2516841160832.2138671875};
+
     f_Pol9->SetParameters(pars);
 
     double xMax = 0.25;
-    double x0 = 0.032;
+    double x0 = 0.022;
+    double x1 = 0.08;
     //double cur_x = x0;
     double cur_x = 0;
-    const double bw = 0.25 / 200;
+    const double bw = 0.25 / 400;
     const double desiredCont = 4000.; // The number that we want eah bin of the histo to have
 
     massBins.push_back(cur_x);
     while (cur_x < xMax) {
 
-        double f = f_Pol9->Eval(cur_x);
+        double f = TMath::Max(1., f_Pol9->Eval(cur_x));
 
         double delta_x = 0.0005;
-        if (cur_x > x0) {
+        if (cur_x > x1) {
             delta_x = TMath::Min(0.01, desiredCont * bw / f);
         }
         if (delta_x < 0.0005) {
             delta_x = 0.0005;
         }
+        
 
         cur_x = cur_x + delta_x;
 
@@ -2162,6 +2182,8 @@ void InitTrkKillingHist() {
     //cout << "xMin is " << xMin << "    xMax is " << xMax << "    nBin is " << nPoints << endl;
 
     h_TrkKiller = new TH1D("h_TrkKiller", "", nPoints, xMin - bw / 2., xMax + bw / 2.);
+    h_TrkKillerErrUp = new TH1D("h_TrkKillerErrUp", "", nPoints, xMin - bw / 2., xMax + bw / 2.);
+    h_TrkKillerErrLow = new TH1D("h_TrkKillerErrLow", "", nPoints, xMin - bw / 2., xMax + bw / 2.);
 
     //cout<<"h_TrkKiller = "<<h_TrkKiller<<endl;
 
@@ -2170,15 +2192,34 @@ void InitTrkKillingHist() {
         gr_TrkKiller->GetPoint(ipoint, x, y);
 
         int ibin = h_TrkKiller->FindBin(x);
-        //cout << "ipoint = " << ipoint << "   x = " << x << "    y = " << y << "    ibin = " << ibin << endl;
+
+        double errUp = gr_TrkKiller->GetErrorYhigh(ipoint);
+        double errLow = gr_TrkKiller->GetErrorYlow(ipoint);
+
+        //cout << "ipoint = " << ipoint << "   x = " << x << "    y = " << y << "    ibin = " << ibin<<"  errUp = "<<errUp<<"   errLow = "<<errLow<< endl;
         h_TrkKiller->SetBinContent(ibin, y);
+        h_TrkKillerErrUp->SetBinContent(ibin, y + errUp);
+        h_TrkKillerErrLow->SetBinContent(ibin, y - errLow);
     }
 
     //fileTrkKiller->Close();
 
 }
 
-bool IsParticleKilled(HpsParticle * part) {
+bool IsParticleKilled(HpsParticle * part, std::string category) {
+
+    TH1D *h_TrkKillerHist;
+
+    if (category.compare("Normal") == 0) {
+        h_TrkKillerHist = h_TrkKiller;
+    } else if (category.compare("Up") == 0) {
+        h_TrkKillerHist = h_TrkKillerErrUp;
+    } else if (category.compare("Low") == 0) {
+        h_TrkKillerHist = h_TrkKillerErrLow;
+    } else {
+        cout << "Wrong argument is given to the IsParticleKilled function.  Exiting " << endl;
+        exit(1);
+    }
 
     if (!isMC) {
         return false;
@@ -2196,11 +2237,11 @@ bool IsParticleKilled(HpsParticle * part) {
         return false;
     } else if (nHits == 5) {
 
-        int ibin = h_TrkKiller->FindBin(slp);
+        int ibin = h_TrkKillerHist->FindBin(slp);
 
         //cout<<"xMin = "<<h_TrkKiller->GetXaxis()->GetXmin()<<"     xMax = "<<h_TrkKiller->GetXaxis()->GetXmax()<<endl;
 
-        double eff = 1 - h_TrkKiller->GetBinContent(ibin);
+        double eff = 1 - h_TrkKillerHist->GetBinContent(ibin);
 
         double randNumber = rnd1->Uniform(0., 1.);
 
