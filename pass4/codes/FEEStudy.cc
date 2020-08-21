@@ -349,9 +349,9 @@ int main(int argc, char** argv) {
                 continue;
             }
 
-            if (x_tr > -5.) {
-                continue;
-            }
+//            if (x_tr > -5.) {
+//                continue;
+//            }
 
             int tr_x_region = int(TMath::Abs((x_tr + 25.)) / 10.);
 
@@ -452,7 +452,7 @@ bool ECalFEECut(GblTrack* trk) {
     double y_tr = trk->getPositionAtEcal().at(1);
     double x_tr = trk->getPositionAtEcal().at(0);
 
-    //return x_tr > -120. && x_tr < 40.;
-    return x_tr > -140. && x_tr < 40.;
+    return x_tr > -120. && x_tr < 40.;
+    //return x_tr > -140. && x_tr < 40.;
     //return x_tr > -140. && x_tr < -120.;
 }

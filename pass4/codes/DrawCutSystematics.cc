@@ -17,8 +17,10 @@ const double tritrig_SigmaGen = 1.416e-3;
 const double tritrig_SigmError = 0.00431e-3;
 const double NGen_tritrig = 985. * 50000.; /* 200 recon files, and each recon has 50K Gen events*/
 
-const double Rad_SigmaGen = 81.e-6;
-const double Rad_SigmError = 0.834e-6;
+//const double Rad_SigmaGen = 81.e-6;
+//const double Rad_SigmError = 0.834e-6;
+const double Rad_SigmaGen = 66.36e-6;
+const double Rad_SigmError = 0.6678e-6;
 const double NGen_Rad = 9959 * 10000.;
 //const double NGen_Rad = 4989 * 10000.;
 

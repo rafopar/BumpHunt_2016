@@ -13,21 +13,25 @@ void DrawFEEPlots();
 
 const double Eb = 2.306;
 
+template <typename T> 
+void MakeHistStyle(T *hist);
+
 /*
  * 
  */
 void MassResolPlots() {
 
     DrawFEEPlots();
-
-
 }
 
 void DrawFEEPlots() {
 
-    TCanvas *c1 = new TCanvas("c1", "", 950, 950);
+    gStyle->SetOptStat(0);
+    TCanvas *c1 = new TCanvas("c1", "", 800, 800);
     c1->SetTopMargin(0.02);
     c1->SetRightMargin(0.02);
+    c1->SetLeftMargin(0.12);
+    c1->SetBottomMargin(0.12);
 
     TLatex *lat1 = new TLatex();
     lat1->SetNDC();
@@ -143,17 +147,21 @@ void DrawFEEPlots() {
     TH1D *h_Pem2_Top5hits_Data = (TH1D*) file_Data->Get("h_Pem2_Top5hits");
     h_Pem2_Top5hits_Data->SetTitle("; P [GeV]");
     h_Pem2_Top5hits_Data->SetAxisRange(1.7, 3.);
+    MakeHistStyle(h_Pem2_Top5hits_Data);
     h_Pem2_Top5hits_Data->Draw();
     f_Gaus->SetParameters(h_Pem2_Top5hits_Data->GetMaximum(), Eb, 0.14);
     h_Pem2_Top5hits_Data->Fit(f_Gaus, "MeV", "", 2.1, 2.5);
     double mean_Data_Top5hits = f_Gaus->GetParameter(1);
+    double meanErr_Data_Top5hits = f_Gaus->GetParError(1);
     double sigm_Data_Top5hits = f_Gaus->GetParameter(2);
     double sigmErr_Data_Top5hits = f_Gaus->GetParError(2);
     //double scale_Data_Top5hits = Eb / mean_Data_Top5hits;
     double scale_Data_Top5hits = 1;
-    lat1->DrawLatex(0.11, 0.89, Form("#mu = %1.3f GeV", mean_Data_Top5hits));
-    lat1->DrawLatex(0.11, 0.84, Form("#sigma = %1.4f GeV", sigm_Data_Top5hits));
-    lat1->DrawLatex(0.11, 0.79, Form("#chi^{2}/NDF = %1.2f", f_Gaus->GetChisquare() / f_Gaus->GetNDF()));
+    lat1->DrawLatex(0.13, 0.89, Form("#mu = %1.3f GeV", mean_Data_Top5hits));
+    lat1->DrawLatex(0.13, 0.84, Form("#sigma = %1.4f GeV", sigm_Data_Top5hits));
+    lat1->DrawLatex(0.13, 0.79, Form("#chi^{2}/NDF = %1.2f", f_Gaus->GetChisquare() / f_Gaus->GetNDF()));
+    lat1->DrawLatex(0.6, 0.89, "#it{HPS} internal");
+    lat1->DrawLatex(0.62, 0.7, "Data, Top, 5 hits");
     c1->Print("Figs/FEE_Top5hits_MomFit_Data.eps");
     c1->Print("Figs/FEE_Top5hits_MomFit_Data.pdf");
     c1->Print("Figs/FEE_Top5hits_MomFit_Data.png");
@@ -161,17 +169,21 @@ void DrawFEEPlots() {
     TH1D *h_Pem2_Top6hits_Data = (TH1D*) file_Data->Get("h_Pem2_Top6hits");
     h_Pem2_Top6hits_Data->SetTitle("; P [GeV]");
     h_Pem2_Top6hits_Data->SetAxisRange(1.7, 3.);
+    MakeHistStyle(h_Pem2_Top6hits_Data);
     h_Pem2_Top6hits_Data->Draw();
     f_Gaus->SetParameters(h_Pem2_Top6hits_Data->GetMaximum(), Eb, 0.14);
     h_Pem2_Top6hits_Data->Fit(f_Gaus, "MeV", "", 2.1, 2.5);
     double mean_Data_Top6hits = f_Gaus->GetParameter(1);
+    double meanErr_Data_Top6hits = f_Gaus->GetParError(1);
     double sigm_Data_Top6hits = f_Gaus->GetParameter(2);
     double sigmErr_Data_Top6hits = f_Gaus->GetParError(2);
     //double scale_Data_Top6hits = Eb / mean_Data_Top6hits;
     double scale_Data_Top6hits = 1;
-    lat1->DrawLatex(0.11, 0.89, Form("#mu = %1.3f GeV", mean_Data_Top6hits));
-    lat1->DrawLatex(0.11, 0.84, Form("#sigma = %1.4f GeV", sigm_Data_Top6hits));
-    lat1->DrawLatex(0.11, 0.79, Form("#chi^{2}/NDF = %1.2f", f_Gaus->GetChisquare() / f_Gaus->GetNDF()));
+    lat1->DrawLatex(0.13, 0.89, Form("#mu = %1.3f GeV", mean_Data_Top6hits));
+    lat1->DrawLatex(0.13, 0.84, Form("#sigma = %1.4f GeV", sigm_Data_Top6hits));
+    lat1->DrawLatex(0.13, 0.79, Form("#chi^{2}/NDF = %1.2f", f_Gaus->GetChisquare() / f_Gaus->GetNDF()));
+    lat1->DrawLatex(0.6, 0.89, "#it{HPS} internal");
+    lat1->DrawLatex(0.62, 0.7, "Data, Top, 6 hits");
     c1->Print("Figs/FEE_Top6hits_MomFit_Data.eps");
     c1->Print("Figs/FEE_Top6hits_MomFit_Data.pdf");
     c1->Print("Figs/FEE_Top6hits_MomFit_Data.png");
@@ -179,17 +191,21 @@ void DrawFEEPlots() {
     TH1D *h_Pem2_Bot5hits_Data = (TH1D*) file_Data->Get("h_Pem2_Bot5hits");
     h_Pem2_Bot5hits_Data->SetTitle("; P [GeV]");
     h_Pem2_Bot5hits_Data->SetAxisRange(1.7, 3.);
+    MakeHistStyle(h_Pem2_Bot5hits_Data);
     h_Pem2_Bot5hits_Data->Draw();
     f_Gaus->SetParameters(h_Pem2_Bot5hits_Data->GetMaximum(), Eb, 0.14);
     h_Pem2_Bot5hits_Data->Fit(f_Gaus, "MeV", "", 2.1, 2.5);
     double mean_Data_Bot5hits = f_Gaus->GetParameter(1);
+    double meanErr_Data_Bot5hits = f_Gaus->GetParError(1);
     double sigm_Data_Bot5hits = f_Gaus->GetParameter(2);
     double sigmErr_Data_Bot5hits = f_Gaus->GetParError(2);
     //double scale_Data_Bot5hits = Eb / mean_Data_Bot5hits;
     double scale_Data_Bot5hits = 1;
-    lat1->DrawLatex(0.11, 0.89, Form("#mu = %1.3f GeV", mean_Data_Bot5hits));
-    lat1->DrawLatex(0.11, 0.84, Form("#sigma = %1.4f GeV", sigm_Data_Bot5hits));
-    lat1->DrawLatex(0.11, 0.79, Form("#chi^{2}/NDF = %1.2f", f_Gaus->GetChisquare() / f_Gaus->GetNDF()));
+    lat1->DrawLatex(0.13, 0.89, Form("#mu = %1.3f GeV", mean_Data_Bot5hits));
+    lat1->DrawLatex(0.13, 0.84, Form("#sigma = %1.4f GeV", sigm_Data_Bot5hits));
+    lat1->DrawLatex(0.13, 0.79, Form("#chi^{2}/NDF = %1.2f", f_Gaus->GetChisquare() / f_Gaus->GetNDF()));
+    lat1->DrawLatex(0.6, 0.89, "#it{HPS} internal");
+    lat1->DrawLatex(0.62, 0.7, "Data, Bot., 5 hits");
     c1->Print("Figs/FEE_Bot5hits_MomFit_Data.eps");
     c1->Print("Figs/FEE_Bot5hits_MomFit_Data.pdf");
     c1->Print("Figs/FEE_Bot5hits_MomFit_Data.png");
@@ -197,17 +213,21 @@ void DrawFEEPlots() {
     TH1D *h_Pem2_Bot6hits_Data = (TH1D*) file_Data->Get("h_Pem2_Bot6hits");
     h_Pem2_Bot6hits_Data->SetTitle("; P [GeV]");
     h_Pem2_Bot6hits_Data->SetAxisRange(1.7, 3.);
+    MakeHistStyle(h_Pem2_Bot6hits_Data);
     h_Pem2_Bot6hits_Data->Draw();
     f_Gaus->SetParameters(h_Pem2_Bot6hits_Data->GetMaximum(), Eb, 0.14);
     h_Pem2_Bot6hits_Data->Fit(f_Gaus, "MeV", "", 2.1, 2.5);
     double mean_Data_Bot6hits = f_Gaus->GetParameter(1);
+    double meanErr_Data_Bot6hits = f_Gaus->GetParError(1);
     double sigm_Data_Bot6hits = f_Gaus->GetParameter(2);
     double sigmErr_Data_Bot6hits = f_Gaus->GetParError(2);
     //double scale_Data_Bot6hits = Eb / mean_Data_Bot6hits;
     double scale_Data_Bot6hits = 1;
-    lat1->DrawLatex(0.11, 0.89, Form("#mu = %1.3f GeV", mean_Data_Bot6hits));
-    lat1->DrawLatex(0.11, 0.84, Form("#sigma = %1.4f GeV", sigm_Data_Bot6hits));
-    lat1->DrawLatex(0.11, 0.79, Form("#chi^{2}/NDF = %1.2f", f_Gaus->GetChisquare() / f_Gaus->GetNDF()));
+    lat1->DrawLatex(0.13, 0.89, Form("#mu = %1.3f GeV", mean_Data_Bot6hits));
+    lat1->DrawLatex(0.13, 0.84, Form("#sigma = %1.4f GeV", sigm_Data_Bot6hits));
+    lat1->DrawLatex(0.13, 0.79, Form("#chi^{2}/NDF = %1.2f", f_Gaus->GetChisquare() / f_Gaus->GetNDF()));
+    lat1->DrawLatex(0.6, 0.89, "#it{HPS} internal");
+    lat1->DrawLatex(0.62, 0.7, "Data, Bot., 6 hits");
     c1->Print("Figs/FEE_Bot6hits_MomFit_Data.eps");
     c1->Print("Figs/FEE_Bot6hits_MomFit_Data.pdf");
     c1->Print("Figs/FEE_Bot6hits_MomFit_Data.png");
@@ -218,17 +238,21 @@ void DrawFEEPlots() {
     TH1D *h_Pem2_Top5hits_MC = (TH1D*) file_MC->Get("h_Pem2_Top5hits");
     h_Pem2_Top5hits_MC->SetTitle("; P [GeV]");
     h_Pem2_Top5hits_MC->SetAxisRange(1.7, 3.);
+    MakeHistStyle(h_Pem2_Top5hits_MC);
     h_Pem2_Top5hits_MC->Draw();
     f_Gaus->SetParameters(h_Pem2_Top5hits_MC->GetMaximum(), Eb, 0.14);
     h_Pem2_Top5hits_MC->Fit(f_Gaus, "MeV", "", 2.15, 2.55);
     double mean_MC_Top5hits = f_Gaus->GetParameter(1);
+    double meanErr_MC_Top5hits = f_Gaus->GetParError(1);
     double sigm_MC_Top5hits = f_Gaus->GetParameter(2);
     double sigmErr_MC_Top5hits = f_Gaus->GetParError(2);
     //double scale_MC_Top5hits = scaleCorr*Eb / mean_MC_Top5hits;
     double scale_MC_Top5hits = 1;
-    lat1->DrawLatex(0.11, 0.89, Form("#mu = %1.3f GeV", mean_MC_Top5hits));
-    lat1->DrawLatex(0.11, 0.84, Form("#sigma = %1.4f GeV", sigm_MC_Top5hits));
-    lat1->DrawLatex(0.11, 0.79, Form("#chi^{2}/NDF = %1.2f", f_Gaus->GetChisquare() / f_Gaus->GetNDF()));
+    lat1->DrawLatex(0.13, 0.89, Form("#mu = %1.3f GeV", mean_MC_Top5hits));
+    lat1->DrawLatex(0.13, 0.84, Form("#sigma = %1.4f GeV", sigm_MC_Top5hits));
+    lat1->DrawLatex(0.13, 0.79, Form("#chi^{2}/NDF = %1.2f", f_Gaus->GetChisquare() / f_Gaus->GetNDF()));
+    lat1->DrawLatex(0.6, 0.89, "#it{HPS} internal");
+    lat1->DrawLatex(0.62, 0.7, "MC, Top, 5 hits");
     c1->Print("Figs/FEE_Top5hits_MomFit_MC.eps");
     c1->Print("Figs/FEE_Top5hits_MomFit_MC.pdf");
     c1->Print("Figs/FEE_Top5hits_MomFit_MC.png");
@@ -236,17 +260,21 @@ void DrawFEEPlots() {
     TH1D *h_Pem2_Top6hits_MC = (TH1D*) file_MC->Get("h_Pem2_Top6hits");
     h_Pem2_Top6hits_MC->SetTitle("; P [GeV]");
     h_Pem2_Top6hits_MC->SetAxisRange(1.7, 3.);
+    MakeHistStyle(h_Pem2_Top6hits_MC);
     h_Pem2_Top6hits_MC->Draw();
     f_Gaus->SetParameters(h_Pem2_Top6hits_MC->GetMaximum(), Eb, 0.14);
     h_Pem2_Top6hits_MC->Fit(f_Gaus, "MeV", "", 2.15, 2.55);
     double mean_MC_Top6hits = f_Gaus->GetParameter(1);
+    double meanErr_MC_Top6hits = f_Gaus->GetParError(1);
     double sigm_MC_Top6hits = f_Gaus->GetParameter(2);
     double sigmErr_MC_Top6hits = f_Gaus->GetParError(2);
     //double scale_MC_Top6hits = scaleCorr*Eb / mean_MC_Top6hits;
     double scale_MC_Top6hits = 1;
-    lat1->DrawLatex(0.11, 0.89, Form("#mu = %1.3f GeV", mean_MC_Top6hits));
-    lat1->DrawLatex(0.11, 0.84, Form("#sigma = %1.4f GeV", sigm_MC_Top6hits));
-    lat1->DrawLatex(0.11, 0.79, Form("#chi^{2}/NDF = %1.2f", f_Gaus->GetChisquare() / f_Gaus->GetNDF()));
+    lat1->DrawLatex(0.13, 0.89, Form("#mu = %1.3f GeV", mean_MC_Top6hits));
+    lat1->DrawLatex(0.13, 0.84, Form("#sigma = %1.4f GeV", sigm_MC_Top6hits));
+    lat1->DrawLatex(0.13, 0.79, Form("#chi^{2}/NDF = %1.2f", f_Gaus->GetChisquare() / f_Gaus->GetNDF()));
+    lat1->DrawLatex(0.6, 0.89, "#it{HPS} internal");
+    lat1->DrawLatex(0.62, 0.7, "MC, Top, 6 hits");
     c1->Print("Figs/FEE_Top6hits_MomFit_MC.eps");
     c1->Print("Figs/FEE_Top6hits_MomFit_MC.pdf");
     c1->Print("Figs/FEE_Top6hits_MomFit_MC.png");
@@ -254,17 +282,21 @@ void DrawFEEPlots() {
     TH1D *h_Pem2_Bot5hits_MC = (TH1D*) file_MC->Get("h_Pem2_Bot5hits");
     h_Pem2_Bot5hits_MC->SetTitle("; P [GeV]");
     h_Pem2_Bot5hits_MC->SetAxisRange(1.7, 3.);
+    MakeHistStyle(h_Pem2_Bot5hits_MC);
     h_Pem2_Bot5hits_MC->Draw();
     f_Gaus->SetParameters(h_Pem2_Bot5hits_MC->GetMaximum(), Eb, 0.14);
     h_Pem2_Bot5hits_MC->Fit(f_Gaus, "MeV", "", 2.15, 2.55);
     double mean_MC_Bot5hits = f_Gaus->GetParameter(1);
+    double meanErr_MC_Bot5hits = f_Gaus->GetParError(1);
     double sigm_MC_Bot5hits = f_Gaus->GetParameter(2);
     double sigmErr_MC_Bot5hits = f_Gaus->GetParError(2);
     //double scale_MC_Bot5hits = scaleCorr*Eb / mean_MC_Bot5hits;
     double scale_MC_Bot5hits = 1;
-    lat1->DrawLatex(0.11, 0.89, Form("#mu = %1.3f GeV", mean_MC_Bot5hits));
-    lat1->DrawLatex(0.11, 0.84, Form("#sigma = %1.4f GeV", sigm_MC_Bot5hits));
-    lat1->DrawLatex(0.11, 0.79, Form("#chi^{2}/NDF = %1.2f", f_Gaus->GetChisquare() / f_Gaus->GetNDF()));
+    lat1->DrawLatex(0.13, 0.89, Form("#mu = %1.3f GeV", mean_MC_Bot5hits));
+    lat1->DrawLatex(0.13, 0.84, Form("#sigma = %1.4f GeV", sigm_MC_Bot5hits));
+    lat1->DrawLatex(0.13, 0.79, Form("#chi^{2}/NDF = %1.2f", f_Gaus->GetChisquare() / f_Gaus->GetNDF()));
+    lat1->DrawLatex(0.6, 0.89, "#it{HPS} internal");
+    lat1->DrawLatex(0.62, 0.7, "MC, Bot., 5 hits");
     c1->Print("Figs/FEE_Bot5hits_MomFit_MC.eps");
     c1->Print("Figs/FEE_Bot5hits_MomFit_MC.pdf");
     c1->Print("Figs/FEE_Bot5hits_MomFit_MC.png");
@@ -272,17 +304,21 @@ void DrawFEEPlots() {
     TH1D *h_Pem2_Bot6hits_MC = (TH1D*) file_MC->Get("h_Pem2_Bot6hits");
     h_Pem2_Bot6hits_MC->SetTitle("; P [GeV]");
     h_Pem2_Bot6hits_MC->SetAxisRange(1.7, 3.);
+    MakeHistStyle(h_Pem2_Bot6hits_MC);
     h_Pem2_Bot6hits_MC->Draw();
     f_Gaus->SetParameters(h_Pem2_Bot6hits_MC->GetMaximum(), Eb, 0.14);
     h_Pem2_Bot6hits_MC->Fit(f_Gaus, "MeV", "", 2.15, 2.55);
     double mean_MC_Bot6hits = f_Gaus->GetParameter(1);
+    double meanErr_MC_Bot6hits = f_Gaus->GetParError(1);
     double sigm_MC_Bot6hits = f_Gaus->GetParameter(2);
     double sigmErr_MC_Bot6hits = f_Gaus->GetParError(2);
     //double scale_MC_Bot6hits = scaleCorr*Eb / mean_MC_Bot6hits;
     double scale_MC_Bot6hits = 1;
-    lat1->DrawLatex(0.11, 0.89, Form("#mu = %1.3f GeV", mean_MC_Bot6hits));
-    lat1->DrawLatex(0.11, 0.84, Form("#sigma = %1.4f GeV", sigm_MC_Bot6hits));
-    lat1->DrawLatex(0.11, 0.79, Form("#chi^{2}/NDF = %1.2f", f_Gaus->GetChisquare() / f_Gaus->GetNDF()));
+    lat1->DrawLatex(0.13, 0.89, Form("#mu = %1.3f GeV", mean_MC_Bot6hits));
+    lat1->DrawLatex(0.13, 0.84, Form("#sigma = %1.4f GeV", sigm_MC_Bot6hits));
+    lat1->DrawLatex(0.13, 0.79, Form("#chi^{2}/NDF = %1.2f", f_Gaus->GetChisquare() / f_Gaus->GetNDF()));
+    lat1->DrawLatex(0.6, 0.89, "#it{HPS} internal");
+    lat1->DrawLatex(0.62, 0.7, "MC, Bot., 6 hits");
     c1->Print("Figs/FEE_Bot6hits_MomFit_MC.eps");
     c1->Print("Figs/FEE_Bot6hits_MomFit_MC.pdf");
     c1->Print("Figs/FEE_Bot6hits_MomFit_MC.png");
@@ -359,18 +395,18 @@ void DrawFEEPlots() {
 //    out_smear << "$\\mathrm{\\sigma_{Bot}^{Smear} [\\%]}$  &  " << " N/A " << "   &   " << 100. * sigm_smear_Bot / mean_MC_Bot << " \\\\ \\hline " << endl;
 
     out_smear << "   & Data & MC \\\\ \\hline " << endl;
-    out_smear << "$\\mathrm{\\mu_{Top} 5 hits\\; [GeV]}$  &  " << mean_Data_Top5hits << "   &   " << mean_MC_Top5hits << " \\\\ \\hline " << endl;
-    out_smear << "$\\mathrm{\\mu_{Top} 6 hits\\; [GeV]}$  &  " << mean_Data_Top6hits << "   &   " << mean_MC_Top6hits << " \\\\ \\hline " << endl;
-    out_smear << "$\\mathrm{\\mu_{Bot} 5 hits\\; [GeV]}$  &  " << mean_Data_Bot5hits << "   &   " << mean_MC_Bot5hits << " \\\\ \\hline " << endl;
-    out_smear << "$\\mathrm{\\mu_{Bot} 6 hits\\; [GeV]}$  &  " << mean_Data_Bot6hits << "   &   " << mean_MC_Bot6hits << " \\\\ \\hline " << endl;
-    out_smear << "$\\mathrm{\\sigma_{Top} 5 hits\\; [GeV]}$  &  " << sigm_Data_Top5hits << "   &   " << sigm_MC_Top5hits << " \\\\ \\hline " << endl;
-    out_smear << "$\\mathrm{\\sigma_{Top} 6 hits\\; [GeV]}$  &  " << sigm_Data_Top6hits << "   &   " << sigm_MC_Top6hits << " \\\\ \\hline " << endl;
-    out_smear << "$\\mathrm{\\sigma_{Bot} 5 hits\\; [GeV]}$  &  " << sigm_Data_Bot5hits << "   &   " << sigm_MC_Bot5hits << " \\\\ \\hline " << endl;
-    out_smear << "$\\mathrm{\\sigma_{Bot} 6 hits\\; [GeV]}$  &  " << sigm_Data_Bot6hits << "   &   " << sigm_MC_Bot6hits << " \\\\ \\hline " << endl;
-    out_smear << "$\\mathrm{\\Sigma_{Top}^{smear} 5 hits\\; [\\%] }$  &  N/A  &   " << 100.*smear_Top5hits << " \\\\ \\hline " << endl;
-    out_smear << "$\\mathrm{\\Sigma_{Top}^{smear} 6 hits\\; [\\%]}$  &  N/A  &   " << 100.*smear_Top6hits << " \\\\ \\hline " << endl;
-    out_smear << "$\\mathrm{\\Sigma_{Bot}^{smear} 5 hits\\; [\\%]}$  &  N/A  &   " << 100.*smear_Bot5hits << " \\\\ \\hline " << endl;
-    out_smear << "$\\mathrm{\\Sigma_{Bot}^{smear} 6 hits\\; [\\%]}$  &  N/A  &   " << 100.*smear_Bot5hits << " \\\\ \\hline " << endl;
+    out_smear << "$\\mathrm{\\mu_{Top} 5 hits\\; [GeV]}$  &  " << Form("%.3f $\\pm$ %.4f", mean_Data_Top5hits, meanErr_Data_Top5hits) << "   &   " << Form("%.3f $\\pm$ %.4f", mean_MC_Top5hits, meanErr_MC_Top5hits) << " \\\\ \\hline " << endl;
+    out_smear << "$\\mathrm{\\mu_{Top} 6 hits\\; [GeV]}$  &  " << Form("%.3f $\\pm$ %.5f", mean_Data_Top6hits, meanErr_Data_Top6hits) << "   &   " << Form("%.3f $\\pm$ %.5f", mean_MC_Top6hits, meanErr_MC_Top6hits) << " \\\\ \\hline " << endl;
+    out_smear << "$\\mathrm{\\mu_{Bot} 5 hits\\; [GeV]}$  &  " << Form("%.3f $\\pm$ %.4f", mean_Data_Bot5hits, meanErr_Data_Bot5hits) << "   &   " << Form("%.3f $\\pm$ %.4f", mean_MC_Bot5hits, meanErr_MC_Bot5hits) << " \\\\ \\hline " << endl;
+    out_smear << "$\\mathrm{\\mu_{Bot} 6 hits\\; [GeV]}$  &  " << Form("%.3f $\\pm$ %.5f", mean_Data_Bot6hits, meanErr_Data_Bot6hits) << "   &   " << Form("%.3f $\\pm$ %.5f", mean_MC_Bot6hits, meanErr_MC_Bot6hits) << " \\\\ \\hline " << endl;
+    out_smear << "$\\mathrm{\\sigma_{Top} 5 hits\\; [GeV]}$  &  " << Form("%.3f $\\pm$ %.4f", sigm_Data_Top5hits, sigmErr_Data_Top5hits) << "   &   " << Form("%.3f $\\pm$ %.4f", sigm_MC_Top5hits, sigmErr_MC_Top5hits) << " \\\\ \\hline " << endl;
+    out_smear << "$\\mathrm{\\sigma_{Top} 6 hits\\; [GeV]}$  &  " << Form("%.3f $\\pm$ %.5f", sigm_Data_Top6hits, sigmErr_Data_Top6hits) << "   &   " << Form("%.3f $\\pm$ %.5f", sigm_MC_Top6hits, sigmErr_MC_Top6hits) << " \\\\ \\hline " << endl;
+    out_smear << "$\\mathrm{\\sigma_{Bot} 5 hits\\; [GeV]}$  &  " << Form("%.3f $\\pm$ %.4f", sigm_Data_Bot5hits, sigmErr_Data_Bot5hits) << "   &   " << Form("%.3f $\\pm$ %.4f", sigm_MC_Bot5hits, sigmErr_MC_Bot5hits) << " \\\\ \\hline " << endl;
+    out_smear << "$\\mathrm{\\sigma_{Bot} 6 hits\\; [GeV]}$  &  " << Form("%.3f $\\pm$ %.5f", sigm_Data_Bot6hits, sigmErr_Data_Bot6hits) << "   &   " << Form("%.3f $\\pm$ %.5f", sigm_MC_Bot6hits, sigmErr_MC_Bot6hits) << " \\\\ \\hline " << endl;
+    out_smear << "$\\mathrm{\\Sigma_{Top}^{smear} 5 hits\\; [\\%]}$  &  N/A  &   " << Form("%.3f $\\pm$ %.4f", 100.*smear_Top5hits, 100.*smearErr_Top5hits) << " \\\\ \\hline " << endl;
+    out_smear << "$\\mathrm{\\Sigma_{Top}^{smear} 6 hits\\; [\\%]}$  &  N/A  &   " << Form("%.3f $\\pm$ %.4f", 100.*smear_Top6hits, 100.*smearErr_Top6hits) << " \\\\ \\hline " << endl;
+    out_smear << "$\\mathrm{\\Sigma_{Bot}^{smear} 5 hits\\; [\\%]}$  &  N/A  &   " << Form("%.3f $\\pm$ %.4f", 100.*smear_Bot5hits, 100.*smearErr_Bot5hits) << " \\\\ \\hline " << endl;
+    out_smear << "$\\mathrm{\\Sigma_{Bot}^{smear} 6 hits\\; [\\%]}$  &  N/A  &   " << Form("%.3f $\\pm$ %.4f", 100.*smear_Bot6hits, 100.*smearErr_Bot6hits) << " \\\\ \\hline " << endl;
     
 
     TH1D *h_Pem2ScaledSmear_Top_MC = (TH1D*) file_MC->Get("h_Pem2ScaledSmear_Top");
@@ -397,12 +433,6 @@ void DrawFEEPlots() {
     h_Pem2ScaledSmear_Bot_Data->Scale(1.04 * h_Pem2ScaledSmear_Bot_MC->GetMaximum() / h_Pem2ScaledSmear_Bot_Data->GetMaximum());
     h_Pem2ScaledSmear_Bot_Data->Draw("Same");
 
-
-
-
-
-
-
     TH1D *h_Pem2_Top5hitsScSm_Data = (TH1D*) file_Data->Get("h_Pem2_Top5hitsScSm");
     int bin1 = h_Pem2_Top5hitsScSm_Data->FindBin(2.15);
     int bin2 = h_Pem2_Top5hitsScSm_Data->FindBin(2.55);
@@ -414,8 +444,17 @@ void DrawFEEPlots() {
     h_Pem2_Top5hitsScSm_MC->SetLineColor(2);
     h_Pem2_Top5hitsScSm_MC->SetLineWidth(2);
     h_Pem2_Top5hitsScSm_MC->Scale(h_Pem2_Top5hitsScSm_Data->Integral(bin1, bin2) / h_Pem2_Top5hitsScSm_MC->Integral(bin1, bin2));
+    MakeHistStyle(h_Pem2_Top5hitsScSm_Data);
+    MakeHistStyle(h_Pem2_Top5hitsScSm_MC);
     h_Pem2_Top5hitsScSm_Data->Draw();
     h_Pem2_Top5hitsScSm_MC->Draw("hist Same");
+    lat1->SetTextColor(2);
+    lat1->DrawLatex(0.15, 0.85, "MC");
+    lat1->SetTextColor(4);
+    lat1->DrawLatex(0.15, 0.8, "Data");
+    lat1->SetTextColor(1);
+    lat1->DrawLatex(0.68, 0.88, "#bf{HPS #it{Internal}}");
+    lat1->DrawLatex(0.65, 0.7, "Top 5 hits");
     c1->Print("Figs/Pem2_Top5hits_DataMC.eps");
     c1->Print("Figs/Pem2_Top5hits_DataMC.pdf");
     c1->Print("Figs/Pem2_Top5hits_DataMC.png");
@@ -431,8 +470,17 @@ void DrawFEEPlots() {
     h_Pem2_Top6hitsScSm_MC->SetLineColor(2);
     h_Pem2_Top6hitsScSm_MC->SetLineWidth(2);
     h_Pem2_Top6hitsScSm_MC->Scale(h_Pem2_Top6hitsScSm_Data->Integral(bin1, bin2) / h_Pem2_Top6hitsScSm_MC->Integral(bin1, bin2));
+    MakeHistStyle(h_Pem2_Top6hitsScSm_Data);
+    MakeHistStyle(h_Pem2_Top6hitsScSm_MC);
     h_Pem2_Top6hitsScSm_Data->Draw();
     h_Pem2_Top6hitsScSm_MC->Draw("hist Same");
+    lat1->SetTextColor(2);
+    lat1->DrawLatex(0.15, 0.85, "MC");
+    lat1->SetTextColor(4);
+    lat1->DrawLatex(0.15, 0.8, "Data");
+    lat1->SetTextColor(1);
+    lat1->DrawLatex(0.68, 0.88, "#bf{HPS #it{Internal}}");
+    lat1->DrawLatex(0.65, 0.7, "Top 6 hits");    
     c1->Print("Figs/Pem2_Top6hits_DataMC.eps");
     c1->Print("Figs/Pem2_Top6hits_DataMC.pdf");
     c1->Print("Figs/Pem2_Top6hits_DataMC.png");
@@ -448,8 +496,17 @@ void DrawFEEPlots() {
     h_Pem2_Bot5hitsScSm_MC->SetLineColor(2);
     h_Pem2_Bot5hitsScSm_MC->SetLineWidth(2);
     h_Pem2_Bot5hitsScSm_MC->Scale(h_Pem2_Bot5hitsScSm_Data->Integral(bin1, bin2) / h_Pem2_Bot5hitsScSm_MC->Integral(bin1, bin2));
+    MakeHistStyle(h_Pem2_Bot5hitsScSm_Data);
+    MakeHistStyle(h_Pem2_Bot5hitsScSm_MC);
     h_Pem2_Bot5hitsScSm_Data->Draw();
     h_Pem2_Bot5hitsScSm_MC->Draw("hist Same");
+    lat1->SetTextColor(2);
+    lat1->DrawLatex(0.15, 0.85, "MC");
+    lat1->SetTextColor(4);
+    lat1->DrawLatex(0.15, 0.8, "Data");
+    lat1->SetTextColor(1);
+    lat1->DrawLatex(0.68, 0.88, "#bf{HPS #it{Internal}}");
+    lat1->DrawLatex(0.65, 0.7, "Bot 5 hits");
     c1->Print("Figs/Pem2_Bot5hits_DataMC.eps");
     c1->Print("Figs/Pem2_Bot5hits_DataMC.pdf");
     c1->Print("Figs/Pem2_Bot5hits_DataMC.png");
@@ -465,8 +522,17 @@ void DrawFEEPlots() {
     h_Pem2_Bot6hitsScSm_MC->SetLineColor(2);
     h_Pem2_Bot6hitsScSm_MC->SetLineWidth(2);
     h_Pem2_Bot6hitsScSm_MC->Scale(h_Pem2_Bot6hitsScSm_Data->Integral(bin1, bin2) / h_Pem2_Bot6hitsScSm_MC->Integral(bin1, bin2));
+    MakeHistStyle(h_Pem2_Bot6hitsScSm_Data);
+    MakeHistStyle(h_Pem2_Bot6hitsScSm_MC);
     h_Pem2_Bot6hitsScSm_Data->Draw();
     h_Pem2_Bot6hitsScSm_MC->Draw("hist Same");
+    lat1->SetTextColor(2);
+    lat1->DrawLatex(0.15, 0.85, "MC");
+    lat1->SetTextColor(4);
+    lat1->DrawLatex(0.15, 0.8, "Data");
+    lat1->SetTextColor(1);
+    lat1->DrawLatex(0.68, 0.88, "#bf{HPS #it{Internal}}");
+    lat1->DrawLatex(0.65, 0.7, "Bot 6 hits");
     c1->Print("Figs/Pem2_Bot6hits_DataMC.eps");
     c1->Print("Figs/Pem2_Bot6hits_DataMC.pdf");
     c1->Print("Figs/Pem2_Bot6hits_DataMC.png");
@@ -474,4 +540,15 @@ void DrawFEEPlots() {
 
 
     file_out->Close();
+}
+
+
+template <typename T> 
+void MakeHistStyle(T *hist){
+
+    hist->SetTitleSize(0.06, "Y");
+    hist->SetLabelSize(0.06, "Y");
+    hist->SetTitleSize(0.06, "X");
+    hist->SetLabelSize(0.06, "X");
+    
 }

@@ -19,6 +19,9 @@
 
 using namespace std;
 
+template <typename T>
+void MakeHistStyle(T *hist);
+
 void WriteMlrResol(TGraphErrors *gr_MlrData, TGraphErrors *gr_MlrMC, TGraphErrors *gr_MlrMCScSm);
 void WriteApResol(TGraphErrors *gr_Ap, std::string keyword, int* mass_Arr);
 
@@ -36,19 +39,27 @@ void MassParametrization() {
 
     TLatex *lat1 = new TLatex();
     lat1->SetNDC();
+    lat1->SetTextSize(0.04);
     lat1->SetTextFont(42);
 
 
     TCanvas *c0 = new TCanvas("c0", "", 1900, 950);
-    c0->SetTopMargin(0.01);
-    c0->SetRightMargin(0.01);
+    //TCanvas *c0 = new TCanvas("c0", "", 1583, 792);
+    c0->SetTopMargin(0.015);
+    c0->SetRightMargin(0.005);
+    c0->SetLeftMargin(0.1);
+    c0->SetBottomMargin(0.13);
     TCanvas *c1 = new TCanvas("c1", "", 950, 950);
     c1->SetTopMargin(0.02);
     c1->SetRightMargin(0.02);
+    c1->SetLeftMargin(0.13);
+    c1->SetBottomMargin(0.13);
     TCanvas *c2 = new TCanvas("c2", "", 950, 950);
     c2->SetTopMargin(0.02);
     c2->SetRightMargin(0.02);
-
+    c2->SetLeftMargin(0.13);
+    c2->SetBottomMargin(0.13);
+    
     TGraphErrors *gr_sigmRecon = new TGraphErrors();
     TGraphErrors *gr_sigmScSmRecon = new TGraphErrors();
     TGraphErrors *gr_sigmReconSimpleScale = new TGraphErrors();
@@ -73,13 +84,14 @@ void MassParametrization() {
 
     h_Moeller_M_Recon->Fit(f_Gaus, "MeV", "", meanMlrMC - 1.2 * rmsMlrMC, meanMlrMC + 1.5 * rmsMlrMC);
     meanMlrMC = f_Gaus->GetParameter(1);
+    double meanErrMlrMC = f_Gaus->GetParError(1);
     double sigmMlrMC = f_Gaus->GetParameter(2);
     double sigmMlrMC_Err = f_Gaus->GetParError(2);
     double chi2Mlr_MC = f_Gaus->GetChisquare();
     double ndfMlr_MC = f_Gaus->GetNDF();
 
-    lat1->DrawLatex(0.6, 0.85, Form("#mu = %1.3f MeV", 1000. * meanMlrMC));
-    lat1->DrawLatex(0.6, 0.8, Form("#sigma = %1.3f MeV", 1000. * sigmMlrMC));
+    lat1->DrawLatex(0.6, 0.85, Form("#mu = %1.3f #pm %1.4f MeV", 1000. * meanMlrMC, 1000. * meanErrMlrMC));
+    lat1->DrawLatex(0.6, 0.8, Form("#sigma = %1.3f #pm %1.4f MeV", 1000. * sigmMlrMC, 1000. * sigmMlrMC_Err));
     lat1->DrawLatex(0.6, 0.75, Form("#chi^{2}/NDF = %1.3f", chi2Mlr_MC / ndfMlr_MC));
 
     c1->Print("Figs/Mlr_RecMassFit_MC.eps");
@@ -88,7 +100,7 @@ void MassParametrization() {
 
     TGraphErrors *gr_Mlr_MC_Rec = new TGraphErrors();
     gr_Mlr_MC_Rec->SetPoint(0, meanMlrMC, sigmMlrMC);
-    gr_Mlr_MC_Rec->SetPointError(0, 0., sigmMlrMC_Err);
+    gr_Mlr_MC_Rec->SetPointError(0, meanErrMlrMC, sigmMlrMC_Err);
     gr_Mlr_MC_Rec->SetMarkerColor(95);
     gr_Mlr_MC_Rec->SetMarkerStyle(29);
     gr_Mlr_MC_Rec->SetMarkerSize(3.5);
@@ -96,21 +108,22 @@ void MassParametrization() {
     TH1D *h_Moeller_MCScSm_Recon = (TH1D*) file_Mlr_MC->Get("h_TCM_ScSm4");
     h_Moeller_MCScSm_Recon->SetTitle("; M(ee) [GeV]");
 
+    MakeHistStyle(h_Moeller_MCScSm_Recon);
     h_Moeller_MCScSm_Recon->Draw();
     double meanMlrMCScSm = h_Moeller_MCScSm_Recon->GetMean();
     double rmsMlrMCScSm = h_Moeller_MCScSm_Recon->GetRMS();
     f_Gaus->SetParameters(h_Moeller_MCScSm_Recon->GetMaximum(), 0.0488, 0.002);
-
-    h_Moeller_MCScSm_Recon->Fit(f_Gaus, "MeV", "", meanMlrMCScSm - 1.5 * rmsMlrMCScSm, meanMlrMCScSm + 4 * rmsMlrMCScSm);
+    h_Moeller_MCScSm_Recon->Fit(f_Gaus, "MeV", "", meanMlrMCScSm - 4. * rmsMlrMCScSm, meanMlrMCScSm + 4 * rmsMlrMCScSm);
     meanMlrMCScSm = f_Gaus->GetParameter(1);
+    double meanErrMlrMCScSm = f_Gaus->GetParError(1);
     double sigmMlrMCScSm = f_Gaus->GetParameter(2);
     double sigmMlrMCScSm_Err = f_Gaus->GetParError(2);
     double chi2Mlr_MCScSm = f_Gaus->GetChisquare();
     double ndfMlr_MCScSm = f_Gaus->GetNDF();
-
-    lat1->DrawLatex(0.6, 0.85, Form("#mu = %1.3f MeV", 1000. * meanMlrMCScSm));
-    lat1->DrawLatex(0.6, 0.8, Form("#sigma = %1.3f MeV", 1000. * sigmMlrMCScSm));
-    lat1->DrawLatex(0.6, 0.75, Form("#chi^{2}/NDF = %1.3f", chi2Mlr_MCScSm / ndfMlr_MCScSm));
+    lat1->DrawLatex(0.7, 0.92, "#bf{#it{HPS} internal}");
+    lat1->DrawLatex(0.58, 0.85, Form("#mu = %1.3f #pm %1.3f MeV", 1000. * meanMlrMCScSm, 1000. * meanErrMlrMCScSm));
+    lat1->DrawLatex(0.58, 0.8, Form("#sigma = %1.3f #pm %1.3f MeV", 1000. * sigmMlrMCScSm, 1000. * sigmMlrMCScSm_Err));
+    lat1->DrawLatex(0.58, 0.75, Form("#chi^{2}/NDF = %1.3f", chi2Mlr_MCScSm / ndfMlr_MCScSm));
 
     c1->Print("Figs/Mlr_RecMassScSmFit_MC.eps");
     c1->Print("Figs/Mlr_RecMassScSmFit_MC.pdf");
@@ -118,7 +131,7 @@ void MassParametrization() {
 
     TGraphErrors *gr_Mlr_MC_RecScSm = new TGraphErrors();
     gr_Mlr_MC_RecScSm->SetPoint(0, meanMlrMCScSm, sigmMlrMCScSm);
-    gr_Mlr_MC_RecScSm->SetPointError(0, 0., sigmMlrMCScSm_Err);
+    gr_Mlr_MC_RecScSm->SetPointError(0, meanErrMlrMCScSm, sigmMlrMCScSm_Err);
     gr_Mlr_MC_RecScSm->SetMarkerColor(95);
     gr_Mlr_MC_RecScSm->SetMarkerStyle(30);
     gr_Mlr_MC_RecScSm->SetMarkerSize(3.5);
@@ -128,7 +141,7 @@ void MassParametrization() {
     TFile *file_Mlr_Data = new TFile("MoellerAnalyze_Data.root", "Read");
     TH1D *h_Moeller_DataScSm_Recon = (TH1D*) file_Mlr_Data->Get("h_TCM_ScSm4");
     h_Moeller_DataScSm_Recon->SetTitle("; M(ee) [GeV]");
-
+    MakeHistStyle(h_Moeller_DataScSm_Recon);
     h_Moeller_DataScSm_Recon->Draw();
     double meanMlrDataScSm = h_Moeller_DataScSm_Recon->GetMean();
     double rmsMlrDataScSm = h_Moeller_DataScSm_Recon->GetRMS();
@@ -136,14 +149,15 @@ void MassParametrization() {
 
     h_Moeller_DataScSm_Recon->Fit(f_Gaus, "MeV", "", meanMlrDataScSm - 1.5 * rmsMlrDataScSm, meanMlrDataScSm + 1.25 * rmsMlrDataScSm);
     meanMlrDataScSm = f_Gaus->GetParameter(1);
+    double meanErrMlrDataScSm = f_Gaus->GetParError(1);
     double sigmMlrDataScSm = f_Gaus->GetParameter(2);
     double sigmMlrDataScSm_Err = f_Gaus->GetParError(2);
     double chi2Mlr_DataScSm = f_Gaus->GetChisquare();
     double ndfMlr_DataScSm = f_Gaus->GetNDF();
-
-    lat1->DrawLatex(0.6, 0.85, Form("#mu = %1.3f MeV", 1000. * meanMlrDataScSm));
-    lat1->DrawLatex(0.6, 0.8, Form("#sigma = %1.3f MeV", 1000. * sigmMlrDataScSm));
-    lat1->DrawLatex(0.6, 0.75, Form("#chi^{2}/NDF = %1.3f", chi2Mlr_DataScSm / ndfMlr_DataScSm));
+    lat1->DrawLatex(0.7, 0.92, "#bf{#it{HPS} internal}");
+    lat1->DrawLatex(0.58, 0.85, Form("#mu = %1.3f #pm %1.3f MeV", 1000. * meanMlrDataScSm, 1000. * meanErrMlrDataScSm));
+    lat1->DrawLatex(0.58, 0.8, Form("#sigma = %1.3f #pm %1.3f MeV", 1000. * sigmMlrDataScSm, 1000. * sigmMlrDataScSm_Err));
+    lat1->DrawLatex(0.58, 0.75, Form("#chi^{2}/NDF = %1.3f", chi2Mlr_DataScSm / ndfMlr_DataScSm));
 
     c1->Print("Figs/Mlr_RecMassScSmFit_Data.eps");
     c1->Print("Figs/Mlr_RecMassScSmFit_Data.pdf");
@@ -154,7 +168,7 @@ void MassParametrization() {
 
     TGraphErrors *gr_Mlr_Data_Rec = new TGraphErrors();
     gr_Mlr_Data_Rec->SetPoint(0, meanMlrDataScSm, sigmMlrDataScSm);
-    gr_Mlr_Data_Rec->SetPointError(0, 0., sigmMlrDataScSm_Err);
+    gr_Mlr_Data_Rec->SetPointError(0, meanErrMlrDataScSm, sigmMlrDataScSm_Err);
     gr_Mlr_Data_Rec->SetMarkerColor(38);
     gr_Mlr_Data_Rec->SetMarkerStyle(33);
     gr_Mlr_Data_Rec->SetMarkerSize(3.5);
@@ -165,8 +179,10 @@ void MassParametrization() {
 
     const int nLowMass = 4;
     const double lowMassLim = 49.5;
-    int lowmassesp[nLowMass] = { 30, 35, 40, 45};
+    int lowmassesp[nLowMass] = {30, 35, 40, 45};
 
+    c1->SetLeftMargin(0.15);
+    c2->SetLeftMargin(0.15);
     c1->Print("Figs/RecMassFits.pdf[");
     c2->Print("Figs/RecMassScSmFits.pdf[");
     double histMax = 0;
@@ -174,6 +190,7 @@ void MassParametrization() {
         TFile *curFile = new TFile(Form("EventSelection_Ap_%d_MeV.root", masses[im]), "Read");
 
         TH1D *h_ReconMass = (TH1D*) curFile->Get("h_Minv_GeneralLargeBins_Final_1");
+        MakeHistStyle(h_ReconMass);
         h_ReconMass->SetTitle("; M(e^{-}e^{+}) [GeV]");
         h_ReconMass->SetTitle("; M(ee) [GeV]");
 
@@ -182,7 +199,7 @@ void MassParametrization() {
         h_ReconMass->SetLineColor(2);
         TH1D *h_ReconMassScSm = (TH1D*) curFile->Get("h_MinvScSm_GeneralLargeBins_Final_1");
         h_ReconMassScSm->SetTitle("; M(ee) [GeV]");
-
+        MakeHistStyle(h_ReconMassScSm);
         c0->cd();
         if (im % 2 == 0) {
             if (im == 0) {
@@ -310,7 +327,7 @@ void MassParametrization() {
 
         RmsRec = h_ReconMassScSm->GetRMS();
         xMax = h_ReconMassScSm->GetBinCenter(h_ReconMassScSm->GetMaximumBin());
-        f_Gaus->SetParameters(h_ReconMassScSm->GetMaximum(), xMax, 0.5*RmsRec);
+        f_Gaus->SetParameters(h_ReconMassScSm->GetMaximum(), xMax, 0.5 * RmsRec);
 
         //h_ReconMass->SetAxisRange(xMax - 9 * RmsRec, xMax + 9 * RmsRec);
         h_ReconMassScSm->SetAxisRange(xMax - 0.03, xMax + 0.03);
@@ -339,7 +356,7 @@ void MassParametrization() {
     c2->Print("Figs/RecLowMassScSmFits.pdf]");
 
     c0->Clear();
-    c0->SetRightMargin(0.05);
+    c0->SetRightMargin(0.01);
     c0->SetBottomMargin(0.12);
 
     gr_sigmRecon->SetMarkerColor(2);
@@ -371,12 +388,12 @@ void MassParametrization() {
     leg1->SetFillColor(0);
     leg1->AddEntry(gr_sigmRecon, "A'");
     leg1->AddEntry(gr_sigmScSmRecon, "A' Smeared");
-    leg1->AddEntry(gr_sigmReconSimpleScale, "A' Scaled by Mlr Ratio");
+    leg1->AddEntry(gr_sigmReconSimpleScale, "A' Scaled by M#oslashller Ratio");
     leg1->AddEntry(gr_Mlr_Data_Rec, "Moeller: Data");
     leg1->AddEntry(gr_Mlr_MC_Rec, "Moeller: MC");
     leg1->AddEntry(gr_Mlr_MC_RecScSm, "Moeller: MC Smeared");
-    leg1->AddEntry(gr_sigmReconLowMass, " low mass A");
-    leg1->AddEntry(gr_sigmReconSimpleScaleLowMass, "Low mass A': scaled by Mlr Ratio");
+    leg1->AddEntry(gr_sigmReconLowMass, "low mass A'");
+    leg1->AddEntry(gr_sigmReconSimpleScaleLowMass, "Low mass A': scaled by M#oslashller Ratio");
     leg1->AddEntry(gr_sigmScSmReconLowMass, "low mass A': smeared");
 
     TMultiGraph *mtgr1 = new TMultiGraph();
@@ -408,6 +425,7 @@ void MassParametrization() {
     f_Pol4->GetParameters(masspars_nonsmear);
     f_Pol4->DrawCopy("Same");
     leg1->Draw();
+    lat1->DrawLatex(0.5, 0.9, "#it{HPS} Preliminary");
     c0->Print("Figs/MassResolVSMass.eps");
     c0->Print("Figs/MassResolVSMass.pdf");
     c0->Print("Figs/MassResolVSMass.png");
@@ -490,6 +508,16 @@ void WriteApResol(TGraphErrors *gr_Ap, std::string keyword, int* mass_Arr) {
         gr_Ap->GetPoint(i, mean, sigm);
         sigm_err = gr_Ap->GetErrorY(i);
 
-        out << Form("Ap %d MeV & ", mass_Arr[i]) << mean * 1000. << "   &   " << sigm * 1000. << "   &   " << sigm_err * 1000. << "\\\\ \\hline" << endl;
+//        out << Form("Ap %d MeV & ", mass_Arr[i]) << mean * 1000. << "   &   " << sigm * 1000. << "   &   " << sigm_err * 1000. << "\\\\ \\hline" << endl;
+	out << Form("Ap %d MeV & ", mass_Arr[i]) << Form("%1.2f", mean * 1000.) << "   &   " << Form("%1.2f", sigm * 1000.) << "   &   " << Form("%1.4f",sigm_err * 1000.) << "\\\\ \\hline" << endl;
     }
+}
+
+template <typename T>
+void MakeHistStyle(T *hist) {
+
+    hist->SetTitleSize(0.05, "Y");
+    hist->SetLabelSize(0.05, "Y");
+    hist->SetTitleSize(0.05, "X");
+    hist->SetLabelSize(0.05, "X");
 }

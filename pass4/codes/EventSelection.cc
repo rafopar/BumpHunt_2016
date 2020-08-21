@@ -10,10 +10,8 @@
 #include <TTree.h>
 #include <TFile.h>
 #include <TLorentzVector.h>
-
 #include <hps_event/HpsEvent.h>
 #include <hps_event/EcalCluster.h>
-
 #include "setting_2016_pass1.h"
 #include "InitSettings.C"
 
@@ -61,8 +59,10 @@ int main(int argc, char** argv) {
     TH2D *h_cl_E_tBot1 = new TH2D("h_cl_E_tBot1", "", 200, 0., 1.2 * Eb, 200, 30., 75.);
     TH2D *h_dt_Esum1 = new TH2D("h_dt_Esum1", "", 200, 0., 1.2 * Eb, 200, -15., 15.);
     TH2D *h_dt_Esum2 = new TH2D("h_dt_Esum2", "", 200, 0., 1.2 * Eb, 200, -15., 15.);
-    TH2D *h_dtCorr_Esum1 = new TH2D("h_dtCorr_Esum1", "", 200, 0., 1.2 * Eb, 200, -15., 15.);
-    TH2D *h_dtCorr_Esum2 = new TH2D("h_dtCorr_Esum2", "", 200, 0., 1.2 * Eb, 200, -15., 15.);
+    TH2D *h_dt_EsumHighPSum1 = new TH2D("h_dt_EsumHighPSum1", "", 200, 0.8 * Eb, 3.2 * Eb, 200, -15., 15.);
+    TH2D *h_dt_EsumHighPSum2 = new TH2D("h_dt_EsumHighPSum2", "", 200, 0.8 * Eb, 3.2 * Eb, 200, -15., 15.);
+    TH2D *h_dtCorr_Esum1 = new TH2D("h_dtCorr_Esum1", "", 200, 0.8, 1.2 * Eb, 200, -15., 15.);
+    TH2D *h_dtCorr_Esum2 = new TH2D("h_dtCorr_Esum2", "", 200, 0.8, 1.2 * Eb, 200, -15., 15.);
 
     TH2D *h_cl_yxc1 = new TH2D("h_cl_yxc1", "", 200, -300., 370, 200, -90., 90.);
     TH2D *h_cl_yxc_TEST1 = new TH2D("h_cl_yxc_TEST1", "", 200, -300., 370, 200, -90., 90.);
@@ -372,6 +372,8 @@ int main(int argc, char** argv) {
 
         }
 
+        h_n_pos_trk1->Fill(n_pos);
+        h_n_neg_trk1->Fill(n_neg);
 
         for (int iTopCl = 0; iTopCl < n_top_cl; iTopCl++) {
             for (int iBotCl = 0; iBotCl < n_bot_cl; iBotCl++) {
@@ -395,6 +397,12 @@ int main(int argc, char** argv) {
                 //                double dtCorr = t_top_corrected - t_bot_corrected;
 
                 h_dt_Esum1->Fill(Esum, dt);
+                h_dt_EsumHighPSum1->Fill(Esum, dt);
+
+                if (clTop->getEnergy() > 2. && clBot->getEnergy() > 2.) {
+                    h_dt_EsumHighPSum2->Fill(Esum, dt);
+                }
+
                 //h_dtCorr_Esum1->Fill(Esum, dtCorr);
 
                 if (n_pos == 1 && n_neg == 1) {

@@ -21,8 +21,10 @@ void fRadStudy() {
     const double tritrig_SigmError = 0.00431e-3;
     const double NGen_tritrig = 985. * 50000.; /* 200 recon files, and each recon has 50K Gen events*/
 
-    const double Rad_SigmaGen = 81.e-6;
-    const double Rad_SigmError = 0.834e-6;
+//    const double Rad_SigmaGen = 81.e-6;
+//    const double Rad_SigmError = 0.834e-6;
+    const double Rad_SigmaGen = 66.36e-6;
+    const double Rad_SigmError = 0.6678e-6;
     const double NGen_Rad = 4989 * 10000.;
 
     const double Wab_SigmaGen = 0.1985;
@@ -123,14 +125,14 @@ void fRadStudy() {
     c1->Print("Figs/MinvPsum_WitmPSumMinCut_Data.eps");
     c1->Print("Figs/MinvPsum_WitmPSumMinCut_Data.pdf");
     c1->Print("Figs/MinvPsum_WitmPSumMinCut_Data.png");
-    
-    
+
+
     h_Minv_PSumMin_AllBut_WABTri->Draw("colz");
     gr_PSumMin->Draw("Same P");
     c1->Print("Figs/MinvPsum_WitmPSumMinCut_WABTri.eps");
     c1->Print("Figs/MinvPsum_WitmPSumMinCut_WABTri.pdf");
     c1->Print("Figs/MinvPsum_WitmPSumMinCut_WABTri.png");
-    
+
 
     return 0;
 }
