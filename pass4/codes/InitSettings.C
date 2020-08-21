@@ -119,6 +119,7 @@ void InitVariables(std::string dataSet) {
     if (dataSet.compare("Data") == 0) {
         isData = true;
         //inpFileName = "../Data/hps_008099.All_dst_4.2.root";
+        //inpFileName = "../Data/hps_008099.145_dst_4.2.root";
         inpFileName = "../Data/hps_008099_All_v0_4.2.root";
         //inpFileName = "../Data/V0_Blinded_7803.root";
 
@@ -180,6 +181,7 @@ void InitVariables(std::string dataSet) {
 
         } else if (dataSet.compare("Tri") == 0) {
             isTri = true;
+            //inpFileName = "../Data/tritrig_eltotsp1100MeV_v4_5_0.root";
             inpFileName = "../Data/tritrig_pass4.root";
             //inpFileName = "../Data/tritrig_Pass4_iss640.root";
             //inpFileName = "../Data/tritrig_Pass4_Files1To200.root";
@@ -963,6 +965,7 @@ bool IscldTCut(EcalCluster* cl1, EcalCluster* cl2) {
     }
 
     return (TMath::Abs(cl1->getClusterTime() - cl2->getClusterTime()) < cl_dTcut);
+    //return (TMath::Abs(cl1->getClusterTime() - cl2->getClusterTime()) > cl_dTcut);
 }
 
 bool IsTrkClusterdXMatch(GblTrack* trk, EcalCluster* cl) {
@@ -1288,7 +1291,7 @@ vector<double> GetMassBins() {
 
     massBins.clear();
     massBins.shrink_to_fit();
-    
+
     TF1 *f_Pol9 = new TF1("f_Pol9", "pol9", 0.02, 0.25);
 
     //======== These parameters are just empirical parameters obtained by fitting the Tri mass spectrum with pol9 function
@@ -1323,7 +1326,7 @@ vector<double> GetMassBins() {
         if (delta_x < 0.0005) {
             delta_x = 0.0005;
         }
-        
+
 
         cur_x = cur_x + delta_x;
 
@@ -2088,6 +2091,10 @@ void InitGeneralHistograms() {
     h_dX_epBotNoL6_All = new TH2D("h_dX_epBotNoL6_All", "", 60, 0., 2.5, 200, -50., 50.);
     h_dX_epBotNoL6_AllBut = new TH2D("h_dX_epBotNoL6_AllBut", "", 60, 0., 2.5, 200, -50., 50.);
     h_dX_epBotNoL6_CutEffect = new TH2D("h_dX_epBotNoL6_CutEffect", "", 60, 0., 2.5, 200, -50., 50.);
+
+    h_n_pos_trk1 = new TH1D("h_n_pos_trk1", "", 11, -0.5, 10.5);
+    h_n_neg_trk1 = new TH1D("h_n_neg_trk1", "", 11, -0.5, 10.5);
+
 
     // =============== Final Event Selection Cuts Cuts ==========
     h_Minv_Final1 = new TH1D("h_Minv_Final1", "", 200, 0., 0.24);
