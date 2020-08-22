@@ -56,7 +56,9 @@ int main(int argc, char** argv) {
     InitVariables(dataSet);
 
     //TFile *file_in = new TFile("../Data/tritrig_pass4.root");
-    TFile *file_in = new TFile("../Data/hps_008099.All_dst_4.2.root");
+    //TFile *file_in = new TFile("../Data/hps_008099.All_dst_4.2.root");
+    //TFile *file_in = new TFile("../Data/hps_008099_All_v0_4.2.root");
+    TFile *file_in = new TFile("../Data/hps_008099.145_dst_4.2.root");
 
     TFile *file_ECalTimeCorrections = new TFile("ECalTimeCorrections.root", "Read");
 

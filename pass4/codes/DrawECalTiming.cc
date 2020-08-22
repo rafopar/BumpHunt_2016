@@ -34,7 +34,7 @@ void DrawECalTiming() {
     //    f_clTTopUpLim = new TF1("f_clTTopUpLim", "[0] + x*( [1] + x*[2] )", 0., 2.5);
     //    f_clTTopLowLim = new TF1("f_clTTopLowLim", "[0] + x*( [1] + x*[2] )", 0., 2.5);
 
-    std::string dataSet = "Tri";
+    std::string dataSet = "Data";
     if (dataSet.compare("Data") == 0) {
         f_clTBotUpLim->SetParameters(58.5, 3.40282, -1.00306);
         f_clTBotLowLim->SetParameters(45.51, 7.55268, -1.89745);
