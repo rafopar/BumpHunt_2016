@@ -229,11 +229,11 @@ void NormalizationPlots() {
         Draw2DCuts("dX_epBotWithL6", "h_dX_Bot_PosWithL6_Cut", "; P_{e^{+}} [GeV]; X_{cl} - X_{trk} [mm]");
         Draw2DCuts("dX_epBotNoL6", "h_dX_Bot_PosNoL6_Cut", "; P_{e^{+}} [GeV]; X_{cl} - X_{trk} [mm]");
 
-        DrawAntiFEECut(files_EvSelection);
-        DrawPV0MaxCut(files_EvSelection);
+    DrawAntiFEECut(files_EvSelection);
         Drawd0Cut(files_EvSelection);
      */
     // ========== Getting the Rad Fraction ===========
+    DrawPV0MaxCut(files_EvSelection);
 
     c1->Clear();
     TGraphErrors *gr_fRad = new TGraphErrors();
@@ -1343,11 +1343,11 @@ void DrawPV0MaxCut(TFile** files) {
     TFile *file_Rad = files[2];
     TFile *file_WAB = files[3];
 
-    TH1D *h_PV0Max_AllBut_Data = (TH1D*) file_Data->Get("h_PV0Max_AllBut");
+    TH1D *h_PV0Max_AllBut_Data = (TH1D*) file_Data->Get("h_PV0ScSmMax_AllBut");
     h_PV0Max_AllBut_Data->SetTitle("; P_{Sum} [GeV]; d#sigma/dP_{Sum} [bn * GeV^{-1}]");
-    TH1D *h_PV0Max_AllBut_Tri = (TH1D*) file_Tri->Get("h_PV0Max_AllBut");
-    TH1D *h_PV0Max_AllBut_Rad = (TH1D*) file_Rad->Get("h_PV0Max_AllBut");
-    TH1D *h_PV0Max_AllBut_WAB = (TH1D*) file_WAB->Get("h_PV0Max_AllBut");
+    TH1D *h_PV0Max_AllBut_Tri = (TH1D*) file_Tri->Get("h_PV0ScSmMax_AllBut");
+    TH1D *h_PV0Max_AllBut_Rad = (TH1D*) file_Rad->Get("h_PV0ScSmMax_AllBut");
+    TH1D *h_PV0Max_AllBut_WAB = (TH1D*) file_WAB->Get("h_PV0ScSmMax_AllBut");
 
     double bw = h_PV0Max_AllBut_Data->GetBinWidth(10);
 
@@ -1373,9 +1373,9 @@ void DrawPV0MaxCut(TFile** files) {
     lat1->DrawLatex(0.18, 0.7, "Rad");
     lat1->SetTextColor(45);
     lat1->DrawLatex(0.18, 0.65, "WAB");
-    ctmp->Print("Figs/PV0MuxCut_AllBut.eps");
-    ctmp->Print("Figs/PV0MuxCut_AllBut.pdf");
-    ctmp->Print("Figs/PV0MuxCut_AllBut.png");
+    ctmp->Print("Figs/PV0ScSmMuxCut_AllBut.eps");
+    ctmp->Print("Figs/PV0ScSmMuxCut_AllBut.pdf");
+    ctmp->Print("Figs/PV0ScSmMuxCut_AllBut.png");
 
 }
 
