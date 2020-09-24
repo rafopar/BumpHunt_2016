@@ -248,7 +248,7 @@ void MassSystematics() {
 
     f_Pol4->GetParameters(parsTargPos);
     out_dat << " target at 0.5 mm & " << parsTargPos[0] << " & " << parsTargPos[1] << " & " << parsTargPos[2] << " & " << parsTargPos[3] << " & " << parsTargPos[4] << "  \\\\ \\hline" << endl;
-    f_SmearSysErrNeg = (TF1*) f_Pol4->Clone("f_SmearSysErrPos");
+    f_SmearSysErrNeg = (TF1*) f_Pol4->Clone("f_SmearSysErrNeg");
     f_Pol4->DrawCopy("Same");
     f_Pol4->SetLineColor(6);
     gr_sigmScSmRecon_[2]->Fit(f_Pol4, "MeV", "", 0.45, 0.18);
@@ -463,7 +463,7 @@ void MassSystematics() {
 
     TLegend *legSmearStatErr = new TLegend(0.15, 0.75, 0.5, 0.93);
     legSmearStatErr->SetBorderSize(0);
-    f_SmearStatNegDiff = new TF1("f_SmearStatPosDiff", SmearStatNegDiff, 0.035, 0.18);
+    f_SmearStatNegDiff = new TF1("f_SmearStatNegDiff", SmearStatNegDiff, 0.035, 0.18);
     f_SmearStatNegDiff->SetNpx(4500);
     f_SmearStatNegDiff->SetTitle("; m(e^{-}e^{+}) [GeV]; 1#sigma stat errors on mass resolution %");
     f_SmearStatNegDiff->SetLineColor(4);
@@ -514,6 +514,23 @@ void MassSystematics() {
     f_SmearSysMaxDiff->Write();
     f_SmearStatMaxDiff->Write();
     f_SmearTotErr->Write();
+
+    f_SmearStatErrPos->Write();
+    f_SmearStatErrNeg->Write();
+    f_SmearStatPosDiff->Write();
+    f_SmearStatNegDiff->Write();
+
+    f_SmearCentral->Write();
+    f_SmearSysErrPos->Write();
+    f_SmearSysErrNeg->Write();
+    f_SmearSysPosDiff->Write();
+    f_SmearSysNegDiff->Write();
+    gr_sigmScSmErrPosRecon->Write("gr_sigmScSmErrPosRecon");
+    gr_sigmScSmErrNegRecon->Write("gr_sigmScSmErrNegRecon");
+    gr_sigmScSmRecon_[0]->Write("gr_sigmScSmRecon_TargAtNominal");
+    gr_sigmScSmRecon_[1]->Write("gr_sigmScSmRecon_TargAtP0p5");
+    gr_sigmScSmRecon_[2]->Write("gr_sigmScSmRecon_TargAtM0p5");
+    
     file_massResolUncertainty->Close();
     delete file_massResolUncertainty;
 }
